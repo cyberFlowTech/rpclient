@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+package contacts;
+
+// protoc-gen-go 版本大于1.4.0, proto文件需要加上go_package,否则无法生成
+option go_package = "./contacts";
+
+message Contact {
+  string OID      = 1; // 好友ID或群聊ID
+  string Nick      = 2; // 备注昵称
+  bool IsNotice = 3; //是否屏蔽系统消息
+  string avatar  =4; //头像
+  int32 type =5; //类型，0是好友，1群聊
+  int32 Status  = 6; // 状态，是否已经删除
+}
+
+message ContactResult{
+  int32 Ret = 1;
+  string Message =2;
+}
+
+message GetContactsReq{
+  string UserID =1;  //用户ID
+  int32 PageSize =2; //分页Size，默认=100
+  int32 PageIndex=3; //分页index,从1开始，默认为1
+}
+
+message GetContactsResp{
+  ContactResult Result =1;
+  int32 PageIndex = 2; //当前index
+  int32 TotalSize = 3; //总共好友数
+  repeated Contact Contacts = 4;//好友list
+}
+
+message SetContactReq{
+  string UserID = 1;
+  Contact Contact = 2; //覆盖更新
+  int32 SetType = 3; //0 add;1 update notice;2 udpate remark 3、delete
+}
+
+message SetContactResp{
+    ContactResult Result = 1;
+}
+
+message GetGroupContactsReq{
+  string UserID =1;  //用户ID
+  int32 PageSize =2; //分页Size，默认=100
+  int32 PageIndex=3; //分页index,从1开始，默认为1
+}
+message GetGroupContactsResp{
+  ContactResult Result =1;
+  int32 PageIndex = 2; //当前index
+  int32 TotalSize = 3; //总共群个数
+  repeated Contact Contacts = 4;//群list
+}
+message SetGroupContactReq{
+  string UserID = 1;
+  Contact Contact = 2; //覆盖更新
+  int32 SetType = 3; //0 add;1 update ;2 delete
+}
+message SetGroupContactResp{
+  ContactResult Result = 1;
+}
+//black list
+message GetBlackListReq{
+
+}
+message GetBlackListResp{
+
+}
+message SetBlackListReq{
+
+}
+message SetBlackListResp{
+
+}
+
+message FriendRequest{
+  int64 OuID =1;
+  string Msg =2;
+  int32  mutual =3;//mutual 双向
+  int32  Status =4;
+  uint64 Time =5;
+}
+
+//好友申请记录管理
+message GetFriendRequestListReq{
+  int64 UserID =1;
+}
+message GetFriendRequestListResp{
+  ContactResult Result = 1;
+  repeated  FriendRequest FRList =2;
+}
+message SetFriendRequestReq{
+  int64 UserID =1;
+  int64 OuID =2;
+  int32 Type = 3;//0 request, 1, 2 del
+}
+message SetFriendRequestResp{
+  ContactResult Result =1;
+}
+
+service Contacts {
+  //获取申请list
+  rpc GetFriendRequestList(GetFriendRequestListReq)returns(GetFriendRequestListResp);
+  rpc SetFriendRequest(SetFriendRequestReq)returns(SetFriendRequestResp);
+
+  //获取通讯录,管理通讯录
+  rpc GetContacts(GetContactsReq) returns(GetContactsResp);
+  rpc SetContact(SetContactReq) returns(SetContactResp);
+
+  //查询我等群聊
+  rpc GetGroupContacts(GetGroupContactsReq)returns(GetGroupContactsResp);
+  rpc SetGroupContact(SetGroupContactReq) returns(SetGroupContactResp);
+
+  //设置黑名单
+  rpc GetBlackList(GetBlackListReq) returns(GetBlackListResp);
+  rpc SetBlackList(SetBlackListReq) returns(SetBlackListResp);
+
+}
