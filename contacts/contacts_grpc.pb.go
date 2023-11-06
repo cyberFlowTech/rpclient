@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.24.4
-// source: v1/rpc/contacts.proto
+// source: define/contacts.proto
 
 package contacts
 
@@ -372,5 +372,5 @@ var Contacts_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "v1/rpc/contacts.proto",
+	Metadata: "define/contacts.proto",
 }

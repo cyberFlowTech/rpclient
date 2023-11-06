@@ -10,8 +10,18 @@ message Contact {
   string Nick      = 2; // 备注昵称
   bool IsNotice = 3; //是否屏蔽系统消息
   string avatar  =4; //头像
-  int32 type =5; //类型，0是好友，1群聊
-  int32 Status  = 6; // 状态，是否已经删除
+  int32 Status  = 5; // 状态，是否已经删除
+}
+
+message MyGroup {
+  string GID      = 1; // 好友ID或群聊ID
+  string GNick      = 2; // 备注昵称
+  bool IsNotice = 3; //是否屏蔽系统消息
+  bool IsTop  =4; //置顶
+  bool IsBook =5;//收藏
+  string avatar = 6; //群头像
+  int64 ctime = 7; //时间
+  int32 Status  = 8; // 状态，是否已经删除
 }
 
 message ContactResult{
@@ -51,28 +61,40 @@ message GetGroupContactsResp{
   ContactResult Result =1;
   int32 PageIndex = 2; //当前index
   int32 TotalSize = 3; //总共群个数
-  repeated Contact Contacts = 4;//群list
+  repeated MyGroup Contacts = 4;//群list
 }
 message SetGroupContactReq{
   string UserID = 1;
-  Contact Contact = 2; //覆盖更新
-  int32 SetType = 3; //0 add;1 update ;2 delete
+  MyGroup Contact = 2; //覆盖更新
+  int32 SetType = 3; //1 add;2 set notice ;3 set top ;4 set bookmark; 5 set gnick ;6 delete
 }
 message SetGroupContactResp{
   ContactResult Result = 1;
 }
 //black list
+message BlackInfo{
+  string UserID =1; //用户id
+  string Nick =2; //昵称
+  string Avatar=3; //头像
+}
 message GetBlackListReq{
-
+  string UserID=1;
+  int32 PageSize =2; //分页Size，默认=100
+  int32 PageIndex=3; //分页index,从1开始，默认为1
 }
 message GetBlackListResp{
-
+  ContactResult Result =1;
+  int32 PageIndex = 2; //当前index
+  int32 TotalSize = 3; //总共群个数
+  repeated BlackInfo BlackList =4;
 }
 message SetBlackListReq{
-
+  string UserID =1;
+  int64 SetType =2;
+  string Ouid =3;
 }
 message SetBlackListResp{
-
+  ContactResult Result =1;
 }
 
 message FriendRequest{
@@ -94,7 +116,7 @@ message GetFriendRequestListResp{
 message SetFriendRequestReq{
   int64 UserID =1;
   int64 OuID =2;
-  int32 Type = 3;//0 request, 1, 2 del
+  int32 Type = 3;//0 add request, 1 accept, 2 del
 }
 message SetFriendRequestResp{
   ContactResult Result =1;
