@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.19.4
-// source: im.v1.proto
+// source: define/im.v1.proto
 
 package im
 
@@ -22,6 +22,8 @@ const (
 	ImServer_GetToken_FullMethodName         = "/im.ImServer/getToken"
 	ImServer_SendPackMsg_FullMethodName      = "/im.ImServer/SendPackMsg"
 	ImServer_SendSystemCmdMsg_FullMethodName = "/im.ImServer/SendSystemCmdMsg"
+	ImServer_SendMsg_FullMethodName          = "/im.ImServer/SendMsg"
+	ImServer_GetGroupInfo_FullMethodName     = "/im.ImServer/GetGroupInfo"
 )
 
 // ImServerClient is the client API for ImServer service.
@@ -31,6 +33,8 @@ type ImServerClient interface {
 	GetToken(ctx context.Context, in *GetTokenReq, opts ...grpc.CallOption) (*GetTokenRes, error)
 	SendPackMsg(ctx context.Context, in *SendPackMsgReq, opts ...grpc.CallOption) (*MsgRes, error)
 	SendSystemCmdMsg(ctx context.Context, in *SystemCmdMsgReq, opts ...grpc.CallOption) (*MsgRes, error)
+	SendMsg(ctx context.Context, in *SendMsgReq, opts ...grpc.CallOption) (*MsgRes, error)
+	GetGroupInfo(ctx context.Context, in *GetGroupInfoReq, opts ...grpc.CallOption) (*GetGroupInfoRes, error)
 }
 
 type imServerClient struct {
@@ -68,6 +72,24 @@ func (c *imServerClient) SendSystemCmdMsg(ctx context.Context, in *SystemCmdMsgR
 	return out, nil
 }
 
+func (c *imServerClient) SendMsg(ctx context.Context, in *SendMsgReq, opts ...grpc.CallOption) (*MsgRes, error) {
+	out := new(MsgRes)
+	err := c.cc.Invoke(ctx, ImServer_SendMsg_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) GetGroupInfo(ctx context.Context, in *GetGroupInfoReq, opts ...grpc.CallOption) (*GetGroupInfoRes, error) {
+	out := new(GetGroupInfoRes)
+	err := c.cc.Invoke(ctx, ImServer_GetGroupInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImServerServer is the server API for ImServer service.
 // All implementations must embed UnimplementedImServerServer
 // for forward compatibility
@@ -75,6 +97,8 @@ type ImServerServer interface {
 	GetToken(context.Context, *GetTokenReq) (*GetTokenRes, error)
 	SendPackMsg(context.Context, *SendPackMsgReq) (*MsgRes, error)
 	SendSystemCmdMsg(context.Context, *SystemCmdMsgReq) (*MsgRes, error)
+	SendMsg(context.Context, *SendMsgReq) (*MsgRes, error)
+	GetGroupInfo(context.Context, *GetGroupInfoReq) (*GetGroupInfoRes, error)
 	mustEmbedUnimplementedImServerServer()
 }
 
@@ -90,6 +114,12 @@ func (UnimplementedImServerServer) SendPackMsg(context.Context, *SendPackMsgReq)
 }
 func (UnimplementedImServerServer) SendSystemCmdMsg(context.Context, *SystemCmdMsgReq) (*MsgRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendSystemCmdMsg not implemented")
+}
+func (UnimplementedImServerServer) SendMsg(context.Context, *SendMsgReq) (*MsgRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendMsg not implemented")
+}
+func (UnimplementedImServerServer) GetGroupInfo(context.Context, *GetGroupInfoReq) (*GetGroupInfoRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroupInfo not implemented")
 }
 func (UnimplementedImServerServer) mustEmbedUnimplementedImServerServer() {}
 
@@ -158,6 +188,42 @@ func _ImServer_SendSystemCmdMsg_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImServer_SendMsg_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendMsgReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).SendMsg(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_SendMsg_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).SendMsg(ctx, req.(*SendMsgReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_GetGroupInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGroupInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).GetGroupInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_GetGroupInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).GetGroupInfo(ctx, req.(*GetGroupInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ImServer_ServiceDesc is the grpc.ServiceDesc for ImServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -177,7 +243,15 @@ var ImServer_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "SendSystemCmdMsg",
 			Handler:    _ImServer_SendSystemCmdMsg_Handler,
 		},
+		{
+			MethodName: "SendMsg",
+			Handler:    _ImServer_SendMsg_Handler,
+		},
+		{
+			MethodName: "GetGroupInfo",
+			Handler:    _ImServer_GetGroupInfo_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "im.v1.proto",
+	Metadata: "define/im.v1.proto",
 }
