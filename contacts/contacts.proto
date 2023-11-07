@@ -15,13 +15,14 @@ message Contact {
 
 message MyGroup {
   string GID      = 1; // 好友ID或群聊ID
-  string GNick      = 2; // 备注昵称
+  string GNick      = 2; // 在群里等备注昵称
   bool IsNotice = 3; //是否屏蔽系统消息
   bool IsTop  =4; //置顶
   bool IsBook =5;//收藏
-  string avatar = 6; //群头像
-  int64 ctime = 7; //时间
-  int32 Status  = 8; // 状态，是否已经删除
+  string Avatar = 6; //群头像
+  string GName  = 7;
+  int64 Ctime = 8; //时间
+  int32 Status  = 9; // 状态，是否已经删除
 }
 
 message ContactResult{
@@ -42,10 +43,16 @@ message GetContactsResp{
   repeated Contact Contacts = 4;//好友list
 }
 
+enum SetContactType{
+  AddContact=0;
+  NoticeContact=1;
+  RemarkContact=2;
+  DelContact=3;
+}
 message SetContactReq{
   string UserID = 1;
   Contact Contact = 2; //覆盖更新
-  int32 SetType = 3; //0 add;1 update notice;2 udpate remark 3、delete
+  SetContactType SetType = 3; //0 add;1 update notice;2 udpate remark 3、delete
 }
 
 message SetContactResp{
@@ -63,10 +70,18 @@ message GetGroupContactsResp{
   int32 TotalSize = 3; //总共群个数
   repeated MyGroup Contacts = 4;//群list
 }
+enum SetGroupType{
+   AddGroup = 0;
+   NoticeGroup =1;
+    BookGroup=2;
+  TopGroup=3;
+   GNickGroup=4;
+   DelGroup=5;
+}
 message SetGroupContactReq{
   string UserID = 1;
   MyGroup Contact = 2; //覆盖更新
-  int32 SetType = 3; //1 add;2 set notice ;3 set top ;4 set bookmark; 5 set gnick ;6 delete
+  SetGroupType SetType = 3; //1 add;2 set notice ;3 set top ;4 set bookmark; 5 set gnick ;6 delete
 }
 message SetGroupContactResp{
   ContactResult Result = 1;
@@ -88,9 +103,13 @@ message GetBlackListResp{
   int32 TotalSize = 3; //总共群个数
   repeated BlackInfo BlackList =4;
 }
+enum SetBlackType{
+  AddBlack=0;
+  DelBlack=1;
+}
 message SetBlackListReq{
   string UserID =1;
-  int64 SetType =2;
+  SetBlackType SetType =2;
   string Ouid =3;
 }
 message SetBlackListResp{
@@ -103,6 +122,8 @@ message FriendRequest{
   int32  mutual =3;//mutual 双向
   int32  Status =4;
   uint64 Time =5;
+  string Nick = 6; //昵称，remark
+  string Avatar = 7;
 }
 
 //好友申请记录管理
@@ -113,10 +134,16 @@ message GetFriendRequestListResp{
   ContactResult Result = 1;
   repeated  FriendRequest FRList =2;
 }
+
+enum SetFRequestType{
+  AddFRequest=0;
+  AcceptFRequest=1;
+  DelFRequest=2;
+}
 message SetFriendRequestReq{
   int64 UserID =1;
   int64 OuID =2;
-  int32 Type = 3;//0 add request, 1 accept, 2 del
+  SetFRequestType Type = 3;//0 add request, 1 accept, 2 del
 }
 message SetFriendRequestResp{
   ContactResult Result =1;
