@@ -1,0 +1,285 @@
+syntax = "proto3";
+
+package dynamicsrv;
+option go_package = "./dynamicsrv";
+
+message Empty {}
+
+message APIError {
+  int64 Code = 1; //错误码 0正常
+  string Message = 2; //错误消息
+}
+
+message APICommonResponse {
+  APIError Error = 1;
+  string Data = 2;
+}
+
+message PublishRequest {
+  int64 Type = 1; //动态类型（0：普通用户动态，2:长文
+  optional string Text = 2; //内容（动态text，imgs必填一个，长
+  optional string Imgs = 3; //图片（长文必填）
+  int64 ImgType = 4; //0多图 1是横图 2是竖图，前端布局使
+  string Link = 5; //链接
+  string TbMids = 6; //同步到部落，多个用, 号隔开
+  optional string Title = 7; //标题（文章类型传）
+  int64 UserId = 8; //发表动态的用户ID
+  string Media = 9; //新版本新增图片列表
+}
+
+message UpdateRequest {
+  int64 DynamicId = 1; //动态ID
+  PublishRequest Data = 2; //更新的数据
+}
+
+message ListRequest {
+  int64 Page = 1; //当前页
+  int64 TbMid = 2; //部落id
+  int64 IsRecommend = 3; //是否推荐 0否 1是
+  int64 Type = 4; //0按时间排序 1按热度排序
+  int64 UserId = 5; //用户个人收藏列表
+}
+
+message ListResponse {
+  repeated InfoResponse List = 1;
+  APIError Error = 2;
+}
+
+message InfoForm {
+  int64 DynamicUid = 1; //动态发布者uid,用于查找分表
+  int64 DynamicId = 2; //动态id
+  int64 Status = 3; //动态状态
+  int64 UserId =4; //用户ID用于判断是否有点赞、收藏
+}
+
+message InfoRequest {
+  repeated InfoForm infos = 1;
+}
+
+message Ext {
+  string Link = 1;
+}
+
+//部落信息
+message SupClub {
+  int64 Id = 1; //部落ID
+  string Name = 2; //部落名称
+  string Avatar = 3; //部落头像链接
+  string Desc = 4; //部落描述
+}
+
+//message InfoResponse {
+//  int64 Id = 1;
+//  int64 Type = 2;
+//  string Title = 3;
+//  string Imgs = 4;
+//  string Desc = 5;
+//  int64 Ctime = 6; //创建时间
+//  int64 Etime = 7;
+//  int64 Status = 8;
+//  Ext Ext = 9;
+//  int64 ToH5Num = 10;
+//  int64 ToAppNum = 11;
+//  int64 ToDownloadNum = 12;
+//  int64 ImgType = 13;
+//  string TbMids = 14; //同步到到部落ID ->根据部落ID查询部落信息，对外是否可见
+//  string Nick = 15; //昵称 -> 调用 用户服务查询用户信息
+//  string Avatar =16; //头像 -> 调用 用户服务查询用户信息
+//  int64 DynamicId=17; //动态ID
+//  int64 DynamicUid=18; //发布动态者UID
+//  int64 HasCollect=19; //是否已经收藏
+//  int64 HasPraised=20; //是否已经点赞
+//  int64 HasFocus=21; //是否已经关注
+//  int64 PraiseCount=22; //点赞总数
+//  int64 CommentCount=23; //评论总数
+//  int64 CollectCount=24; //收藏总数
+//  int64 ShareCount=25; //分享总数
+//  string Text=26;
+//  int64 CanShare=27; //是否可以分享
+//  SupClub Supclub = 28; // 部落信息
+//  APIError Error = 29; //公共响应错误
+//}
+
+message InfoResponseForm {
+  int64 Id = 1;
+  int64 UserId = 2;                   // 用户ID
+  int64 Type = 3;                // 动态类型（0：普通用户动态，1：抖音链接，2长文）
+  string Title = 4;            // 标题
+  string Desc = 5;             // 描述信息
+  string Imgs = 6;    // 封面图片
+  int64 Etime = 7;               // 最后编辑时间
+  int64 Status = 8;             // 文章状态（-1已删除,0编辑中，1已发布）
+  string Ext = 9;              // 扩展信息(json格式存储)
+  int64 ToDownloadNum = 10;     // 链接跳转下载次数
+  int64 ToAppNum = 11;         // 链接跳转app次数
+  int64 ToH5Num = 12;         // 打开h5分享链接
+  int64 ImgType = 13;           // 客户端布局处理（0 多图 1横图 2竖图）
+  int64 Ctime = 14;            // 发表时间
+  string Media = 15;             // 媒体资源
+  int64 HasCollect = 16; //是否已经收藏
+  int64 HasPraised = 17; //是否已经点赞
+  int64 HasFocus = 18; //是否已经关注
+  int64 PraiseCount = 19; //点赞总数
+  int64 CommentCount = 20; //评论总数
+  int64 CollectCount = 21; //收藏总数
+  string TbMids = 22; //同步到到部落ID ->根据部落ID查询部落信息，对外是否可见
+  string Nick = 23; //昵称 -> 调用 用户服务查询用户信息
+  string Avatar =24; //头像 -> 调用 用户服务查询用户信息
+}
+
+message InfoResponse {
+  repeated InfoResponseForm Infos = 1;
+  APIError Error = 2; //公共响应错误
+}
+
+message DeleteRequest {
+  int64 DynamicUid = 1; //发布者uid,用于查找分表
+  int64 DynamicId = 2; //动态id
+}
+
+//点赞请求
+message PraiseRequest {
+  int64 DynamicId = 1; //动态ID
+  int64 DynamicUid = 2; //动态发布者UID
+  int64 IsDel = 3; // 0 点赞 1 取消
+  int64 CommentId = 4; //评论ID（如果点赞的是评论评论那么是0
+  int64 UserId = 5; //点赞者UID
+}
+
+//是否有点赞请求
+message HasPraiseRequest {
+  repeated PraiseRequest HasPraise = 1;
+}
+
+message HasPraise {
+  int64 DynamicId = 1; //动态ID
+  int64 DynamicUid = 2; //动态发布者UID
+  int64 CommentId = 3; //评论ID（如果点赞的是评论评论那么是0
+  int64 IsDel = 4; // true 已点赞 false 未点赞
+}
+
+message HasPraiseResponse {
+  repeated HasPraise HasPraise = 1;
+  APIError Error = 2;
+}
+
+message CollectRequest {
+  int64 DynamicId = 1; //动态ID
+  int64 DynamicUid = 2; //动态发布者UID
+  int64 IsDel = 3; // 0收藏 1取消收藏
+  int64 UserId = 4; //收藏者UID
+}
+
+message HasCollectResponse {
+  int64 IsDel = 1; // 0 已收藏 1未收藏
+  APIError Error = 2;
+}
+
+
+message FocusRequest {
+  int64 OUid = 1; //被关注的uid
+  int64 UID = 2; //关注者的uid
+  int64 IsDel = 3; // 0关注 1取消关注
+}
+
+message HasFocusResponse {
+  int64 IsDel = 1; //true 已关注 false未关注
+  APIError Error = 2;
+}
+
+message ShareRequest {
+}
+
+message FocusListRequest{
+  int64 UserId = 1; //用户ID
+  int64 Page = 2; //页码
+}
+
+message FocusList {
+  int64 UserId = 1;//用户ID
+  string Nick = 2; //昵称
+  string Avatar = 3;//头像链接地址
+  int64 Status = 4; // 1 关注 2 相互关注
+}
+
+message FocusListResponse{
+  repeated FocusList List = 1; //关注列表
+  int64 Count = 2; //关注总数
+  APIError Error = 3;
+
+}
+
+message FansListRequest{
+  int64 UserId = 1; //用户ID
+  int64 Page = 2; //页码
+}
+
+message FansList {
+  int64 UserId = 1;//用户ID
+  string Nick = 2; //昵称
+  string Avatar = 3;//头像链接地址
+  int64 Status = 4; // 1 关注 2 相互关注
+}
+
+message FansListResponse{
+  repeated FansList List = 1; //粉丝列表
+  int64 Count = 2; //粉丝总数
+  APIError Error = 3;
+}
+
+message CollectListRequest{
+  int64 UserId = 1;//用户ID
+  int64 Page = 2; //页码
+}
+
+message CollectListResponse{
+  repeated InfoResponse List = 1;
+  APIError Error = 2;
+}
+
+message RefreshSupclubDynamicRequest{
+  int64 TbMids = 1;//部落ID 字符串,分割
+}
+
+
+service Dynamicsrv {
+  //发布动态
+  rpc Publish(PublishRequest) returns(APICommonResponse);
+  //修改动态
+  rpc Update(UpdateRequest) returns(APICommonResponse);
+  //动态列表
+  rpc List(ListRequest) returns(ListResponse);
+  //动态详情
+  rpc Info(InfoRequest) returns(InfoResponse);
+  //删除动态
+  rpc Delete(DeleteRequest) returns(APICommonResponse);
+  //刷新部落动态（发布、更新、删除时，需要检查刷新部落与动态之间的关系
+  rpc RefreshSupclubDynamic(RefreshSupclubDynamicRequest) returns(APICommonResponse);
+
+  //点赞动态
+  rpc Praise(PraiseRequest) returns(APICommonResponse);
+  //该用户是否已点赞动态或点赞动态下的评论
+  rpc HasPraise(HasPraiseRequest) returns(HasPraiseResponse);
+
+  //收藏动态
+  rpc Collect(CollectRequest) returns(APICommonResponse);
+  //该用户是否已收藏该动态
+  rpc HasCollect(CollectRequest) returns(HasCollectResponse);
+  //用户收藏列表
+  rpc CollectList(CollectListRequest)  returns(CollectListResponse);
+
+
+  //关注动态作者
+  rpc Focus(FocusRequest) returns(APICommonResponse);
+  //是否已经关注该作者
+  rpc HasFocus(FocusRequest) returns(HasFocusResponse);
+
+  //动态分享数,只增不减 -- 客户端上报main/data/callback
+  rpc Share(ShareRequest) returns(APICommonResponse);
+
+  //用户关注列表
+  rpc FocusList(FocusListRequest)  returns(FocusListResponse);
+  //用户粉丝列表
+  rpc FansList(FansListRequest)  returns(FansListResponse);
+
+}
