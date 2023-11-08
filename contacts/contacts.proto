@@ -63,6 +63,8 @@ message GetGroupContactsReq{
   string UserID =1;  //用户ID
   int32 PageSize =2; //分页Size，默认=100
   int32 PageIndex=3; //分页index,从1开始，默认为1
+  repeated string Gids =4; //指定群信息环信ID
+  bool  OnlyBookGroup=5; //只返回收藏等
 }
 message GetGroupContactsResp{
   ContactResult Result =1;
