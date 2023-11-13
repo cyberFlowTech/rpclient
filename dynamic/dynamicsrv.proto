@@ -21,7 +21,7 @@ message PublishRequest {
   optional string Imgs = 3; //图片（长文必填）
   int64 ImgType = 4; //0多图 1是横图 2是竖图，前端布局使
   string Link = 5; //链接
-  string TbMids = 6; //同步到部落，多个用, 号隔开
+//  string TbMids = 6; //同步到部落，多个用, 号隔开
   optional string Title = 7; //标题（文章类型传）
   int64 UserId = 8; //发表动态的用户ID
   string Media = 9; //新版本新增图片列表
@@ -32,18 +32,24 @@ message UpdateRequest {
   PublishRequest Data = 2; //更新的数据
 }
 
-message ListRequest {
+message DiscoverDynamicListRequest {
+  int64 Page = 1; //当前页
+  int64 UserId = 2; //当前用户ID
+}
+
+message ClubDynamicListRequest {
   int64 Page = 1; //当前页
   int64 TbMid = 2; //部落id
   int64 IsRecommend = 3; //是否推荐 0否 1是
   int64 Type = 4; //0按时间排序 1按热度排序
-  int64 UserId = 5; //用户个人收藏列表
+  int64 UserId = 5; //当前用户ID
 }
 
-message ListResponse {
-  repeated InfoResponse List = 1;
-  APIError Error = 2;
+message UserDynamicListRequest {
+  int64 Page = 1; //当前页
+  int64 UserId = 2; //用户ID
 }
+
 
 message InfoForm {
   int64 DynamicUid = 1; //动态发布者uid,用于查找分表
@@ -68,37 +74,11 @@ message SupClub {
   string Desc = 4; //部落描述
 }
 
-//message InfoResponse {
-//  int64 Id = 1;
-//  int64 Type = 2;
-//  string Title = 3;
-//  string Imgs = 4;
-//  string Desc = 5;
-//  int64 Ctime = 6; //创建时间
-//  int64 Etime = 7;
-//  int64 Status = 8;
-//  Ext Ext = 9;
-//  int64 ToH5Num = 10;
-//  int64 ToAppNum = 11;
-//  int64 ToDownloadNum = 12;
-//  int64 ImgType = 13;
-//  string TbMids = 14; //同步到到部落ID ->根据部落ID查询部落信息，对外是否可见
-//  string Nick = 15; //昵称 -> 调用 用户服务查询用户信息
-//  string Avatar =16; //头像 -> 调用 用户服务查询用户信息
-//  int64 DynamicId=17; //动态ID
-//  int64 DynamicUid=18; //发布动态者UID
-//  int64 HasCollect=19; //是否已经收藏
-//  int64 HasPraised=20; //是否已经点赞
-//  int64 HasFocus=21; //是否已经关注
-//  int64 PraiseCount=22; //点赞总数
-//  int64 CommentCount=23; //评论总数
-//  int64 CollectCount=24; //收藏总数
-//  int64 ShareCount=25; //分享总数
-//  string Text=26;
-//  int64 CanShare=27; //是否可以分享
-//  SupClub Supclub = 28; // 部落信息
-//  APIError Error = 29; //公共响应错误
-//}
+message UserInfo {
+   int64 UserId = 1;
+   string Nick = 2;
+   string Avatar = 3;
+}
 
 message InfoResponseForm {
   int64 Id = 1;
@@ -125,6 +105,8 @@ message InfoResponseForm {
   string TbMids = 22; //同步到到部落ID ->根据部落ID查询部落信息，对外是否可见
   string Nick = 23; //昵称 -> 调用 用户服务查询用户信息
   string Avatar =24; //头像 -> 调用 用户服务查询用户信息
+  int64 ShareCount =25; //分享总数
+  repeated UserInfo PraiseList =26; //动态点赞列表
 }
 
 message InfoResponse {
@@ -187,7 +169,9 @@ message HasFocusResponse {
   APIError Error = 2;
 }
 
-message ShareRequest {
+message ShareDynamicRequest {
+  int64 Did = 1; // 动态ID
+  int64 Duid = 2; // 动态发布者ID
 }
 
 message FocusListRequest{
@@ -233,7 +217,7 @@ message CollectListRequest{
 }
 
 message CollectListResponse{
-  repeated InfoResponse List = 1;
+  repeated InfoResponseForm List = 1;
   APIError Error = 2;
 }
 
@@ -244,15 +228,21 @@ message RefreshSupclubDynamicRequest{
 
 service Dynamicsrv {
   //发布动态
-  rpc Publish(PublishRequest) returns(APICommonResponse);
+  rpc PublishDynamic(PublishRequest) returns(APICommonResponse);
   //修改动态
-  rpc Update(UpdateRequest) returns(APICommonResponse);
-  //动态列表
-  rpc List(ListRequest) returns(ListResponse);
+  rpc UpdateDynamic(UpdateRequest) returns(APICommonResponse);
+  //发现页动态列表
+  rpc GetDiscoverDynamicList(DiscoverDynamicListRequest) returns(InfoResponse);
+  //部落动态列表
+  rpc GetClubDynamicList(ClubDynamicListRequest) returns(InfoResponse);
+  //指定用户动态列表
+  rpc GetUserDynamicList(UserDynamicListRequest) returns(InfoResponse);
+  //我的动态列表
+  rpc GetMyDynamicList(UserDynamicListRequest) returns(InfoResponse);
   //动态详情
-  rpc Info(InfoRequest) returns(InfoResponse);
+  rpc DynamicInfo(InfoRequest) returns(InfoResponse);
   //删除动态
-  rpc Delete(DeleteRequest) returns(APICommonResponse);
+  rpc DeleteDynamic(DeleteRequest) returns(APICommonResponse);
   //刷新部落动态（发布、更新、删除时，需要检查刷新部落与动态之间的关系
   rpc RefreshSupclubDynamic(RefreshSupclubDynamicRequest) returns(APICommonResponse);
 
@@ -268,14 +258,13 @@ service Dynamicsrv {
   //用户收藏列表
   rpc CollectList(CollectListRequest)  returns(CollectListResponse);
 
-
   //关注动态作者
   rpc Focus(FocusRequest) returns(APICommonResponse);
   //是否已经关注该作者
   rpc HasFocus(FocusRequest) returns(HasFocusResponse);
 
   //动态分享数,只增不减 -- 客户端上报main/data/callback
-  rpc Share(ShareRequest) returns(APICommonResponse);
+  rpc ShareDynamic(ShareDynamicRequest) returns(APICommonResponse);
 
   //用户关注列表
   rpc FocusList(FocusListRequest)  returns(FocusListResponse);
