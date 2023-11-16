@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.24.4
-// source: v1/proto/dynamicsrv.proto
+// source: define/dynamicsrv.proto
 
 package dynamicsrv
 
@@ -26,7 +26,7 @@ const (
 	Dynamicsrv_GetUserDynamicList_FullMethodName     = "/dynamicsrv.Dynamicsrv/GetUserDynamicList"
 	Dynamicsrv_GetMyDynamicList_FullMethodName       = "/dynamicsrv.Dynamicsrv/GetMyDynamicList"
 	Dynamicsrv_DynamicInfo_FullMethodName            = "/dynamicsrv.Dynamicsrv/DynamicInfo"
-	Dynamicsrv_DeleteDynamic_FullMethodName          = "/dynamicsrv.Dynamicsrv/DeleteDynamic"
+	Dynamicsrv_DeleteDynamic_FullMethodName          = "/dynamicsrv.Dynamicsrv/DeleteDynamicByUser"
 	Dynamicsrv_RefreshSupclubDynamic_FullMethodName  = "/dynamicsrv.Dynamicsrv/RefreshSupclubDynamic"
 	Dynamicsrv_Praise_FullMethodName                 = "/dynamicsrv.Dynamicsrv/Praise"
 	Dynamicsrv_HasPraise_FullMethodName              = "/dynamicsrv.Dynamicsrv/HasPraise"
@@ -38,6 +38,10 @@ const (
 	Dynamicsrv_ShareDynamic_FullMethodName           = "/dynamicsrv.Dynamicsrv/ShareDynamic"
 	Dynamicsrv_FocusList_FullMethodName              = "/dynamicsrv.Dynamicsrv/FocusList"
 	Dynamicsrv_FansList_FullMethodName               = "/dynamicsrv.Dynamicsrv/FansList"
+	Dynamicsrv_GetCommentList_FullMethodName         = "/dynamicsrv.Dynamicsrv/GetCommentList"
+	Dynamicsrv_GetChildCommentList_FullMethodName    = "/dynamicsrv.Dynamicsrv/GetChildCommentList"
+	Dynamicsrv_Comment_FullMethodName                = "/dynamicsrv.Dynamicsrv/Comment"
+	Dynamicsrv_DeleteComment_FullMethodName          = "/dynamicsrv.Dynamicsrv/DeleteComment"
 )
 
 // DynamicsrvClient is the client API for Dynamicsrv service.
@@ -45,9 +49,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DynamicsrvClient interface {
 	// 发布动态
-	PublishDynamic(ctx context.Context, in *PublishRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
+	PublishDynamic(ctx context.Context, in *PublishDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 修改动态
-	UpdateDynamic(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
+	UpdateDynamic(ctx context.Context, in *UpdateDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 发现页动态列表
 	GetDiscoverDynamicList(ctx context.Context, in *DiscoverDynamicListRequest, opts ...grpc.CallOption) (*InfoResponse, error)
 	// 部落动态列表
@@ -59,10 +63,10 @@ type DynamicsrvClient interface {
 	// 动态详情
 	DynamicInfo(ctx context.Context, in *InfoRequest, opts ...grpc.CallOption) (*InfoResponse, error)
 	// 删除动态
-	DeleteDynamic(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
+	DeleteDynamic(ctx context.Context, in *DeleteDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 刷新部落动态（发布、更新、删除时，需要检查刷新部落与动态之间的关系
 	RefreshSupclubDynamic(ctx context.Context, in *RefreshSupclubDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
-	// 点赞动态
+	// 点赞动态/评论
 	Praise(ctx context.Context, in *PraiseRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 该用户是否已点赞动态或点赞动态下的评论
 	HasPraise(ctx context.Context, in *HasPraiseRequest, opts ...grpc.CallOption) (*HasPraiseResponse, error)
@@ -82,6 +86,14 @@ type DynamicsrvClient interface {
 	FocusList(ctx context.Context, in *FocusListRequest, opts ...grpc.CallOption) (*FocusListResponse, error)
 	// 用户粉丝列表
 	FansList(ctx context.Context, in *FansListRequest, opts ...grpc.CallOption) (*FansListResponse, error)
+	// 评论列表
+	GetCommentList(ctx context.Context, in *CommentListRequest, opts ...grpc.CallOption) (*CommentListResponse, error)
+	// 子评论评论列表
+	GetChildCommentList(ctx context.Context, in *ChildCommentListRequest, opts ...grpc.CallOption) (*ChildCommentListResponse, error)
+	// 评论
+	Comment(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
+	// 删除评论
+	DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 }
 
 type dynamicsrvClient struct {
@@ -92,7 +104,7 @@ func NewDynamicsrvClient(cc grpc.ClientConnInterface) DynamicsrvClient {
 	return &dynamicsrvClient{cc}
 }
 
-func (c *dynamicsrvClient) PublishDynamic(ctx context.Context, in *PublishRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
+func (c *dynamicsrvClient) PublishDynamic(ctx context.Context, in *PublishDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
 	out := new(APICommonResponse)
 	err := c.cc.Invoke(ctx, Dynamicsrv_PublishDynamic_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -101,7 +113,7 @@ func (c *dynamicsrvClient) PublishDynamic(ctx context.Context, in *PublishReques
 	return out, nil
 }
 
-func (c *dynamicsrvClient) UpdateDynamic(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
+func (c *dynamicsrvClient) UpdateDynamic(ctx context.Context, in *UpdateDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
 	out := new(APICommonResponse)
 	err := c.cc.Invoke(ctx, Dynamicsrv_UpdateDynamic_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -155,7 +167,7 @@ func (c *dynamicsrvClient) DynamicInfo(ctx context.Context, in *InfoRequest, opt
 	return out, nil
 }
 
-func (c *dynamicsrvClient) DeleteDynamic(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
+func (c *dynamicsrvClient) DeleteDynamic(ctx context.Context, in *DeleteDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
 	out := new(APICommonResponse)
 	err := c.cc.Invoke(ctx, Dynamicsrv_DeleteDynamic_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -263,14 +275,50 @@ func (c *dynamicsrvClient) FansList(ctx context.Context, in *FansListRequest, op
 	return out, nil
 }
 
+func (c *dynamicsrvClient) GetCommentList(ctx context.Context, in *CommentListRequest, opts ...grpc.CallOption) (*CommentListResponse, error) {
+	out := new(CommentListResponse)
+	err := c.cc.Invoke(ctx, Dynamicsrv_GetCommentList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dynamicsrvClient) GetChildCommentList(ctx context.Context, in *ChildCommentListRequest, opts ...grpc.CallOption) (*ChildCommentListResponse, error) {
+	out := new(ChildCommentListResponse)
+	err := c.cc.Invoke(ctx, Dynamicsrv_GetChildCommentList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dynamicsrvClient) Comment(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
+	out := new(APICommonResponse)
+	err := c.cc.Invoke(ctx, Dynamicsrv_Comment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dynamicsrvClient) DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
+	out := new(APICommonResponse)
+	err := c.cc.Invoke(ctx, Dynamicsrv_DeleteComment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DynamicsrvServer is the server API for Dynamicsrv service.
 // All implementations must embed UnimplementedDynamicsrvServer
 // for forward compatibility
 type DynamicsrvServer interface {
 	// 发布动态
-	PublishDynamic(context.Context, *PublishRequest) (*APICommonResponse, error)
+	PublishDynamic(context.Context, *PublishDynamicRequest) (*APICommonResponse, error)
 	// 修改动态
-	UpdateDynamic(context.Context, *UpdateRequest) (*APICommonResponse, error)
+	UpdateDynamic(context.Context, *UpdateDynamicRequest) (*APICommonResponse, error)
 	// 发现页动态列表
 	GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*InfoResponse, error)
 	// 部落动态列表
@@ -282,10 +330,10 @@ type DynamicsrvServer interface {
 	// 动态详情
 	DynamicInfo(context.Context, *InfoRequest) (*InfoResponse, error)
 	// 删除动态
-	DeleteDynamic(context.Context, *DeleteRequest) (*APICommonResponse, error)
+	DeleteDynamic(context.Context, *DeleteDynamicRequest) (*APICommonResponse, error)
 	// 刷新部落动态（发布、更新、删除时，需要检查刷新部落与动态之间的关系
 	RefreshSupclubDynamic(context.Context, *RefreshSupclubDynamicRequest) (*APICommonResponse, error)
-	// 点赞动态
+	// 点赞动态/评论
 	Praise(context.Context, *PraiseRequest) (*APICommonResponse, error)
 	// 该用户是否已点赞动态或点赞动态下的评论
 	HasPraise(context.Context, *HasPraiseRequest) (*HasPraiseResponse, error)
@@ -305,6 +353,14 @@ type DynamicsrvServer interface {
 	FocusList(context.Context, *FocusListRequest) (*FocusListResponse, error)
 	// 用户粉丝列表
 	FansList(context.Context, *FansListRequest) (*FansListResponse, error)
+	// 评论列表
+	GetCommentList(context.Context, *CommentListRequest) (*CommentListResponse, error)
+	// 子评论评论列表
+	GetChildCommentList(context.Context, *ChildCommentListRequest) (*ChildCommentListResponse, error)
+	// 评论
+	Comment(context.Context, *CommentRequest) (*APICommonResponse, error)
+	// 删除评论
+	DeleteComment(context.Context, *DeleteCommentRequest) (*APICommonResponse, error)
 	mustEmbedUnimplementedDynamicsrvServer()
 }
 
@@ -312,10 +368,10 @@ type DynamicsrvServer interface {
 type UnimplementedDynamicsrvServer struct {
 }
 
-func (UnimplementedDynamicsrvServer) PublishDynamic(context.Context, *PublishRequest) (*APICommonResponse, error) {
+func (UnimplementedDynamicsrvServer) PublishDynamic(context.Context, *PublishDynamicRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PublishDynamic not implemented")
 }
-func (UnimplementedDynamicsrvServer) UpdateDynamic(context.Context, *UpdateRequest) (*APICommonResponse, error) {
+func (UnimplementedDynamicsrvServer) UpdateDynamic(context.Context, *UpdateDynamicRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateDynamic not implemented")
 }
 func (UnimplementedDynamicsrvServer) GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*InfoResponse, error) {
@@ -333,8 +389,8 @@ func (UnimplementedDynamicsrvServer) GetMyDynamicList(context.Context, *UserDyna
 func (UnimplementedDynamicsrvServer) DynamicInfo(context.Context, *InfoRequest) (*InfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DynamicInfo not implemented")
 }
-func (UnimplementedDynamicsrvServer) DeleteDynamic(context.Context, *DeleteRequest) (*APICommonResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteDynamic not implemented")
+func (UnimplementedDynamicsrvServer) DeleteDynamic(context.Context, *DeleteDynamicRequest) (*APICommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDynamicByUser not implemented")
 }
 func (UnimplementedDynamicsrvServer) RefreshSupclubDynamic(context.Context, *RefreshSupclubDynamicRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshSupclubDynamic not implemented")
@@ -369,6 +425,18 @@ func (UnimplementedDynamicsrvServer) FocusList(context.Context, *FocusListReques
 func (UnimplementedDynamicsrvServer) FansList(context.Context, *FansListRequest) (*FansListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FansList not implemented")
 }
+func (UnimplementedDynamicsrvServer) GetCommentList(context.Context, *CommentListRequest) (*CommentListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCommentList not implemented")
+}
+func (UnimplementedDynamicsrvServer) GetChildCommentList(context.Context, *ChildCommentListRequest) (*ChildCommentListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChildCommentList not implemented")
+}
+func (UnimplementedDynamicsrvServer) Comment(context.Context, *CommentRequest) (*APICommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Comment not implemented")
+}
+func (UnimplementedDynamicsrvServer) DeleteComment(context.Context, *DeleteCommentRequest) (*APICommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteComment not implemented")
+}
 func (UnimplementedDynamicsrvServer) mustEmbedUnimplementedDynamicsrvServer() {}
 
 // UnsafeDynamicsrvServer may be embedded to opt out of forward compatibility for this service.
@@ -383,7 +451,7 @@ func RegisterDynamicsrvServer(s grpc.ServiceRegistrar, srv DynamicsrvServer) {
 }
 
 func _Dynamicsrv_PublishDynamic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PublishRequest)
+	in := new(PublishDynamicRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -395,13 +463,13 @@ func _Dynamicsrv_PublishDynamic_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: Dynamicsrv_PublishDynamic_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DynamicsrvServer).PublishDynamic(ctx, req.(*PublishRequest))
+		return srv.(DynamicsrvServer).PublishDynamic(ctx, req.(*PublishDynamicRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Dynamicsrv_UpdateDynamic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateRequest)
+	in := new(UpdateDynamicRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -413,7 +481,7 @@ func _Dynamicsrv_UpdateDynamic_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: Dynamicsrv_UpdateDynamic_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DynamicsrvServer).UpdateDynamic(ctx, req.(*UpdateRequest))
+		return srv.(DynamicsrvServer).UpdateDynamic(ctx, req.(*UpdateDynamicRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -509,7 +577,7 @@ func _Dynamicsrv_DynamicInfo_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _Dynamicsrv_DeleteDynamic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteRequest)
+	in := new(DeleteDynamicRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -521,7 +589,7 @@ func _Dynamicsrv_DeleteDynamic_Handler(srv interface{}, ctx context.Context, dec
 		FullMethod: Dynamicsrv_DeleteDynamic_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DynamicsrvServer).DeleteDynamic(ctx, req.(*DeleteRequest))
+		return srv.(DynamicsrvServer).DeleteDynamic(ctx, req.(*DeleteDynamicRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -724,6 +792,78 @@ func _Dynamicsrv_FansList_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Dynamicsrv_GetCommentList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DynamicsrvServer).GetCommentList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Dynamicsrv_GetCommentList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DynamicsrvServer).GetCommentList(ctx, req.(*CommentListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dynamicsrv_GetChildCommentList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChildCommentListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DynamicsrvServer).GetChildCommentList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Dynamicsrv_GetChildCommentList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DynamicsrvServer).GetChildCommentList(ctx, req.(*ChildCommentListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dynamicsrv_Comment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DynamicsrvServer).Comment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Dynamicsrv_Comment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DynamicsrvServer).Comment(ctx, req.(*CommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dynamicsrv_DeleteComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DynamicsrvServer).DeleteComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Dynamicsrv_DeleteComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DynamicsrvServer).DeleteComment(ctx, req.(*DeleteCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Dynamicsrv_ServiceDesc is the grpc.ServiceDesc for Dynamicsrv service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -760,7 +900,7 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Dynamicsrv_DynamicInfo_Handler,
 		},
 		{
-			MethodName: "DeleteDynamic",
+			MethodName: "DeleteDynamicByUser",
 			Handler:    _Dynamicsrv_DeleteDynamic_Handler,
 		},
 		{
@@ -807,7 +947,23 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "FansList",
 			Handler:    _Dynamicsrv_FansList_Handler,
 		},
+		{
+			MethodName: "GetCommentList",
+			Handler:    _Dynamicsrv_GetCommentList_Handler,
+		},
+		{
+			MethodName: "GetChildCommentList",
+			Handler:    _Dynamicsrv_GetChildCommentList_Handler,
+		},
+		{
+			MethodName: "Comment",
+			Handler:    _Dynamicsrv_Comment_Handler,
+		},
+		{
+			MethodName: "DeleteComment",
+			Handler:    _Dynamicsrv_DeleteComment_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "v1/proto/dynamicsrv.proto",
+	Metadata: "define/dynamicsrv.proto",
 }
