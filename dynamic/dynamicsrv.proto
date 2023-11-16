@@ -15,35 +15,41 @@ message APICommonResponse {
   string Data = 2;
 }
 
-message PublishRequest {
+message PublishDynamicRequest {
   int64 Type = 1; //动态类型（0：普通用户动态，2:长文
-  optional string Text = 2; //内容（动态text，imgs必填一个，长
-  optional string Imgs = 3; //图片（长文必填）
+  optional string Text = 2; //内容
+  optional string Imgs = 3; //图片
   int64 ImgType = 4; //0多图 1是横图 2是竖图，前端布局使
   string Link = 5; //链接
-  string TbMids = 6; //同步到部落，多个用, 号隔开
+//  string TbMids = 6; //同步到部落，多个用, 号隔开
   optional string Title = 7; //标题（文章类型传）
   int64 UserId = 8; //发表动态的用户ID
   string Media = 9; //新版本新增图片列表
 }
 
-message UpdateRequest {
+message UpdateDynamicRequest {
   int64 DynamicId = 1; //动态ID
-  PublishRequest Data = 2; //更新的数据
+  PublishDynamicRequest Data = 2; //更新的数据
 }
 
-message ListRequest {
+message DiscoverDynamicListRequest {
+  int64 Page = 1; //当前页
+  int64 UserId = 2; //当前用户ID
+}
+
+message ClubDynamicListRequest {
   int64 Page = 1; //当前页
   int64 TbMid = 2; //部落id
   int64 IsRecommend = 3; //是否推荐 0否 1是
   int64 Type = 4; //0按时间排序 1按热度排序
-  int64 UserId = 5; //用户个人收藏列表
+  int64 UserId = 5; //当前用户ID
 }
 
-message ListResponse {
-  repeated InfoResponse List = 1;
-  APIError Error = 2;
+message UserDynamicListRequest {
+  int64 Page = 1; //当前页
+  int64 UserId = 2; //用户ID
 }
+
 
 message InfoForm {
   int64 DynamicUid = 1; //动态发布者uid,用于查找分表
@@ -68,37 +74,11 @@ message SupClub {
   string Desc = 4; //部落描述
 }
 
-//message InfoResponse {
-//  int64 Id = 1;
-//  int64 Type = 2;
-//  string Title = 3;
-//  string Imgs = 4;
-//  string Desc = 5;
-//  int64 Ctime = 6; //创建时间
-//  int64 Etime = 7;
-//  int64 Status = 8;
-//  Ext Ext = 9;
-//  int64 ToH5Num = 10;
-//  int64 ToAppNum = 11;
-//  int64 ToDownloadNum = 12;
-//  int64 ImgType = 13;
-//  string TbMids = 14; //同步到到部落ID ->根据部落ID查询部落信息，对外是否可见
-//  string Nick = 15; //昵称 -> 调用 用户服务查询用户信息
-//  string Avatar =16; //头像 -> 调用 用户服务查询用户信息
-//  int64 DynamicId=17; //动态ID
-//  int64 DynamicUid=18; //发布动态者UID
-//  int64 HasCollect=19; //是否已经收藏
-//  int64 HasPraised=20; //是否已经点赞
-//  int64 HasFocus=21; //是否已经关注
-//  int64 PraiseCount=22; //点赞总数
-//  int64 CommentCount=23; //评论总数
-//  int64 CollectCount=24; //收藏总数
-//  int64 ShareCount=25; //分享总数
-//  string Text=26;
-//  int64 CanShare=27; //是否可以分享
-//  SupClub Supclub = 28; // 部落信息
-//  APIError Error = 29; //公共响应错误
-//}
+message UserInfo {
+   int64 UserId = 1;
+   string Nick = 2;
+   string Avatar = 3;
+}
 
 message InfoResponseForm {
   int64 Id = 1;
@@ -125,14 +105,18 @@ message InfoResponseForm {
   string TbMids = 22; //同步到到部落ID ->根据部落ID查询部落信息，对外是否可见
   string Nick = 23; //昵称 -> 调用 用户服务查询用户信息
   string Avatar =24; //头像 -> 调用 用户服务查询用户信息
+  int64 ShareCount =25; //分享总数
+  repeated UserInfo PraiseList =26; //动态点赞列表
 }
 
+//动态详细信息
 message InfoResponse {
   repeated InfoResponseForm Infos = 1;
   APIError Error = 2; //公共响应错误
 }
 
-message DeleteRequest {
+//删除动态
+message DeleteDynamicRequest {
   int64 DynamicUid = 1; //发布者uid,用于查找分表
   int64 DynamicId = 2; //动态id
 }
@@ -187,7 +171,9 @@ message HasFocusResponse {
   APIError Error = 2;
 }
 
-message ShareRequest {
+message ShareDynamicRequest {
+  int64 Did = 1; // 动态ID
+  int64 Duid = 2; // 动态发布者ID
 }
 
 message FocusListRequest{
@@ -233,30 +219,113 @@ message CollectListRequest{
 }
 
 message CollectListResponse{
-  repeated InfoResponse List = 1;
+  repeated InfoResponseForm List = 1;
   APIError Error = 2;
 }
 
-message RefreshSupclubDynamicRequest{
-  int64 TbMids = 1;//部落ID 字符串,分割
+message CommentListRequest{
+  int64 Did = 1; //动态ID
+  int64 Duid = 2; //动态发布者ID
+  int64 Page = 3; //页码
+  int64 UserId = 4; //用于判断是否已经点赞评论
+}
+
+message CommentListResponseForm {
+  int64 Id = 1; //评论ID
+  int64 Pid = 2; //评论父ID
+  int64 UserId = 3; //评论者UserId
+  string Text = 4; //评论文本
+//  string Img = 5; //评论图片（二选一）
+  int64 Time = 6; //评论时间
+  int64 Ouid = 7; //被评论者UserId
+  int64 Type = 8; //评论类型 1评论 2回复
+  string Nick = 9; // 评论者昵称
+  string Avatar = 10; //评论者头像
+  string ONick = 11; //被回复者的名称
+  int64 PraiseCount =12; //点赞数
+  int64 HasPraise = 13; //是否有点赞
+  ChildComments ChildComments = 14;
+}
+
+message ChildComments {
+  repeated ChildCommentListResponseForm ChildComments = 1;
+  int64 Count = 2;//评论子评论总数
 }
 
 
+message CommentListResponse{
+  repeated CommentListResponseForm commentList = 1;
+  APIError Error = 2;
+}
+
+message ChildCommentListRequest{
+  int64 Did = 1; //动态ID
+  int64 Duid = 2; //动态发布者ID
+  int64 Pid = 3; //父评论ID
+  int64 UserId = 4; //用于判断是否已经点赞评论
+}
+
+message ChildCommentListResponseForm {
+  int64 Id = 1; //评论ID
+  int64 Pid = 2; //评论父ID
+  int64 UserId = 3; //评论者UserId
+  string Text = 4; //评论文本
+  //  string Img = 5; //评论图片（二选一）
+  int64 Time = 6; //评论时间
+  int64 Ouid = 7; //被评论者UserId
+  int64 Type = 8; //评论类型 1评论 2回复
+  string Nick = 9; // 评论者昵称
+  string Avatar = 10; //评论者头像
+  string ONick = 11; //被回复者的名称
+  int64 PraiseCount =12; //点赞数
+  int64 HasPraise = 13; //是否有点赞
+}
+
+message ChildCommentListResponse{
+  repeated ChildCommentListResponseForm ChildCommentList = 1; // 子评论列表
+  repeated UserInfo PraiseList = 2; //点赞列表
+  APIError Error = 3;
+}
+
+message CommentRequest {
+  int64 Did = 1; //动态ID
+  int64 Duid = 2; //动态发布者UserId
+  string Text = 3; //评论文本
+  int64 CommentId = 4; //评论ID，评论动态时为0，回复评论时为被回复评论的ID
+  int64 Pid = 5; //评论父ID
+  int64 Uid = 6; //评论者UserId
+  int64 OUid = 7; //被评论者UserId
+  int64 type = 8; //1 评论 2回复
+}
+
+message DeleteCommentRequest {
+  int64 Did = 1; //动态ID
+  int64 Duid = 2; //动态发布者UserId
+  int64 CommentID = 3; //评论ID
+//  string Img = 4; //图片
+}
+
+//生成代码命令，项目根目录下执行：goctl rpc protoc ./define/dynamicsrv.proto --go_out=./v1/rpc/types --go-grpc_out=./v1/rpc/types --zrpc_out=./v1/rpc
+//rpc服务仅对内提供服务，不对外提供服务
 service Dynamicsrv {
   //发布动态
-  rpc Publish(PublishRequest) returns(APICommonResponse);
+  rpc PublishDynamic(PublishDynamicRequest) returns(APICommonResponse);
   //修改动态
-  rpc Update(UpdateRequest) returns(APICommonResponse);
-  //动态列表
-  rpc List(ListRequest) returns(ListResponse);
+  rpc UpdateDynamic(UpdateDynamicRequest) returns(APICommonResponse);
+  //发现页动态列表
+  rpc GetDiscoverDynamicList(DiscoverDynamicListRequest) returns(InfoResponse);
+  //部落动态列表
+  rpc GetClubDynamicList(ClubDynamicListRequest) returns(InfoResponse);
+  //指定用户动态列表
+  rpc GetUserDynamicList(UserDynamicListRequest) returns(InfoResponse);
+  //我的动态列表
+  rpc GetMyDynamicList(UserDynamicListRequest) returns(InfoResponse);
   //动态详情
-  rpc Info(InfoRequest) returns(InfoResponse);
+  rpc DynamicInfo(InfoRequest) returns(InfoResponse);
   //删除动态
-  rpc Delete(DeleteRequest) returns(APICommonResponse);
-  //刷新部落动态（发布、更新、删除时，需要检查刷新部落与动态之间的关系
-  rpc RefreshSupclubDynamic(RefreshSupclubDynamicRequest) returns(APICommonResponse);
+  rpc DeleteDynamic(DeleteDynamicRequest) returns(APICommonResponse);
 
-  //点赞动态
+  //点赞动态/评论
   rpc Praise(PraiseRequest) returns(APICommonResponse);
   //该用户是否已点赞动态或点赞动态下的评论
   rpc HasPraise(HasPraiseRequest) returns(HasPraiseResponse);
@@ -268,18 +337,31 @@ service Dynamicsrv {
   //用户收藏列表
   rpc CollectList(CollectListRequest)  returns(CollectListResponse);
 
-
   //关注动态作者
   rpc Focus(FocusRequest) returns(APICommonResponse);
   //是否已经关注该作者
   rpc HasFocus(FocusRequest) returns(HasFocusResponse);
 
   //动态分享数,只增不减 -- 客户端上报main/data/callback
-  rpc Share(ShareRequest) returns(APICommonResponse);
+  rpc ShareDynamic(ShareDynamicRequest) returns(APICommonResponse);
 
   //用户关注列表
   rpc FocusList(FocusListRequest)  returns(FocusListResponse);
   //用户粉丝列表
   rpc FansList(FansListRequest)  returns(FansListResponse);
+
+
+  //评论列表
+  rpc GetCommentList(CommentListRequest)  returns(CommentListResponse);
+  //子评论评论列表
+  rpc GetChildCommentList(ChildCommentListRequest)  returns(ChildCommentListResponse);
+  //评论
+  rpc Comment(CommentRequest)  returns(APICommonResponse);
+  //删除评论
+  rpc DeleteComment(DeleteCommentRequest)  returns(APICommonResponse);
+
+  // 举报
+//  rpc Report(FansListRequest)  returns(FansListResponse);
+
 
 }
