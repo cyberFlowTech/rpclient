@@ -24,6 +24,8 @@ const (
 	ImServer_SendSystemCmdMsg_FullMethodName = "/im.ImServer/SendSystemCmdMsg"
 	ImServer_SendMsg_FullMethodName          = "/im.ImServer/SendMsg"
 	ImServer_GetGroupInfo_FullMethodName     = "/im.ImServer/GetGroupInfo"
+	ImServer_UpdateGroup_FullMethodName      = "/im.ImServer/UpdateGroup"
+	ImServer_UpdateGroupUser_FullMethodName  = "/im.ImServer/UpdateGroupUser"
 )
 
 // ImServerClient is the client API for ImServer service.
@@ -35,6 +37,8 @@ type ImServerClient interface {
 	SendSystemCmdMsg(ctx context.Context, in *SystemCmdMsgReq, opts ...grpc.CallOption) (*MsgRes, error)
 	SendMsg(ctx context.Context, in *SendMsgReq, opts ...grpc.CallOption) (*MsgRes, error)
 	GetGroupInfo(ctx context.Context, in *GetGroupInfoReq, opts ...grpc.CallOption) (*GetGroupInfoRes, error)
+	UpdateGroup(ctx context.Context, in *UpdateGroupReq, opts ...grpc.CallOption) (*UpdateGroupRes, error)
+	UpdateGroupUser(ctx context.Context, in *UpdateGroupUserReq, opts ...grpc.CallOption) (*UpdateGroupUserRes, error)
 }
 
 type imServerClient struct {
@@ -90,6 +94,24 @@ func (c *imServerClient) GetGroupInfo(ctx context.Context, in *GetGroupInfoReq, 
 	return out, nil
 }
 
+func (c *imServerClient) UpdateGroup(ctx context.Context, in *UpdateGroupReq, opts ...grpc.CallOption) (*UpdateGroupRes, error) {
+	out := new(UpdateGroupRes)
+	err := c.cc.Invoke(ctx, ImServer_UpdateGroup_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) UpdateGroupUser(ctx context.Context, in *UpdateGroupUserReq, opts ...grpc.CallOption) (*UpdateGroupUserRes, error) {
+	out := new(UpdateGroupUserRes)
+	err := c.cc.Invoke(ctx, ImServer_UpdateGroupUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImServerServer is the server API for ImServer service.
 // All implementations must embed UnimplementedImServerServer
 // for forward compatibility
@@ -99,6 +121,8 @@ type ImServerServer interface {
 	SendSystemCmdMsg(context.Context, *SystemCmdMsgReq) (*MsgRes, error)
 	SendMsg(context.Context, *SendMsgReq) (*MsgRes, error)
 	GetGroupInfo(context.Context, *GetGroupInfoReq) (*GetGroupInfoRes, error)
+	UpdateGroup(context.Context, *UpdateGroupReq) (*UpdateGroupRes, error)
+	UpdateGroupUser(context.Context, *UpdateGroupUserReq) (*UpdateGroupUserRes, error)
 	mustEmbedUnimplementedImServerServer()
 }
 
@@ -120,6 +144,12 @@ func (UnimplementedImServerServer) SendMsg(context.Context, *SendMsgReq) (*MsgRe
 }
 func (UnimplementedImServerServer) GetGroupInfo(context.Context, *GetGroupInfoReq) (*GetGroupInfoRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetGroupInfo not implemented")
+}
+func (UnimplementedImServerServer) UpdateGroup(context.Context, *UpdateGroupReq) (*UpdateGroupRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateGroup not implemented")
+}
+func (UnimplementedImServerServer) UpdateGroupUser(context.Context, *UpdateGroupUserReq) (*UpdateGroupUserRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateGroupUser not implemented")
 }
 func (UnimplementedImServerServer) mustEmbedUnimplementedImServerServer() {}
 
@@ -224,6 +254,42 @@ func _ImServer_GetGroupInfo_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImServer_UpdateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateGroupReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).UpdateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_UpdateGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).UpdateGroup(ctx, req.(*UpdateGroupReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_UpdateGroupUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateGroupUserReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).UpdateGroupUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_UpdateGroupUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).UpdateGroupUser(ctx, req.(*UpdateGroupUserReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ImServer_ServiceDesc is the grpc.ServiceDesc for ImServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +316,14 @@ var ImServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetGroupInfo",
 			Handler:    _ImServer_GetGroupInfo_Handler,
+		},
+		{
+			MethodName: "UpdateGroup",
+			Handler:    _ImServer_UpdateGroup_Handler,
+		},
+		{
+			MethodName: "UpdateGroupUser",
+			Handler:    _ImServer_UpdateGroupUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
