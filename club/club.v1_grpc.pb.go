@@ -19,12 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ClubServer_GetClubList_FullMethodName        = "/club.ClubServer/getClubList"
-	ClubServer_GetClubInfo_FullMethodName        = "/club.ClubServer/getClubInfo"
-	ClubServer_GetGroupUserStatus_FullMethodName = "/club.ClubServer/getGroupUserStatus"
-	ClubServer_GetGroupInfo_FullMethodName       = "/club.ClubServer/getGroupInfo"
-	ClubServer_SyncDynamicToClub_FullMethodName  = "/club.ClubServer/syncDynamicToClub"
-	ClubServer_DelDynamicToClub_FullMethodName   = "/club.ClubServer/delDynamicToClub"
+	ClubServer_GetClubList_FullMethodName             = "/club.ClubServer/getClubList"
+	ClubServer_GetClubInfo_FullMethodName             = "/club.ClubServer/getClubInfo"
+	ClubServer_GetGroupUserStatus_FullMethodName      = "/club.ClubServer/getGroupUserStatus"
+	ClubServer_GetGroupInfo_FullMethodName            = "/club.ClubServer/getGroupInfo"
+	ClubServer_SyncDynamicToClub_FullMethodName       = "/club.ClubServer/syncDynamicToClub"
+	ClubServer_DelDynamicToClub_FullMethodName        = "/club.ClubServer/delDynamicToClub"
+	ClubServer_GetClubInfoByDynamicIds_FullMethodName = "/club.ClubServer/getClubInfoByDynamicIds"
 )
 
 // ClubServerClient is the client API for ClubServer service.
@@ -42,6 +43,8 @@ type ClubServerClient interface {
 	SyncDynamicToClub(ctx context.Context, in *SyncDynamicToClubReq, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 删除动态跟部落到关系
 	DelDynamicToClub(ctx context.Context, in *DelDynamicToClubReq, opts ...grpc.CallOption) (*APICommonResponse, error)
+	// 根据动态ID返回部落信息
+	GetClubInfoByDynamicIds(ctx context.Context, in *GetClubInfoByDynamicIdsRequest, opts ...grpc.CallOption) (*GetClubInfoByDynamicIdsResponse, error)
 }
 
 type clubServerClient struct {
@@ -106,6 +109,15 @@ func (c *clubServerClient) DelDynamicToClub(ctx context.Context, in *DelDynamicT
 	return out, nil
 }
 
+func (c *clubServerClient) GetClubInfoByDynamicIds(ctx context.Context, in *GetClubInfoByDynamicIdsRequest, opts ...grpc.CallOption) (*GetClubInfoByDynamicIdsResponse, error) {
+	out := new(GetClubInfoByDynamicIdsResponse)
+	err := c.cc.Invoke(ctx, ClubServer_GetClubInfoByDynamicIds_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClubServerServer is the server API for ClubServer service.
 // All implementations must embed UnimplementedClubServerServer
 // for forward compatibility
@@ -121,6 +133,8 @@ type ClubServerServer interface {
 	SyncDynamicToClub(context.Context, *SyncDynamicToClubReq) (*APICommonResponse, error)
 	// 删除动态跟部落到关系
 	DelDynamicToClub(context.Context, *DelDynamicToClubReq) (*APICommonResponse, error)
+	// 根据动态ID返回部落信息
+	GetClubInfoByDynamicIds(context.Context, *GetClubInfoByDynamicIdsRequest) (*GetClubInfoByDynamicIdsResponse, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -145,6 +159,9 @@ func (UnimplementedClubServerServer) SyncDynamicToClub(context.Context, *SyncDyn
 }
 func (UnimplementedClubServerServer) DelDynamicToClub(context.Context, *DelDynamicToClubReq) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DelDynamicToClub not implemented")
+}
+func (UnimplementedClubServerServer) GetClubInfoByDynamicIds(context.Context, *GetClubInfoByDynamicIdsRequest) (*GetClubInfoByDynamicIdsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetClubInfoByDynamicIds not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
 
@@ -267,6 +284,24 @@ func _ClubServer_DelDynamicToClub_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClubServer_GetClubInfoByDynamicIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetClubInfoByDynamicIdsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetClubInfoByDynamicIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetClubInfoByDynamicIds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetClubInfoByDynamicIds(ctx, req.(*GetClubInfoByDynamicIdsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClubServer_ServiceDesc is the grpc.ServiceDesc for ClubServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -297,6 +332,10 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "delDynamicToClub",
 			Handler:    _ClubServer_DelDynamicToClub_Handler,
+		},
+		{
+			MethodName: "getClubInfoByDynamicIds",
+			Handler:    _ClubServer_GetClubInfoByDynamicIds_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
