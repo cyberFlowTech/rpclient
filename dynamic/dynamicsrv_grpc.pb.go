@@ -19,29 +19,29 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Dynamicsrv_PublishDynamic_FullMethodName         = "/dynamicsrv.Dynamicsrv/PublishDynamic"
-	Dynamicsrv_UpdateDynamic_FullMethodName          = "/dynamicsrv.Dynamicsrv/UpdateDynamic"
-	Dynamicsrv_GetDiscoverDynamicList_FullMethodName = "/dynamicsrv.Dynamicsrv/GetDiscoverDynamicList"
-	Dynamicsrv_GetClubDynamicList_FullMethodName     = "/dynamicsrv.Dynamicsrv/GetClubDynamicList"
-	Dynamicsrv_GetUserDynamicList_FullMethodName     = "/dynamicsrv.Dynamicsrv/GetUserDynamicList"
-	Dynamicsrv_GetMyDynamicList_FullMethodName       = "/dynamicsrv.Dynamicsrv/GetMyDynamicList"
-	Dynamicsrv_DynamicInfo_FullMethodName            = "/dynamicsrv.Dynamicsrv/DynamicInfo"
-	Dynamicsrv_DeleteDynamic_FullMethodName          = "/dynamicsrv.Dynamicsrv/DeleteDynamicByUser"
-	Dynamicsrv_RefreshSupclubDynamic_FullMethodName  = "/dynamicsrv.Dynamicsrv/RefreshSupclubDynamic"
-	Dynamicsrv_Praise_FullMethodName                 = "/dynamicsrv.Dynamicsrv/Praise"
-	Dynamicsrv_HasPraise_FullMethodName              = "/dynamicsrv.Dynamicsrv/HasPraise"
-	Dynamicsrv_Collect_FullMethodName                = "/dynamicsrv.Dynamicsrv/Collect"
-	Dynamicsrv_HasCollect_FullMethodName             = "/dynamicsrv.Dynamicsrv/HasCollect"
-	Dynamicsrv_CollectList_FullMethodName            = "/dynamicsrv.Dynamicsrv/CollectList"
-	Dynamicsrv_Focus_FullMethodName                  = "/dynamicsrv.Dynamicsrv/Focus"
-	Dynamicsrv_HasFocus_FullMethodName               = "/dynamicsrv.Dynamicsrv/HasFocus"
-	Dynamicsrv_ShareDynamic_FullMethodName           = "/dynamicsrv.Dynamicsrv/ShareDynamic"
-	Dynamicsrv_FocusList_FullMethodName              = "/dynamicsrv.Dynamicsrv/FocusList"
-	Dynamicsrv_FansList_FullMethodName               = "/dynamicsrv.Dynamicsrv/FansList"
-	Dynamicsrv_GetCommentList_FullMethodName         = "/dynamicsrv.Dynamicsrv/GetCommentList"
-	Dynamicsrv_GetChildCommentList_FullMethodName    = "/dynamicsrv.Dynamicsrv/GetChildCommentList"
-	Dynamicsrv_Comment_FullMethodName                = "/dynamicsrv.Dynamicsrv/Comment"
-	Dynamicsrv_DeleteComment_FullMethodName          = "/dynamicsrv.Dynamicsrv/DeleteComment"
+	Dynamicsrv_PublishDynamic_FullMethodName                 = "/dynamicsrv.Dynamicsrv/PublishDynamic"
+	Dynamicsrv_UpdateDynamic_FullMethodName                  = "/dynamicsrv.Dynamicsrv/UpdateDynamic"
+	Dynamicsrv_GetDiscoverDynamicList_FullMethodName         = "/dynamicsrv.Dynamicsrv/GetDiscoverDynamicList"
+	Dynamicsrv_GetClubDynamicList_FullMethodName             = "/dynamicsrv.Dynamicsrv/GetClubDynamicList"
+	Dynamicsrv_GetUserDynamicList_FullMethodName             = "/dynamicsrv.Dynamicsrv/GetUserDynamicList"
+	Dynamicsrv_GetMyDynamicList_FullMethodName               = "/dynamicsrv.Dynamicsrv/GetMyDynamicList"
+	Dynamicsrv_DynamicInfo_FullMethodName                    = "/dynamicsrv.Dynamicsrv/DynamicInfo"
+	Dynamicsrv_DeleteDynamic_FullMethodName                  = "/dynamicsrv.Dynamicsrv/DeleteDynamic"
+	Dynamicsrv_Praise_FullMethodName                         = "/dynamicsrv.Dynamicsrv/Praise"
+	Dynamicsrv_HasPraise_FullMethodName                      = "/dynamicsrv.Dynamicsrv/HasPraise"
+	Dynamicsrv_Collect_FullMethodName                        = "/dynamicsrv.Dynamicsrv/Collect"
+	Dynamicsrv_HasCollect_FullMethodName                     = "/dynamicsrv.Dynamicsrv/HasCollect"
+	Dynamicsrv_CollectList_FullMethodName                    = "/dynamicsrv.Dynamicsrv/CollectList"
+	Dynamicsrv_Focus_FullMethodName                          = "/dynamicsrv.Dynamicsrv/Focus"
+	Dynamicsrv_HasFocus_FullMethodName                       = "/dynamicsrv.Dynamicsrv/HasFocus"
+	Dynamicsrv_ShareDynamic_FullMethodName                   = "/dynamicsrv.Dynamicsrv/ShareDynamic"
+	Dynamicsrv_FocusList_FullMethodName                      = "/dynamicsrv.Dynamicsrv/FocusList"
+	Dynamicsrv_FansList_FullMethodName                       = "/dynamicsrv.Dynamicsrv/FansList"
+	Dynamicsrv_GetCommentList_FullMethodName                 = "/dynamicsrv.Dynamicsrv/GetCommentList"
+	Dynamicsrv_GetChildCommentList_FullMethodName            = "/dynamicsrv.Dynamicsrv/GetChildCommentList"
+	Dynamicsrv_Comment_FullMethodName                        = "/dynamicsrv.Dynamicsrv/Comment"
+	Dynamicsrv_DeleteComment_FullMethodName                  = "/dynamicsrv.Dynamicsrv/DeleteComment"
+	Dynamicsrv_GetUserFansCountAndFocustCount_FullMethodName = "/dynamicsrv.Dynamicsrv/GetUserFansCountAndFocustCount"
 )
 
 // DynamicsrvClient is the client API for Dynamicsrv service.
@@ -53,8 +53,8 @@ type DynamicsrvClient interface {
 	// 修改动态
 	UpdateDynamic(ctx context.Context, in *UpdateDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 发现页动态列表
-	GetDiscoverDynamicList(ctx context.Context, in *DiscoverDynamicListRequest, opts ...grpc.CallOption) (*InfoResponse, error)
-	// 部落动态列表
+	GetDiscoverDynamicList(ctx context.Context, in *DiscoverDynamicListRequest, opts ...grpc.CallOption) (*DiscoverDynamicListResponse, error)
+	// 部落动态列表（由部落服务去实现）
 	GetClubDynamicList(ctx context.Context, in *ClubDynamicListRequest, opts ...grpc.CallOption) (*InfoResponse, error)
 	// 指定用户动态列表
 	GetUserDynamicList(ctx context.Context, in *UserDynamicListRequest, opts ...grpc.CallOption) (*InfoResponse, error)
@@ -64,8 +64,6 @@ type DynamicsrvClient interface {
 	DynamicInfo(ctx context.Context, in *InfoRequest, opts ...grpc.CallOption) (*InfoResponse, error)
 	// 删除动态
 	DeleteDynamic(ctx context.Context, in *DeleteDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
-	// 刷新部落动态（发布、更新、删除时，需要检查刷新部落与动态之间的关系
-	RefreshSupclubDynamic(ctx context.Context, in *RefreshSupclubDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 点赞动态/评论
 	Praise(ctx context.Context, in *PraiseRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 该用户是否已点赞动态或点赞动态下的评论
@@ -94,6 +92,8 @@ type DynamicsrvClient interface {
 	Comment(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 删除评论
 	DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
+	// 用户粉丝数和关注数
+	GetUserFansCountAndFocustCount(ctx context.Context, in *UserFansCountAndFocustCountRequest, opts ...grpc.CallOption) (*UserFansCountAndFocustCountResponse, error)
 }
 
 type dynamicsrvClient struct {
@@ -122,8 +122,8 @@ func (c *dynamicsrvClient) UpdateDynamic(ctx context.Context, in *UpdateDynamicR
 	return out, nil
 }
 
-func (c *dynamicsrvClient) GetDiscoverDynamicList(ctx context.Context, in *DiscoverDynamicListRequest, opts ...grpc.CallOption) (*InfoResponse, error) {
-	out := new(InfoResponse)
+func (c *dynamicsrvClient) GetDiscoverDynamicList(ctx context.Context, in *DiscoverDynamicListRequest, opts ...grpc.CallOption) (*DiscoverDynamicListResponse, error) {
+	out := new(DiscoverDynamicListResponse)
 	err := c.cc.Invoke(ctx, Dynamicsrv_GetDiscoverDynamicList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -170,15 +170,6 @@ func (c *dynamicsrvClient) DynamicInfo(ctx context.Context, in *InfoRequest, opt
 func (c *dynamicsrvClient) DeleteDynamic(ctx context.Context, in *DeleteDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
 	out := new(APICommonResponse)
 	err := c.cc.Invoke(ctx, Dynamicsrv_DeleteDynamic_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dynamicsrvClient) RefreshSupclubDynamic(ctx context.Context, in *RefreshSupclubDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
-	out := new(APICommonResponse)
-	err := c.cc.Invoke(ctx, Dynamicsrv_RefreshSupclubDynamic_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -311,6 +302,15 @@ func (c *dynamicsrvClient) DeleteComment(ctx context.Context, in *DeleteCommentR
 	return out, nil
 }
 
+func (c *dynamicsrvClient) GetUserFansCountAndFocustCount(ctx context.Context, in *UserFansCountAndFocustCountRequest, opts ...grpc.CallOption) (*UserFansCountAndFocustCountResponse, error) {
+	out := new(UserFansCountAndFocustCountResponse)
+	err := c.cc.Invoke(ctx, Dynamicsrv_GetUserFansCountAndFocustCount_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DynamicsrvServer is the server API for Dynamicsrv service.
 // All implementations must embed UnimplementedDynamicsrvServer
 // for forward compatibility
@@ -320,8 +320,8 @@ type DynamicsrvServer interface {
 	// 修改动态
 	UpdateDynamic(context.Context, *UpdateDynamicRequest) (*APICommonResponse, error)
 	// 发现页动态列表
-	GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*InfoResponse, error)
-	// 部落动态列表
+	GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*DiscoverDynamicListResponse, error)
+	// 部落动态列表（由部落服务去实现）
 	GetClubDynamicList(context.Context, *ClubDynamicListRequest) (*InfoResponse, error)
 	// 指定用户动态列表
 	GetUserDynamicList(context.Context, *UserDynamicListRequest) (*InfoResponse, error)
@@ -331,8 +331,6 @@ type DynamicsrvServer interface {
 	DynamicInfo(context.Context, *InfoRequest) (*InfoResponse, error)
 	// 删除动态
 	DeleteDynamic(context.Context, *DeleteDynamicRequest) (*APICommonResponse, error)
-	// 刷新部落动态（发布、更新、删除时，需要检查刷新部落与动态之间的关系
-	RefreshSupclubDynamic(context.Context, *RefreshSupclubDynamicRequest) (*APICommonResponse, error)
 	// 点赞动态/评论
 	Praise(context.Context, *PraiseRequest) (*APICommonResponse, error)
 	// 该用户是否已点赞动态或点赞动态下的评论
@@ -361,6 +359,8 @@ type DynamicsrvServer interface {
 	Comment(context.Context, *CommentRequest) (*APICommonResponse, error)
 	// 删除评论
 	DeleteComment(context.Context, *DeleteCommentRequest) (*APICommonResponse, error)
+	// 用户粉丝数和关注数
+	GetUserFansCountAndFocustCount(context.Context, *UserFansCountAndFocustCountRequest) (*UserFansCountAndFocustCountResponse, error)
 	mustEmbedUnimplementedDynamicsrvServer()
 }
 
@@ -374,7 +374,7 @@ func (UnimplementedDynamicsrvServer) PublishDynamic(context.Context, *PublishDyn
 func (UnimplementedDynamicsrvServer) UpdateDynamic(context.Context, *UpdateDynamicRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateDynamic not implemented")
 }
-func (UnimplementedDynamicsrvServer) GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*InfoResponse, error) {
+func (UnimplementedDynamicsrvServer) GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*DiscoverDynamicListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDiscoverDynamicList not implemented")
 }
 func (UnimplementedDynamicsrvServer) GetClubDynamicList(context.Context, *ClubDynamicListRequest) (*InfoResponse, error) {
@@ -390,10 +390,7 @@ func (UnimplementedDynamicsrvServer) DynamicInfo(context.Context, *InfoRequest) 
 	return nil, status.Errorf(codes.Unimplemented, "method DynamicInfo not implemented")
 }
 func (UnimplementedDynamicsrvServer) DeleteDynamic(context.Context, *DeleteDynamicRequest) (*APICommonResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteDynamicByUser not implemented")
-}
-func (UnimplementedDynamicsrvServer) RefreshSupclubDynamic(context.Context, *RefreshSupclubDynamicRequest) (*APICommonResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RefreshSupclubDynamic not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDynamic not implemented")
 }
 func (UnimplementedDynamicsrvServer) Praise(context.Context, *PraiseRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Praise not implemented")
@@ -436,6 +433,9 @@ func (UnimplementedDynamicsrvServer) Comment(context.Context, *CommentRequest) (
 }
 func (UnimplementedDynamicsrvServer) DeleteComment(context.Context, *DeleteCommentRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteComment not implemented")
+}
+func (UnimplementedDynamicsrvServer) GetUserFansCountAndFocustCount(context.Context, *UserFansCountAndFocustCountRequest) (*UserFansCountAndFocustCountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserFansCountAndFocustCount not implemented")
 }
 func (UnimplementedDynamicsrvServer) mustEmbedUnimplementedDynamicsrvServer() {}
 
@@ -590,24 +590,6 @@ func _Dynamicsrv_DeleteDynamic_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DynamicsrvServer).DeleteDynamic(ctx, req.(*DeleteDynamicRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Dynamicsrv_RefreshSupclubDynamic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RefreshSupclubDynamicRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DynamicsrvServer).RefreshSupclubDynamic(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Dynamicsrv_RefreshSupclubDynamic_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DynamicsrvServer).RefreshSupclubDynamic(ctx, req.(*RefreshSupclubDynamicRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -864,6 +846,24 @@ func _Dynamicsrv_DeleteComment_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Dynamicsrv_GetUserFansCountAndFocustCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserFansCountAndFocustCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DynamicsrvServer).GetUserFansCountAndFocustCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Dynamicsrv_GetUserFansCountAndFocustCount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DynamicsrvServer).GetUserFansCountAndFocustCount(ctx, req.(*UserFansCountAndFocustCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Dynamicsrv_ServiceDesc is the grpc.ServiceDesc for Dynamicsrv service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -900,12 +900,8 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Dynamicsrv_DynamicInfo_Handler,
 		},
 		{
-			MethodName: "DeleteDynamicByUser",
+			MethodName: "DeleteDynamic",
 			Handler:    _Dynamicsrv_DeleteDynamic_Handler,
-		},
-		{
-			MethodName: "RefreshSupclubDynamic",
-			Handler:    _Dynamicsrv_RefreshSupclubDynamic_Handler,
 		},
 		{
 			MethodName: "Praise",
@@ -962,6 +958,10 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteComment",
 			Handler:    _Dynamicsrv_DeleteComment_Handler,
+		},
+		{
+			MethodName: "GetUserFansCountAndFocustCount",
+			Handler:    _Dynamicsrv_GetUserFansCountAndFocustCount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
