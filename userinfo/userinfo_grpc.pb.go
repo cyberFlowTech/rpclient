@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	User_GetUsersInfo_FullMethodName   = "/userinfo.User/getUsersInfo"
+	User_GetUsers_FullMethodName       = "/userinfo.User/getUsers"
 	User_UpdateUserInfo_FullMethodName = "/userinfo.User/updateUserInfo"
 )
 
@@ -27,7 +28,11 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
+	// 只支持info查询
 	GetUsersInfo(ctx context.Context, in *GetUsersInfoReq, opts ...grpc.CallOption) (*GetUsersInfoResp, error)
+	// 支持info，conf, relation组合查询
+	GetUsers(ctx context.Context, in *GetUsersReq, opts ...grpc.CallOption) (*GetUsersResp, error)
+	// 用户信息或设置修改
 	UpdateUserInfo(ctx context.Context, in *SetUserInfoReq, opts ...grpc.CallOption) (*SetUserInfoResp, error)
 }
 
@@ -48,6 +53,15 @@ func (c *userClient) GetUsersInfo(ctx context.Context, in *GetUsersInfoReq, opts
 	return out, nil
 }
 
+func (c *userClient) GetUsers(ctx context.Context, in *GetUsersReq, opts ...grpc.CallOption) (*GetUsersResp, error) {
+	out := new(GetUsersResp)
+	err := c.cc.Invoke(ctx, User_GetUsers_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userClient) UpdateUserInfo(ctx context.Context, in *SetUserInfoReq, opts ...grpc.CallOption) (*SetUserInfoResp, error) {
 	out := new(SetUserInfoResp)
 	err := c.cc.Invoke(ctx, User_UpdateUserInfo_FullMethodName, in, out, opts...)
@@ -61,7 +75,11 @@ func (c *userClient) UpdateUserInfo(ctx context.Context, in *SetUserInfoReq, opt
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
+	// 只支持info查询
 	GetUsersInfo(context.Context, *GetUsersInfoReq) (*GetUsersInfoResp, error)
+	// 支持info，conf, relation组合查询
+	GetUsers(context.Context, *GetUsersReq) (*GetUsersResp, error)
+	// 用户信息或设置修改
 	UpdateUserInfo(context.Context, *SetUserInfoReq) (*SetUserInfoResp, error)
 	mustEmbedUnimplementedUserServer()
 }
@@ -72,6 +90,9 @@ type UnimplementedUserServer struct {
 
 func (UnimplementedUserServer) GetUsersInfo(context.Context, *GetUsersInfoReq) (*GetUsersInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsersInfo not implemented")
+}
+func (UnimplementedUserServer) GetUsers(context.Context, *GetUsersReq) (*GetUsersResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
 }
 func (UnimplementedUserServer) UpdateUserInfo(context.Context, *SetUserInfoReq) (*SetUserInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserInfo not implemented")
@@ -107,6 +128,24 @@ func _User_GetUsersInfo_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUsersReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_GetUsers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetUsers(ctx, req.(*GetUsersReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _User_UpdateUserInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetUserInfoReq)
 	if err := dec(in); err != nil {
@@ -135,6 +174,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getUsersInfo",
 			Handler:    _User_GetUsersInfo_Handler,
+		},
+		{
+			MethodName: "getUsers",
+			Handler:    _User_GetUsers_Handler,
 		},
 		{
 			MethodName: "updateUserInfo",
