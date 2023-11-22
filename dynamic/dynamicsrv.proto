@@ -322,11 +322,11 @@ message DeleteCommentRequest {
 //  string Img = 4; //图片
 }
 
-message UserFansCountAndFocustCountRequest{
+message UserFansCountAndFocusCountRequest{
   int64 UserId = 1; //用户ID
 }
 
-message UserFansCountAndFocustCountResponse{
+message UserFansCountAndFocusCountResponse{
   int64 FansCount = 1; //粉丝数
   int64 FocusCount = 2; //关注数
   APIError Error = 3;
@@ -388,7 +388,7 @@ service Dynamicsrv {
   rpc DeleteComment(DeleteCommentRequest)  returns(APICommonResponse);
 
   //用户粉丝数和关注数
-  rpc GetUserFansCountAndFocustCount(UserFansCountAndFocustCountRequest)  returns(UserFansCountAndFocustCountResponse);
+  rpc GetUserFansCountAndFocusCount(UserFansCountAndFocusCountRequest)  returns(UserFansCountAndFocusCountResponse);
 
 
 
