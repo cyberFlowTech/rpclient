@@ -309,9 +309,9 @@ message CommentRequest {
   int64 Duid = 2; //动态发布者UserId
   string Text = 3; //评论文本
   int64 CommentId = 4; //评论ID，评论动态时为0，回复评论时为被回复评论的ID
-  int64 Pid = 5; //评论父ID
+//  int64 Pid = 5; //评论父ID
   int64 Uid = 6; //评论者UserId
-  int64 OUid = 7; //被评论者UserId
+//  int64 OUid = 7; //被评论者UserId
   int64 type = 8; //1 评论 2回复
 }
 
@@ -330,6 +330,21 @@ message UserFansCountAndFocusCountResponse{
   int64 FansCount = 1; //粉丝数
   int64 FocusCount = 2; //关注数
   APIError Error = 3;
+}
+
+message UsersFansCountAndFocusCountRequest{
+  repeated int64 UserIds = 1; //用户ID
+}
+
+message UsersFansCountAndFocusCountResponseForm {
+  int64 FansCount = 1; //粉丝数
+  int64 FocusCount = 2; //关注数
+  int64 UserId = 3; // 用户ID
+}
+
+message UsersFansCountAndFocusCountResponse{
+  repeated UsersFansCountAndFocusCountResponseForm users = 1;
+  APIError Error = 2;
 }
 
 //生成代码命令，项目根目录下执行：goctl rpc protoc ./define/dynamicsrv.proto --go_out=./v1/rpc/types --go-grpc_out=./v1/rpc/types --zrpc_out=./v1/rpc
@@ -389,6 +404,8 @@ service Dynamicsrv {
 
   //用户粉丝数和关注数
   rpc GetUserFansCountAndFocusCount(UserFansCountAndFocusCountRequest)  returns(UserFansCountAndFocusCountResponse);
+  //获取多个用户的粉丝数和关注数
+  rpc GetUsersFansCountAndFocusCount(UsersFansCountAndFocusCountRequest)  returns(UsersFansCountAndFocusCountResponse);
 
 
 
