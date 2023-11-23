@@ -27,6 +27,7 @@ const (
 	Contacts_SetGroupContact_FullMethodName      = "/contacts.Contacts/SetGroupContact"
 	Contacts_GetBlackList_FullMethodName         = "/contacts.Contacts/GetBlackList"
 	Contacts_SetBlackList_FullMethodName         = "/contacts.Contacts/SetBlackList"
+	Contacts_CheckRelation_FullMethodName        = "/contacts.Contacts/CheckRelation"
 )
 
 // ContactsClient is the client API for Contacts service.
@@ -45,6 +46,8 @@ type ContactsClient interface {
 	// 设置黑名单
 	GetBlackList(ctx context.Context, in *GetBlackListReq, opts ...grpc.CallOption) (*GetBlackListResp, error)
 	SetBlackList(ctx context.Context, in *SetBlackListReq, opts ...grpc.CallOption) (*SetBlackListResp, error)
+	// relation 检查
+	CheckRelation(ctx context.Context, in *CheckRelationReq, opts ...grpc.CallOption) (*CheckRelationResp, error)
 }
 
 type contactsClient struct {
@@ -127,6 +130,15 @@ func (c *contactsClient) SetBlackList(ctx context.Context, in *SetBlackListReq, 
 	return out, nil
 }
 
+func (c *contactsClient) CheckRelation(ctx context.Context, in *CheckRelationReq, opts ...grpc.CallOption) (*CheckRelationResp, error) {
+	out := new(CheckRelationResp)
+	err := c.cc.Invoke(ctx, Contacts_CheckRelation_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ContactsServer is the server API for Contacts service.
 // All implementations must embed UnimplementedContactsServer
 // for forward compatibility
@@ -143,6 +155,8 @@ type ContactsServer interface {
 	// 设置黑名单
 	GetBlackList(context.Context, *GetBlackListReq) (*GetBlackListResp, error)
 	SetBlackList(context.Context, *SetBlackListReq) (*SetBlackListResp, error)
+	// relation 检查
+	CheckRelation(context.Context, *CheckRelationReq) (*CheckRelationResp, error)
 	mustEmbedUnimplementedContactsServer()
 }
 
@@ -173,6 +187,9 @@ func (UnimplementedContactsServer) GetBlackList(context.Context, *GetBlackListRe
 }
 func (UnimplementedContactsServer) SetBlackList(context.Context, *SetBlackListReq) (*SetBlackListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetBlackList not implemented")
+}
+func (UnimplementedContactsServer) CheckRelation(context.Context, *CheckRelationReq) (*CheckRelationResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckRelation not implemented")
 }
 func (UnimplementedContactsServer) mustEmbedUnimplementedContactsServer() {}
 
@@ -331,6 +348,24 @@ func _Contacts_SetBlackList_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Contacts_CheckRelation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckRelationReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContactsServer).CheckRelation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Contacts_CheckRelation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContactsServer).CheckRelation(ctx, req.(*CheckRelationReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Contacts_ServiceDesc is the grpc.ServiceDesc for Contacts service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -369,6 +404,10 @@ var Contacts_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetBlackList",
 			Handler:    _Contacts_SetBlackList_Handler,
+		},
+		{
+			MethodName: "CheckRelation",
+			Handler:    _Contacts_CheckRelation_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

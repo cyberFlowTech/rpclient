@@ -11,6 +11,7 @@ message Contact {
   bool IsNotice = 3; //是否屏蔽系统消息
   string avatar  =4; //头像
   int32 Status  = 5; // 状态，是否已经删除
+  string Letter = 6; // 昵称首字母，用于排序
 }
 
 message MyGroup {
@@ -121,7 +122,7 @@ message SetBlackListResp{
 message FriendRequest{
   int64 OuID =1;
   string Msg =2;
-  int32  mutual =3;//mutual 双向
+  int32  mutual =3;//mutual 是否加了对方为我的好友
   int32  Status =4;
   uint64 Time =5;
   string Nick = 6; //昵称，remark
@@ -151,6 +152,26 @@ message SetFriendRequestResp{
   ContactResult Result =1;
 }
 
+enum RelationType{
+  CheckFriend=0;
+  CheckBlock=1;
+  CheckFocus=2;
+}
+message CheckRelationReq {
+  RelationType SetType = 1;
+  repeated  RelationType RTypes=2;//要check的关系
+  repeated string Ouids = 3;
+  string UserID=4;
+}
+message Relation{
+  map<string,int32> Relation=1;
+}
+
+message CheckRelationResp {
+  ContactResult Result =1;
+  map<string,Relation> Relations=2; //key为relationtype的字符串
+}
+
 service Contacts {
   //获取申请list
   rpc GetFriendRequestList(GetFriendRequestListReq)returns(GetFriendRequestListResp);
@@ -167,5 +188,9 @@ service Contacts {
   //设置黑名单
   rpc GetBlackList(GetBlackListReq) returns(GetBlackListResp);
   rpc SetBlackList(SetBlackListReq) returns(SetBlackListResp);
+
+
+  //relation 检查
+  rpc CheckRelation(CheckRelationReq)returns(CheckRelationResp);
 
 }
