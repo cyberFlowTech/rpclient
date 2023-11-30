@@ -20,7 +20,8 @@ const _ = grpc.SupportPackageIsVersion7
 
 const (
 	DataStats_ReportTribeMsg_FullMethodName = "/dataStats.DataStats/ReportTribeMsg"
-	DataStats_GetTribeMsg_FullMethodName    = "/dataStats.DataStats/GetTribeMsg"
+	DataStats_GetTribeStata_FullMethodName  = "/dataStats.DataStats/GetTribeStata"
+	DataStats_GetTribeRank_FullMethodName   = "/dataStats.DataStats/GetTribeRank"
 )
 
 // DataStatsClient is the client API for DataStats service.
@@ -28,7 +29,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DataStatsClient interface {
 	ReportTribeMsg(ctx context.Context, in *ReportDataReq, opts ...grpc.CallOption) (*ReportDataResp, error)
-	GetTribeMsg(ctx context.Context, in *GetTribeStatsReq, opts ...grpc.CallOption) (*GetTribeStatResp, error)
+	GetTribeStata(ctx context.Context, in *GetTribeStatsReq, opts ...grpc.CallOption) (*GetTribeStatResp, error)
+	GetTribeRank(ctx context.Context, in *GetTribeRankReq, opts ...grpc.CallOption) (*GetTribeRankResp, error)
 }
 
 type dataStatsClient struct {
@@ -48,9 +50,18 @@ func (c *dataStatsClient) ReportTribeMsg(ctx context.Context, in *ReportDataReq,
 	return out, nil
 }
 
-func (c *dataStatsClient) GetTribeMsg(ctx context.Context, in *GetTribeStatsReq, opts ...grpc.CallOption) (*GetTribeStatResp, error) {
+func (c *dataStatsClient) GetTribeStata(ctx context.Context, in *GetTribeStatsReq, opts ...grpc.CallOption) (*GetTribeStatResp, error) {
 	out := new(GetTribeStatResp)
-	err := c.cc.Invoke(ctx, DataStats_GetTribeMsg_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, DataStats_GetTribeStata_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dataStatsClient) GetTribeRank(ctx context.Context, in *GetTribeRankReq, opts ...grpc.CallOption) (*GetTribeRankResp, error) {
+	out := new(GetTribeRankResp)
+	err := c.cc.Invoke(ctx, DataStats_GetTribeRank_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +73,8 @@ func (c *dataStatsClient) GetTribeMsg(ctx context.Context, in *GetTribeStatsReq,
 // for forward compatibility
 type DataStatsServer interface {
 	ReportTribeMsg(context.Context, *ReportDataReq) (*ReportDataResp, error)
-	GetTribeMsg(context.Context, *GetTribeStatsReq) (*GetTribeStatResp, error)
+	GetTribeStata(context.Context, *GetTribeStatsReq) (*GetTribeStatResp, error)
+	GetTribeRank(context.Context, *GetTribeRankReq) (*GetTribeRankResp, error)
 	mustEmbedUnimplementedDataStatsServer()
 }
 
@@ -73,8 +85,11 @@ type UnimplementedDataStatsServer struct {
 func (UnimplementedDataStatsServer) ReportTribeMsg(context.Context, *ReportDataReq) (*ReportDataResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReportTribeMsg not implemented")
 }
-func (UnimplementedDataStatsServer) GetTribeMsg(context.Context, *GetTribeStatsReq) (*GetTribeStatResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetTribeMsg not implemented")
+func (UnimplementedDataStatsServer) GetTribeStata(context.Context, *GetTribeStatsReq) (*GetTribeStatResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTribeStata not implemented")
+}
+func (UnimplementedDataStatsServer) GetTribeRank(context.Context, *GetTribeRankReq) (*GetTribeRankResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTribeRank not implemented")
 }
 func (UnimplementedDataStatsServer) mustEmbedUnimplementedDataStatsServer() {}
 
@@ -107,20 +122,38 @@ func _DataStats_ReportTribeMsg_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DataStats_GetTribeMsg_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _DataStats_GetTribeStata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetTribeStatsReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DataStatsServer).GetTribeMsg(ctx, in)
+		return srv.(DataStatsServer).GetTribeStata(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: DataStats_GetTribeMsg_FullMethodName,
+		FullMethod: DataStats_GetTribeStata_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DataStatsServer).GetTribeMsg(ctx, req.(*GetTribeStatsReq))
+		return srv.(DataStatsServer).GetTribeStata(ctx, req.(*GetTribeStatsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DataStats_GetTribeRank_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTribeRankReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DataStatsServer).GetTribeRank(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DataStats_GetTribeRank_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DataStatsServer).GetTribeRank(ctx, req.(*GetTribeRankReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -137,8 +170,12 @@ var DataStats_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _DataStats_ReportTribeMsg_Handler,
 		},
 		{
-			MethodName: "GetTribeMsg",
-			Handler:    _DataStats_GetTribeMsg_Handler,
+			MethodName: "GetTribeStata",
+			Handler:    _DataStats_GetTribeStata_Handler,
+		},
+		{
+			MethodName: "GetTribeRank",
+			Handler:    _DataStats_GetTribeRank_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

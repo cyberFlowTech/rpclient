@@ -27,36 +27,65 @@ message ReportDataReq{
 message ReportDataResp{
   BaseResult Result=1;
 }
-
+message TribeStat{
+  int32 time=1;
+  int64 Balances=2;//过去30天的余额
+  int64 Members=3; //过去30天的成员数
+  int64 Pays=4;  //累计支付额度
+}
 message TribeStatsData{
   string TribeID=1;
-  repeated int64 Balances=2;//过去30天的余额
-  repeated int64 Members=3; //过去30天的成员数
-  repeated int64 Pays=4;  //过去30天的支付额度
+  repeated TribeStat Stats=2;
 }
 
 message TribeMemberData{
   string UserID=1;
-  repeated int32 MsgCount=2;//过去7 30天消息
-  repeated int64 Balance=3;//账户余额
-  repeated int64 PaySum=4; //支付
-  int64 LastEnter=5;//最后一次来部落
-  int64 LastMsgTime=6;//最后一次在部落发消息
+
+  int32 Msg7Count=2;//过去7 30天消息
+  int32 Msg30Count=3;//过去7 30天消息
+
+  int64 Balance=4;//账户余额
+
+  int64 Pay7Sum=5; //支付
+  int64 Pay30Sum=6; //支付
+
+  int64 LastEnter=7;//最后一次来部落
+  int64 LastMsgTime=8;//最后一次在部落发消息
 }
 
 message GetTribeStatsReq{
-  string UserID  = 1;
-  int32 Pages=2;
-  int32 Count=3;
+  string TribeID  = 1;
+  int32 Count=2;  //  最长30天的数据，如果只看最新，可以指定1天，默认1天
 }
 
 message GetTribeStatResp{
   BaseResult Result = 1;
-  TribeStatsData StatsData=2;
-  TribeMemberData Members=3;
+  TribeStatsData StatsData=2;//部落趋势数据
 }
+
+enum TribeRankType{
+  ByMsgSum=0;
+  ByPaySum=1;
+  ByBalance=2;
+  ByActive=3;
+}
+
+message GetTribeRankReq{
+  string TribeID  = 1;
+  TribeRankType RankType=2;
+  int32 Pages=3;  //默认第一页
+  int32 Count=4;  //默认过去30天的
+}
+
+message GetTribeRankResp{
+  BaseResult Result = 1;
+  repeated TribeMemberData Members=2;//排行榜
+}
+
 
 service DataStats {
   rpc ReportTribeMsg(ReportDataReq)returns(ReportDataResp);
-  rpc GetTribeMsg(GetTribeStatsReq)returns(GetTribeStatResp);
+  rpc GetTribeStata(GetTribeStatsReq)returns(GetTribeStatResp);
+  rpc GetTribeRank(GetTribeRankReq)returns(GetTribeRankResp);
+
 }
