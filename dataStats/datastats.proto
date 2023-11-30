@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package dataStats;
+
+// protoc-gen-go 版本大于1.4.0, proto文件需要加上go_package,否则无法生成
+option go_package = "./dataStats";
+
+message BaseResult{
+  int32 Ret = 1;
+  string Message =2;
+}
+
+enum OptDataType{
+  TribeIMMsg=0;
+  TribeWalletBalance=1;
+  TribePay=2;
+  TribeEnter=3;
+}
+message ReportDataInfo{
+  OptDataType SetType = 1; //
+  int64 Time=2;
+  map<string,string> Ext=3;//扩展字段
+}
+message ReportDataReq{
+  repeated  ReportDataInfo Info=1;
+}
+message ReportDataResp{
+  BaseResult Result=1;
+}
+
+message TribeStatsData{
+  string TribeID=1;
+  repeated int64 Balances=2;//过去30天的余额
+  repeated int64 Members=3; //过去30天的成员数
+  repeated int64 Pays=4;  //过去30天的支付额度
+}
+
+message TribeMemberData{
+  string UserID=1;
+  repeated int32 MsgCount=2;//过去7 30天消息
+  repeated int64 Balance=3;//账户余额
+  repeated int64 PaySum=4; //支付
+  int64 LastEnter=5;//最后一次来部落
+  int64 LastMsgTime=6;//最后一次在部落发消息
+}
+
+message GetTribeStatsReq{
+  string UserID  = 1;
+  int32 Pages=2;
+  int32 Count=3;
+}
+
+message GetTribeStatResp{
+  BaseResult Result = 1;
+  TribeStatsData StatsData=2;
+  TribeMemberData Members=3;
+}
+
+service DataStats {
+  rpc ReportTribeMsg(ReportDataReq)returns(ReportDataResp);
+  rpc GetTribeMsg(GetTribeStatsReq)returns(GetTribeStatResp);
+}
