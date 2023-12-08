@@ -24,6 +24,7 @@ const (
 	DappServer_DeleteItem_FullMethodName         = "/dapp.dappServer/DeleteItem"
 	DappServer_UpdateItemRelation_FullMethodName = "/dapp.dappServer/UpdateItemRelation"
 	DappServer_GetRelationByRelID_FullMethodName = "/dapp.dappServer/GetRelationByRelID"
+	DappServer_DelRelationByRelID_FullMethodName = "/dapp.dappServer/DelRelationByRelID"
 )
 
 // DappServerClient is the client API for DappServer service.
@@ -40,6 +41,8 @@ type DappServerClient interface {
 	UpdateItemRelation(ctx context.Context, in *RelationReq, opts ...grpc.CallOption) (*RelationResp, error)
 	// 获取对应关联的dapp
 	GetRelationByRelID(ctx context.Context, in *GetRelationReq, opts ...grpc.CallOption) (*GetRelationResp, error)
+	// 删除关联dapp
+	DelRelationByRelID(ctx context.Context, in *DelRelationReq, opts ...grpc.CallOption) (*DelRelationResp, error)
 }
 
 type dappServerClient struct {
@@ -95,6 +98,15 @@ func (c *dappServerClient) GetRelationByRelID(ctx context.Context, in *GetRelati
 	return out, nil
 }
 
+func (c *dappServerClient) DelRelationByRelID(ctx context.Context, in *DelRelationReq, opts ...grpc.CallOption) (*DelRelationResp, error) {
+	out := new(DelRelationResp)
+	err := c.cc.Invoke(ctx, DappServer_DelRelationByRelID_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DappServerServer is the server API for DappServer service.
 // All implementations must embed UnimplementedDappServerServer
 // for forward compatibility
@@ -109,6 +121,8 @@ type DappServerServer interface {
 	UpdateItemRelation(context.Context, *RelationReq) (*RelationResp, error)
 	// 获取对应关联的dapp
 	GetRelationByRelID(context.Context, *GetRelationReq) (*GetRelationResp, error)
+	// 删除关联dapp
+	DelRelationByRelID(context.Context, *DelRelationReq) (*DelRelationResp, error)
 	mustEmbedUnimplementedDappServerServer()
 }
 
@@ -130,6 +144,9 @@ func (UnimplementedDappServerServer) UpdateItemRelation(context.Context, *Relati
 }
 func (UnimplementedDappServerServer) GetRelationByRelID(context.Context, *GetRelationReq) (*GetRelationResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRelationByRelID not implemented")
+}
+func (UnimplementedDappServerServer) DelRelationByRelID(context.Context, *DelRelationReq) (*DelRelationResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelRelationByRelID not implemented")
 }
 func (UnimplementedDappServerServer) mustEmbedUnimplementedDappServerServer() {}
 
@@ -234,6 +251,24 @@ func _DappServer_GetRelationByRelID_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DappServer_DelRelationByRelID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DelRelationReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DappServerServer).DelRelationByRelID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DappServer_DelRelationByRelID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DappServerServer).DelRelationByRelID(ctx, req.(*DelRelationReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DappServer_ServiceDesc is the grpc.ServiceDesc for DappServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -260,6 +295,10 @@ var DappServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRelationByRelID",
 			Handler:    _DappServer_GetRelationByRelID_Handler,
+		},
+		{
+			MethodName: "DelRelationByRelID",
+			Handler:    _DappServer_DelRelationByRelID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
