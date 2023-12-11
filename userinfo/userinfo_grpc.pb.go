@@ -22,6 +22,7 @@ const (
 	User_GetUsersInfo_FullMethodName   = "/userinfo.User/getUsersInfo"
 	User_GetUsers_FullMethodName       = "/userinfo.User/getUsers"
 	User_UpdateUserInfo_FullMethodName = "/userinfo.User/updateUserInfo"
+	User_ResetUserPwd_FullMethodName   = "/userinfo.User/ResetUserPwd"
 )
 
 // UserClient is the client API for User service.
@@ -34,6 +35,8 @@ type UserClient interface {
 	GetUsers(ctx context.Context, in *GetUsersReq, opts ...grpc.CallOption) (*GetUsersResp, error)
 	// 用户信息或设置修改
 	UpdateUserInfo(ctx context.Context, in *SetUserInfoReq, opts ...grpc.CallOption) (*SetUserInfoResp, error)
+	// 修改账号密码
+	ResetUserPwd(ctx context.Context, in *RestUsersPwdReq, opts ...grpc.CallOption) (*RestUsersPwdResp, error)
 }
 
 type userClient struct {
@@ -71,6 +74,15 @@ func (c *userClient) UpdateUserInfo(ctx context.Context, in *SetUserInfoReq, opt
 	return out, nil
 }
 
+func (c *userClient) ResetUserPwd(ctx context.Context, in *RestUsersPwdReq, opts ...grpc.CallOption) (*RestUsersPwdResp, error) {
+	out := new(RestUsersPwdResp)
+	err := c.cc.Invoke(ctx, User_ResetUserPwd_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -81,6 +93,8 @@ type UserServer interface {
 	GetUsers(context.Context, *GetUsersReq) (*GetUsersResp, error)
 	// 用户信息或设置修改
 	UpdateUserInfo(context.Context, *SetUserInfoReq) (*SetUserInfoResp, error)
+	// 修改账号密码
+	ResetUserPwd(context.Context, *RestUsersPwdReq) (*RestUsersPwdResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -96,6 +110,9 @@ func (UnimplementedUserServer) GetUsers(context.Context, *GetUsersReq) (*GetUser
 }
 func (UnimplementedUserServer) UpdateUserInfo(context.Context, *SetUserInfoReq) (*SetUserInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserInfo not implemented")
+}
+func (UnimplementedUserServer) ResetUserPwd(context.Context, *RestUsersPwdReq) (*RestUsersPwdResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResetUserPwd not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -164,6 +181,24 @@ func _User_UpdateUserInfo_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_ResetUserPwd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RestUsersPwdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).ResetUserPwd(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_ResetUserPwd_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).ResetUserPwd(ctx, req.(*RestUsersPwdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -182,6 +217,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "updateUserInfo",
 			Handler:    _User_UpdateUserInfo_Handler,
+		},
+		{
+			MethodName: "ResetUserPwd",
+			Handler:    _User_ResetUserPwd_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

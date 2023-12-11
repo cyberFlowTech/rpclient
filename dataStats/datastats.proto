@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package dataStats;
+
+// protoc-gen-go 版本大于1.4.0, proto文件需要加上go_package,否则无法生成
+option go_package = "./dataStats";
+
+message BaseResult{
+  int32 Ret = 1;
+  string Message =2;
+}
+
+enum OptDataType{
+  TribeIMMsg=0;
+  TribeWalletBalance=1;
+  TribePay=2;
+  TribeEnter=3;
+}
+message ReportDataInfo{
+  OptDataType SetType = 1; //
+  int64 Time=2;
+  map<string,string> Ext=3;//扩展字段
+}
+message ReportDataReq{
+  repeated  ReportDataInfo Info=1;
+}
+message ReportDataResp{
+  BaseResult Result=1;
+}
+message TribeStat{
+  int32 time=1;
+  int64 Balances=2;//过去30天的余额
+  int64 Members=3; //过去30天的成员数
+  int64 Pays=4;  //累计支付额度
+}
+message TribeStatsData{
+  string TribeID=1;
+  repeated TribeStat Stats=2;
+}
+
+message TribeMemberData{
+  string UserID=1;
+
+  int32 Msg7Count=2;//过去7 30天消息
+  int32 Msg30Count=3;//过去7 30天消息
+
+  int64 Balance=4;//账户余额
+
+  int64 Pay7Sum=5; //支付
+  int64 Pay30Sum=6; //支付
+
+  int64 LastEnter=7;//最后一次来部落
+  int64 LastMsgTime=8;//最后一次在部落发消息
+}
+
+message GetTribeStatsReq{
+  string TribeID  = 1;
+  int32 Count=2;  //  最长30天的数据，如果只看最新，可以指定1天，默认1天
+}
+
+message GetTribeStatResp{
+  BaseResult Result = 1;
+  TribeStatsData StatsData=2;//部落趋势数据
+}
+
+enum TribeRankType{
+  ByMsgSum=0;
+  ByPaySum=1;
+  ByBalance=2;
+  ByActive=3;
+}
+
+message GetTribeRankReq{
+  string TribeID  = 1;
+  TribeRankType RankType=2;
+  int32 Pages=3;  //默认第一页
+  int32 Count=4;  //默认过去30天的
+}
+
+message GetTribeRankResp{
+  BaseResult Result = 1;
+  repeated TribeMemberData Members=2;//排行榜
+}
+
+
+service DataStats {
+  rpc ReportTribeMsg(ReportDataReq)returns(ReportDataResp);
+  rpc GetTribeStata(GetTribeStatsReq)returns(GetTribeStatResp);
+  rpc GetTribeRank(GetTribeRankReq)returns(GetTribeRankResp);
+
+}

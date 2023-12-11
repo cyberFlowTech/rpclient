@@ -42,6 +42,10 @@ type ClubServerClient interface {
 	GetGroupInfo(ctx context.Context, in *GroupInfoReq, opts ...grpc.CallOption) (*GroupInfoRes, error)
 	// 获取部落动态列表
 	GetClubDynamicList(ctx context.Context, in *GetClubDynamicListRequest, opts ...grpc.CallOption) (*GetClubDynamicListResponse, error)
+	// 刷新部落动态列表
+	//
+	//	rpc refreshClubDynamicList(RefreshClubDynamicListRequest) returns (APICommonResponse);
+	//
 	// 部落动态-删除
 	SetClubDynamicAct(ctx context.Context, in *SetClubDynamicActRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 更新部落动态配置（动态名称、背景图、是否隐藏部落动态
@@ -143,6 +147,10 @@ type ClubServerServer interface {
 	GetGroupInfo(context.Context, *GroupInfoReq) (*GroupInfoRes, error)
 	// 获取部落动态列表
 	GetClubDynamicList(context.Context, *GetClubDynamicListRequest) (*GetClubDynamicListResponse, error)
+	// 刷新部落动态列表
+	//
+	//	rpc refreshClubDynamicList(RefreshClubDynamicListRequest) returns (APICommonResponse);
+	//
 	// 部落动态-删除
 	SetClubDynamicAct(context.Context, *SetClubDynamicActRequest) (*APICommonResponse, error)
 	// 更新部落动态配置（动态名称、背景图、是否隐藏部落动态
