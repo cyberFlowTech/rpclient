@@ -21,7 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	Dynamicsrv_PublishDynamic_FullMethodName                 = "/dynamicsrv.Dynamicsrv/PublishDynamic"
 	Dynamicsrv_UpdateDynamic_FullMethodName                  = "/dynamicsrv.Dynamicsrv/UpdateDynamic"
-	Dynamicsrv_GetDiscoverDynamicList_FullMethodName         = "/dynamicsrv.Dynamicsrv/GetDiscoverDynamicList"
+	Dynamicsrv_GetDiscoverDynamicList_FullMethodName         = "/dynamicsrv.Dynamicsrv/GetDiscoverDynamicListByTime"
 	Dynamicsrv_GetUserDynamicList_FullMethodName             = "/dynamicsrv.Dynamicsrv/GetUserDynamicList"
 	Dynamicsrv_GetDynamicInfo_FullMethodName                 = "/dynamicsrv.Dynamicsrv/GetDynamicInfo"
 	Dynamicsrv_DeleteDynamic_FullMethodName                  = "/dynamicsrv.Dynamicsrv/DeleteDynamic"
@@ -29,6 +29,7 @@ const (
 	Dynamicsrv_DelDynamicToClub_FullMethodName               = "/dynamicsrv.Dynamicsrv/delDynamicToClub"
 	Dynamicsrv_Praise_FullMethodName                         = "/dynamicsrv.Dynamicsrv/Praise"
 	Dynamicsrv_HasPraise_FullMethodName                      = "/dynamicsrv.Dynamicsrv/HasPraise"
+	Dynamicsrv_GetPraiseList_FullMethodName                  = "/dynamicsrv.Dynamicsrv/GetPraiseList"
 	Dynamicsrv_Collect_FullMethodName                        = "/dynamicsrv.Dynamicsrv/Collect"
 	Dynamicsrv_HasCollect_FullMethodName                     = "/dynamicsrv.Dynamicsrv/HasCollect"
 	Dynamicsrv_GetCollectList_FullMethodName                 = "/dynamicsrv.Dynamicsrv/GetCollectList"
@@ -38,7 +39,6 @@ const (
 	Dynamicsrv_GetFocusList_FullMethodName                   = "/dynamicsrv.Dynamicsrv/GetFocusList"
 	Dynamicsrv_GetFansList_FullMethodName                    = "/dynamicsrv.Dynamicsrv/GetFansList"
 	Dynamicsrv_GetCommentList_FullMethodName                 = "/dynamicsrv.Dynamicsrv/GetCommentList"
-	Dynamicsrv_GetChildCommentList_FullMethodName            = "/dynamicsrv.Dynamicsrv/GetChildCommentList"
 	Dynamicsrv_Comment_FullMethodName                        = "/dynamicsrv.Dynamicsrv/Comment"
 	Dynamicsrv_DeleteComment_FullMethodName                  = "/dynamicsrv.Dynamicsrv/DeleteComment"
 	Dynamicsrv_GetUsersFansCountAndFocusCount_FullMethodName = "/dynamicsrv.Dynamicsrv/GetUsersFansCountAndFocusCount"
@@ -54,16 +54,8 @@ type DynamicsrvClient interface {
 	UpdateDynamic(ctx context.Context, in *UpdateDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 发现页动态列表
 	GetDiscoverDynamicList(ctx context.Context, in *DiscoverDynamicListRequest, opts ...grpc.CallOption) (*DiscoverDynamicListResponse, error)
-	// 部落动态列表（由部落服务去实现）
-	//
-	//	rpc GetClubDynamicList(ClubDynamicListRequest) returns(InfoResponse);
-	//
 	// 指定用户动态列表
 	GetUserDynamicList(ctx context.Context, in *UserDynamicListRequest, opts ...grpc.CallOption) (*DynamicInfoResponse, error)
-	// 我的动态列表 -- 用户动态列表
-	//
-	//	rpc GetMyDynamicList(UserDynamicListRequest) returns(InfoResponse);
-	//
 	// 动态详情
 	GetDynamicInfo(ctx context.Context, in *DynamicInfoRequest, opts ...grpc.CallOption) (*DynamicInfoResponse, error)
 	// 删除动态
@@ -76,13 +68,15 @@ type DynamicsrvClient interface {
 	Praise(ctx context.Context, in *PraiseRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 该用户是否已点赞动态或点赞动态下的评论
 	HasPraise(ctx context.Context, in *HasPraiseRequest, opts ...grpc.CallOption) (*HasPraiseResponse, error)
+	// 获取动态/评论点赞列表
+	GetPraiseList(ctx context.Context, in *PraiseListRequest, opts ...grpc.CallOption) (*PraiseListResponse, error)
 	// 收藏动态
 	Collect(ctx context.Context, in *CollectRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 该用户是否已收藏该动态
 	HasCollect(ctx context.Context, in *CollectRequest, opts ...grpc.CallOption) (*HasCollectResponse, error)
-	// 用户收藏列表
+	// 用户动态收藏列表
 	GetCollectList(ctx context.Context, in *CollectListRequest, opts ...grpc.CallOption) (*CollectListResponse, error)
-	// 关注动态作者
+	// 关注作者
 	Focus(ctx context.Context, in *FocusRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 是否已经关注该作者
 	HasFocus(ctx context.Context, in *FocusRequest, opts ...grpc.CallOption) (*HasFocusResponse, error)
@@ -94,16 +88,10 @@ type DynamicsrvClient interface {
 	GetFansList(ctx context.Context, in *FansListRequest, opts ...grpc.CallOption) (*FansListResponse, error)
 	// 评论列表
 	GetCommentList(ctx context.Context, in *CommentListRequest, opts ...grpc.CallOption) (*CommentListResponse, error)
-	// 子评论评论列表
-	GetChildCommentList(ctx context.Context, in *ChildCommentListRequest, opts ...grpc.CallOption) (*ChildCommentListResponse, error)
 	// 评论
 	Comment(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 删除评论
 	DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
-	// 用户粉丝数和关注数 ⚠️废弃，增加了批量获取接口
-	//
-	//	rpc GetUserFansCountAndFocusCount(UserFansCountAndFocusCountRequest)  returns(UserFansCountAndFocusCountResponse);
-	//
 	// 获取多个用户的粉丝数和关注数
 	GetUsersFansCountAndFocusCount(ctx context.Context, in *UsersFansCountAndFocusCountRequest, opts ...grpc.CallOption) (*UsersFansCountAndFocusCountResponse, error)
 }
@@ -206,6 +194,15 @@ func (c *dynamicsrvClient) HasPraise(ctx context.Context, in *HasPraiseRequest, 
 	return out, nil
 }
 
+func (c *dynamicsrvClient) GetPraiseList(ctx context.Context, in *PraiseListRequest, opts ...grpc.CallOption) (*PraiseListResponse, error) {
+	out := new(PraiseListResponse)
+	err := c.cc.Invoke(ctx, Dynamicsrv_GetPraiseList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *dynamicsrvClient) Collect(ctx context.Context, in *CollectRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
 	out := new(APICommonResponse)
 	err := c.cc.Invoke(ctx, Dynamicsrv_Collect_FullMethodName, in, out, opts...)
@@ -287,15 +284,6 @@ func (c *dynamicsrvClient) GetCommentList(ctx context.Context, in *CommentListRe
 	return out, nil
 }
 
-func (c *dynamicsrvClient) GetChildCommentList(ctx context.Context, in *ChildCommentListRequest, opts ...grpc.CallOption) (*ChildCommentListResponse, error) {
-	out := new(ChildCommentListResponse)
-	err := c.cc.Invoke(ctx, Dynamicsrv_GetChildCommentList_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *dynamicsrvClient) Comment(ctx context.Context, in *CommentRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
 	out := new(APICommonResponse)
 	err := c.cc.Invoke(ctx, Dynamicsrv_Comment_FullMethodName, in, out, opts...)
@@ -333,16 +321,8 @@ type DynamicsrvServer interface {
 	UpdateDynamic(context.Context, *UpdateDynamicRequest) (*APICommonResponse, error)
 	// 发现页动态列表
 	GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*DiscoverDynamicListResponse, error)
-	// 部落动态列表（由部落服务去实现）
-	//
-	//	rpc GetClubDynamicList(ClubDynamicListRequest) returns(InfoResponse);
-	//
 	// 指定用户动态列表
 	GetUserDynamicList(context.Context, *UserDynamicListRequest) (*DynamicInfoResponse, error)
-	// 我的动态列表 -- 用户动态列表
-	//
-	//	rpc GetMyDynamicList(UserDynamicListRequest) returns(InfoResponse);
-	//
 	// 动态详情
 	GetDynamicInfo(context.Context, *DynamicInfoRequest) (*DynamicInfoResponse, error)
 	// 删除动态
@@ -355,13 +335,15 @@ type DynamicsrvServer interface {
 	Praise(context.Context, *PraiseRequest) (*APICommonResponse, error)
 	// 该用户是否已点赞动态或点赞动态下的评论
 	HasPraise(context.Context, *HasPraiseRequest) (*HasPraiseResponse, error)
+	// 获取动态/评论点赞列表
+	GetPraiseList(context.Context, *PraiseListRequest) (*PraiseListResponse, error)
 	// 收藏动态
 	Collect(context.Context, *CollectRequest) (*APICommonResponse, error)
 	// 该用户是否已收藏该动态
 	HasCollect(context.Context, *CollectRequest) (*HasCollectResponse, error)
-	// 用户收藏列表
+	// 用户动态收藏列表
 	GetCollectList(context.Context, *CollectListRequest) (*CollectListResponse, error)
-	// 关注动态作者
+	// 关注作者
 	Focus(context.Context, *FocusRequest) (*APICommonResponse, error)
 	// 是否已经关注该作者
 	HasFocus(context.Context, *FocusRequest) (*HasFocusResponse, error)
@@ -373,16 +355,10 @@ type DynamicsrvServer interface {
 	GetFansList(context.Context, *FansListRequest) (*FansListResponse, error)
 	// 评论列表
 	GetCommentList(context.Context, *CommentListRequest) (*CommentListResponse, error)
-	// 子评论评论列表
-	GetChildCommentList(context.Context, *ChildCommentListRequest) (*ChildCommentListResponse, error)
 	// 评论
 	Comment(context.Context, *CommentRequest) (*APICommonResponse, error)
 	// 删除评论
 	DeleteComment(context.Context, *DeleteCommentRequest) (*APICommonResponse, error)
-	// 用户粉丝数和关注数 ⚠️废弃，增加了批量获取接口
-	//
-	//	rpc GetUserFansCountAndFocusCount(UserFansCountAndFocusCountRequest)  returns(UserFansCountAndFocusCountResponse);
-	//
 	// 获取多个用户的粉丝数和关注数
 	GetUsersFansCountAndFocusCount(context.Context, *UsersFansCountAndFocusCountRequest) (*UsersFansCountAndFocusCountResponse, error)
 	mustEmbedUnimplementedDynamicsrvServer()
@@ -399,7 +375,7 @@ func (UnimplementedDynamicsrvServer) UpdateDynamic(context.Context, *UpdateDynam
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateDynamic not implemented")
 }
 func (UnimplementedDynamicsrvServer) GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*DiscoverDynamicListResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetDiscoverDynamicList not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method GetDiscoverDynamicListByTime not implemented")
 }
 func (UnimplementedDynamicsrvServer) GetUserDynamicList(context.Context, *UserDynamicListRequest) (*DynamicInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserDynamicList not implemented")
@@ -421,6 +397,9 @@ func (UnimplementedDynamicsrvServer) Praise(context.Context, *PraiseRequest) (*A
 }
 func (UnimplementedDynamicsrvServer) HasPraise(context.Context, *HasPraiseRequest) (*HasPraiseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HasPraise not implemented")
+}
+func (UnimplementedDynamicsrvServer) GetPraiseList(context.Context, *PraiseListRequest) (*PraiseListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPraiseList not implemented")
 }
 func (UnimplementedDynamicsrvServer) Collect(context.Context, *CollectRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Collect not implemented")
@@ -448,9 +427,6 @@ func (UnimplementedDynamicsrvServer) GetFansList(context.Context, *FansListReque
 }
 func (UnimplementedDynamicsrvServer) GetCommentList(context.Context, *CommentListRequest) (*CommentListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCommentList not implemented")
-}
-func (UnimplementedDynamicsrvServer) GetChildCommentList(context.Context, *ChildCommentListRequest) (*ChildCommentListResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetChildCommentList not implemented")
 }
 func (UnimplementedDynamicsrvServer) Comment(context.Context, *CommentRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Comment not implemented")
@@ -654,6 +630,24 @@ func _Dynamicsrv_HasPraise_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Dynamicsrv_GetPraiseList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PraiseListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DynamicsrvServer).GetPraiseList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Dynamicsrv_GetPraiseList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DynamicsrvServer).GetPraiseList(ctx, req.(*PraiseListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Dynamicsrv_Collect_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CollectRequest)
 	if err := dec(in); err != nil {
@@ -816,24 +810,6 @@ func _Dynamicsrv_GetCommentList_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Dynamicsrv_GetChildCommentList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChildCommentListRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DynamicsrvServer).GetChildCommentList(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Dynamicsrv_GetChildCommentList_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DynamicsrvServer).GetChildCommentList(ctx, req.(*ChildCommentListRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Dynamicsrv_Comment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CommentRequest)
 	if err := dec(in); err != nil {
@@ -904,7 +880,7 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Dynamicsrv_UpdateDynamic_Handler,
 		},
 		{
-			MethodName: "GetDiscoverDynamicList",
+			MethodName: "GetDiscoverDynamicListByTime",
 			Handler:    _Dynamicsrv_GetDiscoverDynamicList_Handler,
 		},
 		{
@@ -934,6 +910,10 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "HasPraise",
 			Handler:    _Dynamicsrv_HasPraise_Handler,
+		},
+		{
+			MethodName: "GetPraiseList",
+			Handler:    _Dynamicsrv_GetPraiseList_Handler,
 		},
 		{
 			MethodName: "Collect",
@@ -970,10 +950,6 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetCommentList",
 			Handler:    _Dynamicsrv_GetCommentList_Handler,
-		},
-		{
-			MethodName: "GetChildCommentList",
-			Handler:    _Dynamicsrv_GetChildCommentList_Handler,
 		},
 		{
 			MethodName: "Comment",
