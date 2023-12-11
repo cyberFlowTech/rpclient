@@ -40,18 +40,6 @@ type ClubServerClient interface {
 	// 群用户状态
 	GetGroupUserStatus(ctx context.Context, in *GroupUserStatusReq, opts ...grpc.CallOption) (*GroupUserStatusRes, error)
 	GetGroupInfo(ctx context.Context, in *GroupInfoReq, opts ...grpc.CallOption) (*GroupInfoRes, error)
-	// 同步动态到部落(当用户发布动态/更新时  (迁移到动态实现)
-	//
-	//	rpc syncDynamicToClub(SyncDynamicToClubReq) returns (APICommonResponse);
-	//
-	// 删除动态跟部落的关系(当用户删除动态时
-	//
-	//	rpc delDynamicToClub(DelDynamicToClubReq) returns (APICommonResponse);
-	//
-	// 根据动态ID返回部落信息（一个动态可以同步到一个或多个部落
-	//
-	//	rpc getClubInfoByDynamicIds(GetClubInfoByDynamicIdsRequest) returns (GetClubInfoByDynamicIdsResponse);
-	//
 	// 获取部落动态列表
 	GetClubDynamicList(ctx context.Context, in *GetClubDynamicListRequest, opts ...grpc.CallOption) (*GetClubDynamicListResponse, error)
 	// 部落动态-删除
@@ -59,7 +47,7 @@ type ClubServerClient interface {
 	// 更新部落动态配置（动态名称、背景图、是否隐藏部落动态
 	SaveClubDynamicCfg(ctx context.Context, in *SaveClubDynamicCfgRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 获取部落动态社区配置
-	GetClubDynamicCfg(ctx context.Context, in *GetClubDynamicCfgRequest, opts ...grpc.CallOption) (*GetClubDynamicCfgResponse, error)
+	GetClubDynamicCfg(ctx context.Context, in *GetClubDynamicCfgsRequest, opts ...grpc.CallOption) (*GetClubDynamicCfgsResponse, error)
 }
 
 type clubServerClient struct {
@@ -133,8 +121,8 @@ func (c *clubServerClient) SaveClubDynamicCfg(ctx context.Context, in *SaveClubD
 	return out, nil
 }
 
-func (c *clubServerClient) GetClubDynamicCfg(ctx context.Context, in *GetClubDynamicCfgRequest, opts ...grpc.CallOption) (*GetClubDynamicCfgResponse, error) {
-	out := new(GetClubDynamicCfgResponse)
+func (c *clubServerClient) GetClubDynamicCfg(ctx context.Context, in *GetClubDynamicCfgsRequest, opts ...grpc.CallOption) (*GetClubDynamicCfgsResponse, error) {
+	out := new(GetClubDynamicCfgsResponse)
 	err := c.cc.Invoke(ctx, ClubServer_GetClubDynamicCfg_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -153,18 +141,6 @@ type ClubServerServer interface {
 	// 群用户状态
 	GetGroupUserStatus(context.Context, *GroupUserStatusReq) (*GroupUserStatusRes, error)
 	GetGroupInfo(context.Context, *GroupInfoReq) (*GroupInfoRes, error)
-	// 同步动态到部落(当用户发布动态/更新时  (迁移到动态实现)
-	//
-	//	rpc syncDynamicToClub(SyncDynamicToClubReq) returns (APICommonResponse);
-	//
-	// 删除动态跟部落的关系(当用户删除动态时
-	//
-	//	rpc delDynamicToClub(DelDynamicToClubReq) returns (APICommonResponse);
-	//
-	// 根据动态ID返回部落信息（一个动态可以同步到一个或多个部落
-	//
-	//	rpc getClubInfoByDynamicIds(GetClubInfoByDynamicIdsRequest) returns (GetClubInfoByDynamicIdsResponse);
-	//
 	// 获取部落动态列表
 	GetClubDynamicList(context.Context, *GetClubDynamicListRequest) (*GetClubDynamicListResponse, error)
 	// 部落动态-删除
@@ -172,7 +148,7 @@ type ClubServerServer interface {
 	// 更新部落动态配置（动态名称、背景图、是否隐藏部落动态
 	SaveClubDynamicCfg(context.Context, *SaveClubDynamicCfgRequest) (*APICommonResponse, error)
 	// 获取部落动态社区配置
-	GetClubDynamicCfg(context.Context, *GetClubDynamicCfgRequest) (*GetClubDynamicCfgResponse, error)
+	GetClubDynamicCfg(context.Context, *GetClubDynamicCfgsRequest) (*GetClubDynamicCfgsResponse, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -201,7 +177,7 @@ func (UnimplementedClubServerServer) SetClubDynamicAct(context.Context, *SetClub
 func (UnimplementedClubServerServer) SaveClubDynamicCfg(context.Context, *SaveClubDynamicCfgRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SaveClubDynamicCfg not implemented")
 }
-func (UnimplementedClubServerServer) GetClubDynamicCfg(context.Context, *GetClubDynamicCfgRequest) (*GetClubDynamicCfgResponse, error) {
+func (UnimplementedClubServerServer) GetClubDynamicCfg(context.Context, *GetClubDynamicCfgsRequest) (*GetClubDynamicCfgsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClubDynamicCfg not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
@@ -344,7 +320,7 @@ func _ClubServer_SaveClubDynamicCfg_Handler(srv interface{}, ctx context.Context
 }
 
 func _ClubServer_GetClubDynamicCfg_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetClubDynamicCfgRequest)
+	in := new(GetClubDynamicCfgsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -356,7 +332,7 @@ func _ClubServer_GetClubDynamicCfg_Handler(srv interface{}, ctx context.Context,
 		FullMethod: ClubServer_GetClubDynamicCfg_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClubServerServer).GetClubDynamicCfg(ctx, req.(*GetClubDynamicCfgRequest))
+		return srv.(ClubServerServer).GetClubDynamicCfg(ctx, req.(*GetClubDynamicCfgsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
