@@ -19,14 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ClubServer_GetClubList_FullMethodName        = "/club.ClubServer/getClubList"
-	ClubServer_GetClubInfo_FullMethodName        = "/club.ClubServer/getClubInfo"
-	ClubServer_GetGroupUserStatus_FullMethodName = "/club.ClubServer/getGroupUserStatus"
-	ClubServer_GetGroupInfo_FullMethodName       = "/club.ClubServer/getGroupInfo"
-	ClubServer_GetClubDynamicList_FullMethodName = "/club.ClubServer/getClubDynamicList"
-	ClubServer_SetClubDynamicAct_FullMethodName  = "/club.ClubServer/setClubDynamicAct"
-	ClubServer_SaveClubDynamicCfg_FullMethodName = "/club.ClubServer/saveClubDynamicCfg"
-	ClubServer_GetClubDynamicCfg_FullMethodName  = "/club.ClubServer/getClubDynamicCfg"
+	ClubServer_GetClubList_FullMethodName              = "/club.ClubServer/getClubList"
+	ClubServer_GetClubInfo_FullMethodName              = "/club.ClubServer/getClubInfo"
+	ClubServer_GetGroupUserStatus_FullMethodName       = "/club.ClubServer/getGroupUserStatus"
+	ClubServer_GetGroupInfo_FullMethodName             = "/club.ClubServer/getGroupInfo"
+	ClubServer_GetClubDynamicList_FullMethodName       = "/club.ClubServer/getClubDynamicList"
+	ClubServer_SetClubDynamicAct_FullMethodName        = "/club.ClubServer/setClubDynamicAct"
+	ClubServer_SaveClubDynamicCfg_FullMethodName       = "/club.ClubServer/saveClubDynamicCfg"
+	ClubServer_GetClubDynamicCfg_FullMethodName        = "/club.ClubServer/getClubDynamicCfg"
+	ClubServer_GetClubDynamicStatistics_FullMethodName = "/club.ClubServer/getClubDynamicStatistics"
 )
 
 // ClubServerClient is the client API for ClubServer service.
@@ -42,16 +43,14 @@ type ClubServerClient interface {
 	GetGroupInfo(ctx context.Context, in *GroupInfoReq, opts ...grpc.CallOption) (*GroupInfoRes, error)
 	// 获取部落动态列表
 	GetClubDynamicList(ctx context.Context, in *GetClubDynamicListRequest, opts ...grpc.CallOption) (*GetClubDynamicListResponse, error)
-	// 刷新部落动态列表
-	//
-	//	rpc refreshClubDynamicList(RefreshClubDynamicListRequest) returns (APICommonResponse);
-	//
 	// 部落动态-删除
 	SetClubDynamicAct(ctx context.Context, in *SetClubDynamicActRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 更新部落动态配置（动态名称、背景图、是否隐藏部落动态
 	SaveClubDynamicCfg(ctx context.Context, in *SaveClubDynamicCfgRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 获取部落动态社区配置
 	GetClubDynamicCfg(ctx context.Context, in *GetClubDynamicCfgsRequest, opts ...grpc.CallOption) (*GetClubDynamicCfgsResponse, error)
+	// 获取部落统计数据
+	GetClubDynamicStatistics(ctx context.Context, in *ClubDynamicStatisticsRequest, opts ...grpc.CallOption) (*ClubDynamicStatisticsResponse, error)
 }
 
 type clubServerClient struct {
@@ -134,6 +133,15 @@ func (c *clubServerClient) GetClubDynamicCfg(ctx context.Context, in *GetClubDyn
 	return out, nil
 }
 
+func (c *clubServerClient) GetClubDynamicStatistics(ctx context.Context, in *ClubDynamicStatisticsRequest, opts ...grpc.CallOption) (*ClubDynamicStatisticsResponse, error) {
+	out := new(ClubDynamicStatisticsResponse)
+	err := c.cc.Invoke(ctx, ClubServer_GetClubDynamicStatistics_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClubServerServer is the server API for ClubServer service.
 // All implementations must embed UnimplementedClubServerServer
 // for forward compatibility
@@ -147,16 +155,14 @@ type ClubServerServer interface {
 	GetGroupInfo(context.Context, *GroupInfoReq) (*GroupInfoRes, error)
 	// 获取部落动态列表
 	GetClubDynamicList(context.Context, *GetClubDynamicListRequest) (*GetClubDynamicListResponse, error)
-	// 刷新部落动态列表
-	//
-	//	rpc refreshClubDynamicList(RefreshClubDynamicListRequest) returns (APICommonResponse);
-	//
 	// 部落动态-删除
 	SetClubDynamicAct(context.Context, *SetClubDynamicActRequest) (*APICommonResponse, error)
 	// 更新部落动态配置（动态名称、背景图、是否隐藏部落动态
 	SaveClubDynamicCfg(context.Context, *SaveClubDynamicCfgRequest) (*APICommonResponse, error)
 	// 获取部落动态社区配置
 	GetClubDynamicCfg(context.Context, *GetClubDynamicCfgsRequest) (*GetClubDynamicCfgsResponse, error)
+	// 获取部落统计数据
+	GetClubDynamicStatistics(context.Context, *ClubDynamicStatisticsRequest) (*ClubDynamicStatisticsResponse, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -187,6 +193,9 @@ func (UnimplementedClubServerServer) SaveClubDynamicCfg(context.Context, *SaveCl
 }
 func (UnimplementedClubServerServer) GetClubDynamicCfg(context.Context, *GetClubDynamicCfgsRequest) (*GetClubDynamicCfgsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClubDynamicCfg not implemented")
+}
+func (UnimplementedClubServerServer) GetClubDynamicStatistics(context.Context, *ClubDynamicStatisticsRequest) (*ClubDynamicStatisticsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetClubDynamicStatistics not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
 
@@ -345,6 +354,24 @@ func _ClubServer_GetClubDynamicCfg_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClubServer_GetClubDynamicStatistics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClubDynamicStatisticsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetClubDynamicStatistics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetClubDynamicStatistics_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetClubDynamicStatistics(ctx, req.(*ClubDynamicStatisticsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClubServer_ServiceDesc is the grpc.ServiceDesc for ClubServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -383,6 +410,10 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getClubDynamicCfg",
 			Handler:    _ClubServer_GetClubDynamicCfg_Handler,
+		},
+		{
+			MethodName: "getClubDynamicStatistics",
+			Handler:    _ClubServer_GetClubDynamicStatistics_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
