@@ -50,6 +50,7 @@ message DynamicInfo {
   SupClub Supclub = 28;  //部落信息
   int64 CanShare = 29;  //是否能分享
 //  repeated CommentInfo Comments = 30;  //评论列表
+//  repeated int64 Tbmids = 31;  //动态部落列表
 }
 
 message CommentInfo {
@@ -96,7 +97,7 @@ message PublishDynamicRequest {
   optional string Title = 7; //标题（文章类型传）
   int64 UserId = 8; //发表动态的用户ID
   string Media = 9; //新版本新增图片列表
-//  repeated int64 TbMids = 10; //同步的部落
+  repeated int64 TbMids = 10; //同步的部落
 }
 
 message UpdateDynamicRequest {
@@ -111,7 +112,7 @@ message DiscoverDynamicListRequest {
 
 message DiscoverDynamicList {
   DynamicInfo info = 1;
-  SupClub supclub = 2;
+//  SupClub supclub = 2;
   repeated Comments Comments = 3;
 }
 
@@ -220,7 +221,7 @@ message FocusRequest {
 }
 
 message HasFocusResponse {
-  int64 IsDel = 1; //true 已关注 false未关注
+  int64 IsDel = 1; //1 已关注 0 未关注
   APIError Error = 2;
 }
 
@@ -344,6 +345,14 @@ message UsersFansCountAndFocusCountResponse{
   APIError Error = 2;
 }
 
+message RemoveDiscoverDynamicIdsRequest {
+   message RequestIds {
+      int64 Did = 1; //动态ID
+      int64 Duid = 2; //动态作者ID
+  }
+  repeated RequestIds ids = 1;
+}
+
 //生成代码命令，项目根目录下执行：
 //goctl rpc protoc ./define/dynamicsrv.proto --go_out=./v1/rpc/types --go-grpc_out=./v1/rpc/types --zrpc_out=./v1/rpc
 service Dynamicsrv {
@@ -369,6 +378,8 @@ service Dynamicsrv {
   rpc HasPraise(HasPraiseRequest) returns(HasPraiseResponse);
   // 获取动态/评论点赞列表
   rpc GetPraiseList(PraiseListRequest) returns(PraiseListResponse);
+  // 从动态列表中移除动态
+  rpc RemoveDiscoverDynamicIds(RemoveDiscoverDynamicIdsRequest) returns(APICommonResponse);
 
   //收藏动态
   rpc Collect(CollectRequest) returns(APICommonResponse);

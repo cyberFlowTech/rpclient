@@ -21,7 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	Dynamicsrv_PublishDynamic_FullMethodName                 = "/dynamicsrv.Dynamicsrv/PublishDynamic"
 	Dynamicsrv_UpdateDynamic_FullMethodName                  = "/dynamicsrv.Dynamicsrv/UpdateDynamic"
-	Dynamicsrv_GetDiscoverDynamicList_FullMethodName         = "/dynamicsrv.Dynamicsrv/GetDiscoverDynamicListByTime"
+	Dynamicsrv_GetDiscoverDynamicList_FullMethodName         = "/dynamicsrv.Dynamicsrv/GetDiscoverDynamicList"
 	Dynamicsrv_GetUserDynamicList_FullMethodName             = "/dynamicsrv.Dynamicsrv/GetUserDynamicList"
 	Dynamicsrv_GetDynamicInfo_FullMethodName                 = "/dynamicsrv.Dynamicsrv/GetDynamicInfo"
 	Dynamicsrv_DeleteDynamic_FullMethodName                  = "/dynamicsrv.Dynamicsrv/DeleteDynamic"
@@ -30,6 +30,7 @@ const (
 	Dynamicsrv_Praise_FullMethodName                         = "/dynamicsrv.Dynamicsrv/Praise"
 	Dynamicsrv_HasPraise_FullMethodName                      = "/dynamicsrv.Dynamicsrv/HasPraise"
 	Dynamicsrv_GetPraiseList_FullMethodName                  = "/dynamicsrv.Dynamicsrv/GetPraiseList"
+	Dynamicsrv_RemoveDiscoverDynamicIds_FullMethodName       = "/dynamicsrv.Dynamicsrv/RemoveDiscoverDynamicIds"
 	Dynamicsrv_Collect_FullMethodName                        = "/dynamicsrv.Dynamicsrv/Collect"
 	Dynamicsrv_HasCollect_FullMethodName                     = "/dynamicsrv.Dynamicsrv/HasCollect"
 	Dynamicsrv_GetCollectList_FullMethodName                 = "/dynamicsrv.Dynamicsrv/GetCollectList"
@@ -70,6 +71,8 @@ type DynamicsrvClient interface {
 	HasPraise(ctx context.Context, in *HasPraiseRequest, opts ...grpc.CallOption) (*HasPraiseResponse, error)
 	// 获取动态/评论点赞列表
 	GetPraiseList(ctx context.Context, in *PraiseListRequest, opts ...grpc.CallOption) (*PraiseListResponse, error)
+	// 从动态列表中移除动态
+	RemoveDiscoverDynamicIds(ctx context.Context, in *RemoveDiscoverDynamicIdsRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 收藏动态
 	Collect(ctx context.Context, in *CollectRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 该用户是否已收藏该动态
@@ -197,6 +200,15 @@ func (c *dynamicsrvClient) HasPraise(ctx context.Context, in *HasPraiseRequest, 
 func (c *dynamicsrvClient) GetPraiseList(ctx context.Context, in *PraiseListRequest, opts ...grpc.CallOption) (*PraiseListResponse, error) {
 	out := new(PraiseListResponse)
 	err := c.cc.Invoke(ctx, Dynamicsrv_GetPraiseList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dynamicsrvClient) RemoveDiscoverDynamicIds(ctx context.Context, in *RemoveDiscoverDynamicIdsRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
+	out := new(APICommonResponse)
+	err := c.cc.Invoke(ctx, Dynamicsrv_RemoveDiscoverDynamicIds_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -337,6 +349,8 @@ type DynamicsrvServer interface {
 	HasPraise(context.Context, *HasPraiseRequest) (*HasPraiseResponse, error)
 	// 获取动态/评论点赞列表
 	GetPraiseList(context.Context, *PraiseListRequest) (*PraiseListResponse, error)
+	// 从动态列表中移除动态
+	RemoveDiscoverDynamicIds(context.Context, *RemoveDiscoverDynamicIdsRequest) (*APICommonResponse, error)
 	// 收藏动态
 	Collect(context.Context, *CollectRequest) (*APICommonResponse, error)
 	// 该用户是否已收藏该动态
@@ -375,7 +389,7 @@ func (UnimplementedDynamicsrvServer) UpdateDynamic(context.Context, *UpdateDynam
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateDynamic not implemented")
 }
 func (UnimplementedDynamicsrvServer) GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*DiscoverDynamicListResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetDiscoverDynamicListByTime not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method GetDiscoverDynamicList not implemented")
 }
 func (UnimplementedDynamicsrvServer) GetUserDynamicList(context.Context, *UserDynamicListRequest) (*DynamicInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserDynamicList not implemented")
@@ -400,6 +414,9 @@ func (UnimplementedDynamicsrvServer) HasPraise(context.Context, *HasPraiseReques
 }
 func (UnimplementedDynamicsrvServer) GetPraiseList(context.Context, *PraiseListRequest) (*PraiseListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPraiseList not implemented")
+}
+func (UnimplementedDynamicsrvServer) RemoveDiscoverDynamicIds(context.Context, *RemoveDiscoverDynamicIdsRequest) (*APICommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveDiscoverDynamicIds not implemented")
 }
 func (UnimplementedDynamicsrvServer) Collect(context.Context, *CollectRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Collect not implemented")
@@ -648,6 +665,24 @@ func _Dynamicsrv_GetPraiseList_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Dynamicsrv_RemoveDiscoverDynamicIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveDiscoverDynamicIdsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DynamicsrvServer).RemoveDiscoverDynamicIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Dynamicsrv_RemoveDiscoverDynamicIds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DynamicsrvServer).RemoveDiscoverDynamicIds(ctx, req.(*RemoveDiscoverDynamicIdsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Dynamicsrv_Collect_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CollectRequest)
 	if err := dec(in); err != nil {
@@ -880,7 +915,7 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Dynamicsrv_UpdateDynamic_Handler,
 		},
 		{
-			MethodName: "GetDiscoverDynamicListByTime",
+			MethodName: "GetDiscoverDynamicList",
 			Handler:    _Dynamicsrv_GetDiscoverDynamicList_Handler,
 		},
 		{
@@ -914,6 +949,10 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPraiseList",
 			Handler:    _Dynamicsrv_GetPraiseList_Handler,
+		},
+		{
+			MethodName: "RemoveDiscoverDynamicIds",
+			Handler:    _Dynamicsrv_RemoveDiscoverDynamicIds_Handler,
 		},
 		{
 			MethodName: "Collect",
