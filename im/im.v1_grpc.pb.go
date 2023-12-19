@@ -19,23 +19,24 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	ImServer_GetToken_FullMethodName           = "/im.ImServer/getToken"
-	ImServer_SendPackMsg_FullMethodName        = "/im.ImServer/SendPackMsg"
-	ImServer_SendSystemCmdMsg_FullMethodName   = "/im.ImServer/SendSystemCmdMsg"
-	ImServer_SendMsg_FullMethodName            = "/im.ImServer/SendMsg"
-	ImServer_GetGroupInfo_FullMethodName       = "/im.ImServer/GetGroupInfo"
-	ImServer_UpdateGroup_FullMethodName        = "/im.ImServer/UpdateGroup"
-	ImServer_UpdateGroupUser_FullMethodName    = "/im.ImServer/UpdateGroupUser"
-	ImServer_UpdateGroupManages_FullMethodName = "/im.ImServer/UpdateGroupManages"
-	ImServer_UpdateGroupNotice_FullMethodName  = "/im.ImServer/UpdateGroupNotice"
-	ImServer_SetBlocks_FullMethodName          = "/im.ImServer/SetBlocks"
-	ImServer_SetGroupDapp_FullMethodName       = "/im.ImServer/SetGroupDapp"
-	ImServer_GetGroupDapp_FullMethodName       = "/im.ImServer/GetGroupDapp"
-	ImServer_GetUserOldGroup_FullMethodName    = "/im.ImServer/GetUserOldGroup"
-	ImServer_GetStatClub_FullMethodName        = "/im.ImServer/GetStatClub"
-	ImServer_PushStatClub_FullMethodName       = "/im.ImServer/PushStatClub"
-	ImServer_SetNotification_FullMethodName    = "/im.ImServer/SetNotification"
-	ImServer_AddUserOldGroup_FullMethodName    = "/im.ImServer/AddUserOldGroup"
+	ImServer_GetToken_FullMethodName             = "/im.ImServer/getToken"
+	ImServer_SendPackMsg_FullMethodName          = "/im.ImServer/SendPackMsg"
+	ImServer_SendSystemCmdMsg_FullMethodName     = "/im.ImServer/SendSystemCmdMsg"
+	ImServer_SendMsg_FullMethodName              = "/im.ImServer/SendMsg"
+	ImServer_GetGroupInfo_FullMethodName         = "/im.ImServer/GetGroupInfo"
+	ImServer_UpdateGroup_FullMethodName          = "/im.ImServer/UpdateGroup"
+	ImServer_UpdateGroupUser_FullMethodName      = "/im.ImServer/UpdateGroupUser"
+	ImServer_UpdateGroupManages_FullMethodName   = "/im.ImServer/UpdateGroupManages"
+	ImServer_UpdateGroupNotice_FullMethodName    = "/im.ImServer/UpdateGroupNotice"
+	ImServer_SetBlocks_FullMethodName            = "/im.ImServer/SetBlocks"
+	ImServer_SetGroupDapp_FullMethodName         = "/im.ImServer/SetGroupDapp"
+	ImServer_GetGroupDapp_FullMethodName         = "/im.ImServer/GetGroupDapp"
+	ImServer_GetUserOldGroup_FullMethodName      = "/im.ImServer/GetUserOldGroup"
+	ImServer_GetStatClub_FullMethodName          = "/im.ImServer/GetStatClub"
+	ImServer_PushStatClub_FullMethodName         = "/im.ImServer/PushStatClub"
+	ImServer_SetNotification_FullMethodName      = "/im.ImServer/SetNotification"
+	ImServer_AddUserOldGroup_FullMethodName      = "/im.ImServer/AddUserOldGroup"
+	ImServer_GetUserChannelNotice_FullMethodName = "/im.ImServer/GetUserChannelNotice"
 )
 
 // ImServerClient is the client API for ImServer service.
@@ -59,6 +60,7 @@ type ImServerClient interface {
 	PushStatClub(ctx context.Context, in *PushStatClubReq, opts ...grpc.CallOption) (*EmptyData, error)
 	SetNotification(ctx context.Context, in *SetNotificationReq, opts ...grpc.CallOption) (*SetNotificationRes, error)
 	AddUserOldGroup(ctx context.Context, in *AddUserOldGroupReq, opts ...grpc.CallOption) (*CommonRes, error)
+	GetUserChannelNotice(ctx context.Context, in *GetUserChannelNoticeReq, opts ...grpc.CallOption) (*GetUserChannelNoticeRes, error)
 }
 
 type imServerClient struct {
@@ -222,6 +224,15 @@ func (c *imServerClient) AddUserOldGroup(ctx context.Context, in *AddUserOldGrou
 	return out, nil
 }
 
+func (c *imServerClient) GetUserChannelNotice(ctx context.Context, in *GetUserChannelNoticeReq, opts ...grpc.CallOption) (*GetUserChannelNoticeRes, error) {
+	out := new(GetUserChannelNoticeRes)
+	err := c.cc.Invoke(ctx, ImServer_GetUserChannelNotice_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImServerServer is the server API for ImServer service.
 // All implementations must embed UnimplementedImServerServer
 // for forward compatibility
@@ -243,6 +254,7 @@ type ImServerServer interface {
 	PushStatClub(context.Context, *PushStatClubReq) (*EmptyData, error)
 	SetNotification(context.Context, *SetNotificationReq) (*SetNotificationRes, error)
 	AddUserOldGroup(context.Context, *AddUserOldGroupReq) (*CommonRes, error)
+	GetUserChannelNotice(context.Context, *GetUserChannelNoticeReq) (*GetUserChannelNoticeRes, error)
 	mustEmbedUnimplementedImServerServer()
 }
 
@@ -300,6 +312,9 @@ func (UnimplementedImServerServer) SetNotification(context.Context, *SetNotifica
 }
 func (UnimplementedImServerServer) AddUserOldGroup(context.Context, *AddUserOldGroupReq) (*CommonRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddUserOldGroup not implemented")
+}
+func (UnimplementedImServerServer) GetUserChannelNotice(context.Context, *GetUserChannelNoticeReq) (*GetUserChannelNoticeRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserChannelNotice not implemented")
 }
 func (UnimplementedImServerServer) mustEmbedUnimplementedImServerServer() {}
 
@@ -620,6 +635,24 @@ func _ImServer_AddUserOldGroup_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImServer_GetUserChannelNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserChannelNoticeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).GetUserChannelNotice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_GetUserChannelNotice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).GetUserChannelNotice(ctx, req.(*GetUserChannelNoticeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ImServer_ServiceDesc is the grpc.ServiceDesc for ImServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -694,6 +727,10 @@ var ImServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddUserOldGroup",
 			Handler:    _ImServer_AddUserOldGroup_Handler,
+		},
+		{
+			MethodName: "GetUserChannelNotice",
+			Handler:    _ImServer_GetUserChannelNotice_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
