@@ -29,6 +29,13 @@ const (
 	ImServer_UpdateGroupManages_FullMethodName = "/im.ImServer/UpdateGroupManages"
 	ImServer_UpdateGroupNotice_FullMethodName  = "/im.ImServer/UpdateGroupNotice"
 	ImServer_SetBlocks_FullMethodName          = "/im.ImServer/SetBlocks"
+	ImServer_SetGroupDapp_FullMethodName       = "/im.ImServer/SetGroupDapp"
+	ImServer_GetGroupDapp_FullMethodName       = "/im.ImServer/GetGroupDapp"
+	ImServer_GetUserOldGroup_FullMethodName    = "/im.ImServer/GetUserOldGroup"
+	ImServer_GetStatClub_FullMethodName        = "/im.ImServer/GetStatClub"
+	ImServer_PushStatClub_FullMethodName       = "/im.ImServer/PushStatClub"
+	ImServer_SetNotification_FullMethodName    = "/im.ImServer/SetNotification"
+	ImServer_AddUserOldGroup_FullMethodName    = "/im.ImServer/AddUserOldGroup"
 )
 
 // ImServerClient is the client API for ImServer service.
@@ -45,6 +52,13 @@ type ImServerClient interface {
 	UpdateGroupManages(ctx context.Context, in *UpdateGroupManagesReq, opts ...grpc.CallOption) (*UpdateGroupManagesRes, error)
 	UpdateGroupNotice(ctx context.Context, in *UpdateGroupNoticeReq, opts ...grpc.CallOption) (*UpdateGroupNoticeRes, error)
 	SetBlocks(ctx context.Context, in *SetBlocksReq, opts ...grpc.CallOption) (*CommonRes, error)
+	SetGroupDapp(ctx context.Context, in *SetGroupDappReq, opts ...grpc.CallOption) (*CommonRes, error)
+	GetGroupDapp(ctx context.Context, in *GetGroupDappReq, opts ...grpc.CallOption) (*GetGroupDappRes, error)
+	GetUserOldGroup(ctx context.Context, in *GetUserOldGroupReq, opts ...grpc.CallOption) (*GetUserOldGroupRes, error)
+	GetStatClub(ctx context.Context, in *GetStatClubReq, opts ...grpc.CallOption) (*GetStatClubRes, error)
+	PushStatClub(ctx context.Context, in *PushStatClubReq, opts ...grpc.CallOption) (*EmptyData, error)
+	SetNotification(ctx context.Context, in *SetNotificationReq, opts ...grpc.CallOption) (*SetNotificationRes, error)
+	AddUserOldGroup(ctx context.Context, in *AddUserOldGroupReq, opts ...grpc.CallOption) (*CommonRes, error)
 }
 
 type imServerClient struct {
@@ -145,6 +159,69 @@ func (c *imServerClient) SetBlocks(ctx context.Context, in *SetBlocksReq, opts .
 	return out, nil
 }
 
+func (c *imServerClient) SetGroupDapp(ctx context.Context, in *SetGroupDappReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_SetGroupDapp_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) GetGroupDapp(ctx context.Context, in *GetGroupDappReq, opts ...grpc.CallOption) (*GetGroupDappRes, error) {
+	out := new(GetGroupDappRes)
+	err := c.cc.Invoke(ctx, ImServer_GetGroupDapp_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) GetUserOldGroup(ctx context.Context, in *GetUserOldGroupReq, opts ...grpc.CallOption) (*GetUserOldGroupRes, error) {
+	out := new(GetUserOldGroupRes)
+	err := c.cc.Invoke(ctx, ImServer_GetUserOldGroup_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) GetStatClub(ctx context.Context, in *GetStatClubReq, opts ...grpc.CallOption) (*GetStatClubRes, error) {
+	out := new(GetStatClubRes)
+	err := c.cc.Invoke(ctx, ImServer_GetStatClub_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) PushStatClub(ctx context.Context, in *PushStatClubReq, opts ...grpc.CallOption) (*EmptyData, error) {
+	out := new(EmptyData)
+	err := c.cc.Invoke(ctx, ImServer_PushStatClub_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) SetNotification(ctx context.Context, in *SetNotificationReq, opts ...grpc.CallOption) (*SetNotificationRes, error) {
+	out := new(SetNotificationRes)
+	err := c.cc.Invoke(ctx, ImServer_SetNotification_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) AddUserOldGroup(ctx context.Context, in *AddUserOldGroupReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_AddUserOldGroup_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImServerServer is the server API for ImServer service.
 // All implementations must embed UnimplementedImServerServer
 // for forward compatibility
@@ -159,6 +236,13 @@ type ImServerServer interface {
 	UpdateGroupManages(context.Context, *UpdateGroupManagesReq) (*UpdateGroupManagesRes, error)
 	UpdateGroupNotice(context.Context, *UpdateGroupNoticeReq) (*UpdateGroupNoticeRes, error)
 	SetBlocks(context.Context, *SetBlocksReq) (*CommonRes, error)
+	SetGroupDapp(context.Context, *SetGroupDappReq) (*CommonRes, error)
+	GetGroupDapp(context.Context, *GetGroupDappReq) (*GetGroupDappRes, error)
+	GetUserOldGroup(context.Context, *GetUserOldGroupReq) (*GetUserOldGroupRes, error)
+	GetStatClub(context.Context, *GetStatClubReq) (*GetStatClubRes, error)
+	PushStatClub(context.Context, *PushStatClubReq) (*EmptyData, error)
+	SetNotification(context.Context, *SetNotificationReq) (*SetNotificationRes, error)
+	AddUserOldGroup(context.Context, *AddUserOldGroupReq) (*CommonRes, error)
 	mustEmbedUnimplementedImServerServer()
 }
 
@@ -195,6 +279,27 @@ func (UnimplementedImServerServer) UpdateGroupNotice(context.Context, *UpdateGro
 }
 func (UnimplementedImServerServer) SetBlocks(context.Context, *SetBlocksReq) (*CommonRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetBlocks not implemented")
+}
+func (UnimplementedImServerServer) SetGroupDapp(context.Context, *SetGroupDappReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetGroupDapp not implemented")
+}
+func (UnimplementedImServerServer) GetGroupDapp(context.Context, *GetGroupDappReq) (*GetGroupDappRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroupDapp not implemented")
+}
+func (UnimplementedImServerServer) GetUserOldGroup(context.Context, *GetUserOldGroupReq) (*GetUserOldGroupRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserOldGroup not implemented")
+}
+func (UnimplementedImServerServer) GetStatClub(context.Context, *GetStatClubReq) (*GetStatClubRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetStatClub not implemented")
+}
+func (UnimplementedImServerServer) PushStatClub(context.Context, *PushStatClubReq) (*EmptyData, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PushStatClub not implemented")
+}
+func (UnimplementedImServerServer) SetNotification(context.Context, *SetNotificationReq) (*SetNotificationRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetNotification not implemented")
+}
+func (UnimplementedImServerServer) AddUserOldGroup(context.Context, *AddUserOldGroupReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddUserOldGroup not implemented")
 }
 func (UnimplementedImServerServer) mustEmbedUnimplementedImServerServer() {}
 
@@ -389,6 +494,132 @@ func _ImServer_SetBlocks_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImServer_SetGroupDapp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetGroupDappReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).SetGroupDapp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_SetGroupDapp_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).SetGroupDapp(ctx, req.(*SetGroupDappReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_GetGroupDapp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGroupDappReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).GetGroupDapp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_GetGroupDapp_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).GetGroupDapp(ctx, req.(*GetGroupDappReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_GetUserOldGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserOldGroupReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).GetUserOldGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_GetUserOldGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).GetUserOldGroup(ctx, req.(*GetUserOldGroupReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_GetStatClub_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetStatClubReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).GetStatClub(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_GetStatClub_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).GetStatClub(ctx, req.(*GetStatClubReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_PushStatClub_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PushStatClubReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).PushStatClub(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_PushStatClub_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).PushStatClub(ctx, req.(*PushStatClubReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_SetNotification_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetNotificationReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).SetNotification(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_SetNotification_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).SetNotification(ctx, req.(*SetNotificationReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_AddUserOldGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddUserOldGroupReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).AddUserOldGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_AddUserOldGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).AddUserOldGroup(ctx, req.(*AddUserOldGroupReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ImServer_ServiceDesc is the grpc.ServiceDesc for ImServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -435,6 +666,34 @@ var ImServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetBlocks",
 			Handler:    _ImServer_SetBlocks_Handler,
+		},
+		{
+			MethodName: "SetGroupDapp",
+			Handler:    _ImServer_SetGroupDapp_Handler,
+		},
+		{
+			MethodName: "GetGroupDapp",
+			Handler:    _ImServer_GetGroupDapp_Handler,
+		},
+		{
+			MethodName: "GetUserOldGroup",
+			Handler:    _ImServer_GetUserOldGroup_Handler,
+		},
+		{
+			MethodName: "GetStatClub",
+			Handler:    _ImServer_GetStatClub_Handler,
+		},
+		{
+			MethodName: "PushStatClub",
+			Handler:    _ImServer_PushStatClub_Handler,
+		},
+		{
+			MethodName: "SetNotification",
+			Handler:    _ImServer_SetNotification_Handler,
+		},
+		{
+			MethodName: "AddUserOldGroup",
+			Handler:    _ImServer_AddUserOldGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
