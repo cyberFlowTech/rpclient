@@ -70,13 +70,6 @@ message CommentInfo {
   int64 Gcid = 14; //一级评论ID
 }
 
-//message UsersFansAndFocusCount {
-//  int64 FansCount = 1; //粉丝数
-//  int64 FocusCount = 2; //关注数
-//  int64 UserId = 3; // 用户ID
-//}
-
-
 message APIError {
   int64 Code = 1; //错误码 0正常
   string Message = 2; //错误消息
@@ -110,14 +103,25 @@ message DiscoverDynamicListRequest {
   int64 UserId = 2; //当前用户ID
 }
 
-message DiscoverDynamicList {
+message DynamicList {
   DynamicInfo info = 1;
 //  SupClub supclub = 2;
   repeated Comments Comments = 3;
 }
 
 message DiscoverDynamicListResponse {
-  repeated DiscoverDynamicList List = 1;
+  repeated DynamicList List = 1;
+  APIError Error = 2; //公共响应错误
+}
+
+message ClubDynamicListRequest {
+  int64 Page = 1; //当前页
+  int64 UserId = 2; //当前用户ID
+  int64 TbMid = 3; // 部落ID
+}
+
+message ClubDynamicListResponse {
+  repeated DynamicList List = 1;
   APIError Error = 2; //公共响应错误
 }
 
@@ -364,6 +368,8 @@ service Dynamicsrv {
   rpc GetDiscoverDynamicList(DiscoverDynamicListRequest) returns(DiscoverDynamicListResponse);
   //指定用户动态列表
   rpc GetUserDynamicList(UserDynamicListRequest) returns(DynamicInfoResponse);
+  // 部落动态列表
+  rpc GetClubDynamicList(ClubDynamicListRequest) returns(ClubDynamicListResponse);
   //动态详情
   rpc GetDynamicInfo(DynamicInfoRequest) returns(DynamicInfoResponse);
   //删除动态
