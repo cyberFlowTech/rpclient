@@ -19,12 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	User_GetUsersInfo_FullMethodName            = "/userinfo.User/getUsersInfo"
-	User_GetUsers_FullMethodName                = "/userinfo.User/getUsers"
-	User_UpdateUserInfo_FullMethodName          = "/userinfo.User/updateUserInfo"
-	User_ResetUserPwd_FullMethodName            = "/userinfo.User/ResetUserPwd"
-	User_GetUsesNotificationConf_FullMethodName = "/userinfo.User/GetUsesNotificationConf"
-	User_SetUsesNotificationConf_FullMethodName = "/userinfo.User/SetUsesNotificationConf"
+	User_GetUsersInfo_FullMethodName             = "/userinfo.User/getUsersInfo"
+	User_GetUsers_FullMethodName                 = "/userinfo.User/getUsers"
+	User_UpdateUserInfo_FullMethodName           = "/userinfo.User/updateUserInfo"
+	User_ResetUserPwd_FullMethodName             = "/userinfo.User/ResetUserPwd"
+	User_GetUsersNotificationConf_FullMethodName = "/userinfo.User/GetUsersNotificationConf"
+	User_SetUsersNotificationConf_FullMethodName = "/userinfo.User/SetUsersNotificationConf"
 )
 
 // UserClient is the client API for User service.
@@ -40,9 +40,9 @@ type UserClient interface {
 	// 修改账号密码
 	ResetUserPwd(ctx context.Context, in *RestUsersPwdReq, opts ...grpc.CallOption) (*RestUsersPwdResp, error)
 	// 获取用户的消息配置
-	GetUsesNotificationConf(ctx context.Context, in *UsesNotificationConfReq, opts ...grpc.CallOption) (*UsesNotificationConfResp, error)
+	GetUsersNotificationConf(ctx context.Context, in *UsersNotificationConfReq, opts ...grpc.CallOption) (*UsersNotificationConfResp, error)
 	// 设置用户的消息配置
-	SetUsesNotificationConf(ctx context.Context, in *SetUsesNotificationConfReq, opts ...grpc.CallOption) (*SetUsesNotificationConfResp, error)
+	SetUsersNotificationConf(ctx context.Context, in *SetUsersNotificationConfReq, opts ...grpc.CallOption) (*SetUsersNotificationConfResp, error)
 }
 
 type userClient struct {
@@ -89,18 +89,18 @@ func (c *userClient) ResetUserPwd(ctx context.Context, in *RestUsersPwdReq, opts
 	return out, nil
 }
 
-func (c *userClient) GetUsesNotificationConf(ctx context.Context, in *UsesNotificationConfReq, opts ...grpc.CallOption) (*UsesNotificationConfResp, error) {
-	out := new(UsesNotificationConfResp)
-	err := c.cc.Invoke(ctx, User_GetUsesNotificationConf_FullMethodName, in, out, opts...)
+func (c *userClient) GetUsersNotificationConf(ctx context.Context, in *UsersNotificationConfReq, opts ...grpc.CallOption) (*UsersNotificationConfResp, error) {
+	out := new(UsersNotificationConfResp)
+	err := c.cc.Invoke(ctx, User_GetUsersNotificationConf_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) SetUsesNotificationConf(ctx context.Context, in *SetUsesNotificationConfReq, opts ...grpc.CallOption) (*SetUsesNotificationConfResp, error) {
-	out := new(SetUsesNotificationConfResp)
-	err := c.cc.Invoke(ctx, User_SetUsesNotificationConf_FullMethodName, in, out, opts...)
+func (c *userClient) SetUsersNotificationConf(ctx context.Context, in *SetUsersNotificationConfReq, opts ...grpc.CallOption) (*SetUsersNotificationConfResp, error) {
+	out := new(SetUsersNotificationConfResp)
+	err := c.cc.Invoke(ctx, User_SetUsersNotificationConf_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -120,9 +120,9 @@ type UserServer interface {
 	// 修改账号密码
 	ResetUserPwd(context.Context, *RestUsersPwdReq) (*RestUsersPwdResp, error)
 	// 获取用户的消息配置
-	GetUsesNotificationConf(context.Context, *UsesNotificationConfReq) (*UsesNotificationConfResp, error)
+	GetUsersNotificationConf(context.Context, *UsersNotificationConfReq) (*UsersNotificationConfResp, error)
 	// 设置用户的消息配置
-	SetUsesNotificationConf(context.Context, *SetUsesNotificationConfReq) (*SetUsesNotificationConfResp, error)
+	SetUsersNotificationConf(context.Context, *SetUsersNotificationConfReq) (*SetUsersNotificationConfResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -142,11 +142,11 @@ func (UnimplementedUserServer) UpdateUserInfo(context.Context, *SetUserInfoReq) 
 func (UnimplementedUserServer) ResetUserPwd(context.Context, *RestUsersPwdReq) (*RestUsersPwdResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ResetUserPwd not implemented")
 }
-func (UnimplementedUserServer) GetUsesNotificationConf(context.Context, *UsesNotificationConfReq) (*UsesNotificationConfResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUsesNotificationConf not implemented")
+func (UnimplementedUserServer) GetUsersNotificationConf(context.Context, *UsersNotificationConfReq) (*UsersNotificationConfResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUsersNotificationConf not implemented")
 }
-func (UnimplementedUserServer) SetUsesNotificationConf(context.Context, *SetUsesNotificationConfReq) (*SetUsesNotificationConfResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetUsesNotificationConf not implemented")
+func (UnimplementedUserServer) SetUsersNotificationConf(context.Context, *SetUsersNotificationConfReq) (*SetUsersNotificationConfResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetUsersNotificationConf not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -233,38 +233,38 @@ func _User_ResetUserPwd_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_GetUsesNotificationConf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UsesNotificationConfReq)
+func _User_GetUsersNotificationConf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UsersNotificationConfReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).GetUsesNotificationConf(ctx, in)
+		return srv.(UserServer).GetUsersNotificationConf(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: User_GetUsesNotificationConf_FullMethodName,
+		FullMethod: User_GetUsersNotificationConf_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetUsesNotificationConf(ctx, req.(*UsesNotificationConfReq))
+		return srv.(UserServer).GetUsersNotificationConf(ctx, req.(*UsersNotificationConfReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_SetUsesNotificationConf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetUsesNotificationConfReq)
+func _User_SetUsersNotificationConf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetUsersNotificationConfReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).SetUsesNotificationConf(ctx, in)
+		return srv.(UserServer).SetUsersNotificationConf(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: User_SetUsesNotificationConf_FullMethodName,
+		FullMethod: User_SetUsersNotificationConf_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).SetUsesNotificationConf(ctx, req.(*SetUsesNotificationConfReq))
+		return srv.(UserServer).SetUsersNotificationConf(ctx, req.(*SetUsersNotificationConfReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -293,12 +293,12 @@ var User_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _User_ResetUserPwd_Handler,
 		},
 		{
-			MethodName: "GetUsesNotificationConf",
-			Handler:    _User_GetUsesNotificationConf_Handler,
+			MethodName: "GetUsersNotificationConf",
+			Handler:    _User_GetUsersNotificationConf_Handler,
 		},
 		{
-			MethodName: "SetUsesNotificationConf",
-			Handler:    _User_SetUsesNotificationConf_Handler,
+			MethodName: "SetUsersNotificationConf",
+			Handler:    _User_SetUsersNotificationConf_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
