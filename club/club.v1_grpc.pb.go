@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.24.4
-// source: club.v1.proto
+// source: define/club.v1.proto
 
 package club
 
@@ -28,6 +28,35 @@ const (
 	ClubServer_GetClubDynamicCfg_FullMethodName        = "/club.ClubServer/getClubDynamicCfg"
 	ClubServer_GetClubDynamicStatistics_FullMethodName = "/club.ClubServer/getClubDynamicStatistics"
 	ClubServer_IncrClubParticipate_FullMethodName      = "/club.ClubServer/IncrClubParticipate"
+	ClubServer_Create_FullMethodName                   = "/club.ClubServer/create"
+	ClubServer_Disturb_FullMethodName                  = "/club.ClubServer/disturb"
+	ClubServer_JoinApply_FullMethodName                = "/club.ClubServer/joinApply"
+	ClubServer_Audit_FullMethodName                    = "/club.ClubServer/audit"
+	ClubServer_GetAccess_FullMethodName                = "/club.ClubServer/getAccess"
+	ClubServer_Quit_FullMethodName                     = "/club.ClubServer/quit"
+	ClubServer_Dissolution_FullMethodName              = "/club.ClubServer/dissolution"
+	ClubServer_Kick_FullMethodName                     = "/club.ClubServer/kick"
+	ClubServer_SetNick_FullMethodName                  = "/club.ClubServer/setNick"
+	ClubServer_Setting_FullMethodName                  = "/club.ClubServer/setting"
+	ClubServer_ZoneCreate_FullMethodName               = "/club.ClubServer/zoneCreate"
+	ClubServer_ChannelCreate_FullMethodName            = "/club.ClubServer/channelCreate"
+	ClubServer_ZoneUpdate_FullMethodName               = "/club.ClubServer/zoneUpdate"
+	ClubServer_ChannelUpdate_FullMethodName            = "/club.ClubServer/channelUpdate"
+	ClubServer_ChannelDelete_FullMethodName            = "/club.ClubServer/channelDelete"
+	ClubServer_ZoneDelete_FullMethodName               = "/club.ClubServer/zoneDelete"
+	ClubServer_Transfer_FullMethodName                 = "/club.ClubServer/transfer"
+	ClubServer_GetUserList_FullMethodName              = "/club.ClubServer/getUserList"
+	ClubServer_ChannelSort_FullMethodName              = "/club.ClubServer/channelSort"
+	ClubServer_ZoneSort_FullMethodName                 = "/club.ClubServer/zoneSort"
+	ClubServer_ClubSort_FullMethodName                 = "/club.ClubServer/clubSort"
+	ClubServer_GetUserCustomInfo_FullMethodName        = "/club.ClubServer/getUserCustomInfo"
+	ClubServer_GetRecommend_FullMethodName             = "/club.ClubServer/GetRecommend"
+	ClubServer_GetRoleList_FullMethodName              = "/club.ClubServer/GetRoleList"
+	ClubServer_GetRoleInfo_FullMethodName              = "/club.ClubServer/GetRoleInfo"
+	ClubServer_SaveRoleInfo_FullMethodName             = "/club.ClubServer/SaveRoleInfo"
+	ClubServer_DeleteRoleInfo_FullMethodName           = "/club.ClubServer/DeleteRoleInfo"
+	ClubServer_OptRoleUser_FullMethodName              = "/club.ClubServer/OptRoleUser"
+	ClubServer_SetRoleSort_FullMethodName              = "/club.ClubServer/SetRoleSort"
 )
 
 // ClubServerClient is the client API for ClubServer service.
@@ -55,6 +84,64 @@ type ClubServerClient interface {
 	GetClubDynamicStatistics(ctx context.Context, in *ClubDynamicStatisticsRequest, opts ...grpc.CallOption) (*ClubDynamicStatisticsResponse, error)
 	// 增加部落参与数
 	IncrClubParticipate(ctx context.Context, in *IncrClubParticipateRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
+	// 创建部落
+	Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*CreateResp, error)
+	// 免打扰
+	Disturb(ctx context.Context, in *DisturbReq, opts ...grpc.CallOption) (*DisturbResp, error)
+	// 加入部落申请
+	JoinApply(ctx context.Context, in *JoinApplyReq, opts ...grpc.CallOption) (*JoinApplyResp, error)
+	// 加入部落审核
+	Audit(ctx context.Context, in *AuditReq, opts ...grpc.CallOption) (*AuditResp, error)
+	// 获取权限
+	GetAccess(ctx context.Context, in *GetAccessReq, opts ...grpc.CallOption) (*GetAccessResp, error)
+	// 退出部落
+	Quit(ctx context.Context, in *QuitReq, opts ...grpc.CallOption) (*QuitResp, error)
+	// 部落解散
+	Dissolution(ctx context.Context, in *DissReq, opts ...grpc.CallOption) (*DissResp, error)
+	// 踢出用户
+	Kick(ctx context.Context, in *KickReq, opts ...grpc.CallOption) (*KickResp, error)
+	// 设置备注
+	SetNick(ctx context.Context, in *SetNickReq, opts ...grpc.CallOption) (*SetNickResp, error)
+	// 部落修改
+	Setting(ctx context.Context, in *ClubModifyReq, opts ...grpc.CallOption) (*ClubModifyResp, error)
+	// 分组创建
+	ZoneCreate(ctx context.Context, in *ZoneCreateReq, opts ...grpc.CallOption) (*ZoneCreateResp, error)
+	// 频道创建
+	ChannelCreate(ctx context.Context, in *ChannelCreateReq, opts ...grpc.CallOption) (*ChannelCreateResp, error)
+	// 分组修改
+	ZoneUpdate(ctx context.Context, in *ZoneUpdateReq, opts ...grpc.CallOption) (*ZoneUpdateResp, error)
+	// 频道修改
+	ChannelUpdate(ctx context.Context, in *ChannelUpdateReq, opts ...grpc.CallOption) (*ChannelUpdateResp, error)
+	// 删除频道
+	ChannelDelete(ctx context.Context, in *ChannelDeleteReq, opts ...grpc.CallOption) (*ChannelDeleteResp, error)
+	// 删除分组
+	ZoneDelete(ctx context.Context, in *ZoneDeleteReq, opts ...grpc.CallOption) (*ZoneDeleteResp, error)
+	// 转让部落
+	Transfer(ctx context.Context, in *TransferReq, opts ...grpc.CallOption) (*TransferResp, error)
+	// 部落成员列表、身份组成员列表
+	GetUserList(ctx context.Context, in *GetUserListReq, opts ...grpc.CallOption) (*GetUserListResp, error)
+	// 房间排序
+	ChannelSort(ctx context.Context, in *ChannelSortReq, opts ...grpc.CallOption) (*APICommonResponse, error)
+	// 分组排序
+	ZoneSort(ctx context.Context, in *ZoneSortReq, opts ...grpc.CallOption) (*APICommonResponse, error)
+	// 部落排序
+	ClubSort(ctx context.Context, in *ClubSortReq, opts ...grpc.CallOption) (*APICommonResponse, error)
+	// 获取用户在部落里自定义信息
+	GetUserCustomInfo(ctx context.Context, in *GetUserCustomInfoReq, opts ...grpc.CallOption) (*GetUserCustomInfoResp, error)
+	// 获取部落推荐
+	GetRecommend(ctx context.Context, in *GetRecommendRequest, opts ...grpc.CallOption) (*GetRecommendResponse, error)
+	// 获取身份组列表
+	GetRoleList(ctx context.Context, in *GetRoleListRequest, opts ...grpc.CallOption) (*GetRoleListResponse, error)
+	// 获取身份组详情信息
+	GetRoleInfo(ctx context.Context, in *GetRoleInfoRequest, opts ...grpc.CallOption) (*GetRoleInfoResponse, error)
+	// 新建或更新身份组信息
+	SaveRoleInfo(ctx context.Context, in *SaveRoleInfoRequest, opts ...grpc.CallOption) (*SaveRoleInfoResponse, error)
+	// 删除身份组
+	DeleteRoleInfo(ctx context.Context, in *DeleteRoleInfoRequest, opts ...grpc.CallOption) (*DeleteRoleInfoResponse, error)
+	// 身份组成员增删
+	OptRoleUser(ctx context.Context, in *OptRoleUserRequest, opts ...grpc.CallOption) (*OptRoleUserResponse, error)
+	// 身份组排序
+	SetRoleSort(ctx context.Context, in *SetRoleSortRequest, opts ...grpc.CallOption) (*SetRoleSortResponse, error)
 }
 
 type clubServerClient struct {
@@ -146,6 +233,267 @@ func (c *clubServerClient) IncrClubParticipate(ctx context.Context, in *IncrClub
 	return out, nil
 }
 
+func (c *clubServerClient) Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*CreateResp, error) {
+	out := new(CreateResp)
+	err := c.cc.Invoke(ctx, ClubServer_Create_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) Disturb(ctx context.Context, in *DisturbReq, opts ...grpc.CallOption) (*DisturbResp, error) {
+	out := new(DisturbResp)
+	err := c.cc.Invoke(ctx, ClubServer_Disturb_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) JoinApply(ctx context.Context, in *JoinApplyReq, opts ...grpc.CallOption) (*JoinApplyResp, error) {
+	out := new(JoinApplyResp)
+	err := c.cc.Invoke(ctx, ClubServer_JoinApply_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) Audit(ctx context.Context, in *AuditReq, opts ...grpc.CallOption) (*AuditResp, error) {
+	out := new(AuditResp)
+	err := c.cc.Invoke(ctx, ClubServer_Audit_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) GetAccess(ctx context.Context, in *GetAccessReq, opts ...grpc.CallOption) (*GetAccessResp, error) {
+	out := new(GetAccessResp)
+	err := c.cc.Invoke(ctx, ClubServer_GetAccess_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) Quit(ctx context.Context, in *QuitReq, opts ...grpc.CallOption) (*QuitResp, error) {
+	out := new(QuitResp)
+	err := c.cc.Invoke(ctx, ClubServer_Quit_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) Dissolution(ctx context.Context, in *DissReq, opts ...grpc.CallOption) (*DissResp, error) {
+	out := new(DissResp)
+	err := c.cc.Invoke(ctx, ClubServer_Dissolution_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) Kick(ctx context.Context, in *KickReq, opts ...grpc.CallOption) (*KickResp, error) {
+	out := new(KickResp)
+	err := c.cc.Invoke(ctx, ClubServer_Kick_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) SetNick(ctx context.Context, in *SetNickReq, opts ...grpc.CallOption) (*SetNickResp, error) {
+	out := new(SetNickResp)
+	err := c.cc.Invoke(ctx, ClubServer_SetNick_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) Setting(ctx context.Context, in *ClubModifyReq, opts ...grpc.CallOption) (*ClubModifyResp, error) {
+	out := new(ClubModifyResp)
+	err := c.cc.Invoke(ctx, ClubServer_Setting_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) ZoneCreate(ctx context.Context, in *ZoneCreateReq, opts ...grpc.CallOption) (*ZoneCreateResp, error) {
+	out := new(ZoneCreateResp)
+	err := c.cc.Invoke(ctx, ClubServer_ZoneCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) ChannelCreate(ctx context.Context, in *ChannelCreateReq, opts ...grpc.CallOption) (*ChannelCreateResp, error) {
+	out := new(ChannelCreateResp)
+	err := c.cc.Invoke(ctx, ClubServer_ChannelCreate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) ZoneUpdate(ctx context.Context, in *ZoneUpdateReq, opts ...grpc.CallOption) (*ZoneUpdateResp, error) {
+	out := new(ZoneUpdateResp)
+	err := c.cc.Invoke(ctx, ClubServer_ZoneUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) ChannelUpdate(ctx context.Context, in *ChannelUpdateReq, opts ...grpc.CallOption) (*ChannelUpdateResp, error) {
+	out := new(ChannelUpdateResp)
+	err := c.cc.Invoke(ctx, ClubServer_ChannelUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) ChannelDelete(ctx context.Context, in *ChannelDeleteReq, opts ...grpc.CallOption) (*ChannelDeleteResp, error) {
+	out := new(ChannelDeleteResp)
+	err := c.cc.Invoke(ctx, ClubServer_ChannelDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) ZoneDelete(ctx context.Context, in *ZoneDeleteReq, opts ...grpc.CallOption) (*ZoneDeleteResp, error) {
+	out := new(ZoneDeleteResp)
+	err := c.cc.Invoke(ctx, ClubServer_ZoneDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) Transfer(ctx context.Context, in *TransferReq, opts ...grpc.CallOption) (*TransferResp, error) {
+	out := new(TransferResp)
+	err := c.cc.Invoke(ctx, ClubServer_Transfer_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) GetUserList(ctx context.Context, in *GetUserListReq, opts ...grpc.CallOption) (*GetUserListResp, error) {
+	out := new(GetUserListResp)
+	err := c.cc.Invoke(ctx, ClubServer_GetUserList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) ChannelSort(ctx context.Context, in *ChannelSortReq, opts ...grpc.CallOption) (*APICommonResponse, error) {
+	out := new(APICommonResponse)
+	err := c.cc.Invoke(ctx, ClubServer_ChannelSort_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) ZoneSort(ctx context.Context, in *ZoneSortReq, opts ...grpc.CallOption) (*APICommonResponse, error) {
+	out := new(APICommonResponse)
+	err := c.cc.Invoke(ctx, ClubServer_ZoneSort_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) ClubSort(ctx context.Context, in *ClubSortReq, opts ...grpc.CallOption) (*APICommonResponse, error) {
+	out := new(APICommonResponse)
+	err := c.cc.Invoke(ctx, ClubServer_ClubSort_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) GetUserCustomInfo(ctx context.Context, in *GetUserCustomInfoReq, opts ...grpc.CallOption) (*GetUserCustomInfoResp, error) {
+	out := new(GetUserCustomInfoResp)
+	err := c.cc.Invoke(ctx, ClubServer_GetUserCustomInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) GetRecommend(ctx context.Context, in *GetRecommendRequest, opts ...grpc.CallOption) (*GetRecommendResponse, error) {
+	out := new(GetRecommendResponse)
+	err := c.cc.Invoke(ctx, ClubServer_GetRecommend_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) GetRoleList(ctx context.Context, in *GetRoleListRequest, opts ...grpc.CallOption) (*GetRoleListResponse, error) {
+	out := new(GetRoleListResponse)
+	err := c.cc.Invoke(ctx, ClubServer_GetRoleList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) GetRoleInfo(ctx context.Context, in *GetRoleInfoRequest, opts ...grpc.CallOption) (*GetRoleInfoResponse, error) {
+	out := new(GetRoleInfoResponse)
+	err := c.cc.Invoke(ctx, ClubServer_GetRoleInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) SaveRoleInfo(ctx context.Context, in *SaveRoleInfoRequest, opts ...grpc.CallOption) (*SaveRoleInfoResponse, error) {
+	out := new(SaveRoleInfoResponse)
+	err := c.cc.Invoke(ctx, ClubServer_SaveRoleInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) DeleteRoleInfo(ctx context.Context, in *DeleteRoleInfoRequest, opts ...grpc.CallOption) (*DeleteRoleInfoResponse, error) {
+	out := new(DeleteRoleInfoResponse)
+	err := c.cc.Invoke(ctx, ClubServer_DeleteRoleInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) OptRoleUser(ctx context.Context, in *OptRoleUserRequest, opts ...grpc.CallOption) (*OptRoleUserResponse, error) {
+	out := new(OptRoleUserResponse)
+	err := c.cc.Invoke(ctx, ClubServer_OptRoleUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) SetRoleSort(ctx context.Context, in *SetRoleSortRequest, opts ...grpc.CallOption) (*SetRoleSortResponse, error) {
+	out := new(SetRoleSortResponse)
+	err := c.cc.Invoke(ctx, ClubServer_SetRoleSort_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClubServerServer is the server API for ClubServer service.
 // All implementations must embed UnimplementedClubServerServer
 // for forward compatibility
@@ -171,6 +519,64 @@ type ClubServerServer interface {
 	GetClubDynamicStatistics(context.Context, *ClubDynamicStatisticsRequest) (*ClubDynamicStatisticsResponse, error)
 	// 增加部落参与数
 	IncrClubParticipate(context.Context, *IncrClubParticipateRequest) (*APICommonResponse, error)
+	// 创建部落
+	Create(context.Context, *CreateReq) (*CreateResp, error)
+	// 免打扰
+	Disturb(context.Context, *DisturbReq) (*DisturbResp, error)
+	// 加入部落申请
+	JoinApply(context.Context, *JoinApplyReq) (*JoinApplyResp, error)
+	// 加入部落审核
+	Audit(context.Context, *AuditReq) (*AuditResp, error)
+	// 获取权限
+	GetAccess(context.Context, *GetAccessReq) (*GetAccessResp, error)
+	// 退出部落
+	Quit(context.Context, *QuitReq) (*QuitResp, error)
+	// 部落解散
+	Dissolution(context.Context, *DissReq) (*DissResp, error)
+	// 踢出用户
+	Kick(context.Context, *KickReq) (*KickResp, error)
+	// 设置备注
+	SetNick(context.Context, *SetNickReq) (*SetNickResp, error)
+	// 部落修改
+	Setting(context.Context, *ClubModifyReq) (*ClubModifyResp, error)
+	// 分组创建
+	ZoneCreate(context.Context, *ZoneCreateReq) (*ZoneCreateResp, error)
+	// 频道创建
+	ChannelCreate(context.Context, *ChannelCreateReq) (*ChannelCreateResp, error)
+	// 分组修改
+	ZoneUpdate(context.Context, *ZoneUpdateReq) (*ZoneUpdateResp, error)
+	// 频道修改
+	ChannelUpdate(context.Context, *ChannelUpdateReq) (*ChannelUpdateResp, error)
+	// 删除频道
+	ChannelDelete(context.Context, *ChannelDeleteReq) (*ChannelDeleteResp, error)
+	// 删除分组
+	ZoneDelete(context.Context, *ZoneDeleteReq) (*ZoneDeleteResp, error)
+	// 转让部落
+	Transfer(context.Context, *TransferReq) (*TransferResp, error)
+	// 部落成员列表、身份组成员列表
+	GetUserList(context.Context, *GetUserListReq) (*GetUserListResp, error)
+	// 房间排序
+	ChannelSort(context.Context, *ChannelSortReq) (*APICommonResponse, error)
+	// 分组排序
+	ZoneSort(context.Context, *ZoneSortReq) (*APICommonResponse, error)
+	// 部落排序
+	ClubSort(context.Context, *ClubSortReq) (*APICommonResponse, error)
+	// 获取用户在部落里自定义信息
+	GetUserCustomInfo(context.Context, *GetUserCustomInfoReq) (*GetUserCustomInfoResp, error)
+	// 获取部落推荐
+	GetRecommend(context.Context, *GetRecommendRequest) (*GetRecommendResponse, error)
+	// 获取身份组列表
+	GetRoleList(context.Context, *GetRoleListRequest) (*GetRoleListResponse, error)
+	// 获取身份组详情信息
+	GetRoleInfo(context.Context, *GetRoleInfoRequest) (*GetRoleInfoResponse, error)
+	// 新建或更新身份组信息
+	SaveRoleInfo(context.Context, *SaveRoleInfoRequest) (*SaveRoleInfoResponse, error)
+	// 删除身份组
+	DeleteRoleInfo(context.Context, *DeleteRoleInfoRequest) (*DeleteRoleInfoResponse, error)
+	// 身份组成员增删
+	OptRoleUser(context.Context, *OptRoleUserRequest) (*OptRoleUserResponse, error)
+	// 身份组排序
+	SetRoleSort(context.Context, *SetRoleSortRequest) (*SetRoleSortResponse, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -204,6 +610,93 @@ func (UnimplementedClubServerServer) GetClubDynamicStatistics(context.Context, *
 }
 func (UnimplementedClubServerServer) IncrClubParticipate(context.Context, *IncrClubParticipateRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IncrClubParticipate not implemented")
+}
+func (UnimplementedClubServerServer) Create(context.Context, *CreateReq) (*CreateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedClubServerServer) Disturb(context.Context, *DisturbReq) (*DisturbResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Disturb not implemented")
+}
+func (UnimplementedClubServerServer) JoinApply(context.Context, *JoinApplyReq) (*JoinApplyResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method JoinApply not implemented")
+}
+func (UnimplementedClubServerServer) Audit(context.Context, *AuditReq) (*AuditResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Audit not implemented")
+}
+func (UnimplementedClubServerServer) GetAccess(context.Context, *GetAccessReq) (*GetAccessResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAccess not implemented")
+}
+func (UnimplementedClubServerServer) Quit(context.Context, *QuitReq) (*QuitResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Quit not implemented")
+}
+func (UnimplementedClubServerServer) Dissolution(context.Context, *DissReq) (*DissResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Dissolution not implemented")
+}
+func (UnimplementedClubServerServer) Kick(context.Context, *KickReq) (*KickResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Kick not implemented")
+}
+func (UnimplementedClubServerServer) SetNick(context.Context, *SetNickReq) (*SetNickResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetNick not implemented")
+}
+func (UnimplementedClubServerServer) Setting(context.Context, *ClubModifyReq) (*ClubModifyResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Setting not implemented")
+}
+func (UnimplementedClubServerServer) ZoneCreate(context.Context, *ZoneCreateReq) (*ZoneCreateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ZoneCreate not implemented")
+}
+func (UnimplementedClubServerServer) ChannelCreate(context.Context, *ChannelCreateReq) (*ChannelCreateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChannelCreate not implemented")
+}
+func (UnimplementedClubServerServer) ZoneUpdate(context.Context, *ZoneUpdateReq) (*ZoneUpdateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ZoneUpdate not implemented")
+}
+func (UnimplementedClubServerServer) ChannelUpdate(context.Context, *ChannelUpdateReq) (*ChannelUpdateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChannelUpdate not implemented")
+}
+func (UnimplementedClubServerServer) ChannelDelete(context.Context, *ChannelDeleteReq) (*ChannelDeleteResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChannelDelete not implemented")
+}
+func (UnimplementedClubServerServer) ZoneDelete(context.Context, *ZoneDeleteReq) (*ZoneDeleteResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ZoneDelete not implemented")
+}
+func (UnimplementedClubServerServer) Transfer(context.Context, *TransferReq) (*TransferResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Transfer not implemented")
+}
+func (UnimplementedClubServerServer) GetUserList(context.Context, *GetUserListReq) (*GetUserListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserList not implemented")
+}
+func (UnimplementedClubServerServer) ChannelSort(context.Context, *ChannelSortReq) (*APICommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChannelSort not implemented")
+}
+func (UnimplementedClubServerServer) ZoneSort(context.Context, *ZoneSortReq) (*APICommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ZoneSort not implemented")
+}
+func (UnimplementedClubServerServer) ClubSort(context.Context, *ClubSortReq) (*APICommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClubSort not implemented")
+}
+func (UnimplementedClubServerServer) GetUserCustomInfo(context.Context, *GetUserCustomInfoReq) (*GetUserCustomInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserCustomInfo not implemented")
+}
+func (UnimplementedClubServerServer) GetRecommend(context.Context, *GetRecommendRequest) (*GetRecommendResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRecommend not implemented")
+}
+func (UnimplementedClubServerServer) GetRoleList(context.Context, *GetRoleListRequest) (*GetRoleListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRoleList not implemented")
+}
+func (UnimplementedClubServerServer) GetRoleInfo(context.Context, *GetRoleInfoRequest) (*GetRoleInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRoleInfo not implemented")
+}
+func (UnimplementedClubServerServer) SaveRoleInfo(context.Context, *SaveRoleInfoRequest) (*SaveRoleInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SaveRoleInfo not implemented")
+}
+func (UnimplementedClubServerServer) DeleteRoleInfo(context.Context, *DeleteRoleInfoRequest) (*DeleteRoleInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRoleInfo not implemented")
+}
+func (UnimplementedClubServerServer) OptRoleUser(context.Context, *OptRoleUserRequest) (*OptRoleUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OptRoleUser not implemented")
+}
+func (UnimplementedClubServerServer) SetRoleSort(context.Context, *SetRoleSortRequest) (*SetRoleSortResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetRoleSort not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
 
@@ -380,6 +873,528 @@ func _ClubServer_IncrClubParticipate_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClubServer_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).Create(ctx, req.(*CreateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_Disturb_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DisturbReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).Disturb(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_Disturb_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).Disturb(ctx, req.(*DisturbReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_JoinApply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JoinApplyReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).JoinApply(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_JoinApply_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).JoinApply(ctx, req.(*JoinApplyReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_Audit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AuditReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).Audit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_Audit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).Audit(ctx, req.(*AuditReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_GetAccess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAccessReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetAccess(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetAccess_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetAccess(ctx, req.(*GetAccessReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_Quit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QuitReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).Quit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_Quit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).Quit(ctx, req.(*QuitReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_Dissolution_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DissReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).Dissolution(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_Dissolution_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).Dissolution(ctx, req.(*DissReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_Kick_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(KickReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).Kick(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_Kick_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).Kick(ctx, req.(*KickReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_SetNick_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetNickReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).SetNick(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_SetNick_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).SetNick(ctx, req.(*SetNickReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_Setting_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClubModifyReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).Setting(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_Setting_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).Setting(ctx, req.(*ClubModifyReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_ZoneCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ZoneCreateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).ZoneCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_ZoneCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).ZoneCreate(ctx, req.(*ZoneCreateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_ChannelCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChannelCreateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).ChannelCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_ChannelCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).ChannelCreate(ctx, req.(*ChannelCreateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_ZoneUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ZoneUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).ZoneUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_ZoneUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).ZoneUpdate(ctx, req.(*ZoneUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_ChannelUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChannelUpdateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).ChannelUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_ChannelUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).ChannelUpdate(ctx, req.(*ChannelUpdateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_ChannelDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChannelDeleteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).ChannelDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_ChannelDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).ChannelDelete(ctx, req.(*ChannelDeleteReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_ZoneDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ZoneDeleteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).ZoneDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_ZoneDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).ZoneDelete(ctx, req.(*ZoneDeleteReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_Transfer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TransferReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).Transfer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_Transfer_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).Transfer(ctx, req.(*TransferReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_GetUserList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetUserList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetUserList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetUserList(ctx, req.(*GetUserListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_ChannelSort_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChannelSortReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).ChannelSort(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_ChannelSort_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).ChannelSort(ctx, req.(*ChannelSortReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_ZoneSort_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ZoneSortReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).ZoneSort(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_ZoneSort_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).ZoneSort(ctx, req.(*ZoneSortReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_ClubSort_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClubSortReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).ClubSort(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_ClubSort_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).ClubSort(ctx, req.(*ClubSortReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_GetUserCustomInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserCustomInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetUserCustomInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetUserCustomInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetUserCustomInfo(ctx, req.(*GetUserCustomInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_GetRecommend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRecommendRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetRecommend(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetRecommend_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetRecommend(ctx, req.(*GetRecommendRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_GetRoleList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRoleListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetRoleList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetRoleList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetRoleList(ctx, req.(*GetRoleListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_GetRoleInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRoleInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetRoleInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetRoleInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetRoleInfo(ctx, req.(*GetRoleInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_SaveRoleInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SaveRoleInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).SaveRoleInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_SaveRoleInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).SaveRoleInfo(ctx, req.(*SaveRoleInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_DeleteRoleInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRoleInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).DeleteRoleInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_DeleteRoleInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).DeleteRoleInfo(ctx, req.(*DeleteRoleInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_OptRoleUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OptRoleUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).OptRoleUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_OptRoleUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).OptRoleUser(ctx, req.(*OptRoleUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_SetRoleSort_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetRoleSortRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).SetRoleSort(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_SetRoleSort_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).SetRoleSort(ctx, req.(*SetRoleSortRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClubServer_ServiceDesc is the grpc.ServiceDesc for ClubServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -423,7 +1438,123 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "IncrClubParticipate",
 			Handler:    _ClubServer_IncrClubParticipate_Handler,
 		},
+		{
+			MethodName: "create",
+			Handler:    _ClubServer_Create_Handler,
+		},
+		{
+			MethodName: "disturb",
+			Handler:    _ClubServer_Disturb_Handler,
+		},
+		{
+			MethodName: "joinApply",
+			Handler:    _ClubServer_JoinApply_Handler,
+		},
+		{
+			MethodName: "audit",
+			Handler:    _ClubServer_Audit_Handler,
+		},
+		{
+			MethodName: "getAccess",
+			Handler:    _ClubServer_GetAccess_Handler,
+		},
+		{
+			MethodName: "quit",
+			Handler:    _ClubServer_Quit_Handler,
+		},
+		{
+			MethodName: "dissolution",
+			Handler:    _ClubServer_Dissolution_Handler,
+		},
+		{
+			MethodName: "kick",
+			Handler:    _ClubServer_Kick_Handler,
+		},
+		{
+			MethodName: "setNick",
+			Handler:    _ClubServer_SetNick_Handler,
+		},
+		{
+			MethodName: "setting",
+			Handler:    _ClubServer_Setting_Handler,
+		},
+		{
+			MethodName: "zoneCreate",
+			Handler:    _ClubServer_ZoneCreate_Handler,
+		},
+		{
+			MethodName: "channelCreate",
+			Handler:    _ClubServer_ChannelCreate_Handler,
+		},
+		{
+			MethodName: "zoneUpdate",
+			Handler:    _ClubServer_ZoneUpdate_Handler,
+		},
+		{
+			MethodName: "channelUpdate",
+			Handler:    _ClubServer_ChannelUpdate_Handler,
+		},
+		{
+			MethodName: "channelDelete",
+			Handler:    _ClubServer_ChannelDelete_Handler,
+		},
+		{
+			MethodName: "zoneDelete",
+			Handler:    _ClubServer_ZoneDelete_Handler,
+		},
+		{
+			MethodName: "transfer",
+			Handler:    _ClubServer_Transfer_Handler,
+		},
+		{
+			MethodName: "getUserList",
+			Handler:    _ClubServer_GetUserList_Handler,
+		},
+		{
+			MethodName: "channelSort",
+			Handler:    _ClubServer_ChannelSort_Handler,
+		},
+		{
+			MethodName: "zoneSort",
+			Handler:    _ClubServer_ZoneSort_Handler,
+		},
+		{
+			MethodName: "clubSort",
+			Handler:    _ClubServer_ClubSort_Handler,
+		},
+		{
+			MethodName: "getUserCustomInfo",
+			Handler:    _ClubServer_GetUserCustomInfo_Handler,
+		},
+		{
+			MethodName: "GetRecommend",
+			Handler:    _ClubServer_GetRecommend_Handler,
+		},
+		{
+			MethodName: "GetRoleList",
+			Handler:    _ClubServer_GetRoleList_Handler,
+		},
+		{
+			MethodName: "GetRoleInfo",
+			Handler:    _ClubServer_GetRoleInfo_Handler,
+		},
+		{
+			MethodName: "SaveRoleInfo",
+			Handler:    _ClubServer_SaveRoleInfo_Handler,
+		},
+		{
+			MethodName: "DeleteRoleInfo",
+			Handler:    _ClubServer_DeleteRoleInfo_Handler,
+		},
+		{
+			MethodName: "OptRoleUser",
+			Handler:    _ClubServer_OptRoleUser_Handler,
+		},
+		{
+			MethodName: "SetRoleSort",
+			Handler:    _ClubServer_SetRoleSort_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "club.v1.proto",
+	Metadata: "define/club.v1.proto",
 }
