@@ -25,6 +25,8 @@ const (
 	DappServer_UpdateItemRelation_FullMethodName = "/dapp.dappServer/UpdateItemRelation"
 	DappServer_GetRelationByRelID_FullMethodName = "/dapp.dappServer/GetRelationByRelID"
 	DappServer_DelRelationByRelID_FullMethodName = "/dapp.dappServer/DelRelationByRelID"
+	DappServer_Search_FullMethodName             = "/dapp.dappServer/Search"
+	DappServer_GetListByCategory_FullMethodName  = "/dapp.dappServer/GetListByCategory"
 )
 
 // DappServerClient is the client API for DappServer service.
@@ -43,6 +45,10 @@ type DappServerClient interface {
 	GetRelationByRelID(ctx context.Context, in *GetRelationReq, opts ...grpc.CallOption) (*GetRelationResp, error)
 	// 删除关联dapp
 	DelRelationByRelID(ctx context.Context, in *DelRelationReq, opts ...grpc.CallOption) (*DelRelationResp, error)
+	// 搜索
+	Search(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*ListResp, error)
+	// 获取指定类型dapp
+	GetListByCategory(ctx context.Context, in *GetListByCategoryReq, opts ...grpc.CallOption) (*ListResp, error)
 }
 
 type dappServerClient struct {
@@ -107,6 +113,24 @@ func (c *dappServerClient) DelRelationByRelID(ctx context.Context, in *DelRelati
 	return out, nil
 }
 
+func (c *dappServerClient) Search(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*ListResp, error) {
+	out := new(ListResp)
+	err := c.cc.Invoke(ctx, DappServer_Search_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dappServerClient) GetListByCategory(ctx context.Context, in *GetListByCategoryReq, opts ...grpc.CallOption) (*ListResp, error) {
+	out := new(ListResp)
+	err := c.cc.Invoke(ctx, DappServer_GetListByCategory_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DappServerServer is the server API for DappServer service.
 // All implementations must embed UnimplementedDappServerServer
 // for forward compatibility
@@ -123,6 +147,10 @@ type DappServerServer interface {
 	GetRelationByRelID(context.Context, *GetRelationReq) (*GetRelationResp, error)
 	// 删除关联dapp
 	DelRelationByRelID(context.Context, *DelRelationReq) (*DelRelationResp, error)
+	// 搜索
+	Search(context.Context, *SearchReq) (*ListResp, error)
+	// 获取指定类型dapp
+	GetListByCategory(context.Context, *GetListByCategoryReq) (*ListResp, error)
 	mustEmbedUnimplementedDappServerServer()
 }
 
@@ -147,6 +175,12 @@ func (UnimplementedDappServerServer) GetRelationByRelID(context.Context, *GetRel
 }
 func (UnimplementedDappServerServer) DelRelationByRelID(context.Context, *DelRelationReq) (*DelRelationResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DelRelationByRelID not implemented")
+}
+func (UnimplementedDappServerServer) Search(context.Context, *SearchReq) (*ListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
+}
+func (UnimplementedDappServerServer) GetListByCategory(context.Context, *GetListByCategoryReq) (*ListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetListByCategory not implemented")
 }
 func (UnimplementedDappServerServer) mustEmbedUnimplementedDappServerServer() {}
 
@@ -269,6 +303,42 @@ func _DappServer_DelRelationByRelID_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DappServer_Search_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DappServerServer).Search(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DappServer_Search_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DappServerServer).Search(ctx, req.(*SearchReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DappServer_GetListByCategory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetListByCategoryReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DappServerServer).GetListByCategory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DappServer_GetListByCategory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DappServerServer).GetListByCategory(ctx, req.(*GetListByCategoryReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DappServer_ServiceDesc is the grpc.ServiceDesc for DappServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -299,6 +369,14 @@ var DappServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DelRelationByRelID",
 			Handler:    _DappServer_DelRelationByRelID_Handler,
+		},
+		{
+			MethodName: "Search",
+			Handler:    _DappServer_Search_Handler,
+		},
+		{
+			MethodName: "GetListByCategory",
+			Handler:    _DappServer_GetListByCategory_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
