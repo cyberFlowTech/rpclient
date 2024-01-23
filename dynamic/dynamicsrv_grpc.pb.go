@@ -23,6 +23,7 @@ const (
 	Dynamicsrv_UpdateDynamic_FullMethodName                  = "/dynamicsrv.Dynamicsrv/UpdateDynamic"
 	Dynamicsrv_GetDiscoverDynamicList_FullMethodName         = "/dynamicsrv.Dynamicsrv/GetDiscoverDynamicList"
 	Dynamicsrv_GetUserDynamicList_FullMethodName             = "/dynamicsrv.Dynamicsrv/GetUserDynamicList"
+	Dynamicsrv_GetClubDynamicList_FullMethodName             = "/dynamicsrv.Dynamicsrv/GetClubDynamicList"
 	Dynamicsrv_GetDynamicInfo_FullMethodName                 = "/dynamicsrv.Dynamicsrv/GetDynamicInfo"
 	Dynamicsrv_DeleteDynamic_FullMethodName                  = "/dynamicsrv.Dynamicsrv/DeleteDynamic"
 	Dynamicsrv_SyncDynamicToClub_FullMethodName              = "/dynamicsrv.Dynamicsrv/SyncDynamicToClub"
@@ -57,6 +58,8 @@ type DynamicsrvClient interface {
 	GetDiscoverDynamicList(ctx context.Context, in *DiscoverDynamicListRequest, opts ...grpc.CallOption) (*DiscoverDynamicListResponse, error)
 	// 指定用户动态列表
 	GetUserDynamicList(ctx context.Context, in *UserDynamicListRequest, opts ...grpc.CallOption) (*DynamicInfoResponse, error)
+	// 部落动态列表
+	GetClubDynamicList(ctx context.Context, in *ClubDynamicListRequest, opts ...grpc.CallOption) (*ClubDynamicListResponse, error)
 	// 动态详情
 	GetDynamicInfo(ctx context.Context, in *DynamicInfoRequest, opts ...grpc.CallOption) (*DynamicInfoResponse, error)
 	// 删除动态
@@ -137,6 +140,15 @@ func (c *dynamicsrvClient) GetDiscoverDynamicList(ctx context.Context, in *Disco
 func (c *dynamicsrvClient) GetUserDynamicList(ctx context.Context, in *UserDynamicListRequest, opts ...grpc.CallOption) (*DynamicInfoResponse, error) {
 	out := new(DynamicInfoResponse)
 	err := c.cc.Invoke(ctx, Dynamicsrv_GetUserDynamicList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dynamicsrvClient) GetClubDynamicList(ctx context.Context, in *ClubDynamicListRequest, opts ...grpc.CallOption) (*ClubDynamicListResponse, error) {
+	out := new(ClubDynamicListResponse)
+	err := c.cc.Invoke(ctx, Dynamicsrv_GetClubDynamicList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -335,6 +347,8 @@ type DynamicsrvServer interface {
 	GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*DiscoverDynamicListResponse, error)
 	// 指定用户动态列表
 	GetUserDynamicList(context.Context, *UserDynamicListRequest) (*DynamicInfoResponse, error)
+	// 部落动态列表
+	GetClubDynamicList(context.Context, *ClubDynamicListRequest) (*ClubDynamicListResponse, error)
 	// 动态详情
 	GetDynamicInfo(context.Context, *DynamicInfoRequest) (*DynamicInfoResponse, error)
 	// 删除动态
@@ -393,6 +407,9 @@ func (UnimplementedDynamicsrvServer) GetDiscoverDynamicList(context.Context, *Di
 }
 func (UnimplementedDynamicsrvServer) GetUserDynamicList(context.Context, *UserDynamicListRequest) (*DynamicInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserDynamicList not implemented")
+}
+func (UnimplementedDynamicsrvServer) GetClubDynamicList(context.Context, *ClubDynamicListRequest) (*ClubDynamicListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetClubDynamicList not implemented")
 }
 func (UnimplementedDynamicsrvServer) GetDynamicInfo(context.Context, *DynamicInfoRequest) (*DynamicInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDynamicInfo not implemented")
@@ -535,6 +552,24 @@ func _Dynamicsrv_GetUserDynamicList_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DynamicsrvServer).GetUserDynamicList(ctx, req.(*UserDynamicListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dynamicsrv_GetClubDynamicList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClubDynamicListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DynamicsrvServer).GetClubDynamicList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Dynamicsrv_GetClubDynamicList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DynamicsrvServer).GetClubDynamicList(ctx, req.(*ClubDynamicListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -921,6 +956,10 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserDynamicList",
 			Handler:    _Dynamicsrv_GetUserDynamicList_Handler,
+		},
+		{
+			MethodName: "GetClubDynamicList",
+			Handler:    _Dynamicsrv_GetClubDynamicList_Handler,
 		},
 		{
 			MethodName: "GetDynamicInfo",

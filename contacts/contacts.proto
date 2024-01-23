@@ -156,6 +156,7 @@ enum RelationType{
   CheckFriend=0;
   CheckBlock=1;
   CheckFocus=2;
+  CheckGeneral=3;
 }
 message CheckRelationReq {
   RelationType SetType = 1;

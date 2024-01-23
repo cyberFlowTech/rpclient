@@ -918,7 +918,7 @@ func (x *DiscoverDynamicListRequest) GetUserId() int64 {
 	return 0
 }
 
-type DiscoverDynamicList struct {
+type DynamicList struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -928,8 +928,8 @@ type DiscoverDynamicList struct {
 	Comments []*Comments `protobuf:"bytes,3,rep,name=Comments,proto3" json:"Comments,omitempty"`
 }
 
-func (x *DiscoverDynamicList) Reset() {
-	*x = DiscoverDynamicList{}
+func (x *DynamicList) Reset() {
+	*x = DynamicList{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_define_dynamicsrv_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -937,13 +937,13 @@ func (x *DiscoverDynamicList) Reset() {
 	}
 }
 
-func (x *DiscoverDynamicList) String() string {
+func (x *DynamicList) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DiscoverDynamicList) ProtoMessage() {}
+func (*DynamicList) ProtoMessage() {}
 
-func (x *DiscoverDynamicList) ProtoReflect() protoreflect.Message {
+func (x *DynamicList) ProtoReflect() protoreflect.Message {
 	mi := &file_define_dynamicsrv_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -955,19 +955,19 @@ func (x *DiscoverDynamicList) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DiscoverDynamicList.ProtoReflect.Descriptor instead.
-func (*DiscoverDynamicList) Descriptor() ([]byte, []int) {
+// Deprecated: Use DynamicList.ProtoReflect.Descriptor instead.
+func (*DynamicList) Descriptor() ([]byte, []int) {
 	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *DiscoverDynamicList) GetInfo() *DynamicInfo {
+func (x *DynamicList) GetInfo() *DynamicInfo {
 	if x != nil {
 		return x.Info
 	}
 	return nil
 }
 
-func (x *DiscoverDynamicList) GetComments() []*Comments {
+func (x *DynamicList) GetComments() []*Comments {
 	if x != nil {
 		return x.Comments
 	}
@@ -979,8 +979,8 @@ type DiscoverDynamicListResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	List  []*DiscoverDynamicList `protobuf:"bytes,1,rep,name=List,proto3" json:"List,omitempty"`
-	Error *APIError              `protobuf:"bytes,2,opt,name=Error,proto3" json:"Error,omitempty"` //公共响应错误
+	List  []*DynamicList `protobuf:"bytes,1,rep,name=List,proto3" json:"List,omitempty"`
+	Error *APIError      `protobuf:"bytes,2,opt,name=Error,proto3" json:"Error,omitempty"` //公共响应错误
 }
 
 func (x *DiscoverDynamicListResponse) Reset() {
@@ -1015,7 +1015,7 @@ func (*DiscoverDynamicListResponse) Descriptor() ([]byte, []int) {
 	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *DiscoverDynamicListResponse) GetList() []*DiscoverDynamicList {
+func (x *DiscoverDynamicListResponse) GetList() []*DynamicList {
 	if x != nil {
 		return x.List
 	}
@@ -1023,6 +1023,124 @@ func (x *DiscoverDynamicListResponse) GetList() []*DiscoverDynamicList {
 }
 
 func (x *DiscoverDynamicListResponse) GetError() *APIError {
+	if x != nil {
+		return x.Error
+	}
+	return nil
+}
+
+type ClubDynamicListRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Page   int64 `protobuf:"varint,1,opt,name=Page,proto3" json:"Page,omitempty"`     //当前页
+	UserId int64 `protobuf:"varint,2,opt,name=UserId,proto3" json:"UserId,omitempty"` //当前用户ID
+	TbMid  int64 `protobuf:"varint,3,opt,name=TbMid,proto3" json:"TbMid,omitempty"`   // 部落ID
+}
+
+func (x *ClubDynamicListRequest) Reset() {
+	*x = ClubDynamicListRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_define_dynamicsrv_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ClubDynamicListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClubDynamicListRequest) ProtoMessage() {}
+
+func (x *ClubDynamicListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_define_dynamicsrv_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClubDynamicListRequest.ProtoReflect.Descriptor instead.
+func (*ClubDynamicListRequest) Descriptor() ([]byte, []int) {
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ClubDynamicListRequest) GetPage() int64 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ClubDynamicListRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *ClubDynamicListRequest) GetTbMid() int64 {
+	if x != nil {
+		return x.TbMid
+	}
+	return 0
+}
+
+type ClubDynamicListResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	List  []*DynamicList `protobuf:"bytes,1,rep,name=List,proto3" json:"List,omitempty"`
+	Error *APIError      `protobuf:"bytes,2,opt,name=Error,proto3" json:"Error,omitempty"` //公共响应错误
+}
+
+func (x *ClubDynamicListResponse) Reset() {
+	*x = ClubDynamicListResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_define_dynamicsrv_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ClubDynamicListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClubDynamicListResponse) ProtoMessage() {}
+
+func (x *ClubDynamicListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_define_dynamicsrv_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClubDynamicListResponse.ProtoReflect.Descriptor instead.
+func (*ClubDynamicListResponse) Descriptor() ([]byte, []int) {
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ClubDynamicListResponse) GetList() []*DynamicList {
+	if x != nil {
+		return x.List
+	}
+	return nil
+}
+
+func (x *ClubDynamicListResponse) GetError() *APIError {
 	if x != nil {
 		return x.Error
 	}
@@ -1042,7 +1160,7 @@ type UserDynamicListRequest struct {
 func (x *UserDynamicListRequest) Reset() {
 	*x = UserDynamicListRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[11]
+		mi := &file_define_dynamicsrv_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1055,7 +1173,7 @@ func (x *UserDynamicListRequest) String() string {
 func (*UserDynamicListRequest) ProtoMessage() {}
 
 func (x *UserDynamicListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[11]
+	mi := &file_define_dynamicsrv_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1068,7 +1186,7 @@ func (x *UserDynamicListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserDynamicListRequest.ProtoReflect.Descriptor instead.
 func (*UserDynamicListRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{11}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *UserDynamicListRequest) GetPage() int64 {
@@ -1107,7 +1225,7 @@ type InfoForm struct {
 func (x *InfoForm) Reset() {
 	*x = InfoForm{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[12]
+		mi := &file_define_dynamicsrv_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1120,7 +1238,7 @@ func (x *InfoForm) String() string {
 func (*InfoForm) ProtoMessage() {}
 
 func (x *InfoForm) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[12]
+	mi := &file_define_dynamicsrv_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1133,7 +1251,7 @@ func (x *InfoForm) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InfoForm.ProtoReflect.Descriptor instead.
 func (*InfoForm) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{12}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *InfoForm) GetDuid() int64 {
@@ -1168,7 +1286,7 @@ type DynamicInfoRequest struct {
 func (x *DynamicInfoRequest) Reset() {
 	*x = DynamicInfoRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[13]
+		mi := &file_define_dynamicsrv_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1181,7 +1299,7 @@ func (x *DynamicInfoRequest) String() string {
 func (*DynamicInfoRequest) ProtoMessage() {}
 
 func (x *DynamicInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[13]
+	mi := &file_define_dynamicsrv_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1194,7 +1312,7 @@ func (x *DynamicInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicInfoRequest.ProtoReflect.Descriptor instead.
 func (*DynamicInfoRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{13}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *DynamicInfoRequest) GetInfos() []*InfoForm {
@@ -1217,7 +1335,7 @@ type DynamicInfoResponse struct {
 func (x *DynamicInfoResponse) Reset() {
 	*x = DynamicInfoResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[14]
+		mi := &file_define_dynamicsrv_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1230,7 +1348,7 @@ func (x *DynamicInfoResponse) String() string {
 func (*DynamicInfoResponse) ProtoMessage() {}
 
 func (x *DynamicInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[14]
+	mi := &file_define_dynamicsrv_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1243,7 +1361,7 @@ func (x *DynamicInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DynamicInfoResponse.ProtoReflect.Descriptor instead.
 func (*DynamicInfoResponse) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{14}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DynamicInfoResponse) GetInfos() []*DynamicInfo {
@@ -1273,7 +1391,7 @@ type DeleteDynamicRequest struct {
 func (x *DeleteDynamicRequest) Reset() {
 	*x = DeleteDynamicRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[15]
+		mi := &file_define_dynamicsrv_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1286,7 +1404,7 @@ func (x *DeleteDynamicRequest) String() string {
 func (*DeleteDynamicRequest) ProtoMessage() {}
 
 func (x *DeleteDynamicRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[15]
+	mi := &file_define_dynamicsrv_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1299,7 +1417,7 @@ func (x *DeleteDynamicRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteDynamicRequest.ProtoReflect.Descriptor instead.
 func (*DeleteDynamicRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{15}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *DeleteDynamicRequest) GetDuid() int64 {
@@ -1329,7 +1447,7 @@ type SyncDynamicToClubRequest struct {
 func (x *SyncDynamicToClubRequest) Reset() {
 	*x = SyncDynamicToClubRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[16]
+		mi := &file_define_dynamicsrv_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1342,7 +1460,7 @@ func (x *SyncDynamicToClubRequest) String() string {
 func (*SyncDynamicToClubRequest) ProtoMessage() {}
 
 func (x *SyncDynamicToClubRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[16]
+	mi := &file_define_dynamicsrv_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1355,7 +1473,7 @@ func (x *SyncDynamicToClubRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SyncDynamicToClubRequest.ProtoReflect.Descriptor instead.
 func (*SyncDynamicToClubRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{16}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *SyncDynamicToClubRequest) GetTbMid() []int64 {
@@ -1391,7 +1509,7 @@ type DelDynamicToClubReq struct {
 func (x *DelDynamicToClubReq) Reset() {
 	*x = DelDynamicToClubReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[17]
+		mi := &file_define_dynamicsrv_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1404,7 +1522,7 @@ func (x *DelDynamicToClubReq) String() string {
 func (*DelDynamicToClubReq) ProtoMessage() {}
 
 func (x *DelDynamicToClubReq) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[17]
+	mi := &file_define_dynamicsrv_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1417,7 +1535,7 @@ func (x *DelDynamicToClubReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DelDynamicToClubReq.ProtoReflect.Descriptor instead.
 func (*DelDynamicToClubReq) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{17}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *DelDynamicToClubReq) GetDid() int64 {
@@ -1450,7 +1568,7 @@ type PraiseRequest struct {
 func (x *PraiseRequest) Reset() {
 	*x = PraiseRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[18]
+		mi := &file_define_dynamicsrv_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1463,7 +1581,7 @@ func (x *PraiseRequest) String() string {
 func (*PraiseRequest) ProtoMessage() {}
 
 func (x *PraiseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[18]
+	mi := &file_define_dynamicsrv_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1476,7 +1594,7 @@ func (x *PraiseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PraiseRequest.ProtoReflect.Descriptor instead.
 func (*PraiseRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{18}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *PraiseRequest) GetDid() int64 {
@@ -1526,7 +1644,7 @@ type HasPraiseRequest struct {
 func (x *HasPraiseRequest) Reset() {
 	*x = HasPraiseRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[19]
+		mi := &file_define_dynamicsrv_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1539,7 +1657,7 @@ func (x *HasPraiseRequest) String() string {
 func (*HasPraiseRequest) ProtoMessage() {}
 
 func (x *HasPraiseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[19]
+	mi := &file_define_dynamicsrv_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1552,7 +1670,7 @@ func (x *HasPraiseRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HasPraiseRequest.ProtoReflect.Descriptor instead.
 func (*HasPraiseRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{19}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *HasPraiseRequest) GetHasPraise() []*PraiseRequest {
@@ -1576,7 +1694,7 @@ type HasPraise struct {
 func (x *HasPraise) Reset() {
 	*x = HasPraise{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[20]
+		mi := &file_define_dynamicsrv_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1589,7 +1707,7 @@ func (x *HasPraise) String() string {
 func (*HasPraise) ProtoMessage() {}
 
 func (x *HasPraise) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[20]
+	mi := &file_define_dynamicsrv_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1602,7 +1720,7 @@ func (x *HasPraise) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HasPraise.ProtoReflect.Descriptor instead.
 func (*HasPraise) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{20}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *HasPraise) GetDid() int64 {
@@ -1645,7 +1763,7 @@ type HasPraiseResponse struct {
 func (x *HasPraiseResponse) Reset() {
 	*x = HasPraiseResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[21]
+		mi := &file_define_dynamicsrv_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1658,7 +1776,7 @@ func (x *HasPraiseResponse) String() string {
 func (*HasPraiseResponse) ProtoMessage() {}
 
 func (x *HasPraiseResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[21]
+	mi := &file_define_dynamicsrv_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1671,7 +1789,7 @@ func (x *HasPraiseResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HasPraiseResponse.ProtoReflect.Descriptor instead.
 func (*HasPraiseResponse) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{21}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *HasPraiseResponse) GetHasPraise() []*HasPraise {
@@ -1701,7 +1819,7 @@ type PraiseListRequest struct {
 func (x *PraiseListRequest) Reset() {
 	*x = PraiseListRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[22]
+		mi := &file_define_dynamicsrv_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1714,7 +1832,7 @@ func (x *PraiseListRequest) String() string {
 func (*PraiseListRequest) ProtoMessage() {}
 
 func (x *PraiseListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[22]
+	mi := &file_define_dynamicsrv_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1727,7 +1845,7 @@ func (x *PraiseListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PraiseListRequest.ProtoReflect.Descriptor instead.
 func (*PraiseListRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{22}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *PraiseListRequest) GetDid() int64 {
@@ -1763,7 +1881,7 @@ type PraiseListResponse struct {
 func (x *PraiseListResponse) Reset() {
 	*x = PraiseListResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[23]
+		mi := &file_define_dynamicsrv_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1776,7 +1894,7 @@ func (x *PraiseListResponse) String() string {
 func (*PraiseListResponse) ProtoMessage() {}
 
 func (x *PraiseListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[23]
+	mi := &file_define_dynamicsrv_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1789,7 +1907,7 @@ func (x *PraiseListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PraiseListResponse.ProtoReflect.Descriptor instead.
 func (*PraiseListResponse) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{23}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *PraiseListResponse) GetPraiseList() []*UserInfo {
@@ -1820,7 +1938,7 @@ type CollectRequest struct {
 func (x *CollectRequest) Reset() {
 	*x = CollectRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[24]
+		mi := &file_define_dynamicsrv_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1833,7 +1951,7 @@ func (x *CollectRequest) String() string {
 func (*CollectRequest) ProtoMessage() {}
 
 func (x *CollectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[24]
+	mi := &file_define_dynamicsrv_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1846,7 +1964,7 @@ func (x *CollectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CollectRequest.ProtoReflect.Descriptor instead.
 func (*CollectRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{24}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *CollectRequest) GetDid() int64 {
@@ -1889,7 +2007,7 @@ type HasCollectResponse struct {
 func (x *HasCollectResponse) Reset() {
 	*x = HasCollectResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[25]
+		mi := &file_define_dynamicsrv_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1902,7 +2020,7 @@ func (x *HasCollectResponse) String() string {
 func (*HasCollectResponse) ProtoMessage() {}
 
 func (x *HasCollectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[25]
+	mi := &file_define_dynamicsrv_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1915,7 +2033,7 @@ func (x *HasCollectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HasCollectResponse.ProtoReflect.Descriptor instead.
 func (*HasCollectResponse) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{25}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *HasCollectResponse) GetIsDel() int64 {
@@ -1945,7 +2063,7 @@ type FocusRequest struct {
 func (x *FocusRequest) Reset() {
 	*x = FocusRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[26]
+		mi := &file_define_dynamicsrv_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1958,7 +2076,7 @@ func (x *FocusRequest) String() string {
 func (*FocusRequest) ProtoMessage() {}
 
 func (x *FocusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[26]
+	mi := &file_define_dynamicsrv_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1971,7 +2089,7 @@ func (x *FocusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FocusRequest.ProtoReflect.Descriptor instead.
 func (*FocusRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{26}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *FocusRequest) GetOUid() int64 {
@@ -2007,7 +2125,7 @@ type HasFocusResponse struct {
 func (x *HasFocusResponse) Reset() {
 	*x = HasFocusResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[27]
+		mi := &file_define_dynamicsrv_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2020,7 +2138,7 @@ func (x *HasFocusResponse) String() string {
 func (*HasFocusResponse) ProtoMessage() {}
 
 func (x *HasFocusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[27]
+	mi := &file_define_dynamicsrv_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2033,7 +2151,7 @@ func (x *HasFocusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HasFocusResponse.ProtoReflect.Descriptor instead.
 func (*HasFocusResponse) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{27}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *HasFocusResponse) GetIsDel() int64 {
@@ -2062,7 +2180,7 @@ type ShareDynamicRequest struct {
 func (x *ShareDynamicRequest) Reset() {
 	*x = ShareDynamicRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[28]
+		mi := &file_define_dynamicsrv_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2075,7 +2193,7 @@ func (x *ShareDynamicRequest) String() string {
 func (*ShareDynamicRequest) ProtoMessage() {}
 
 func (x *ShareDynamicRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[28]
+	mi := &file_define_dynamicsrv_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2088,7 +2206,7 @@ func (x *ShareDynamicRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShareDynamicRequest.ProtoReflect.Descriptor instead.
 func (*ShareDynamicRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{28}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ShareDynamicRequest) GetDid() int64 {
@@ -2117,7 +2235,7 @@ type FocusListRequest struct {
 func (x *FocusListRequest) Reset() {
 	*x = FocusListRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[29]
+		mi := &file_define_dynamicsrv_proto_msgTypes[31]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2130,7 +2248,7 @@ func (x *FocusListRequest) String() string {
 func (*FocusListRequest) ProtoMessage() {}
 
 func (x *FocusListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[29]
+	mi := &file_define_dynamicsrv_proto_msgTypes[31]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2143,7 +2261,7 @@ func (x *FocusListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FocusListRequest.ProtoReflect.Descriptor instead.
 func (*FocusListRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{29}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *FocusListRequest) GetUserId() int64 {
@@ -2174,7 +2292,7 @@ type FocusList struct {
 func (x *FocusList) Reset() {
 	*x = FocusList{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[30]
+		mi := &file_define_dynamicsrv_proto_msgTypes[32]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2187,7 +2305,7 @@ func (x *FocusList) String() string {
 func (*FocusList) ProtoMessage() {}
 
 func (x *FocusList) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[30]
+	mi := &file_define_dynamicsrv_proto_msgTypes[32]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2200,7 +2318,7 @@ func (x *FocusList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FocusList.ProtoReflect.Descriptor instead.
 func (*FocusList) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{30}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *FocusList) GetUserId() int64 {
@@ -2244,7 +2362,7 @@ type FocusListResponse struct {
 func (x *FocusListResponse) Reset() {
 	*x = FocusListResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[31]
+		mi := &file_define_dynamicsrv_proto_msgTypes[33]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2257,7 +2375,7 @@ func (x *FocusListResponse) String() string {
 func (*FocusListResponse) ProtoMessage() {}
 
 func (x *FocusListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[31]
+	mi := &file_define_dynamicsrv_proto_msgTypes[33]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2270,7 +2388,7 @@ func (x *FocusListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FocusListResponse.ProtoReflect.Descriptor instead.
 func (*FocusListResponse) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{31}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *FocusListResponse) GetList() []*FocusList {
@@ -2306,7 +2424,7 @@ type FansListRequest struct {
 func (x *FansListRequest) Reset() {
 	*x = FansListRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[32]
+		mi := &file_define_dynamicsrv_proto_msgTypes[34]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2319,7 +2437,7 @@ func (x *FansListRequest) String() string {
 func (*FansListRequest) ProtoMessage() {}
 
 func (x *FansListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[32]
+	mi := &file_define_dynamicsrv_proto_msgTypes[34]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2332,7 +2450,7 @@ func (x *FansListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FansListRequest.ProtoReflect.Descriptor instead.
 func (*FansListRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{32}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *FansListRequest) GetUserId() int64 {
@@ -2363,7 +2481,7 @@ type FansList struct {
 func (x *FansList) Reset() {
 	*x = FansList{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[33]
+		mi := &file_define_dynamicsrv_proto_msgTypes[35]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2376,7 +2494,7 @@ func (x *FansList) String() string {
 func (*FansList) ProtoMessage() {}
 
 func (x *FansList) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[33]
+	mi := &file_define_dynamicsrv_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2389,7 +2507,7 @@ func (x *FansList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FansList.ProtoReflect.Descriptor instead.
 func (*FansList) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{33}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *FansList) GetUserId() int64 {
@@ -2433,7 +2551,7 @@ type FansListResponse struct {
 func (x *FansListResponse) Reset() {
 	*x = FansListResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[34]
+		mi := &file_define_dynamicsrv_proto_msgTypes[36]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2446,7 +2564,7 @@ func (x *FansListResponse) String() string {
 func (*FansListResponse) ProtoMessage() {}
 
 func (x *FansListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[34]
+	mi := &file_define_dynamicsrv_proto_msgTypes[36]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2459,7 +2577,7 @@ func (x *FansListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FansListResponse.ProtoReflect.Descriptor instead.
 func (*FansListResponse) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{34}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *FansListResponse) GetList() []*FansList {
@@ -2495,7 +2613,7 @@ type CollectListRequest struct {
 func (x *CollectListRequest) Reset() {
 	*x = CollectListRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[35]
+		mi := &file_define_dynamicsrv_proto_msgTypes[37]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2508,7 +2626,7 @@ func (x *CollectListRequest) String() string {
 func (*CollectListRequest) ProtoMessage() {}
 
 func (x *CollectListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[35]
+	mi := &file_define_dynamicsrv_proto_msgTypes[37]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2521,7 +2639,7 @@ func (x *CollectListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CollectListRequest.ProtoReflect.Descriptor instead.
 func (*CollectListRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{35}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *CollectListRequest) GetUserId() int64 {
@@ -2550,7 +2668,7 @@ type CollectListResponse struct {
 func (x *CollectListResponse) Reset() {
 	*x = CollectListResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[36]
+		mi := &file_define_dynamicsrv_proto_msgTypes[38]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2563,7 +2681,7 @@ func (x *CollectListResponse) String() string {
 func (*CollectListResponse) ProtoMessage() {}
 
 func (x *CollectListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[36]
+	mi := &file_define_dynamicsrv_proto_msgTypes[38]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2576,7 +2694,7 @@ func (x *CollectListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CollectListResponse.ProtoReflect.Descriptor instead.
 func (*CollectListResponse) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{36}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *CollectListResponse) GetList() []*DynamicInfo {
@@ -2608,7 +2726,7 @@ type CommentListRequest struct {
 func (x *CommentListRequest) Reset() {
 	*x = CommentListRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[37]
+		mi := &file_define_dynamicsrv_proto_msgTypes[39]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2621,7 +2739,7 @@ func (x *CommentListRequest) String() string {
 func (*CommentListRequest) ProtoMessage() {}
 
 func (x *CommentListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[37]
+	mi := &file_define_dynamicsrv_proto_msgTypes[39]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2634,7 +2752,7 @@ func (x *CommentListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CommentListRequest.ProtoReflect.Descriptor instead.
 func (*CommentListRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{37}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *CommentListRequest) GetDid() int64 {
@@ -2684,7 +2802,7 @@ type Comments struct {
 func (x *Comments) Reset() {
 	*x = Comments{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[38]
+		mi := &file_define_dynamicsrv_proto_msgTypes[40]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2697,7 +2815,7 @@ func (x *Comments) String() string {
 func (*Comments) ProtoMessage() {}
 
 func (x *Comments) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[38]
+	mi := &file_define_dynamicsrv_proto_msgTypes[40]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2710,7 +2828,7 @@ func (x *Comments) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Comments.ProtoReflect.Descriptor instead.
 func (*Comments) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{38}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *Comments) GetComment() *CommentInfo {
@@ -2739,7 +2857,7 @@ type ChildComments struct {
 func (x *ChildComments) Reset() {
 	*x = ChildComments{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[39]
+		mi := &file_define_dynamicsrv_proto_msgTypes[41]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2752,7 +2870,7 @@ func (x *ChildComments) String() string {
 func (*ChildComments) ProtoMessage() {}
 
 func (x *ChildComments) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[39]
+	mi := &file_define_dynamicsrv_proto_msgTypes[41]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2765,7 +2883,7 @@ func (x *ChildComments) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChildComments.ProtoReflect.Descriptor instead.
 func (*ChildComments) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{39}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *ChildComments) GetChildComments() []*CommentInfo {
@@ -2795,7 +2913,7 @@ type CommentListResponse struct {
 func (x *CommentListResponse) Reset() {
 	*x = CommentListResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[40]
+		mi := &file_define_dynamicsrv_proto_msgTypes[42]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2808,7 +2926,7 @@ func (x *CommentListResponse) String() string {
 func (*CommentListResponse) ProtoMessage() {}
 
 func (x *CommentListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[40]
+	mi := &file_define_dynamicsrv_proto_msgTypes[42]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2821,7 +2939,7 @@ func (x *CommentListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CommentListResponse.ProtoReflect.Descriptor instead.
 func (*CommentListResponse) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{40}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *CommentListResponse) GetCommentList() []*Comments {
@@ -2863,7 +2981,7 @@ type CommentRequest struct {
 func (x *CommentRequest) Reset() {
 	*x = CommentRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[41]
+		mi := &file_define_dynamicsrv_proto_msgTypes[43]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2876,7 +2994,7 @@ func (x *CommentRequest) String() string {
 func (*CommentRequest) ProtoMessage() {}
 
 func (x *CommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[41]
+	mi := &file_define_dynamicsrv_proto_msgTypes[43]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2889,7 +3007,7 @@ func (x *CommentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CommentRequest.ProtoReflect.Descriptor instead.
 func (*CommentRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{41}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *CommentRequest) GetDid() int64 {
@@ -2947,7 +3065,7 @@ type DeleteCommentRequest struct {
 func (x *DeleteCommentRequest) Reset() {
 	*x = DeleteCommentRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[42]
+		mi := &file_define_dynamicsrv_proto_msgTypes[44]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2960,7 +3078,7 @@ func (x *DeleteCommentRequest) String() string {
 func (*DeleteCommentRequest) ProtoMessage() {}
 
 func (x *DeleteCommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[42]
+	mi := &file_define_dynamicsrv_proto_msgTypes[44]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2973,7 +3091,7 @@ func (x *DeleteCommentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCommentRequest.ProtoReflect.Descriptor instead.
 func (*DeleteCommentRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{42}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *DeleteCommentRequest) GetDid() int64 {
@@ -3008,7 +3126,7 @@ type UserFansCountAndFocusCountRequest struct {
 func (x *UserFansCountAndFocusCountRequest) Reset() {
 	*x = UserFansCountAndFocusCountRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[43]
+		mi := &file_define_dynamicsrv_proto_msgTypes[45]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3021,7 +3139,7 @@ func (x *UserFansCountAndFocusCountRequest) String() string {
 func (*UserFansCountAndFocusCountRequest) ProtoMessage() {}
 
 func (x *UserFansCountAndFocusCountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[43]
+	mi := &file_define_dynamicsrv_proto_msgTypes[45]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3034,7 +3152,7 @@ func (x *UserFansCountAndFocusCountRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use UserFansCountAndFocusCountRequest.ProtoReflect.Descriptor instead.
 func (*UserFansCountAndFocusCountRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{43}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *UserFansCountAndFocusCountRequest) GetUserId() int64 {
@@ -3057,7 +3175,7 @@ type UserFansCountAndFocusCountResponse struct {
 func (x *UserFansCountAndFocusCountResponse) Reset() {
 	*x = UserFansCountAndFocusCountResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[44]
+		mi := &file_define_dynamicsrv_proto_msgTypes[46]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3070,7 +3188,7 @@ func (x *UserFansCountAndFocusCountResponse) String() string {
 func (*UserFansCountAndFocusCountResponse) ProtoMessage() {}
 
 func (x *UserFansCountAndFocusCountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[44]
+	mi := &file_define_dynamicsrv_proto_msgTypes[46]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3083,7 +3201,7 @@ func (x *UserFansCountAndFocusCountResponse) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use UserFansCountAndFocusCountResponse.ProtoReflect.Descriptor instead.
 func (*UserFansCountAndFocusCountResponse) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{44}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *UserFansCountAndFocusCountResponse) GetFansCount() int64 {
@@ -3118,7 +3236,7 @@ type UsersFansCountAndFocusCountRequest struct {
 func (x *UsersFansCountAndFocusCountRequest) Reset() {
 	*x = UsersFansCountAndFocusCountRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[45]
+		mi := &file_define_dynamicsrv_proto_msgTypes[47]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3131,7 +3249,7 @@ func (x *UsersFansCountAndFocusCountRequest) String() string {
 func (*UsersFansCountAndFocusCountRequest) ProtoMessage() {}
 
 func (x *UsersFansCountAndFocusCountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[45]
+	mi := &file_define_dynamicsrv_proto_msgTypes[47]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3144,7 +3262,7 @@ func (x *UsersFansCountAndFocusCountRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use UsersFansCountAndFocusCountRequest.ProtoReflect.Descriptor instead.
 func (*UsersFansCountAndFocusCountRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{45}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *UsersFansCountAndFocusCountRequest) GetUserIds() []int64 {
@@ -3167,7 +3285,7 @@ type UsersFansCountAndFocusCountResponseForm struct {
 func (x *UsersFansCountAndFocusCountResponseForm) Reset() {
 	*x = UsersFansCountAndFocusCountResponseForm{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[46]
+		mi := &file_define_dynamicsrv_proto_msgTypes[48]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3180,7 +3298,7 @@ func (x *UsersFansCountAndFocusCountResponseForm) String() string {
 func (*UsersFansCountAndFocusCountResponseForm) ProtoMessage() {}
 
 func (x *UsersFansCountAndFocusCountResponseForm) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[46]
+	mi := &file_define_dynamicsrv_proto_msgTypes[48]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3193,7 +3311,7 @@ func (x *UsersFansCountAndFocusCountResponseForm) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use UsersFansCountAndFocusCountResponseForm.ProtoReflect.Descriptor instead.
 func (*UsersFansCountAndFocusCountResponseForm) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{46}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *UsersFansCountAndFocusCountResponseForm) GetFansCount() int64 {
@@ -3229,7 +3347,7 @@ type UsersFansCountAndFocusCountResponse struct {
 func (x *UsersFansCountAndFocusCountResponse) Reset() {
 	*x = UsersFansCountAndFocusCountResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[47]
+		mi := &file_define_dynamicsrv_proto_msgTypes[49]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3242,7 +3360,7 @@ func (x *UsersFansCountAndFocusCountResponse) String() string {
 func (*UsersFansCountAndFocusCountResponse) ProtoMessage() {}
 
 func (x *UsersFansCountAndFocusCountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[47]
+	mi := &file_define_dynamicsrv_proto_msgTypes[49]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3255,7 +3373,7 @@ func (x *UsersFansCountAndFocusCountResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use UsersFansCountAndFocusCountResponse.ProtoReflect.Descriptor instead.
 func (*UsersFansCountAndFocusCountResponse) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{47}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *UsersFansCountAndFocusCountResponse) GetUsers() []*UsersFansCountAndFocusCountResponseForm {
@@ -3283,7 +3401,7 @@ type RemoveDiscoverDynamicIdsRequest struct {
 func (x *RemoveDiscoverDynamicIdsRequest) Reset() {
 	*x = RemoveDiscoverDynamicIdsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[48]
+		mi := &file_define_dynamicsrv_proto_msgTypes[50]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3296,7 +3414,7 @@ func (x *RemoveDiscoverDynamicIdsRequest) String() string {
 func (*RemoveDiscoverDynamicIdsRequest) ProtoMessage() {}
 
 func (x *RemoveDiscoverDynamicIdsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[48]
+	mi := &file_define_dynamicsrv_proto_msgTypes[50]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3309,7 +3427,7 @@ func (x *RemoveDiscoverDynamicIdsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveDiscoverDynamicIdsRequest.ProtoReflect.Descriptor instead.
 func (*RemoveDiscoverDynamicIdsRequest) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{48}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *RemoveDiscoverDynamicIdsRequest) GetIds() []*RemoveDiscoverDynamicIdsRequest_RequestIds {
@@ -3331,7 +3449,7 @@ type RemoveDiscoverDynamicIdsRequest_RequestIds struct {
 func (x *RemoveDiscoverDynamicIdsRequest_RequestIds) Reset() {
 	*x = RemoveDiscoverDynamicIdsRequest_RequestIds{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_define_dynamicsrv_proto_msgTypes[49]
+		mi := &file_define_dynamicsrv_proto_msgTypes[51]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -3344,7 +3462,7 @@ func (x *RemoveDiscoverDynamicIdsRequest_RequestIds) String() string {
 func (*RemoveDiscoverDynamicIdsRequest_RequestIds) ProtoMessage() {}
 
 func (x *RemoveDiscoverDynamicIdsRequest_RequestIds) ProtoReflect() protoreflect.Message {
-	mi := &file_define_dynamicsrv_proto_msgTypes[49]
+	mi := &file_define_dynamicsrv_proto_msgTypes[51]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3357,7 +3475,7 @@ func (x *RemoveDiscoverDynamicIdsRequest_RequestIds) ProtoReflect() protoreflect
 
 // Deprecated: Use RemoveDiscoverDynamicIdsRequest_RequestIds.ProtoReflect.Descriptor instead.
 func (*RemoveDiscoverDynamicIdsRequest_RequestIds) Descriptor() ([]byte, []int) {
-	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{48, 0}
+	return file_define_dynamicsrv_proto_rawDescGZIP(), []int{50, 0}
 }
 
 func (x *RemoveDiscoverDynamicIdsRequest_RequestIds) GetDid() int64 {
@@ -3497,18 +3615,30 @@ var file_define_dynamicsrv_proto_rawDesc = []byte{
 	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x50, 0x61, 0x67, 0x65, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x50, 0x61, 0x67, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x55,
 	0x73, 0x65, 0x72, 0x49, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x55, 0x73, 0x65,
-	0x72, 0x49, 0x64, 0x22, 0x74, 0x0a, 0x13, 0x44, 0x69, 0x73, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x44,
-	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x2b, 0x0a, 0x04, 0x69, 0x6e,
-	0x66, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d,
-	0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x49, 0x6e, 0x66,
-	0x6f, 0x52, 0x04, 0x69, 0x6e, 0x66, 0x6f, 0x12, 0x30, 0x0a, 0x08, 0x43, 0x6f, 0x6d, 0x6d, 0x65,
-	0x6e, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x64, 0x79, 0x6e, 0x61,
-	0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x52,
-	0x08, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x22, 0x7e, 0x0a, 0x1b, 0x44, 0x69, 0x73,
-	0x63, 0x6f, 0x76, 0x65, 0x72, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x4c, 0x69, 0x73, 0x74,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x33, 0x0a, 0x04, 0x4c, 0x69, 0x73, 0x74,
-	0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63,
-	0x73, 0x72, 0x76, 0x2e, 0x44, 0x69, 0x73, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x44, 0x79, 0x6e, 0x61,
+	0x72, 0x49, 0x64, 0x22, 0x6c, 0x0a, 0x0b, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x4c, 0x69,
+	0x73, 0x74, 0x12, 0x2b, 0x0a, 0x04, 0x69, 0x6e, 0x66, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x17, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x79,
+	0x6e, 0x61, 0x6d, 0x69, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x69, 0x6e, 0x66, 0x6f, 0x12,
+	0x30, 0x0a, 0x08, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28,
+	0x0b, 0x32, 0x14, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x43,
+	0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x52, 0x08, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74,
+	0x73, 0x22, 0x76, 0x0a, 0x1b, 0x44, 0x69, 0x73, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x44, 0x79, 0x6e,
+	0x61, 0x6d, 0x69, 0x63, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x2b, 0x0a, 0x04, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x17,
+	0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x79, 0x6e, 0x61,
+	0x6d, 0x69, 0x63, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x04, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x2a, 0x0a,
+	0x05, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x64,
+	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x45, 0x72, 0x72,
+	0x6f, 0x72, 0x52, 0x05, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x5a, 0x0a, 0x16, 0x43, 0x6c, 0x75,
+	0x62, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x50, 0x61, 0x67, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x03, 0x52, 0x04, 0x50, 0x61, 0x67, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x55, 0x73, 0x65, 0x72, 0x49,
+	0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x55, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12,
+	0x14, 0x0a, 0x05, 0x54, 0x62, 0x4d, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x05,
+	0x54, 0x62, 0x4d, 0x69, 0x64, 0x22, 0x72, 0x0a, 0x17, 0x43, 0x6c, 0x75, 0x62, 0x44, 0x79, 0x6e,
+	0x61, 0x6d, 0x69, 0x63, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x2b, 0x0a, 0x04, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x17,
+	0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x79, 0x6e, 0x61,
 	0x6d, 0x69, 0x63, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x04, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x2a, 0x0a,
 	0x05, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x64,
 	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x45, 0x72, 0x72,
@@ -3752,7 +3882,7 @@ var file_define_dynamicsrv_proto_rawDesc = []byte{
 	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x49, 0x64, 0x73, 0x12, 0x10, 0x0a, 0x03, 0x44, 0x69,
 	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x03, 0x44, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04,
 	0x44, 0x75, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x44, 0x75, 0x69, 0x64,
-	0x32, 0xd0, 0x0f, 0x0a, 0x0a, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x12,
+	0x32, 0xaf, 0x10, 0x0a, 0x0a, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x12,
 	0x52, 0x0a, 0x0e, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x73, 0x68, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69,
 	0x63, 0x12, 0x21, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x50,
 	0x75, 0x62, 0x6c, 0x69, 0x73, 0x68, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x52, 0x65, 0x71,
@@ -3775,110 +3905,116 @@ var file_define_dynamicsrv_proto_rawDesc = []byte{
 	0x73, 0x72, 0x76, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x4c,
 	0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e, 0x64, 0x79, 0x6e,
 	0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x49,
-	0x6e, 0x66, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x51, 0x0a, 0x0e, 0x47,
-	0x65, 0x74, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1e, 0x2e,
-	0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x79, 0x6e, 0x61, 0x6d,
-	0x69, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e,
-	0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x79, 0x6e, 0x61, 0x6d,
-	0x69, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x50,
-	0x0a, 0x0d, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x12,
-	0x20, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x65, 0x6c,
-	0x65, 0x74, 0x65, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41,
-	0x50, 0x49, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x12, 0x58, 0x0a, 0x11, 0x53, 0x79, 0x6e, 0x63, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x54,
-	0x6f, 0x43, 0x6c, 0x75, 0x62, 0x12, 0x24, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73,
-	0x72, 0x76, 0x2e, 0x53, 0x79, 0x6e, 0x63, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x54, 0x6f,
-	0x43, 0x6c, 0x75, 0x62, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79,
-	0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43, 0x6f, 0x6d, 0x6d,
-	0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x52, 0x0a, 0x10, 0x64, 0x65,
-	0x6c, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x54, 0x6f, 0x43, 0x6c, 0x75, 0x62, 0x12, 0x1f,
-	0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x65, 0x6c, 0x44,
-	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x54, 0x6f, 0x43, 0x6c, 0x75, 0x62, 0x52, 0x65, 0x71, 0x1a,
-	0x1d, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49,
-	0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x42,
-	0x0a, 0x06, 0x50, 0x72, 0x61, 0x69, 0x73, 0x65, 0x12, 0x19, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d,
-	0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x50, 0x72, 0x61, 0x69, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76,
-	0x2e, 0x41, 0x50, 0x49, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
-	0x73, 0x65, 0x12, 0x48, 0x0a, 0x09, 0x48, 0x61, 0x73, 0x50, 0x72, 0x61, 0x69, 0x73, 0x65, 0x12,
-	0x1c, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x48, 0x61, 0x73,
-	0x50, 0x72, 0x61, 0x69, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e,
-	0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x48, 0x61, 0x73, 0x50, 0x72,
-	0x61, 0x69, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4e, 0x0a, 0x0d,
-	0x47, 0x65, 0x74, 0x50, 0x72, 0x61, 0x69, 0x73, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1d, 0x2e,
-	0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x50, 0x72, 0x61, 0x69, 0x73,
-	0x65, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x64,
-	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x50, 0x72, 0x61, 0x69, 0x73, 0x65,
-	0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x66, 0x0a, 0x18,
-	0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x44, 0x69, 0x73, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x44, 0x79,
-	0x6e, 0x61, 0x6d, 0x69, 0x63, 0x49, 0x64, 0x73, 0x12, 0x2b, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d,
-	0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x44, 0x69, 0x73, 0x63,
-	0x6f, 0x76, 0x65, 0x72, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x49, 0x64, 0x73, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73,
-	0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x44, 0x0a, 0x07, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x12,
-	0x1a, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6c,
-	0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79,
-	0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43, 0x6f, 0x6d, 0x6d,
-	0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x0a, 0x48, 0x61,
-	0x73, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x12, 0x1a, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d,
-	0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72,
-	0x76, 0x2e, 0x48, 0x61, 0x73, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x51, 0x0a, 0x0e, 0x47, 0x65, 0x74, 0x43, 0x6f, 0x6c, 0x6c, 0x65,
-	0x63, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1e, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63,
-	0x73, 0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63,
-	0x73, 0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x40, 0x0a, 0x05, 0x46, 0x6f, 0x63, 0x75, 0x73,
-	0x12, 0x18, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x46, 0x6f,
-	0x63, 0x75, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79, 0x6e,
-	0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43, 0x6f, 0x6d, 0x6d, 0x6f,
-	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x42, 0x0a, 0x08, 0x48, 0x61, 0x73,
-	0x46, 0x6f, 0x63, 0x75, 0x73, 0x12, 0x18, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73,
-	0x72, 0x76, 0x2e, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
-	0x1c, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x48, 0x61, 0x73,
-	0x46, 0x6f, 0x63, 0x75, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4e, 0x0a,
-	0x0c, 0x53, 0x68, 0x61, 0x72, 0x65, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x12, 0x1f, 0x2e,
-	0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x53, 0x68, 0x61, 0x72, 0x65,
-	0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d,
-	0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43,
-	0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4b, 0x0a,
-	0x0c, 0x47, 0x65, 0x74, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1c, 0x2e,
-	0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x46, 0x6f, 0x63, 0x75, 0x73,
-	0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79,
-	0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x4c, 0x69,
-	0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x0b, 0x47, 0x65,
-	0x74, 0x46, 0x61, 0x6e, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1b, 0x2e, 0x64, 0x79, 0x6e, 0x61,
-	0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x46, 0x61, 0x6e, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63,
-	0x73, 0x72, 0x76, 0x2e, 0x46, 0x61, 0x6e, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x51, 0x0a, 0x0e, 0x47, 0x65, 0x74, 0x43, 0x6f, 0x6d, 0x6d, 0x65,
-	0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1e, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63,
-	0x73, 0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63,
-	0x73, 0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x44, 0x0a, 0x07, 0x43, 0x6f, 0x6d, 0x6d, 0x65,
-	0x6e, 0x74, 0x12, 0x1a, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e,
-	0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d,
-	0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43,
-	0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x50, 0x0a,
-	0x0d, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x20,
+	0x6e, 0x66, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5d, 0x0a, 0x12, 0x47,
+	0x65, 0x74, 0x43, 0x6c, 0x75, 0x62, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x4c, 0x69, 0x73,
+	0x74, 0x12, 0x22, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x43,
+	0x6c, 0x75, 0x62, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x23, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73,
+	0x72, 0x76, 0x2e, 0x43, 0x6c, 0x75, 0x62, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x4c, 0x69,
+	0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x51, 0x0a, 0x0e, 0x47, 0x65,
+	0x74, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x1e, 0x2e, 0x64,
+	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69,
+	0x63, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e, 0x64,
+	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69,
+	0x63, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x50, 0x0a,
+	0x0d, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x12, 0x20,
 	0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x65, 0x6c, 0x65,
-	0x74, 0x65, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x74, 0x65, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x1a, 0x1d, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50,
 	0x49, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x81, 0x01, 0x0a, 0x1e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x73, 0x46, 0x61, 0x6e, 0x73,
-	0x43, 0x6f, 0x75, 0x6e, 0x74, 0x41, 0x6e, 0x64, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x43, 0x6f, 0x75,
-	0x6e, 0x74, 0x12, 0x2e, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e,
-	0x55, 0x73, 0x65, 0x72, 0x73, 0x46, 0x61, 0x6e, 0x73, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x41, 0x6e,
-	0x64, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x1a, 0x2f, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e,
-	0x55, 0x73, 0x65, 0x72, 0x73, 0x46, 0x61, 0x6e, 0x73, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x41, 0x6e,
-	0x64, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x42, 0x0e, 0x5a, 0x0c, 0x2e, 0x2f, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63,
-	0x73, 0x72, 0x76, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x58, 0x0a, 0x11, 0x53, 0x79, 0x6e, 0x63, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x54, 0x6f,
+	0x43, 0x6c, 0x75, 0x62, 0x12, 0x24, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72,
+	0x76, 0x2e, 0x53, 0x79, 0x6e, 0x63, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x54, 0x6f, 0x43,
+	0x6c, 0x75, 0x62, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79, 0x6e,
+	0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43, 0x6f, 0x6d, 0x6d, 0x6f,
+	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x52, 0x0a, 0x10, 0x64, 0x65, 0x6c,
+	0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x54, 0x6f, 0x43, 0x6c, 0x75, 0x62, 0x12, 0x1f, 0x2e,
+	0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x65, 0x6c, 0x44, 0x79,
+	0x6e, 0x61, 0x6d, 0x69, 0x63, 0x54, 0x6f, 0x43, 0x6c, 0x75, 0x62, 0x52, 0x65, 0x71, 0x1a, 0x1d,
+	0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43,
+	0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x42, 0x0a,
+	0x06, 0x50, 0x72, 0x61, 0x69, 0x73, 0x65, 0x12, 0x19, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69,
+	0x63, 0x73, 0x72, 0x76, 0x2e, 0x50, 0x72, 0x61, 0x69, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e,
+	0x41, 0x50, 0x49, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x48, 0x0a, 0x09, 0x48, 0x61, 0x73, 0x50, 0x72, 0x61, 0x69, 0x73, 0x65, 0x12, 0x1c,
+	0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x48, 0x61, 0x73, 0x50,
+	0x72, 0x61, 0x69, 0x73, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64,
+	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x48, 0x61, 0x73, 0x50, 0x72, 0x61,
+	0x69, 0x73, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4e, 0x0a, 0x0d, 0x47,
+	0x65, 0x74, 0x50, 0x72, 0x61, 0x69, 0x73, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1d, 0x2e, 0x64,
+	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x50, 0x72, 0x61, 0x69, 0x73, 0x65,
+	0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x64, 0x79,
+	0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x50, 0x72, 0x61, 0x69, 0x73, 0x65, 0x4c,
+	0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x66, 0x0a, 0x18, 0x52,
+	0x65, 0x6d, 0x6f, 0x76, 0x65, 0x44, 0x69, 0x73, 0x63, 0x6f, 0x76, 0x65, 0x72, 0x44, 0x79, 0x6e,
+	0x61, 0x6d, 0x69, 0x63, 0x49, 0x64, 0x73, 0x12, 0x2b, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69,
+	0x63, 0x73, 0x72, 0x76, 0x2e, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x44, 0x69, 0x73, 0x63, 0x6f,
+	0x76, 0x65, 0x72, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x49, 0x64, 0x73, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72,
+	0x76, 0x2e, 0x41, 0x50, 0x49, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x44, 0x0a, 0x07, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x12, 0x1a,
+	0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6c, 0x6c,
+	0x65, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79, 0x6e,
+	0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43, 0x6f, 0x6d, 0x6d, 0x6f,
+	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x0a, 0x48, 0x61, 0x73,
+	0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x12, 0x1a, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69,
+	0x63, 0x73, 0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x1e, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76,
+	0x2e, 0x48, 0x61, 0x73, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x51, 0x0a, 0x0e, 0x47, 0x65, 0x74, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63,
+	0x74, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1e, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73,
+	0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73,
+	0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6c, 0x6c, 0x65, 0x63, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x40, 0x0a, 0x05, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x12,
+	0x18, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x46, 0x6f, 0x63,
+	0x75, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79, 0x6e, 0x61,
+	0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x42, 0x0a, 0x08, 0x48, 0x61, 0x73, 0x46,
+	0x6f, 0x63, 0x75, 0x73, 0x12, 0x18, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72,
+	0x76, 0x2e, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c,
+	0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x48, 0x61, 0x73, 0x46,
+	0x6f, 0x63, 0x75, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4e, 0x0a, 0x0c,
+	0x53, 0x68, 0x61, 0x72, 0x65, 0x44, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x12, 0x1f, 0x2e, 0x64,
+	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x53, 0x68, 0x61, 0x72, 0x65, 0x44,
+	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e,
+	0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43, 0x6f,
+	0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4b, 0x0a, 0x0c,
+	0x47, 0x65, 0x74, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1c, 0x2e, 0x64,
+	0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x4c,
+	0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x64, 0x79, 0x6e,
+	0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x4c, 0x69, 0x73,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x48, 0x0a, 0x0b, 0x47, 0x65, 0x74,
+	0x46, 0x61, 0x6e, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1b, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d,
+	0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x46, 0x61, 0x6e, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73,
+	0x72, 0x76, 0x2e, 0x46, 0x61, 0x6e, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x51, 0x0a, 0x0e, 0x47, 0x65, 0x74, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e,
+	0x74, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1e, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73,
+	0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73,
+	0x72, 0x76, 0x2e, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x44, 0x0a, 0x07, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e,
+	0x74, 0x12, 0x1a, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x43,
+	0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e,
+	0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49, 0x43, 0x6f,
+	0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x50, 0x0a, 0x0d,
+	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x20, 0x2e,
+	0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74,
+	0x65, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x1d, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x41, 0x50, 0x49,
+	0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x81,
+	0x01, 0x0a, 0x1e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x73, 0x46, 0x61, 0x6e, 0x73, 0x43,
+	0x6f, 0x75, 0x6e, 0x74, 0x41, 0x6e, 0x64, 0x46, 0x6f, 0x63, 0x75, 0x73, 0x43, 0x6f, 0x75, 0x6e,
+	0x74, 0x12, 0x2e, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x55,
+	0x73, 0x65, 0x72, 0x73, 0x46, 0x61, 0x6e, 0x73, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x41, 0x6e, 0x64,
+	0x46, 0x6f, 0x63, 0x75, 0x73, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x2f, 0x2e, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73, 0x72, 0x76, 0x2e, 0x55,
+	0x73, 0x65, 0x72, 0x73, 0x46, 0x61, 0x6e, 0x73, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x41, 0x6e, 0x64,
+	0x46, 0x6f, 0x63, 0x75, 0x73, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x42, 0x0e, 0x5a, 0x0c, 0x2e, 0x2f, 0x64, 0x79, 0x6e, 0x61, 0x6d, 0x69, 0x63, 0x73,
+	0x72, 0x76, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -3893,7 +4029,7 @@ func file_define_dynamicsrv_proto_rawDescGZIP() []byte {
 	return file_define_dynamicsrv_proto_rawDescData
 }
 
-var file_define_dynamicsrv_proto_msgTypes = make([]protoimpl.MessageInfo, 50)
+var file_define_dynamicsrv_proto_msgTypes = make([]protoimpl.MessageInfo, 52)
 var file_define_dynamicsrv_proto_goTypes = []interface{}{
 	(*SupClub)(nil),                                    // 0: dynamicsrv.SupClub
 	(*UserInfo)(nil),                                   // 1: dynamicsrv.UserInfo
@@ -3904,134 +4040,140 @@ var file_define_dynamicsrv_proto_goTypes = []interface{}{
 	(*PublishDynamicRequest)(nil),                      // 6: dynamicsrv.PublishDynamicRequest
 	(*UpdateDynamicRequest)(nil),                       // 7: dynamicsrv.UpdateDynamicRequest
 	(*DiscoverDynamicListRequest)(nil),                 // 8: dynamicsrv.DiscoverDynamicListRequest
-	(*DiscoverDynamicList)(nil),                        // 9: dynamicsrv.DiscoverDynamicList
+	(*DynamicList)(nil),                                // 9: dynamicsrv.DynamicList
 	(*DiscoverDynamicListResponse)(nil),                // 10: dynamicsrv.DiscoverDynamicListResponse
-	(*UserDynamicListRequest)(nil),                     // 11: dynamicsrv.UserDynamicListRequest
-	(*InfoForm)(nil),                                   // 12: dynamicsrv.InfoForm
-	(*DynamicInfoRequest)(nil),                         // 13: dynamicsrv.DynamicInfoRequest
-	(*DynamicInfoResponse)(nil),                        // 14: dynamicsrv.DynamicInfoResponse
-	(*DeleteDynamicRequest)(nil),                       // 15: dynamicsrv.DeleteDynamicRequest
-	(*SyncDynamicToClubRequest)(nil),                   // 16: dynamicsrv.SyncDynamicToClubRequest
-	(*DelDynamicToClubReq)(nil),                        // 17: dynamicsrv.DelDynamicToClubReq
-	(*PraiseRequest)(nil),                              // 18: dynamicsrv.PraiseRequest
-	(*HasPraiseRequest)(nil),                           // 19: dynamicsrv.HasPraiseRequest
-	(*HasPraise)(nil),                                  // 20: dynamicsrv.HasPraise
-	(*HasPraiseResponse)(nil),                          // 21: dynamicsrv.HasPraiseResponse
-	(*PraiseListRequest)(nil),                          // 22: dynamicsrv.PraiseListRequest
-	(*PraiseListResponse)(nil),                         // 23: dynamicsrv.PraiseListResponse
-	(*CollectRequest)(nil),                             // 24: dynamicsrv.CollectRequest
-	(*HasCollectResponse)(nil),                         // 25: dynamicsrv.HasCollectResponse
-	(*FocusRequest)(nil),                               // 26: dynamicsrv.FocusRequest
-	(*HasFocusResponse)(nil),                           // 27: dynamicsrv.HasFocusResponse
-	(*ShareDynamicRequest)(nil),                        // 28: dynamicsrv.ShareDynamicRequest
-	(*FocusListRequest)(nil),                           // 29: dynamicsrv.FocusListRequest
-	(*FocusList)(nil),                                  // 30: dynamicsrv.FocusList
-	(*FocusListResponse)(nil),                          // 31: dynamicsrv.FocusListResponse
-	(*FansListRequest)(nil),                            // 32: dynamicsrv.FansListRequest
-	(*FansList)(nil),                                   // 33: dynamicsrv.FansList
-	(*FansListResponse)(nil),                           // 34: dynamicsrv.FansListResponse
-	(*CollectListRequest)(nil),                         // 35: dynamicsrv.CollectListRequest
-	(*CollectListResponse)(nil),                        // 36: dynamicsrv.CollectListResponse
-	(*CommentListRequest)(nil),                         // 37: dynamicsrv.CommentListRequest
-	(*Comments)(nil),                                   // 38: dynamicsrv.Comments
-	(*ChildComments)(nil),                              // 39: dynamicsrv.ChildComments
-	(*CommentListResponse)(nil),                        // 40: dynamicsrv.CommentListResponse
-	(*CommentRequest)(nil),                             // 41: dynamicsrv.CommentRequest
-	(*DeleteCommentRequest)(nil),                       // 42: dynamicsrv.DeleteCommentRequest
-	(*UserFansCountAndFocusCountRequest)(nil),          // 43: dynamicsrv.UserFansCountAndFocusCountRequest
-	(*UserFansCountAndFocusCountResponse)(nil),         // 44: dynamicsrv.UserFansCountAndFocusCountResponse
-	(*UsersFansCountAndFocusCountRequest)(nil),         // 45: dynamicsrv.UsersFansCountAndFocusCountRequest
-	(*UsersFansCountAndFocusCountResponseForm)(nil),    // 46: dynamicsrv.UsersFansCountAndFocusCountResponseForm
-	(*UsersFansCountAndFocusCountResponse)(nil),        // 47: dynamicsrv.UsersFansCountAndFocusCountResponse
-	(*RemoveDiscoverDynamicIdsRequest)(nil),            // 48: dynamicsrv.RemoveDiscoverDynamicIdsRequest
-	(*RemoveDiscoverDynamicIdsRequest_RequestIds)(nil), // 49: dynamicsrv.RemoveDiscoverDynamicIdsRequest.RequestIds
+	(*ClubDynamicListRequest)(nil),                     // 11: dynamicsrv.ClubDynamicListRequest
+	(*ClubDynamicListResponse)(nil),                    // 12: dynamicsrv.ClubDynamicListResponse
+	(*UserDynamicListRequest)(nil),                     // 13: dynamicsrv.UserDynamicListRequest
+	(*InfoForm)(nil),                                   // 14: dynamicsrv.InfoForm
+	(*DynamicInfoRequest)(nil),                         // 15: dynamicsrv.DynamicInfoRequest
+	(*DynamicInfoResponse)(nil),                        // 16: dynamicsrv.DynamicInfoResponse
+	(*DeleteDynamicRequest)(nil),                       // 17: dynamicsrv.DeleteDynamicRequest
+	(*SyncDynamicToClubRequest)(nil),                   // 18: dynamicsrv.SyncDynamicToClubRequest
+	(*DelDynamicToClubReq)(nil),                        // 19: dynamicsrv.DelDynamicToClubReq
+	(*PraiseRequest)(nil),                              // 20: dynamicsrv.PraiseRequest
+	(*HasPraiseRequest)(nil),                           // 21: dynamicsrv.HasPraiseRequest
+	(*HasPraise)(nil),                                  // 22: dynamicsrv.HasPraise
+	(*HasPraiseResponse)(nil),                          // 23: dynamicsrv.HasPraiseResponse
+	(*PraiseListRequest)(nil),                          // 24: dynamicsrv.PraiseListRequest
+	(*PraiseListResponse)(nil),                         // 25: dynamicsrv.PraiseListResponse
+	(*CollectRequest)(nil),                             // 26: dynamicsrv.CollectRequest
+	(*HasCollectResponse)(nil),                         // 27: dynamicsrv.HasCollectResponse
+	(*FocusRequest)(nil),                               // 28: dynamicsrv.FocusRequest
+	(*HasFocusResponse)(nil),                           // 29: dynamicsrv.HasFocusResponse
+	(*ShareDynamicRequest)(nil),                        // 30: dynamicsrv.ShareDynamicRequest
+	(*FocusListRequest)(nil),                           // 31: dynamicsrv.FocusListRequest
+	(*FocusList)(nil),                                  // 32: dynamicsrv.FocusList
+	(*FocusListResponse)(nil),                          // 33: dynamicsrv.FocusListResponse
+	(*FansListRequest)(nil),                            // 34: dynamicsrv.FansListRequest
+	(*FansList)(nil),                                   // 35: dynamicsrv.FansList
+	(*FansListResponse)(nil),                           // 36: dynamicsrv.FansListResponse
+	(*CollectListRequest)(nil),                         // 37: dynamicsrv.CollectListRequest
+	(*CollectListResponse)(nil),                        // 38: dynamicsrv.CollectListResponse
+	(*CommentListRequest)(nil),                         // 39: dynamicsrv.CommentListRequest
+	(*Comments)(nil),                                   // 40: dynamicsrv.Comments
+	(*ChildComments)(nil),                              // 41: dynamicsrv.ChildComments
+	(*CommentListResponse)(nil),                        // 42: dynamicsrv.CommentListResponse
+	(*CommentRequest)(nil),                             // 43: dynamicsrv.CommentRequest
+	(*DeleteCommentRequest)(nil),                       // 44: dynamicsrv.DeleteCommentRequest
+	(*UserFansCountAndFocusCountRequest)(nil),          // 45: dynamicsrv.UserFansCountAndFocusCountRequest
+	(*UserFansCountAndFocusCountResponse)(nil),         // 46: dynamicsrv.UserFansCountAndFocusCountResponse
+	(*UsersFansCountAndFocusCountRequest)(nil),         // 47: dynamicsrv.UsersFansCountAndFocusCountRequest
+	(*UsersFansCountAndFocusCountResponseForm)(nil),    // 48: dynamicsrv.UsersFansCountAndFocusCountResponseForm
+	(*UsersFansCountAndFocusCountResponse)(nil),        // 49: dynamicsrv.UsersFansCountAndFocusCountResponse
+	(*RemoveDiscoverDynamicIdsRequest)(nil),            // 50: dynamicsrv.RemoveDiscoverDynamicIdsRequest
+	(*RemoveDiscoverDynamicIdsRequest_RequestIds)(nil), // 51: dynamicsrv.RemoveDiscoverDynamicIdsRequest.RequestIds
 }
 var file_define_dynamicsrv_proto_depIdxs = []int32{
 	0,  // 0: dynamicsrv.DynamicInfo.Supclub:type_name -> dynamicsrv.SupClub
 	4,  // 1: dynamicsrv.APICommonResponse.Error:type_name -> dynamicsrv.APIError
 	6,  // 2: dynamicsrv.UpdateDynamicRequest.Data:type_name -> dynamicsrv.PublishDynamicRequest
-	2,  // 3: dynamicsrv.DiscoverDynamicList.info:type_name -> dynamicsrv.DynamicInfo
-	38, // 4: dynamicsrv.DiscoverDynamicList.Comments:type_name -> dynamicsrv.Comments
-	9,  // 5: dynamicsrv.DiscoverDynamicListResponse.List:type_name -> dynamicsrv.DiscoverDynamicList
+	2,  // 3: dynamicsrv.DynamicList.info:type_name -> dynamicsrv.DynamicInfo
+	40, // 4: dynamicsrv.DynamicList.Comments:type_name -> dynamicsrv.Comments
+	9,  // 5: dynamicsrv.DiscoverDynamicListResponse.List:type_name -> dynamicsrv.DynamicList
 	4,  // 6: dynamicsrv.DiscoverDynamicListResponse.Error:type_name -> dynamicsrv.APIError
-	12, // 7: dynamicsrv.DynamicInfoRequest.infos:type_name -> dynamicsrv.InfoForm
-	2,  // 8: dynamicsrv.DynamicInfoResponse.Infos:type_name -> dynamicsrv.DynamicInfo
-	4,  // 9: dynamicsrv.DynamicInfoResponse.Error:type_name -> dynamicsrv.APIError
-	18, // 10: dynamicsrv.HasPraiseRequest.HasPraise:type_name -> dynamicsrv.PraiseRequest
-	20, // 11: dynamicsrv.HasPraiseResponse.HasPraise:type_name -> dynamicsrv.HasPraise
-	4,  // 12: dynamicsrv.HasPraiseResponse.Error:type_name -> dynamicsrv.APIError
-	1,  // 13: dynamicsrv.PraiseListResponse.PraiseList:type_name -> dynamicsrv.UserInfo
-	4,  // 14: dynamicsrv.PraiseListResponse.Error:type_name -> dynamicsrv.APIError
-	4,  // 15: dynamicsrv.HasCollectResponse.Error:type_name -> dynamicsrv.APIError
-	4,  // 16: dynamicsrv.HasFocusResponse.Error:type_name -> dynamicsrv.APIError
-	30, // 17: dynamicsrv.FocusListResponse.List:type_name -> dynamicsrv.FocusList
-	4,  // 18: dynamicsrv.FocusListResponse.Error:type_name -> dynamicsrv.APIError
-	33, // 19: dynamicsrv.FansListResponse.List:type_name -> dynamicsrv.FansList
-	4,  // 20: dynamicsrv.FansListResponse.Error:type_name -> dynamicsrv.APIError
-	2,  // 21: dynamicsrv.CollectListResponse.List:type_name -> dynamicsrv.DynamicInfo
-	4,  // 22: dynamicsrv.CollectListResponse.Error:type_name -> dynamicsrv.APIError
-	3,  // 23: dynamicsrv.Comments.comment:type_name -> dynamicsrv.CommentInfo
-	39, // 24: dynamicsrv.Comments.ChildComments:type_name -> dynamicsrv.ChildComments
-	3,  // 25: dynamicsrv.ChildComments.ChildComments:type_name -> dynamicsrv.CommentInfo
-	38, // 26: dynamicsrv.CommentListResponse.commentList:type_name -> dynamicsrv.Comments
-	4,  // 27: dynamicsrv.CommentListResponse.Error:type_name -> dynamicsrv.APIError
-	4,  // 28: dynamicsrv.UserFansCountAndFocusCountResponse.Error:type_name -> dynamicsrv.APIError
-	46, // 29: dynamicsrv.UsersFansCountAndFocusCountResponse.users:type_name -> dynamicsrv.UsersFansCountAndFocusCountResponseForm
-	4,  // 30: dynamicsrv.UsersFansCountAndFocusCountResponse.Error:type_name -> dynamicsrv.APIError
-	49, // 31: dynamicsrv.RemoveDiscoverDynamicIdsRequest.ids:type_name -> dynamicsrv.RemoveDiscoverDynamicIdsRequest.RequestIds
-	6,  // 32: dynamicsrv.Dynamicsrv.PublishDynamic:input_type -> dynamicsrv.PublishDynamicRequest
-	7,  // 33: dynamicsrv.Dynamicsrv.UpdateDynamic:input_type -> dynamicsrv.UpdateDynamicRequest
-	8,  // 34: dynamicsrv.Dynamicsrv.GetDiscoverDynamicList:input_type -> dynamicsrv.DiscoverDynamicListRequest
-	11, // 35: dynamicsrv.Dynamicsrv.GetUserDynamicList:input_type -> dynamicsrv.UserDynamicListRequest
-	13, // 36: dynamicsrv.Dynamicsrv.GetDynamicInfo:input_type -> dynamicsrv.DynamicInfoRequest
-	15, // 37: dynamicsrv.Dynamicsrv.DeleteDynamic:input_type -> dynamicsrv.DeleteDynamicRequest
-	16, // 38: dynamicsrv.Dynamicsrv.SyncDynamicToClub:input_type -> dynamicsrv.SyncDynamicToClubRequest
-	17, // 39: dynamicsrv.Dynamicsrv.delDynamicToClub:input_type -> dynamicsrv.DelDynamicToClubReq
-	18, // 40: dynamicsrv.Dynamicsrv.Praise:input_type -> dynamicsrv.PraiseRequest
-	19, // 41: dynamicsrv.Dynamicsrv.HasPraise:input_type -> dynamicsrv.HasPraiseRequest
-	22, // 42: dynamicsrv.Dynamicsrv.GetPraiseList:input_type -> dynamicsrv.PraiseListRequest
-	48, // 43: dynamicsrv.Dynamicsrv.RemoveDiscoverDynamicIds:input_type -> dynamicsrv.RemoveDiscoverDynamicIdsRequest
-	24, // 44: dynamicsrv.Dynamicsrv.Collect:input_type -> dynamicsrv.CollectRequest
-	24, // 45: dynamicsrv.Dynamicsrv.HasCollect:input_type -> dynamicsrv.CollectRequest
-	35, // 46: dynamicsrv.Dynamicsrv.GetCollectList:input_type -> dynamicsrv.CollectListRequest
-	26, // 47: dynamicsrv.Dynamicsrv.Focus:input_type -> dynamicsrv.FocusRequest
-	26, // 48: dynamicsrv.Dynamicsrv.HasFocus:input_type -> dynamicsrv.FocusRequest
-	28, // 49: dynamicsrv.Dynamicsrv.ShareDynamic:input_type -> dynamicsrv.ShareDynamicRequest
-	29, // 50: dynamicsrv.Dynamicsrv.GetFocusList:input_type -> dynamicsrv.FocusListRequest
-	32, // 51: dynamicsrv.Dynamicsrv.GetFansList:input_type -> dynamicsrv.FansListRequest
-	37, // 52: dynamicsrv.Dynamicsrv.GetCommentList:input_type -> dynamicsrv.CommentListRequest
-	41, // 53: dynamicsrv.Dynamicsrv.Comment:input_type -> dynamicsrv.CommentRequest
-	42, // 54: dynamicsrv.Dynamicsrv.DeleteComment:input_type -> dynamicsrv.DeleteCommentRequest
-	45, // 55: dynamicsrv.Dynamicsrv.GetUsersFansCountAndFocusCount:input_type -> dynamicsrv.UsersFansCountAndFocusCountRequest
-	5,  // 56: dynamicsrv.Dynamicsrv.PublishDynamic:output_type -> dynamicsrv.APICommonResponse
-	5,  // 57: dynamicsrv.Dynamicsrv.UpdateDynamic:output_type -> dynamicsrv.APICommonResponse
-	10, // 58: dynamicsrv.Dynamicsrv.GetDiscoverDynamicList:output_type -> dynamicsrv.DiscoverDynamicListResponse
-	14, // 59: dynamicsrv.Dynamicsrv.GetUserDynamicList:output_type -> dynamicsrv.DynamicInfoResponse
-	14, // 60: dynamicsrv.Dynamicsrv.GetDynamicInfo:output_type -> dynamicsrv.DynamicInfoResponse
-	5,  // 61: dynamicsrv.Dynamicsrv.DeleteDynamic:output_type -> dynamicsrv.APICommonResponse
-	5,  // 62: dynamicsrv.Dynamicsrv.SyncDynamicToClub:output_type -> dynamicsrv.APICommonResponse
-	5,  // 63: dynamicsrv.Dynamicsrv.delDynamicToClub:output_type -> dynamicsrv.APICommonResponse
-	5,  // 64: dynamicsrv.Dynamicsrv.Praise:output_type -> dynamicsrv.APICommonResponse
-	21, // 65: dynamicsrv.Dynamicsrv.HasPraise:output_type -> dynamicsrv.HasPraiseResponse
-	23, // 66: dynamicsrv.Dynamicsrv.GetPraiseList:output_type -> dynamicsrv.PraiseListResponse
-	5,  // 67: dynamicsrv.Dynamicsrv.RemoveDiscoverDynamicIds:output_type -> dynamicsrv.APICommonResponse
-	5,  // 68: dynamicsrv.Dynamicsrv.Collect:output_type -> dynamicsrv.APICommonResponse
-	25, // 69: dynamicsrv.Dynamicsrv.HasCollect:output_type -> dynamicsrv.HasCollectResponse
-	36, // 70: dynamicsrv.Dynamicsrv.GetCollectList:output_type -> dynamicsrv.CollectListResponse
-	5,  // 71: dynamicsrv.Dynamicsrv.Focus:output_type -> dynamicsrv.APICommonResponse
-	27, // 72: dynamicsrv.Dynamicsrv.HasFocus:output_type -> dynamicsrv.HasFocusResponse
-	5,  // 73: dynamicsrv.Dynamicsrv.ShareDynamic:output_type -> dynamicsrv.APICommonResponse
-	31, // 74: dynamicsrv.Dynamicsrv.GetFocusList:output_type -> dynamicsrv.FocusListResponse
-	34, // 75: dynamicsrv.Dynamicsrv.GetFansList:output_type -> dynamicsrv.FansListResponse
-	40, // 76: dynamicsrv.Dynamicsrv.GetCommentList:output_type -> dynamicsrv.CommentListResponse
-	5,  // 77: dynamicsrv.Dynamicsrv.Comment:output_type -> dynamicsrv.APICommonResponse
-	5,  // 78: dynamicsrv.Dynamicsrv.DeleteComment:output_type -> dynamicsrv.APICommonResponse
-	47, // 79: dynamicsrv.Dynamicsrv.GetUsersFansCountAndFocusCount:output_type -> dynamicsrv.UsersFansCountAndFocusCountResponse
-	56, // [56:80] is the sub-list for method output_type
-	32, // [32:56] is the sub-list for method input_type
-	32, // [32:32] is the sub-list for extension type_name
-	32, // [32:32] is the sub-list for extension extendee
-	0,  // [0:32] is the sub-list for field type_name
+	9,  // 7: dynamicsrv.ClubDynamicListResponse.List:type_name -> dynamicsrv.DynamicList
+	4,  // 8: dynamicsrv.ClubDynamicListResponse.Error:type_name -> dynamicsrv.APIError
+	14, // 9: dynamicsrv.DynamicInfoRequest.infos:type_name -> dynamicsrv.InfoForm
+	2,  // 10: dynamicsrv.DynamicInfoResponse.Infos:type_name -> dynamicsrv.DynamicInfo
+	4,  // 11: dynamicsrv.DynamicInfoResponse.Error:type_name -> dynamicsrv.APIError
+	20, // 12: dynamicsrv.HasPraiseRequest.HasPraise:type_name -> dynamicsrv.PraiseRequest
+	22, // 13: dynamicsrv.HasPraiseResponse.HasPraise:type_name -> dynamicsrv.HasPraise
+	4,  // 14: dynamicsrv.HasPraiseResponse.Error:type_name -> dynamicsrv.APIError
+	1,  // 15: dynamicsrv.PraiseListResponse.PraiseList:type_name -> dynamicsrv.UserInfo
+	4,  // 16: dynamicsrv.PraiseListResponse.Error:type_name -> dynamicsrv.APIError
+	4,  // 17: dynamicsrv.HasCollectResponse.Error:type_name -> dynamicsrv.APIError
+	4,  // 18: dynamicsrv.HasFocusResponse.Error:type_name -> dynamicsrv.APIError
+	32, // 19: dynamicsrv.FocusListResponse.List:type_name -> dynamicsrv.FocusList
+	4,  // 20: dynamicsrv.FocusListResponse.Error:type_name -> dynamicsrv.APIError
+	35, // 21: dynamicsrv.FansListResponse.List:type_name -> dynamicsrv.FansList
+	4,  // 22: dynamicsrv.FansListResponse.Error:type_name -> dynamicsrv.APIError
+	2,  // 23: dynamicsrv.CollectListResponse.List:type_name -> dynamicsrv.DynamicInfo
+	4,  // 24: dynamicsrv.CollectListResponse.Error:type_name -> dynamicsrv.APIError
+	3,  // 25: dynamicsrv.Comments.comment:type_name -> dynamicsrv.CommentInfo
+	41, // 26: dynamicsrv.Comments.ChildComments:type_name -> dynamicsrv.ChildComments
+	3,  // 27: dynamicsrv.ChildComments.ChildComments:type_name -> dynamicsrv.CommentInfo
+	40, // 28: dynamicsrv.CommentListResponse.commentList:type_name -> dynamicsrv.Comments
+	4,  // 29: dynamicsrv.CommentListResponse.Error:type_name -> dynamicsrv.APIError
+	4,  // 30: dynamicsrv.UserFansCountAndFocusCountResponse.Error:type_name -> dynamicsrv.APIError
+	48, // 31: dynamicsrv.UsersFansCountAndFocusCountResponse.users:type_name -> dynamicsrv.UsersFansCountAndFocusCountResponseForm
+	4,  // 32: dynamicsrv.UsersFansCountAndFocusCountResponse.Error:type_name -> dynamicsrv.APIError
+	51, // 33: dynamicsrv.RemoveDiscoverDynamicIdsRequest.ids:type_name -> dynamicsrv.RemoveDiscoverDynamicIdsRequest.RequestIds
+	6,  // 34: dynamicsrv.Dynamicsrv.PublishDynamic:input_type -> dynamicsrv.PublishDynamicRequest
+	7,  // 35: dynamicsrv.Dynamicsrv.UpdateDynamic:input_type -> dynamicsrv.UpdateDynamicRequest
+	8,  // 36: dynamicsrv.Dynamicsrv.GetDiscoverDynamicList:input_type -> dynamicsrv.DiscoverDynamicListRequest
+	13, // 37: dynamicsrv.Dynamicsrv.GetUserDynamicList:input_type -> dynamicsrv.UserDynamicListRequest
+	11, // 38: dynamicsrv.Dynamicsrv.GetClubDynamicList:input_type -> dynamicsrv.ClubDynamicListRequest
+	15, // 39: dynamicsrv.Dynamicsrv.GetDynamicInfo:input_type -> dynamicsrv.DynamicInfoRequest
+	17, // 40: dynamicsrv.Dynamicsrv.DeleteDynamic:input_type -> dynamicsrv.DeleteDynamicRequest
+	18, // 41: dynamicsrv.Dynamicsrv.SyncDynamicToClub:input_type -> dynamicsrv.SyncDynamicToClubRequest
+	19, // 42: dynamicsrv.Dynamicsrv.delDynamicToClub:input_type -> dynamicsrv.DelDynamicToClubReq
+	20, // 43: dynamicsrv.Dynamicsrv.Praise:input_type -> dynamicsrv.PraiseRequest
+	21, // 44: dynamicsrv.Dynamicsrv.HasPraise:input_type -> dynamicsrv.HasPraiseRequest
+	24, // 45: dynamicsrv.Dynamicsrv.GetPraiseList:input_type -> dynamicsrv.PraiseListRequest
+	50, // 46: dynamicsrv.Dynamicsrv.RemoveDiscoverDynamicIds:input_type -> dynamicsrv.RemoveDiscoverDynamicIdsRequest
+	26, // 47: dynamicsrv.Dynamicsrv.Collect:input_type -> dynamicsrv.CollectRequest
+	26, // 48: dynamicsrv.Dynamicsrv.HasCollect:input_type -> dynamicsrv.CollectRequest
+	37, // 49: dynamicsrv.Dynamicsrv.GetCollectList:input_type -> dynamicsrv.CollectListRequest
+	28, // 50: dynamicsrv.Dynamicsrv.Focus:input_type -> dynamicsrv.FocusRequest
+	28, // 51: dynamicsrv.Dynamicsrv.HasFocus:input_type -> dynamicsrv.FocusRequest
+	30, // 52: dynamicsrv.Dynamicsrv.ShareDynamic:input_type -> dynamicsrv.ShareDynamicRequest
+	31, // 53: dynamicsrv.Dynamicsrv.GetFocusList:input_type -> dynamicsrv.FocusListRequest
+	34, // 54: dynamicsrv.Dynamicsrv.GetFansList:input_type -> dynamicsrv.FansListRequest
+	39, // 55: dynamicsrv.Dynamicsrv.GetCommentList:input_type -> dynamicsrv.CommentListRequest
+	43, // 56: dynamicsrv.Dynamicsrv.Comment:input_type -> dynamicsrv.CommentRequest
+	44, // 57: dynamicsrv.Dynamicsrv.DeleteComment:input_type -> dynamicsrv.DeleteCommentRequest
+	47, // 58: dynamicsrv.Dynamicsrv.GetUsersFansCountAndFocusCount:input_type -> dynamicsrv.UsersFansCountAndFocusCountRequest
+	5,  // 59: dynamicsrv.Dynamicsrv.PublishDynamic:output_type -> dynamicsrv.APICommonResponse
+	5,  // 60: dynamicsrv.Dynamicsrv.UpdateDynamic:output_type -> dynamicsrv.APICommonResponse
+	10, // 61: dynamicsrv.Dynamicsrv.GetDiscoverDynamicList:output_type -> dynamicsrv.DiscoverDynamicListResponse
+	16, // 62: dynamicsrv.Dynamicsrv.GetUserDynamicList:output_type -> dynamicsrv.DynamicInfoResponse
+	12, // 63: dynamicsrv.Dynamicsrv.GetClubDynamicList:output_type -> dynamicsrv.ClubDynamicListResponse
+	16, // 64: dynamicsrv.Dynamicsrv.GetDynamicInfo:output_type -> dynamicsrv.DynamicInfoResponse
+	5,  // 65: dynamicsrv.Dynamicsrv.DeleteDynamic:output_type -> dynamicsrv.APICommonResponse
+	5,  // 66: dynamicsrv.Dynamicsrv.SyncDynamicToClub:output_type -> dynamicsrv.APICommonResponse
+	5,  // 67: dynamicsrv.Dynamicsrv.delDynamicToClub:output_type -> dynamicsrv.APICommonResponse
+	5,  // 68: dynamicsrv.Dynamicsrv.Praise:output_type -> dynamicsrv.APICommonResponse
+	23, // 69: dynamicsrv.Dynamicsrv.HasPraise:output_type -> dynamicsrv.HasPraiseResponse
+	25, // 70: dynamicsrv.Dynamicsrv.GetPraiseList:output_type -> dynamicsrv.PraiseListResponse
+	5,  // 71: dynamicsrv.Dynamicsrv.RemoveDiscoverDynamicIds:output_type -> dynamicsrv.APICommonResponse
+	5,  // 72: dynamicsrv.Dynamicsrv.Collect:output_type -> dynamicsrv.APICommonResponse
+	27, // 73: dynamicsrv.Dynamicsrv.HasCollect:output_type -> dynamicsrv.HasCollectResponse
+	38, // 74: dynamicsrv.Dynamicsrv.GetCollectList:output_type -> dynamicsrv.CollectListResponse
+	5,  // 75: dynamicsrv.Dynamicsrv.Focus:output_type -> dynamicsrv.APICommonResponse
+	29, // 76: dynamicsrv.Dynamicsrv.HasFocus:output_type -> dynamicsrv.HasFocusResponse
+	5,  // 77: dynamicsrv.Dynamicsrv.ShareDynamic:output_type -> dynamicsrv.APICommonResponse
+	33, // 78: dynamicsrv.Dynamicsrv.GetFocusList:output_type -> dynamicsrv.FocusListResponse
+	36, // 79: dynamicsrv.Dynamicsrv.GetFansList:output_type -> dynamicsrv.FansListResponse
+	42, // 80: dynamicsrv.Dynamicsrv.GetCommentList:output_type -> dynamicsrv.CommentListResponse
+	5,  // 81: dynamicsrv.Dynamicsrv.Comment:output_type -> dynamicsrv.APICommonResponse
+	5,  // 82: dynamicsrv.Dynamicsrv.DeleteComment:output_type -> dynamicsrv.APICommonResponse
+	49, // 83: dynamicsrv.Dynamicsrv.GetUsersFansCountAndFocusCount:output_type -> dynamicsrv.UsersFansCountAndFocusCountResponse
+	59, // [59:84] is the sub-list for method output_type
+	34, // [34:59] is the sub-list for method input_type
+	34, // [34:34] is the sub-list for extension type_name
+	34, // [34:34] is the sub-list for extension extendee
+	0,  // [0:34] is the sub-list for field type_name
 }
 
 func init() { file_define_dynamicsrv_proto_init() }
@@ -4149,7 +4291,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DiscoverDynamicList); i {
+			switch v := v.(*DynamicList); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4173,7 +4315,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserDynamicListRequest); i {
+			switch v := v.(*ClubDynamicListRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4185,7 +4327,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*InfoForm); i {
+			switch v := v.(*ClubDynamicListResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4197,7 +4339,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DynamicInfoRequest); i {
+			switch v := v.(*UserDynamicListRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4209,7 +4351,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DynamicInfoResponse); i {
+			switch v := v.(*InfoForm); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4221,7 +4363,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteDynamicRequest); i {
+			switch v := v.(*DynamicInfoRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4233,7 +4375,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SyncDynamicToClubRequest); i {
+			switch v := v.(*DynamicInfoResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4245,7 +4387,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DelDynamicToClubReq); i {
+			switch v := v.(*DeleteDynamicRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4257,7 +4399,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PraiseRequest); i {
+			switch v := v.(*SyncDynamicToClubRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4269,7 +4411,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*HasPraiseRequest); i {
+			switch v := v.(*DelDynamicToClubReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4281,7 +4423,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*HasPraise); i {
+			switch v := v.(*PraiseRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4293,7 +4435,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*HasPraiseResponse); i {
+			switch v := v.(*HasPraiseRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4305,7 +4447,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PraiseListRequest); i {
+			switch v := v.(*HasPraise); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4317,7 +4459,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PraiseListResponse); i {
+			switch v := v.(*HasPraiseResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4329,7 +4471,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CollectRequest); i {
+			switch v := v.(*PraiseListRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4341,7 +4483,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*HasCollectResponse); i {
+			switch v := v.(*PraiseListResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4353,7 +4495,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FocusRequest); i {
+			switch v := v.(*CollectRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4365,7 +4507,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*HasFocusResponse); i {
+			switch v := v.(*HasCollectResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4377,7 +4519,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ShareDynamicRequest); i {
+			switch v := v.(*FocusRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4389,7 +4531,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FocusListRequest); i {
+			switch v := v.(*HasFocusResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4401,7 +4543,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FocusList); i {
+			switch v := v.(*ShareDynamicRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4413,7 +4555,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FocusListResponse); i {
+			switch v := v.(*FocusListRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4425,7 +4567,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FansListRequest); i {
+			switch v := v.(*FocusList); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4437,7 +4579,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FansList); i {
+			switch v := v.(*FocusListResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4449,7 +4591,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FansListResponse); i {
+			switch v := v.(*FansListRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4461,7 +4603,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CollectListRequest); i {
+			switch v := v.(*FansList); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4473,7 +4615,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CollectListResponse); i {
+			switch v := v.(*FansListResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4485,7 +4627,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[37].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CommentListRequest); i {
+			switch v := v.(*CollectListRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4497,7 +4639,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[38].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Comments); i {
+			switch v := v.(*CollectListResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4509,7 +4651,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[39].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ChildComments); i {
+			switch v := v.(*CommentListRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4521,7 +4663,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[40].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CommentListResponse); i {
+			switch v := v.(*Comments); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4533,7 +4675,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[41].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CommentRequest); i {
+			switch v := v.(*ChildComments); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4545,7 +4687,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteCommentRequest); i {
+			switch v := v.(*CommentListResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4557,7 +4699,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[43].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserFansCountAndFocusCountRequest); i {
+			switch v := v.(*CommentRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4569,7 +4711,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[44].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserFansCountAndFocusCountResponse); i {
+			switch v := v.(*DeleteCommentRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4581,7 +4723,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[45].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UsersFansCountAndFocusCountRequest); i {
+			switch v := v.(*UserFansCountAndFocusCountRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4593,7 +4735,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[46].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UsersFansCountAndFocusCountResponseForm); i {
+			switch v := v.(*UserFansCountAndFocusCountResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4605,7 +4747,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[47].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UsersFansCountAndFocusCountResponse); i {
+			switch v := v.(*UsersFansCountAndFocusCountRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4617,7 +4759,7 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[48].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RemoveDiscoverDynamicIdsRequest); i {
+			switch v := v.(*UsersFansCountAndFocusCountResponseForm); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -4629,6 +4771,30 @@ func file_define_dynamicsrv_proto_init() {
 			}
 		}
 		file_define_dynamicsrv_proto_msgTypes[49].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UsersFansCountAndFocusCountResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_define_dynamicsrv_proto_msgTypes[50].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RemoveDiscoverDynamicIdsRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_define_dynamicsrv_proto_msgTypes[51].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RemoveDiscoverDynamicIdsRequest_RequestIds); i {
 			case 0:
 				return &v.state
@@ -4648,7 +4814,7 @@ func file_define_dynamicsrv_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_define_dynamicsrv_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   50,
+			NumMessages:   52,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
