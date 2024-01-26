@@ -43,6 +43,7 @@ const (
 	ClubServer_ZoneUpdate_FullMethodName               = "/club.ClubServer/zoneUpdate"
 	ClubServer_ChannelUpdate_FullMethodName            = "/club.ClubServer/channelUpdate"
 	ClubServer_ChannelDelete_FullMethodName            = "/club.ClubServer/channelDelete"
+	ClubServer_GetChannelInfo_FullMethodName           = "/club.ClubServer/getChannelInfo"
 	ClubServer_ZoneDelete_FullMethodName               = "/club.ClubServer/zoneDelete"
 	ClubServer_Transfer_FullMethodName                 = "/club.ClubServer/transfer"
 	ClubServer_GetUserList_FullMethodName              = "/club.ClubServer/getUserList"
@@ -57,6 +58,8 @@ const (
 	ClubServer_DeleteRoleInfo_FullMethodName           = "/club.ClubServer/DeleteRoleInfo"
 	ClubServer_OptRoleUser_FullMethodName              = "/club.ClubServer/OptRoleUser"
 	ClubServer_SetRoleSort_FullMethodName              = "/club.ClubServer/SetRoleSort"
+	ClubServer_GetDynamicUnReadStatic_FullMethodName   = "/club.ClubServer/GetDynamicUnReadStatic"
+	ClubServer_GetUsersNickName_FullMethodName         = "/club.ClubServer/GetUsersNickName"
 )
 
 // ClubServerClient is the client API for ClubServer service.
@@ -114,6 +117,8 @@ type ClubServerClient interface {
 	ChannelUpdate(ctx context.Context, in *ChannelUpdateReq, opts ...grpc.CallOption) (*ChannelUpdateResp, error)
 	// 删除频道
 	ChannelDelete(ctx context.Context, in *ChannelDeleteReq, opts ...grpc.CallOption) (*ChannelDeleteResp, error)
+	// 频道详情
+	GetChannelInfo(ctx context.Context, in *ChannelInfoReq, opts ...grpc.CallOption) (*ChannelInfoResp, error)
 	// 删除分组
 	ZoneDelete(ctx context.Context, in *ZoneDeleteReq, opts ...grpc.CallOption) (*ZoneDeleteResp, error)
 	// 转让部落
@@ -142,6 +147,10 @@ type ClubServerClient interface {
 	OptRoleUser(ctx context.Context, in *OptRoleUserRequest, opts ...grpc.CallOption) (*OptRoleUserResponse, error)
 	// 身份组排序
 	SetRoleSort(ctx context.Context, in *SetRoleSortRequest, opts ...grpc.CallOption) (*SetRoleSortResponse, error)
+	// 获取部落动态未阅读统计信息
+	GetDynamicUnReadStatic(ctx context.Context, in *GetDynamicUnReadStaticRequest, opts ...grpc.CallOption) (*GetDynamicUnReadStaticResponse, error)
+	// 获取目标用户名
+	GetUsersNickName(ctx context.Context, in *GetUsersNickNameRequest, opts ...grpc.CallOption) (*GetUsersNickNameResponse, error)
 }
 
 type clubServerClient struct {
@@ -368,6 +377,15 @@ func (c *clubServerClient) ChannelDelete(ctx context.Context, in *ChannelDeleteR
 	return out, nil
 }
 
+func (c *clubServerClient) GetChannelInfo(ctx context.Context, in *ChannelInfoReq, opts ...grpc.CallOption) (*ChannelInfoResp, error) {
+	out := new(ChannelInfoResp)
+	err := c.cc.Invoke(ctx, ClubServer_GetChannelInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *clubServerClient) ZoneDelete(ctx context.Context, in *ZoneDeleteReq, opts ...grpc.CallOption) (*ZoneDeleteResp, error) {
 	out := new(ZoneDeleteResp)
 	err := c.cc.Invoke(ctx, ClubServer_ZoneDelete_FullMethodName, in, out, opts...)
@@ -494,6 +512,24 @@ func (c *clubServerClient) SetRoleSort(ctx context.Context, in *SetRoleSortReque
 	return out, nil
 }
 
+func (c *clubServerClient) GetDynamicUnReadStatic(ctx context.Context, in *GetDynamicUnReadStaticRequest, opts ...grpc.CallOption) (*GetDynamicUnReadStaticResponse, error) {
+	out := new(GetDynamicUnReadStaticResponse)
+	err := c.cc.Invoke(ctx, ClubServer_GetDynamicUnReadStatic_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) GetUsersNickName(ctx context.Context, in *GetUsersNickNameRequest, opts ...grpc.CallOption) (*GetUsersNickNameResponse, error) {
+	out := new(GetUsersNickNameResponse)
+	err := c.cc.Invoke(ctx, ClubServer_GetUsersNickName_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClubServerServer is the server API for ClubServer service.
 // All implementations must embed UnimplementedClubServerServer
 // for forward compatibility
@@ -549,6 +585,8 @@ type ClubServerServer interface {
 	ChannelUpdate(context.Context, *ChannelUpdateReq) (*ChannelUpdateResp, error)
 	// 删除频道
 	ChannelDelete(context.Context, *ChannelDeleteReq) (*ChannelDeleteResp, error)
+	// 频道详情
+	GetChannelInfo(context.Context, *ChannelInfoReq) (*ChannelInfoResp, error)
 	// 删除分组
 	ZoneDelete(context.Context, *ZoneDeleteReq) (*ZoneDeleteResp, error)
 	// 转让部落
@@ -577,6 +615,10 @@ type ClubServerServer interface {
 	OptRoleUser(context.Context, *OptRoleUserRequest) (*OptRoleUserResponse, error)
 	// 身份组排序
 	SetRoleSort(context.Context, *SetRoleSortRequest) (*SetRoleSortResponse, error)
+	// 获取部落动态未阅读统计信息
+	GetDynamicUnReadStatic(context.Context, *GetDynamicUnReadStaticRequest) (*GetDynamicUnReadStaticResponse, error)
+	// 获取目标用户名
+	GetUsersNickName(context.Context, *GetUsersNickNameRequest) (*GetUsersNickNameResponse, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -656,6 +698,9 @@ func (UnimplementedClubServerServer) ChannelUpdate(context.Context, *ChannelUpda
 func (UnimplementedClubServerServer) ChannelDelete(context.Context, *ChannelDeleteReq) (*ChannelDeleteResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChannelDelete not implemented")
 }
+func (UnimplementedClubServerServer) GetChannelInfo(context.Context, *ChannelInfoReq) (*ChannelInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChannelInfo not implemented")
+}
 func (UnimplementedClubServerServer) ZoneDelete(context.Context, *ZoneDeleteReq) (*ZoneDeleteResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ZoneDelete not implemented")
 }
@@ -697,6 +742,12 @@ func (UnimplementedClubServerServer) OptRoleUser(context.Context, *OptRoleUserRe
 }
 func (UnimplementedClubServerServer) SetRoleSort(context.Context, *SetRoleSortRequest) (*SetRoleSortResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetRoleSort not implemented")
+}
+func (UnimplementedClubServerServer) GetDynamicUnReadStatic(context.Context, *GetDynamicUnReadStaticRequest) (*GetDynamicUnReadStaticResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDynamicUnReadStatic not implemented")
+}
+func (UnimplementedClubServerServer) GetUsersNickName(context.Context, *GetUsersNickNameRequest) (*GetUsersNickNameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUsersNickName not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
 
@@ -1143,6 +1194,24 @@ func _ClubServer_ChannelDelete_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClubServer_GetChannelInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChannelInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetChannelInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetChannelInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetChannelInfo(ctx, req.(*ChannelInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ClubServer_ZoneDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ZoneDeleteReq)
 	if err := dec(in); err != nil {
@@ -1395,6 +1464,42 @@ func _ClubServer_SetRoleSort_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClubServer_GetDynamicUnReadStatic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDynamicUnReadStaticRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetDynamicUnReadStatic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetDynamicUnReadStatic_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetDynamicUnReadStatic(ctx, req.(*GetDynamicUnReadStaticRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_GetUsersNickName_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUsersNickNameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetUsersNickName(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetUsersNickName_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetUsersNickName(ctx, req.(*GetUsersNickNameRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClubServer_ServiceDesc is the grpc.ServiceDesc for ClubServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1499,6 +1604,10 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ClubServer_ChannelDelete_Handler,
 		},
 		{
+			MethodName: "getChannelInfo",
+			Handler:    _ClubServer_GetChannelInfo_Handler,
+		},
+		{
 			MethodName: "zoneDelete",
 			Handler:    _ClubServer_ZoneDelete_Handler,
 		},
@@ -1553,6 +1662,14 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetRoleSort",
 			Handler:    _ClubServer_SetRoleSort_Handler,
+		},
+		{
+			MethodName: "GetDynamicUnReadStatic",
+			Handler:    _ClubServer_GetDynamicUnReadStatic_Handler,
+		},
+		{
+			MethodName: "GetUsersNickName",
+			Handler:    _ClubServer_GetUsersNickName_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
