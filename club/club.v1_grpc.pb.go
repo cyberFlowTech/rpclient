@@ -167,7 +167,7 @@ type ClubServerClient interface {
 	GetBanList(ctx context.Context, in *GetBanListRequest, opts ...grpc.CallOption) (*GetBanListResponse, error)
 	// 封禁/禁言
 	OptBan(ctx context.Context, in *OptBanRequest, opts ...grpc.CallOption) (*OptBanResponse, error)
-	// 封禁/禁言
+	// 设置最近访问频道用户
 	SetChannelVisited(ctx context.Context, in *SetChannelVisitedRequest, opts ...grpc.CallOption) (*SetChannelVisitedResponse, error)
 }
 
@@ -701,7 +701,7 @@ type ClubServerServer interface {
 	GetBanList(context.Context, *GetBanListRequest) (*GetBanListResponse, error)
 	// 封禁/禁言
 	OptBan(context.Context, *OptBanRequest) (*OptBanResponse, error)
-	// 封禁/禁言
+	// 设置最近访问频道用户
 	SetChannelVisited(context.Context, *SetChannelVisitedRequest) (*SetChannelVisitedResponse, error)
 	mustEmbedUnimplementedClubServerServer()
 }
