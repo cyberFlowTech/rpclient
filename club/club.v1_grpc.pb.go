@@ -60,6 +60,12 @@ const (
 	ClubServer_SetRoleSort_FullMethodName              = "/club.ClubServer/SetRoleSort"
 	ClubServer_GetDynamicUnReadStatic_FullMethodName   = "/club.ClubServer/GetDynamicUnReadStatic"
 	ClubServer_GetUsersNickName_FullMethodName         = "/club.ClubServer/GetUsersNickName"
+	ClubServer_CreateNotice_FullMethodName             = "/club.ClubServer/CreateNotice"
+	ClubServer_UpdateNotice_FullMethodName             = "/club.ClubServer/UpdateNotice"
+	ClubServer_DeleteNotice_FullMethodName             = "/club.ClubServer/DeleteNotice"
+	ClubServer_GetBanList_FullMethodName               = "/club.ClubServer/GetBanList"
+	ClubServer_OptBan_FullMethodName                   = "/club.ClubServer/OptBan"
+	ClubServer_SetChannelVisited_FullMethodName        = "/club.ClubServer/SetChannelVisited"
 )
 
 // ClubServerClient is the client API for ClubServer service.
@@ -151,6 +157,18 @@ type ClubServerClient interface {
 	GetDynamicUnReadStatic(ctx context.Context, in *GetDynamicUnReadStaticRequest, opts ...grpc.CallOption) (*GetDynamicUnReadStaticResponse, error)
 	// 获取目标用户名
 	GetUsersNickName(ctx context.Context, in *GetUsersNickNameRequest, opts ...grpc.CallOption) (*GetUsersNickNameResponse, error)
+	// 创建频道公告
+	CreateNotice(ctx context.Context, in *CreateNoticeRequest, opts ...grpc.CallOption) (*CreateNoticeResponse, error)
+	// 更新频道公告
+	UpdateNotice(ctx context.Context, in *UpdateNoticeRequest, opts ...grpc.CallOption) (*UpdateNoticeResponse, error)
+	// 删除频道公告
+	DeleteNotice(ctx context.Context, in *DeleteNoticeRequest, opts ...grpc.CallOption) (*DeleteNoticeResponse, error)
+	// 获取封禁列表/禁言列表
+	GetBanList(ctx context.Context, in *GetBanListRequest, opts ...grpc.CallOption) (*GetBanListResponse, error)
+	// 封禁/禁言
+	OptBan(ctx context.Context, in *OptBanRequest, opts ...grpc.CallOption) (*OptBanResponse, error)
+	// 封禁/禁言
+	SetChannelVisited(ctx context.Context, in *SetChannelVisitedRequest, opts ...grpc.CallOption) (*SetChannelVisitedResponse, error)
 }
 
 type clubServerClient struct {
@@ -530,6 +548,60 @@ func (c *clubServerClient) GetUsersNickName(ctx context.Context, in *GetUsersNic
 	return out, nil
 }
 
+func (c *clubServerClient) CreateNotice(ctx context.Context, in *CreateNoticeRequest, opts ...grpc.CallOption) (*CreateNoticeResponse, error) {
+	out := new(CreateNoticeResponse)
+	err := c.cc.Invoke(ctx, ClubServer_CreateNotice_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) UpdateNotice(ctx context.Context, in *UpdateNoticeRequest, opts ...grpc.CallOption) (*UpdateNoticeResponse, error) {
+	out := new(UpdateNoticeResponse)
+	err := c.cc.Invoke(ctx, ClubServer_UpdateNotice_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) DeleteNotice(ctx context.Context, in *DeleteNoticeRequest, opts ...grpc.CallOption) (*DeleteNoticeResponse, error) {
+	out := new(DeleteNoticeResponse)
+	err := c.cc.Invoke(ctx, ClubServer_DeleteNotice_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) GetBanList(ctx context.Context, in *GetBanListRequest, opts ...grpc.CallOption) (*GetBanListResponse, error) {
+	out := new(GetBanListResponse)
+	err := c.cc.Invoke(ctx, ClubServer_GetBanList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) OptBan(ctx context.Context, in *OptBanRequest, opts ...grpc.CallOption) (*OptBanResponse, error) {
+	out := new(OptBanResponse)
+	err := c.cc.Invoke(ctx, ClubServer_OptBan_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) SetChannelVisited(ctx context.Context, in *SetChannelVisitedRequest, opts ...grpc.CallOption) (*SetChannelVisitedResponse, error) {
+	out := new(SetChannelVisitedResponse)
+	err := c.cc.Invoke(ctx, ClubServer_SetChannelVisited_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClubServerServer is the server API for ClubServer service.
 // All implementations must embed UnimplementedClubServerServer
 // for forward compatibility
@@ -619,6 +691,18 @@ type ClubServerServer interface {
 	GetDynamicUnReadStatic(context.Context, *GetDynamicUnReadStaticRequest) (*GetDynamicUnReadStaticResponse, error)
 	// 获取目标用户名
 	GetUsersNickName(context.Context, *GetUsersNickNameRequest) (*GetUsersNickNameResponse, error)
+	// 创建频道公告
+	CreateNotice(context.Context, *CreateNoticeRequest) (*CreateNoticeResponse, error)
+	// 更新频道公告
+	UpdateNotice(context.Context, *UpdateNoticeRequest) (*UpdateNoticeResponse, error)
+	// 删除频道公告
+	DeleteNotice(context.Context, *DeleteNoticeRequest) (*DeleteNoticeResponse, error)
+	// 获取封禁列表/禁言列表
+	GetBanList(context.Context, *GetBanListRequest) (*GetBanListResponse, error)
+	// 封禁/禁言
+	OptBan(context.Context, *OptBanRequest) (*OptBanResponse, error)
+	// 封禁/禁言
+	SetChannelVisited(context.Context, *SetChannelVisitedRequest) (*SetChannelVisitedResponse, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -748,6 +832,24 @@ func (UnimplementedClubServerServer) GetDynamicUnReadStatic(context.Context, *Ge
 }
 func (UnimplementedClubServerServer) GetUsersNickName(context.Context, *GetUsersNickNameRequest) (*GetUsersNickNameResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsersNickName not implemented")
+}
+func (UnimplementedClubServerServer) CreateNotice(context.Context, *CreateNoticeRequest) (*CreateNoticeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateNotice not implemented")
+}
+func (UnimplementedClubServerServer) UpdateNotice(context.Context, *UpdateNoticeRequest) (*UpdateNoticeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateNotice not implemented")
+}
+func (UnimplementedClubServerServer) DeleteNotice(context.Context, *DeleteNoticeRequest) (*DeleteNoticeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteNotice not implemented")
+}
+func (UnimplementedClubServerServer) GetBanList(context.Context, *GetBanListRequest) (*GetBanListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBanList not implemented")
+}
+func (UnimplementedClubServerServer) OptBan(context.Context, *OptBanRequest) (*OptBanResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OptBan not implemented")
+}
+func (UnimplementedClubServerServer) SetChannelVisited(context.Context, *SetChannelVisitedRequest) (*SetChannelVisitedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetChannelVisited not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
 
@@ -1500,6 +1602,114 @@ func _ClubServer_GetUsersNickName_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClubServer_CreateNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateNoticeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).CreateNotice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_CreateNotice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).CreateNotice(ctx, req.(*CreateNoticeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_UpdateNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateNoticeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).UpdateNotice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_UpdateNotice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).UpdateNotice(ctx, req.(*UpdateNoticeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_DeleteNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteNoticeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).DeleteNotice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_DeleteNotice_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).DeleteNotice(ctx, req.(*DeleteNoticeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_GetBanList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBanListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetBanList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetBanList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetBanList(ctx, req.(*GetBanListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_OptBan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OptBanRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).OptBan(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_OptBan_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).OptBan(ctx, req.(*OptBanRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_SetChannelVisited_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetChannelVisitedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).SetChannelVisited(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_SetChannelVisited_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).SetChannelVisited(ctx, req.(*SetChannelVisitedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClubServer_ServiceDesc is the grpc.ServiceDesc for ClubServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1670,6 +1880,30 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUsersNickName",
 			Handler:    _ClubServer_GetUsersNickName_Handler,
+		},
+		{
+			MethodName: "CreateNotice",
+			Handler:    _ClubServer_CreateNotice_Handler,
+		},
+		{
+			MethodName: "UpdateNotice",
+			Handler:    _ClubServer_UpdateNotice_Handler,
+		},
+		{
+			MethodName: "DeleteNotice",
+			Handler:    _ClubServer_DeleteNotice_Handler,
+		},
+		{
+			MethodName: "GetBanList",
+			Handler:    _ClubServer_GetBanList_Handler,
+		},
+		{
+			MethodName: "OptBan",
+			Handler:    _ClubServer_OptBan_Handler,
+		},
+		{
+			MethodName: "SetChannelVisited",
+			Handler:    _ClubServer_SetChannelVisited_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
