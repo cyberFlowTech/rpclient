@@ -15,6 +15,7 @@ enum OptDataType{
   TribeWalletBalance=1;
   TribePay=2;
   TribeEnter=3;
+  TribeEnterDapp=4;
 }
 message ReportDataInfo{
   OptDataType SetType = 1; //
@@ -28,10 +29,14 @@ message ReportDataResp{
   BaseResult Result=1;
 }
 message TribeStat{
-  int32 time=1;
-  int64 Balances=2;//过去30天的余额
+  int32 time=1;//日期
+  int64 Balances=2;//过去30天的资产余额
   int64 Members=3; //过去30天的成员数
   int64 Pays=4;  //累计支付额度
+  int64 VisitPv=5;//访问pv
+  int64 JoinUv=6; //新增人数
+  int64 MsgSum=7; //消息数
+  int64 DappOpen=8; //dapp  打开数
 }
 message TribeStatsData{
   string TribeID=1;
@@ -51,6 +56,9 @@ message TribeMemberData{
 
   int64 LastEnter=7;//最后一次来部落
   int64 LastMsgTime=8;//最后一次在部落发消息
+
+  string Nick=9;
+  string Avatar=10;
 }
 
 message GetTribeStatsReq{
@@ -75,6 +83,9 @@ message GetTribeRankReq{
   TribeRankType RankType=2;
   int32 Pages=3;  //默认第一页
   int32 Count=4;  //默认过去30天的
+  int32 SubRankType=5;  //0:7天，1:30天，2:最后访问时间，3:最后消息
+  int32 SortType=6; //0 降序，1升序
+  string UserId=7;  //当前用户
 }
 
 message GetTribeRankResp{
@@ -82,10 +93,8 @@ message GetTribeRankResp{
   repeated TribeMemberData Members=2;//排行榜
 }
 
-
 service DataStats {
   rpc ReportTribeMsg(ReportDataReq)returns(ReportDataResp);
   rpc GetTribeStata(GetTribeStatsReq)returns(GetTribeStatResp);
   rpc GetTribeRank(GetTribeRankReq)returns(GetTribeRankResp);
-
 }
