@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.19.4
-// source: define/mimoimage.proto
+// source: define/image.proto
 
-package mimoimage
+package image
 
 import (
 	context "context"
@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	MimoImage_UploadByUrl_FullMethodName  = "/mimoimage.MimoImage/UploadByUrl"
-	MimoImage_UploadByFile_FullMethodName = "/mimoimage.MimoImage/UploadByFile"
+	MimoImage_UploadByUrl_FullMethodName  = "/image.MimoImage/UploadByUrl"
+	MimoImage_UploadByFile_FullMethodName = "/image.MimoImage/UploadByFile"
 )
 
 // MimoImageClient is the client API for MimoImage service.
@@ -129,7 +129,7 @@ func _MimoImage_UploadByFile_Handler(srv interface{}, ctx context.Context, dec f
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var MimoImage_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "mimoimage.MimoImage",
+	ServiceName: "image.MimoImage",
 	HandlerType: (*MimoImageServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -142,5 +142,5 @@ var MimoImage_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "define/mimoimage.proto",
+	Metadata: "define/image.proto",
 }
