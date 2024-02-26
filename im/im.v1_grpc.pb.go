@@ -46,6 +46,7 @@ const (
 	ImServer_SortEmoji_FullMethodName                   = "/im.ImServer/SortEmoji"
 	ImServer_GetEmojiList_FullMethodName                = "/im.ImServer/GetEmojiList"
 	ImServer_MsgRecall_FullMethodName                   = "/im.ImServer/MsgRecall"
+	ImServer_UserDisconnect_FullMethodName              = "/im.ImServer/UserDisconnect"
 )
 
 // ImServerClient is the client API for ImServer service.
@@ -81,6 +82,7 @@ type ImServerClient interface {
 	SortEmoji(ctx context.Context, in *SortEmojiReq, opts ...grpc.CallOption) (*EmptyData, error)
 	GetEmojiList(ctx context.Context, in *GetEmojiListReq, opts ...grpc.CallOption) (*GetEmojiListRes, error)
 	MsgRecall(ctx context.Context, in *MsgRecallReq, opts ...grpc.CallOption) (*EmptyData, error)
+	UserDisconnect(ctx context.Context, in *UserDisconnectReq, opts ...grpc.CallOption) (*CommonRes, error)
 }
 
 type imServerClient struct {
@@ -334,6 +336,15 @@ func (c *imServerClient) MsgRecall(ctx context.Context, in *MsgRecallReq, opts .
 	return out, nil
 }
 
+func (c *imServerClient) UserDisconnect(ctx context.Context, in *UserDisconnectReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_UserDisconnect_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImServerServer is the server API for ImServer service.
 // All implementations must embed UnimplementedImServerServer
 // for forward compatibility
@@ -367,6 +378,7 @@ type ImServerServer interface {
 	SortEmoji(context.Context, *SortEmojiReq) (*EmptyData, error)
 	GetEmojiList(context.Context, *GetEmojiListReq) (*GetEmojiListRes, error)
 	MsgRecall(context.Context, *MsgRecallReq) (*EmptyData, error)
+	UserDisconnect(context.Context, *UserDisconnectReq) (*CommonRes, error)
 	mustEmbedUnimplementedImServerServer()
 }
 
@@ -454,6 +466,9 @@ func (UnimplementedImServerServer) GetEmojiList(context.Context, *GetEmojiListRe
 }
 func (UnimplementedImServerServer) MsgRecall(context.Context, *MsgRecallReq) (*EmptyData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MsgRecall not implemented")
+}
+func (UnimplementedImServerServer) UserDisconnect(context.Context, *UserDisconnectReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserDisconnect not implemented")
 }
 func (UnimplementedImServerServer) mustEmbedUnimplementedImServerServer() {}
 
@@ -954,6 +969,24 @@ func _ImServer_MsgRecall_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImServer_UserDisconnect_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserDisconnectReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).UserDisconnect(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_UserDisconnect_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).UserDisconnect(ctx, req.(*UserDisconnectReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ImServer_ServiceDesc is the grpc.ServiceDesc for ImServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1068,6 +1101,10 @@ var ImServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MsgRecall",
 			Handler:    _ImServer_MsgRecall_Handler,
+		},
+		{
+			MethodName: "UserDisconnect",
+			Handler:    _ImServer_UserDisconnect_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
