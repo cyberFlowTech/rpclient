@@ -33,6 +33,7 @@ const (
 	User_Logout_FullMethodName                   = "/userinfo.User/Logout"
 	User_Forget_FullMethodName                   = "/userinfo.User/Forget"
 	User_CheckUserExists_FullMethodName          = "/userinfo.User/CheckUserExists"
+	User_Bind_FullMethodName                     = "/userinfo.User/Bind"
 )
 
 // UserClient is the client API for User service.
@@ -67,6 +68,8 @@ type UserClient interface {
 	Forget(ctx context.Context, in *ForgetReq, opts ...grpc.CallOption) (*ForgetResp, error)
 	// 检查用户是否已经存在
 	CheckUserExists(ctx context.Context, in *CheckUserExistsReq, opts ...grpc.CallOption) (*CheckUserExistsResp, error)
+	// 绑定邮箱、或者第三方账号
+	Bind(ctx context.Context, in *BindReq, opts ...grpc.CallOption) (*BindResp, error)
 }
 
 type userClient struct {
@@ -203,6 +206,15 @@ func (c *userClient) CheckUserExists(ctx context.Context, in *CheckUserExistsReq
 	return out, nil
 }
 
+func (c *userClient) Bind(ctx context.Context, in *BindReq, opts ...grpc.CallOption) (*BindResp, error) {
+	out := new(BindResp)
+	err := c.cc.Invoke(ctx, User_Bind_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -235,6 +247,8 @@ type UserServer interface {
 	Forget(context.Context, *ForgetReq) (*ForgetResp, error)
 	// 检查用户是否已经存在
 	CheckUserExists(context.Context, *CheckUserExistsReq) (*CheckUserExistsResp, error)
+	// 绑定邮箱、或者第三方账号
+	Bind(context.Context, *BindReq) (*BindResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -283,6 +297,9 @@ func (UnimplementedUserServer) Forget(context.Context, *ForgetReq) (*ForgetResp,
 }
 func (UnimplementedUserServer) CheckUserExists(context.Context, *CheckUserExistsReq) (*CheckUserExistsResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckUserExists not implemented")
+}
+func (UnimplementedUserServer) Bind(context.Context, *BindReq) (*BindResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Bind not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -549,6 +566,24 @@ func _User_CheckUserExists_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_Bind_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BindReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Bind(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_Bind_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Bind(ctx, req.(*BindReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -611,6 +646,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckUserExists",
 			Handler:    _User_CheckUserExists_Handler,
+		},
+		{
+			MethodName: "Bind",
+			Handler:    _User_Bind_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
