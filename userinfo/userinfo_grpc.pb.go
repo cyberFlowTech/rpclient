@@ -25,6 +25,14 @@ const (
 	User_ResetUserPwd_FullMethodName             = "/userinfo.User/ResetUserPwd"
 	User_GetUsersNotificationConf_FullMethodName = "/userinfo.User/GetUsersNotificationConf"
 	User_SetUsersNotificationConf_FullMethodName = "/userinfo.User/SetUsersNotificationConf"
+	User_SetCancellation_FullMethodName          = "/userinfo.User/SetCancellation"
+	User_Login_FullMethodName                    = "/userinfo.User/Login"
+	User_Register_FullMethodName                 = "/userinfo.User/Register"
+	User_SendVerificationCode_FullMethodName     = "/userinfo.User/SendVerificationCode"
+	User_LoginAuto_FullMethodName                = "/userinfo.User/LoginAuto"
+	User_Logout_FullMethodName                   = "/userinfo.User/Logout"
+	User_Forget_FullMethodName                   = "/userinfo.User/Forget"
+	User_CheckUserExists_FullMethodName          = "/userinfo.User/CheckUserExists"
 )
 
 // UserClient is the client API for User service.
@@ -43,6 +51,22 @@ type UserClient interface {
 	GetUsersNotificationConf(ctx context.Context, in *UsersNotificationConfReq, opts ...grpc.CallOption) (*UsersNotificationConfResp, error)
 	// 设置用户的消息配置
 	SetUsersNotificationConf(ctx context.Context, in *SetUsersNotificationConfReq, opts ...grpc.CallOption) (*SetUsersNotificationConfResp, error)
+	// 申请注销账号
+	SetCancellation(ctx context.Context, in *SetCancellationReq, opts ...grpc.CallOption) (*SetCancellationResp, error)
+	// 登陆
+	Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
+	// 注册
+	Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error)
+	// 发送邮箱验证码
+	SendVerificationCode(ctx context.Context, in *SendVerificationCodeReq, opts ...grpc.CallOption) (*SendVerificationCodeResp, error)
+	// 自动登陆
+	LoginAuto(ctx context.Context, in *LoginAutoReq, opts ...grpc.CallOption) (*LoginAutoResp, error)
+	// 退出登陆
+	Logout(ctx context.Context, in *LogoutReq, opts ...grpc.CallOption) (*LogoutResp, error)
+	// 忘记密码
+	Forget(ctx context.Context, in *ForgetReq, opts ...grpc.CallOption) (*ForgetResp, error)
+	// 检查用户是否已经存在
+	CheckUserExists(ctx context.Context, in *CheckUserExistsReq, opts ...grpc.CallOption) (*CheckUserExistsResp, error)
 }
 
 type userClient struct {
@@ -107,6 +131,78 @@ func (c *userClient) SetUsersNotificationConf(ctx context.Context, in *SetUsersN
 	return out, nil
 }
 
+func (c *userClient) SetCancellation(ctx context.Context, in *SetCancellationReq, opts ...grpc.CallOption) (*SetCancellationResp, error) {
+	out := new(SetCancellationResp)
+	err := c.cc.Invoke(ctx, User_SetCancellation_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error) {
+	out := new(LoginResp)
+	err := c.cc.Invoke(ctx, User_Login_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error) {
+	out := new(RegisterResp)
+	err := c.cc.Invoke(ctx, User_Register_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) SendVerificationCode(ctx context.Context, in *SendVerificationCodeReq, opts ...grpc.CallOption) (*SendVerificationCodeResp, error) {
+	out := new(SendVerificationCodeResp)
+	err := c.cc.Invoke(ctx, User_SendVerificationCode_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) LoginAuto(ctx context.Context, in *LoginAutoReq, opts ...grpc.CallOption) (*LoginAutoResp, error) {
+	out := new(LoginAutoResp)
+	err := c.cc.Invoke(ctx, User_LoginAuto_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) Logout(ctx context.Context, in *LogoutReq, opts ...grpc.CallOption) (*LogoutResp, error) {
+	out := new(LogoutResp)
+	err := c.cc.Invoke(ctx, User_Logout_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) Forget(ctx context.Context, in *ForgetReq, opts ...grpc.CallOption) (*ForgetResp, error) {
+	out := new(ForgetResp)
+	err := c.cc.Invoke(ctx, User_Forget_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) CheckUserExists(ctx context.Context, in *CheckUserExistsReq, opts ...grpc.CallOption) (*CheckUserExistsResp, error) {
+	out := new(CheckUserExistsResp)
+	err := c.cc.Invoke(ctx, User_CheckUserExists_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -123,6 +219,22 @@ type UserServer interface {
 	GetUsersNotificationConf(context.Context, *UsersNotificationConfReq) (*UsersNotificationConfResp, error)
 	// 设置用户的消息配置
 	SetUsersNotificationConf(context.Context, *SetUsersNotificationConfReq) (*SetUsersNotificationConfResp, error)
+	// 申请注销账号
+	SetCancellation(context.Context, *SetCancellationReq) (*SetCancellationResp, error)
+	// 登陆
+	Login(context.Context, *LoginReq) (*LoginResp, error)
+	// 注册
+	Register(context.Context, *RegisterReq) (*RegisterResp, error)
+	// 发送邮箱验证码
+	SendVerificationCode(context.Context, *SendVerificationCodeReq) (*SendVerificationCodeResp, error)
+	// 自动登陆
+	LoginAuto(context.Context, *LoginAutoReq) (*LoginAutoResp, error)
+	// 退出登陆
+	Logout(context.Context, *LogoutReq) (*LogoutResp, error)
+	// 忘记密码
+	Forget(context.Context, *ForgetReq) (*ForgetResp, error)
+	// 检查用户是否已经存在
+	CheckUserExists(context.Context, *CheckUserExistsReq) (*CheckUserExistsResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -147,6 +259,30 @@ func (UnimplementedUserServer) GetUsersNotificationConf(context.Context, *UsersN
 }
 func (UnimplementedUserServer) SetUsersNotificationConf(context.Context, *SetUsersNotificationConfReq) (*SetUsersNotificationConfResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetUsersNotificationConf not implemented")
+}
+func (UnimplementedUserServer) SetCancellation(context.Context, *SetCancellationReq) (*SetCancellationResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetCancellation not implemented")
+}
+func (UnimplementedUserServer) Login(context.Context, *LoginReq) (*LoginResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedUserServer) Register(context.Context, *RegisterReq) (*RegisterResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
+}
+func (UnimplementedUserServer) SendVerificationCode(context.Context, *SendVerificationCodeReq) (*SendVerificationCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendVerificationCode not implemented")
+}
+func (UnimplementedUserServer) LoginAuto(context.Context, *LoginAutoReq) (*LoginAutoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginAuto not implemented")
+}
+func (UnimplementedUserServer) Logout(context.Context, *LogoutReq) (*LogoutResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
+}
+func (UnimplementedUserServer) Forget(context.Context, *ForgetReq) (*ForgetResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Forget not implemented")
+}
+func (UnimplementedUserServer) CheckUserExists(context.Context, *CheckUserExistsReq) (*CheckUserExistsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckUserExists not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -269,6 +405,150 @@ func _User_SetUsersNotificationConf_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_SetCancellation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetCancellationReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SetCancellation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_SetCancellation_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SetCancellation(ctx, req.(*SetCancellationReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_Login_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Login(ctx, req.(*LoginReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Register(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_Register_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Register(ctx, req.(*RegisterReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_SendVerificationCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendVerificationCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SendVerificationCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_SendVerificationCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SendVerificationCode(ctx, req.(*SendVerificationCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_LoginAuto_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginAutoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).LoginAuto(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_LoginAuto_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).LoginAuto(ctx, req.(*LoginAutoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LogoutReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Logout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_Logout_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Logout(ctx, req.(*LogoutReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_Forget_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ForgetReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Forget(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_Forget_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Forget(ctx, req.(*ForgetReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_CheckUserExists_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckUserExistsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).CheckUserExists(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_CheckUserExists_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).CheckUserExists(ctx, req.(*CheckUserExistsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -299,6 +579,38 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetUsersNotificationConf",
 			Handler:    _User_SetUsersNotificationConf_Handler,
+		},
+		{
+			MethodName: "SetCancellation",
+			Handler:    _User_SetCancellation_Handler,
+		},
+		{
+			MethodName: "Login",
+			Handler:    _User_Login_Handler,
+		},
+		{
+			MethodName: "Register",
+			Handler:    _User_Register_Handler,
+		},
+		{
+			MethodName: "SendVerificationCode",
+			Handler:    _User_SendVerificationCode_Handler,
+		},
+		{
+			MethodName: "LoginAuto",
+			Handler:    _User_LoginAuto_Handler,
+		},
+		{
+			MethodName: "Logout",
+			Handler:    _User_Logout_Handler,
+		},
+		{
+			MethodName: "Forget",
+			Handler:    _User_Forget_Handler,
+		},
+		{
+			MethodName: "CheckUserExists",
+			Handler:    _User_CheckUserExists_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
