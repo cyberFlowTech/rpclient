@@ -37,6 +37,7 @@ const (
 	User_Unbind_FullMethodName                   = "/userinfo.User/Unbind"
 	User_BindList_FullMethodName                 = "/userinfo.User/BindList"
 	User_GetAuthInfo_FullMethodName              = "/userinfo.User/GetAuthInfo"
+	User_GetLoginAutoInfo_FullMethodName         = "/userinfo.User/GetLoginAutoInfo"
 )
 
 // UserClient is the client API for User service.
@@ -79,6 +80,8 @@ type UserClient interface {
 	BindList(ctx context.Context, in *BindListReq, opts ...grpc.CallOption) (*BindListRes, error)
 	// 获取第三方认证信息
 	GetAuthInfo(ctx context.Context, in *GetAuthInfoReq, opts ...grpc.CallOption) (*GetAuthInfoResp, error)
+	// 获取自动登陆信息
+	GetLoginAutoInfo(ctx context.Context, in *GetLoginAutoInfoReq, opts ...grpc.CallOption) (*GetLoginAutoInfoResp, error)
 }
 
 type userClient struct {
@@ -251,6 +254,15 @@ func (c *userClient) GetAuthInfo(ctx context.Context, in *GetAuthInfoReq, opts .
 	return out, nil
 }
 
+func (c *userClient) GetLoginAutoInfo(ctx context.Context, in *GetLoginAutoInfoReq, opts ...grpc.CallOption) (*GetLoginAutoInfoResp, error) {
+	out := new(GetLoginAutoInfoResp)
+	err := c.cc.Invoke(ctx, User_GetLoginAutoInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -291,6 +303,8 @@ type UserServer interface {
 	BindList(context.Context, *BindListReq) (*BindListRes, error)
 	// 获取第三方认证信息
 	GetAuthInfo(context.Context, *GetAuthInfoReq) (*GetAuthInfoResp, error)
+	// 获取自动登陆信息
+	GetLoginAutoInfo(context.Context, *GetLoginAutoInfoReq) (*GetLoginAutoInfoResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -351,6 +365,9 @@ func (UnimplementedUserServer) BindList(context.Context, *BindListReq) (*BindLis
 }
 func (UnimplementedUserServer) GetAuthInfo(context.Context, *GetAuthInfoReq) (*GetAuthInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAuthInfo not implemented")
+}
+func (UnimplementedUserServer) GetLoginAutoInfo(context.Context, *GetLoginAutoInfoReq) (*GetLoginAutoInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLoginAutoInfo not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -689,6 +706,24 @@ func _User_GetAuthInfo_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_GetLoginAutoInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLoginAutoInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetLoginAutoInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_GetLoginAutoInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetLoginAutoInfo(ctx, req.(*GetLoginAutoInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -767,6 +802,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAuthInfo",
 			Handler:    _User_GetAuthInfo_Handler,
+		},
+		{
+			MethodName: "GetLoginAutoInfo",
+			Handler:    _User_GetLoginAutoInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
