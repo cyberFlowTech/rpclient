@@ -16,6 +16,8 @@ enum OptDataType{
   TribePay=2;
   TribeEnter=3;
   TribeEnterDapp=4;
+  TribeAddMember=5;
+  TribeDelteMember=6;
 }
 message ReportDataInfo{
   OptDataType SetType = 1; //
