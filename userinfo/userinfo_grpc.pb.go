@@ -39,6 +39,7 @@ const (
 	User_GetAuthInfo_FullMethodName              = "/userinfo.User/GetAuthInfo"
 	User_VerifyPwd_FullMethodName                = "/userinfo.User/VerifyPwd"
 	User_GetLoginAutoInfo_FullMethodName         = "/userinfo.User/GetLoginAutoInfo"
+	User_StatLog_FullMethodName                  = "/userinfo.User/StatLog"
 )
 
 // UserClient is the client API for User service.
@@ -85,6 +86,8 @@ type UserClient interface {
 	VerifyPwd(ctx context.Context, in *VerifyPwdReq, opts ...grpc.CallOption) (*VerifyPwdResp, error)
 	// 获取自动登陆信息
 	GetLoginAutoInfo(ctx context.Context, in *GetLoginAutoInfoReq, opts ...grpc.CallOption) (*GetLoginAutoInfoResp, error)
+	// 管理后台 - 数据上报
+	StatLog(ctx context.Context, in *StatLogReq, opts ...grpc.CallOption) (*GetLoginAutoInfoResp, error)
 }
 
 type userClient struct {
@@ -275,6 +278,15 @@ func (c *userClient) GetLoginAutoInfo(ctx context.Context, in *GetLoginAutoInfoR
 	return out, nil
 }
 
+func (c *userClient) StatLog(ctx context.Context, in *StatLogReq, opts ...grpc.CallOption) (*GetLoginAutoInfoResp, error) {
+	out := new(GetLoginAutoInfoResp)
+	err := c.cc.Invoke(ctx, User_StatLog_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -319,6 +331,8 @@ type UserServer interface {
 	VerifyPwd(context.Context, *VerifyPwdReq) (*VerifyPwdResp, error)
 	// 获取自动登陆信息
 	GetLoginAutoInfo(context.Context, *GetLoginAutoInfoReq) (*GetLoginAutoInfoResp, error)
+	// 管理后台 - 数据上报
+	StatLog(context.Context, *StatLogReq) (*GetLoginAutoInfoResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -385,6 +399,9 @@ func (UnimplementedUserServer) VerifyPwd(context.Context, *VerifyPwdReq) (*Verif
 }
 func (UnimplementedUserServer) GetLoginAutoInfo(context.Context, *GetLoginAutoInfoReq) (*GetLoginAutoInfoResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLoginAutoInfo not implemented")
+}
+func (UnimplementedUserServer) StatLog(context.Context, *StatLogReq) (*GetLoginAutoInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StatLog not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -759,6 +776,24 @@ func _User_GetLoginAutoInfo_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_StatLog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StatLogReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).StatLog(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_StatLog_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).StatLog(ctx, req.(*StatLogReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -845,6 +880,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetLoginAutoInfo",
 			Handler:    _User_GetLoginAutoInfo_Handler,
+		},
+		{
+			MethodName: "StatLog",
+			Handler:    _User_StatLog_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
