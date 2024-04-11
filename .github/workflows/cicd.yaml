@@ -5,7 +5,7 @@ on:
     branches:
       - main
 env:
-  PROJECT_ID:  ${{ vars.APIFOXPROJECTID} }}
+  PROJECT_ID:  ${{ vars.APIFOXPROJECTID }}
   ACCESS_TOKEN:  ${{ secrets.APIFOXACCESSTOKEN }}
 
 jobs:
