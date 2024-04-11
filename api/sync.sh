@@ -32,7 +32,13 @@ for file in *.json; do
         --header "Authorization: Bearer $Token" \
         --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
         --header 'Content-Type: application/json' \
-        --data @temp_data.json
+        --data @temp_data.json > res.log
+        if grep -q '"success":true' res.log; then
+          echo "$file 导入成功"
+        else
+          echo "$file 导入失败"
+        fi
+        rm res.log
         rm temp_data.json
         rm $file
     fi
