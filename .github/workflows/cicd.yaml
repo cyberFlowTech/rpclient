@@ -5,8 +5,8 @@ on:
     branches:
       - main
 env:
-  PROJECT_ID:  ${{ vars.APIFOXPROJECTID }}
-  ACCESS_TOKEN:  ${{ secrets.APIFOXACCESSTOKEN }}
+  PROJECT_ID:  ${{ vars.APIFOXPROJECTID }} # Github仓库中配置的APIFOXPROJECTID
+  ACCESS_TOKEN:  ${{ vars.APIFOXACCESSTOKEN }} # Github仓库中配置的APIFOXACCESSTOKEN
 
 jobs:
   ci:
