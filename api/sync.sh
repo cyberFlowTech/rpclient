@@ -23,10 +23,10 @@ for file in *.json; do
           \"importFormat\":\"openapi\",
           \"apiOverwriteMode\":\"merge\",
           \"schemaOverwriteMode\":\"name\",
-          \"data\":$json_data
+          \"data\":$new_data
         }" > temp_data.json
 
-        # 请求apifox开放接口 为projectId Bearer 访问令牌
+        # 请求apifox开放接口 https://apifox-openapi.apifox.cn/api-48643958
         curl --location -g --request POST "https://api.apifox.com/api/v1/projects/$ProjectId/import-data?locale=zh-CN" \
         --header 'X-Apifox-Version: 2024-01-20' \
         --header "Authorization: Bearer $Token" \
