@@ -37,6 +37,7 @@ for file in *.json; do
           echo "$file 导入成功"
         else
           echo "$file 导入失败"
+          echo $(cat res.log)
         fi
         rm res.log
         rm temp_data.json
