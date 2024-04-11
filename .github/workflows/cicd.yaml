@@ -1,0 +1,23 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+env:
+  APIFOX_PROJECT_ID:  ${{ vars.APIFOX_PROJECT_ID} }}
+  APIFOX_ACCESS_TOKEN:  ${{ secrets.APIFOX_ACCESS_TOKEN }}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build image # 构建镜像并执行
+        id: build-image
+        run: |
+          docker build -t rpclient/rpclient:v1 -f deploy/docker/Dockerfile .
+          docker run --rm -v ./api:/app/   rpclient/rpclient:v1 /bin/sh /app/sync.sh ${{ env.APIFOX_PROJECT_ID }} ${{ env.APIFOX_ACCESS_TOKEN }}

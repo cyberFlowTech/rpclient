@@ -1,0 +1,977 @@
+syntax = "v1"
+
+info (
+	title:   "mimo部落服务"
+	desc:    "提供部落相关功能接口"
+	author:  "rong"
+	email:   "huangrongpeng@infras.tech"
+	version: "v1.0"
+	date:    "2023-06-29"
+)
+
+type (
+	// 公共请求参数 所有接口都有的
+	CommonReq {
+		UserId int64 `form:"user_id"`            // 用户唯一标识
+		SessId string `form:"sessid"`            // 用户登录标识
+		Api string `form:"api"`                  // App公钥
+		Version string `form:"version"`          // 版本号
+		VersionCode string `form:"version_code"` // 构建号
+		Uuid string `form:"uuid"`                // 设备唯一标识
+		Lan string `form:"lan"`                  // 语言，如zh_TW
+		Sign string `form:"sign"`                // 签名
+		SignTime int64 `form:"sign_time"`        // 签名时间
+	}
+	// 用户部落列表
+	ClubListReq {
+		CommonReq
+		Page int64 `form:"page,default=1"` // 页码
+	}
+	ClubListResList {
+		Id          string   `json:"id"`            // 部落id，加密后的
+		Name        string   `json:"name"`          // 部落名称
+		Avatar      string   `json:"avatar"`        // 部落头像
+		Bg          string   `json:"bg"`            // 部落背景
+		Status      int64    `json:"status"`        // 部落状态 0初始化 2:正常 3:已删除
+		IsMaster    int64    `json:"is_master"`     // 是否群主 0否， 1是
+		BgPre       string   `json:"bg_pre"`        // 默认背景
+		UserCount   int64    `json:"user_count"`    // 部落人数
+		IsPub       int64    `json:"is_pub"`        // 是否公开部落社区
+		NewUser     []string `json:"new_user"`      // 最近加入部落的用户头像url
+		Desc        string   `json:"desc"`          // 部落描述
+		HasPstories int64    `json:"has_p_stories"` // 是否有发布动态权限
+	}
+	ClubListRes {
+		List  []ClubListResList `json:"list"`
+		Page  int64             `json:"page"`  // 当前页
+		Pages int64             `json:"pages"` // 总页数
+	}
+	// 群用户状态
+	GroupUserStatusReq {
+		CommonReq
+		ImId string `form:"im_id"` // im_id
+	}
+	GroupUserStatusRes {
+		Frozen    int64 `json:"frozen"`     // 用户状态 0正常，1锁定，2冻结
+		Gag       int64 `json:"gag"`        // 禁言状态 0正常，1全体禁言，2单人禁言
+		IsClean   int64 `json:"is_clean"`   // 是否清除聊天记录 0否，1是
+		MsgTime   int64 `json:"msg_time"`   // 此时间前的消息要清除
+		CleanTime int64 `json:"clean_time"` // 消息清理时间 单位分钟
+	}
+	// 部落详情
+	ClubInfoReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落加密id
+	}
+	ClubInfoRes {
+		Id         string                `json:"id"`         // 部落加密id
+		Name       string                `json:"name"`       // 部落名称
+		Avatar     string                `json:"avatar"`     // 部落头像
+		Desc       string                `json:"desc"`       // 部落简介
+		Bg         string                `json:"bg"`         // 部落背景
+		IsDel      int64                 `json:"is_del"`     // 部落是否删除 0否，1是
+		InClub     int64                 `json:"in_club"`    // 用户是否在部落 0否，1是
+		UserCount  int64                 `json:"user_count"` // 部落总人数
+		Nickname   string                `json:"nickname"`   // 用户在部落的昵称
+		Dname      string                `json:"dname"`      // 社区配置名称
+		IsVerify   int64                 `json:"is_verify"`  // 加入部落是否要审核 0否，1是
+		IsSearch   int64                 `json:"is_search"`  // 部落是否可搜索 0否，1是
+		IsQuery    int64                 `json:"is_query"`   // 成员直接互相访问 0否，1是
+		ShowStat   int64                 `json:"show_stat"`  // 是否显示统计 0否，1是
+		Type       int64                 `json:"type"`       // 部落类型
+		Notify     int64                 `json:"notify"`     // 通知状态
+		Zones      []ClubInfoResZones    `json:"zones"`      // 部落分组
+		AccessList ClubInfoResAccessList `json:"accessList"` // 权限信息
+		Dynamic    []ClubInfoResDynamic  `json:"dynamic"`    // 部落动态
+		Dapp       ClubInfoResDapp       `json:"dapp"`       // 部落应用
+	}
+	ClubInfoResZones {
+		Id       string                     `json:"id"`       // 分组加密id
+		TbMid    string                     `json:"tb_mid"`   // 部落加密id
+		Name     string                     `json:"name"`     // 分组名称
+		IsDel    int64                      `json:"is_del"`   // 是否删除 0否，1是
+		Sort     int64                      `json:"sort"`     // 排序
+		Ctime    int64                      `json:"ctime"`    // 创建时间
+		IsShow   int64                      `json:"is_show"`  // 是否展示 0否，1是
+		Status   string                     `json:"status"`   // 状态
+		Channels []ClubInfoResZonesChannels `json:"channels"` // 频道列表
+	}
+	ClubInfoResZonesChannels {
+		Chain     int64       `json:"chain"`      // 所属链（1000000:ETH,1000001:Polygon,2000000:BTC,3000000:TRON）
+		CleanTime string      `json:"clean_time"` // 自动清理时间，单位分钟
+		Coins     float64     `json:"coins"`      // 小于0表示不限制，大于等于0为最低额度限制
+		Ctime     int64       `json:"ctime"`      // 创建时间
+		Desc      string      `json:"desc"`       // 简介
+		Frozen    int64       `json:"frozen"`     // 用户状态 0正常，1锁定，2冻结
+		Icon      string      `json:"icon"`       // 图片
+		ID        string      `json:"id"`         // 频道加密id
+		ImID      string      `json:"im_id"`      // im_id
+		IsBan     int64       `json:"is_ban"`     // 是否全员禁言：0否1是
+		IsBlock   int64       `json:"is_block"`   // 管理员封禁：0否1是
+		IsClean   int64       `json:"is_clean"`   // 是否自动清理消息：0否1是
+		IsDel     int64       `json:"is_del"`     // 是否删除：0否1是
+		MapID     string      `json:"map_id"`     // 环信im id
+		Name      string      `json:"name"`       // 频道名
+		Property  int64       `json:"property"`   // 0:持有数字货币，1:持有数字藏品,2:无限制
+		Sort      int64       `json:"sort"`       // 排序
+		TbMid     string      `json:"tb_mid"`     // 部落加密id
+		TbZid     string      `json:"tb_zid"`     // 分组加密id
+		Type      int64       `json:"type"`       // 频道类型：0文字房子；1语音房间
+		Dapp      ChannelDapp `json:"dapp"`       // dapp信息
+	}
+	ClubInfoResAccessList {
+		IsMaster int64                       `json:"is_master"` // 是否群主
+		IsRole   int64                       `json:"is_role"`   // 是否管理员
+		MinSort  int64                       `json:"min_sort"`  // 最大权重值
+		Access   ClubInfoResAccessListAccess `json:"access"`    // 权限列表
+	}
+	ClubInfoResAccessListAccess {
+		MCommunity int64 `json:"m_community"` // 管理社区权限
+		MMain      int64 `json:"m_main"`      // 管理部落权限
+		MMembers   int64 `json:"m_members"`   // 管理成员权限
+		MMessage   int64 `json:"m_message"`   // 管理消息权限
+		PComment   int64 `json:"p_comment"`   // 评论动态权限
+		PStories   int64 `json:"p_stories"`   // 发送动态权限
+		SInvite    int64 `json:"s_invite"`    // 创建邀请（1有权限 0没有 默认值是全体成员默认权限）
+		SMessage   int64 `json:"s_message"`   // 发送消息权限
+		MChannel   int64 `json:"m_channel"`   // 管理房间权限
+	}
+	ClubInfoResDynamic {
+		ID           int64                 `json:"id"`
+		Type         int64                 `json:"type"`   // 0：普通用户动态，1：抖音链接，2长文
+		Title        string                `json:"title"`  // 标题
+		Imgs         string                `json:"imgs"`   // 图片
+		Desc         string                `json:"desc"`   // 内容
+		Ctime        int64                 `json:"ctime"`  // 创建时间
+		Etime        int64                 `json:"etime"`  // 最后编辑时间
+		Status       int64                 `json:"status"` // 状态 -1已删除,0编辑中，1已发布
+		Ext ClubInfoResDynamicExt `json:"ext"`             // 弃用
+		ImgType      int64                 `json:"imgType"`      // 客户端布局处理（0 多图 1横图 2竖图）
+		IsRecommend  int64                 `json:"is_recommend"` // 是否推荐 0否，1是
+		Nick         string                `json:"nick"`         // 发布者昵称
+		Avatar       string                `json:"avatar"`       // 发布者头像
+		Did int64 `json:"did"` // 动态ID
+		Duid         int64                 `json:"duid"` // 发布者id
+		HasPraised int64 `json:"has_praised"` // 是否点赞 0否 1是
+		PraiseCount  int64                 `json:"praise_count"`  // 点赞数
+		CommentCount int64                 `json:"comment_count"` // 评论数
+		CanShare     int64                 `json:"can_share"`     // 是否可以被分享
+		//              CollectCount  int64    `json:"collect_count"`
+		//              HasCollect    int64    `json:"has_collect"`
+		//              Supclub       ClubInfoResDynamicSupclub `json:"supclub"`
+	}
+	ClubInfoResDynamicExt {
+		Link string `json:"link"` // 文章类型的链接
+	}
+	// ClubInfoResDynamicSupclub{
+	//  Avatar string `json:"avatar"`
+	//  Desc   string `json:"desc"`
+	//  ID     string `json:"id"`
+	//  Name   string `json:"name"`
+	// }
+	ClubInfoResDapp {
+		Ctime      int64  `json:"ctime"`       // 创建时间
+		DappDesc   string `json:"dapp_desc"`   // 应该简介
+		DappLogo   string `json:"dapp_logo"`   // logo
+		DappIcon   string `json:"dapp_icon"`   // logo
+		DappName   string `json:"dapp_name"`   // 名称
+		DappUrl    string `json:"dapp_url"`    // 应用地址
+		ID         int64  `json:"id"`          // id
+		IsOfficial int64  `json:"is_official"` // 是否官方 2否，1是 0?
+		TbMid      string `json:"tb_mid"`      // 部落加密id
+		UserID     int64  `json:"user_id"`     // 添加应用者
+	}
+	//"id": "122",
+	//"dapp_icon": "https:\/\/mimo-apkdl.s3.ap-southeast-1.amazonaws.com\/images\/sushi2x.png",
+	//"dapp_id": "2",
+	CreateReq {
+		CommonReq
+		Avatar string `form:"avatar"`        // 部落头像
+		Name   string `form:"name"`          // 部落名
+		Desc   string `form:"desc,optional"` // 描述
+		Dapp   string `form:"dapp,optional"` // 兼容uniapp dapp详情
+		Bg     string `form:"bg,optional"`   // 背景图，预留参数
+	}
+	CreateResp {
+		ID string `json:"id"` // 加密后的部落id
+	}
+	DisturbReq {
+		CommonReq
+		TbMid   string `form:"tb_mid"`           //  部落id
+		MapIDs  string `form:"map_ids,optional"` //  环信id，如果需要设置多个，以`,`连接
+		Disturb int64  `form:"disturb"`          //  免打扰类型 1 开启 2 关闭
+	}
+	DisturbResp {
+	}
+	ApplyReq    {
+		CommonReq
+		TbMid     string `form:"tb_mid"`              // 部落id
+		Content   string `form:"content,optional"`    // 申请理由
+		ShareCode string `form:"share_code,optional"` // 分享码
+	}
+	ApplyResp {
+		IsPass bool `json:"is_pass"` // 是否通过
+
+	}
+	AuditReq {
+		CommonReq
+		OuID int64 `form:"ouid"`       // 申请加入部落者UserId
+		TbMid string `form:"tb_mid"`   // 部落ID
+		IsPass string `form:"is_pass"` // PASS通过 REJECT 拒绝
+	}
+	AuditResp {
+		SubCode string `json:"sub_code"` // 自己同意 11 自己拒绝 12 他人同意 21 他人拒绝 22
+	}
+	QuitReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+	}
+	QuitResp {
+	}
+	DissReq  {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+	}
+	DissResp {
+	}
+	KickOutReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+		OuID int64 `form:"ou_id"`    // 用户id
+	}
+	KickOutResp {
+
+	}
+	ShareReq {
+		CommonReq
+		OuID      int64  `form:"ouid"`                 // 分享用户id
+		TbMid     string `form:"tb_mid,optional"`      // 部落id
+		Type      int32  `form:"type"`                 // 分享类型 1 好友 2 部落
+		QrCodeTyp int64  `form:"qrcode_type,optional"` // 0 永久码 1 快速码
+		IsFresh int64 `form:"is_fresh,optional"`       // 1 刷新二维码
+	}
+	ShareResp {
+		Code       string `json:"code"`        // 分享码
+		ExpireTime int64  `json:"expire_time"` // 过期时间
+	}
+
+	getShareCodeInfoReq {
+		CommonReq
+		Code string `form:"code"` // 分享码
+	}
+	getShareCodeInfoResp {
+		Code string `json:"code"`             // 分享码
+		QrCodeTyp int64 `json:"qrcode_type"`  // 0 永久码 1 永久码
+		ExpireTime int64 `json:"expire_time"` // 过期时间 0 不过期
+		TbMid string `json:"tb_mid"`          // 部落ID
+	}
+	ClubModifyReq {
+		CommonReq
+		ID string `form:"id"`                       // 部落ID
+		Type string `form:"type"`                   // 类型 SUP
+		Name *string `form:"name,optional"`         // 部落名称
+		Desc *string `form:"desc,optional"`         // 部落介绍
+		Avatar *string `form:"avatar,optional"`     // 部落头像
+		Bg *string `form:"bg,optional"`             // 部落背景
+		IsVerify *int32 `form:"is_verify,optional"` // 是否需要审核1是0否
+		IsSearch *int32 `form:"is_search,optional"` // 是否可搜索1是0否
+		IsQuery *int32 `form:"is_query,optional"`   // 相互访问 1是0否
+	}
+	ClubModifyResp {
+	}
+	SetNickReq     {
+		CommonReq
+		TbMid string `form:"tb_mid"`               // 部落ID
+		Nickname string `form:"nickname,optional"` // 部落昵称
+	}
+	SetNickResp {
+	}
+	ZoneCreateReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+		Name string `form:"name"`    // 名称
+	}
+	ZoneCreateResp {
+		ID string `json:"id"` // 分组ID
+	}
+	ChannelCreateReq {
+		CommonReq
+		TbMid string `form:"tb_mid"`                   // 部落ID
+		TbZid string `form:"tb_zid"`                   // 分组ID
+		Name string `form:"name"`                      // 房间名称
+		Desc string `form:"desc,optional"`             // 房间介绍
+		Type int32 `form:"type"`                       // 房间类型 0文字 2应用
+		Icon string `form:"icon,optional"`             // 图标
+		Property int64 `form:"property,optional"`      // 0:无限制条件,1:持有数字货币，2:持有数字藏品
+		Chain int64 `form:"chain,optional"`            // 所属链（1000000:ETH,1000001:Polygon,2000000:BTC,3000000:TRON）
+		DappUrl string `form:"dapp_url,optional"`      // 应用地址 应用房间必填
+		DappName string `form:"dapp_name,optional"`    // 应用名称 应用房间必填
+		DappIcon string `form:"dapp_icon,optional"`    // 应用icon
+		DappDesc string `form:"dapp_desc,optional"`    // 应用介绍
+		DappID int64 `form:"dapp_id,optional"`         // 应用id
+		IsOfficial int32 `form:"is_official,optional"` // 是否官方
+		IsCustom int32 `form:"is_custom,optional"`     // 是否自定义 0否 1是
+		Coins float64 `form:"coins,optional"`          // 小于0表示不限制，大于等于0为最低额度限制
+	}
+	ChannelCreateResp {
+		Id            string      `json:"id"`
+		TbMid         string      `json:"tb_mid"`
+		TbZid         string      `json:"tb_zid"`
+		Name          string      `json:"name"`
+		Desc          string      `json:"desc"`
+		IsBan         string      `json:"is_ban"`
+		ImID          string      `json:"im_id"`
+		Sort          int64       `json:"sort"`
+		Ctime         int64       `json:"ctime"`
+		Type          int32       `json:"type"`
+		Icon          string      `json:"icon"`
+		MapId         string      `json:"map_id"`
+		Property      int32       `json:"property"`
+		Chain         int64       `json:"chain"`
+		IsDel         int32       `json:"is_del"`
+		ChannelNotice string      `json:"channel_notice"`
+		Frozen        int32       `json:"frozen"`
+		CleanTime     int32       `json:"clean_time"`
+		Coins         int32       `json:"coins"`
+		Dapp          ChannelDapp `json:"dapp"`
+	}
+	ChannelDapp {
+		DappUrl string `json:"dapp_url"`      // Dapp链接
+		DappName string `json:"dapp_name"`    // Dapp名称
+		DappIcon string `json:"dapp_icon"`    // Dapp图标
+		DappDesc string `json:"dapp_desc"`    // Dapp描述
+		DappID int64 `json:"dapp_id"`         // DappId
+		IsOfficial int32 `json:"is_official"` // 是否官方
+		IsCustom int32 `json:"is_custom"`     //  是否自定义
+		ID int32 `json:"id"`                  // 弃用
+		IsDel int32 `json:"is_del"`           // 是否删除
+		UserID int64 `json:"user_id"`         // 创建者ID
+		DappLogo string `json:"dapp_logo"`    // Dapp Logo
+	}
+	ZoneUpdateReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+		TbZid string `form:"tb_zid"` // 分组ID
+		Name string `form:"name"`    // 分组名称
+	}
+	ZoneUpdateResp {
+	}
+
+	ZoneDeleteReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+		TbZid string `form:"tb_zid"` // 分组ID
+	}
+	ZoneDeleteResp {
+	}
+
+	ZoneSortReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+		Sort string `form:"sort"`    //排序，tb_zid为移动的id， tb_ozid为移动到的下一个分组id
+	}
+	ZoneSortResp {
+	}
+
+	ChannelUpdateReq {
+		CommonReq
+		TbCid string `form:"tb_cid"`     // 房间ID
+		TbMid string `form:"tb_mid"`     // 部落ID
+		TbZid string `form:"tb_zid"`     // 分组ID
+		Name string `form:"name"`        // 房间名称
+		Desc string `form:"desc"`        // 房间描述
+		Property int64 `form:"property"` //  0:无限制条件,1:持有数字货币，2:持有数字藏品
+		Chain *int64 `form:"chain"`      // 所属链（1000000:ETH,1000001:Polygon,2000000:BTC,3000000:TRON）
+		Coins float32 `form:"coins"`     // 小于0表示不限制，大于等于0为最低额度限制
+		Icon string `form:"icon"`        // 图标
+	}
+	ChannelUpdateResp {
+	}
+	ChannelDeleteReq  {
+		CommonReq
+		TbCid string `form:"tb_cid"` // 房间ID
+		TbMid string `form:"tb_mid"` // 部落ID
+		TbZid string `form:"tb_zid"` // 分组ID
+	}
+
+	ChannelDeleteResp {
+	}
+
+	ChannelSortReq {
+		CommonReq
+		SortArr string `form:"sort_arr"` //排序，tb_zid为移动分组的id， tb_ozid为目标分组id，tb_cid为移动的频道id，tb_ocid为目标频道id
+		TbMid string `form:"tb_mid"`     // 部落id
+	}
+
+	ChannelSortResp {
+	}
+
+	ClubSortReq {
+		CommonReq
+		TbMid string `form:"tb_mid"`   // 部落id
+		TbOmid string `form:"tb_omid"` //要移动到目标位置下方部落id
+	}
+
+	ClubSortResp {
+	}
+
+	TransferReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+		OUid int64 `form:"ouid"`     // 目标用户ID
+	}
+	TransferResp {
+	}
+
+	UserListReq {
+		CommonReq
+		TbMid string `form:"tb_mid"`             // 部落ID
+		RoleId int64 `form:"role_id,optional"`   //角色ID
+		ExRoleId int64 `form:"ex_role,optional"` // 非次角色ID
+		Nick string `form:"nick,optional"`       // 昵称
+		Page int64 `form:"page,optional"`        // 页码
+	}
+	UInfo {
+		UserId   int64    `json:"user_id"`   // 用户ID
+		Nick     string   `json:"nick"`      // 用户昵称
+		Avatar   string   `json:"avatar"`    // 头像
+		Master   int64    `json:"master"`    // 是否是部落主
+		Nickname string   `json:"nickname"`  // 用户在部落/群聊的昵称
+		Remarks  string   `json:"remarks"`   // 用户备注
+		RoleIds  []string `json:"role_ids"`  //角色ids
+		ColorId  string   `json:"color_id"`  // 颜色
+		JoinRole int64    `json:"join_role"` // 1已加入 0没加入
+		RoleName string   `json:"role_name"` // 角色名称
+	}
+	UserListResp {
+		List  []UInfo `json:"list"`
+		Page string `json:"page"`  // 页码
+		Pages int64 `json:"pages"` // 总页数
+	}
+
+	GetUserCustomInfoReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+		Ouid  string `form:"ouid"`   // 目标用户ID
+	}
+
+	GetUserCustomInfoResp {
+		RoleName   string `json:"role_name"`   // 角色名称
+		ColorId    string `json:"color_id"`    // 颜色ID
+		CustomName string `json:"custom_name"` // 自定义名称`
+	}
+	ModifyInfoReq {
+		CommonReq
+		TbMid    *string  `form:"tb_mid,optional"`   //部落id
+		TbZid    *string  `form:"tb_zid,optional"`   // 频道id
+		TbCid    *string  `form:"tb_cid,optional"`   //分组id
+		Name     *string  `form:"name,optional"`     //频道名、分组名、部落名称
+		Desc     *string  `form:"desc,optional"`     //频道简介、部落介绍
+		Property *int64   `form:"property,optional"` //0:无限制 1:持有数字货币
+		Chain    *int64   `form:"chain,optional"`    //所属链（1000000:ETH,1000001:Polygon,2000000:BTC,3000000:TRON）
+		Coins    *float32 `form:"coins,optional"`    //小于0表示不限制，大于等于0为最低额度限制
+		Icon     *string  `form:"icon,optional"`     //图标
+		Type     string   `form:"type,optional"`     // 操作类型：CHANNEL、ZONE、SUP、Dapp
+		Dapp     *string  `form:"dapp,optional"`     //应用房间应用修改，json格式
+
+		// 超级群信息
+		Id       *string `form:"id,optional"`        //部落头像
+		Avatar   *string `form:"avatar,optional"`    //部落头像
+		Bg       *string `form:"bg,optional"`        //部落背景
+		IsVerify *int32  `form:"is_verify,optional"` //是否需要审核1是0否
+		IsSearch *int32  `form:"is_search,optional"` //是否可搜索1是0否
+		IsQuery  *int32  `form:"is_query,optional"`  //相互访问 1是0否
+
+		//Dapp
+		DappName   *string `form:"dapp_name,optional"`   //DAPP名称
+		DappDesc   *string `form:"dapp_desc,optional"`   //DAPP介绍
+		DappUrl    *string `form:"dapp_url,optional"`    //DAPP url
+		DappLogo   *string `form:"dapp_logo,optional"`   //DAPP头像
+		IsOfficial *int64  `form:"is_official,optional"` //是否官方 1是2否
+		IsDel      *int64  `form:"is_del,optional"`      //是否删除
+		IsCustom   *int64  `form:"is_custom,optional"`   //是否自定义 0否 1是
+		DappId     *int64  `form:"dapp_id,optional"`     //应用id
+
+	}
+
+	ModifyInfoResp {
+	}
+
+	GetRecommendReq {
+		CommonReq
+		Page int64 `form:"page,optional,default=1"` //页码
+	}
+	ClubInfo {
+		Id        string   `json:"id"`         // 部落ID
+		Name      string   `json:"name"`       // 部落头像
+		Avatar    string   `json:"avatar"`     // 部落头像
+		Bg        string   `json:"bg"`         // 部落背景
+		Desc      string   `json:"desc"`       // 频道简介、部落介绍
+		UserCount int64    `json:"user_count"` // 部落总人数
+		InClub    int64    `json:"if_join"`    // 1 已加入部落 0 未加入部落
+		IsPub     int64    `json:"is_pub"`     // 部落社区是否公开
+		IsMaster  int64    `json:"is_master"`  //1 是部落主 0 不是部落主
+		Users     []string `json:"new_user"`   //部落成员头像链接地址
+
+	}
+	GetRecommendResp {
+		List []ClubInfo `json:"list"`
+	}
+
+	GetRoleColorListReq {
+	}
+	GetRoleColorListResp {
+		List map[string]string `json:"list"`
+	}
+
+	RoleInfo {
+		Id string `json:"id"`            // 身份组ID
+		Name    string `json:"name"`     // 身份组名称
+		ColorId string `json:"color_id"` // 身份组颜色
+		Count   int64  `json:"num"`      // 身份组人数
+	}
+
+	AccessInfo {
+		SInvite    int64 `json:"s_invite"`    // 邀请权限（默认值是全体成员默认权限）
+		MMembers   int64 `json:"m_members"`   // 管理成员权限
+		SMessage   int64 `json:"s_message"`   // 发送消息权限
+		MMessage   int64 `json:"m_message"`   // 管理消息权限
+		PComment   int64 `json:"p_comment"`   // 评论动态权限
+		MCommunity int64 `json:"m_community"` // 管理社区权限
+		PStories   int64 `json:"p_stories"`   // 发送动态权限
+		MMain      int64 `json:"m_main"`      // 管理部落权限
+		MChannel   int64 `json:"m_channel"`   // 管理房间权限
+	}
+
+	GetRoleListReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+	}
+
+	GetRoleListResp {
+		List []RoleInfo `json:"list"`
+	}
+
+	GetRoleInfoReq {
+		CommonReq
+		TbMid string `form:"tb_mid"`           // 部落ID
+		RoleId int64 `form:"role_id,optional"` // 角色ID
+	}
+
+	GetRoleInfoResp {
+		Role   RoleInfo   `json:"role"`
+		Access AccessInfo `json:"access"`
+	}
+
+	SetRoleSortReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+		Sort string `form:"sort"`    // 排序
+	}
+
+	SetRoleSortResp {
+	}
+
+	SaveRoleInfoReq {
+		CommonReq
+		TbMid      string  `form:"tb_mid"`
+		RoleId     *string `form:"role_id,optional"`     // 身份组ID
+		ColorId    *string `form:"color_id,optional"`    // 颜色ID
+		Name       *string `form:"name,optional"`        // 身份组名称
+		SInvite    *int64  `form:"s_invite,optional"`    // 邀请权限（默认值是全体成员默认权限）
+		MMembers   *int64  `form:"m_members,optional"`   // 管理成员权限
+		SMessage   *int64  `form:"s_message,optional"`   // 发送消息权限
+		MMessage   *int64  `form:"m_message,optional"`   // 管理消息权限
+		PComment   *int64  `form:"p_comment,optional"`   // 评论动态权限
+		MCommunity *int64  `form:"m_community,optional"` // 管理社区权限
+		PStories   *int64  `form:"p_stories,optional"`   // 发送动态权限
+		MMain      *int64  `form:"m_main,optional"`      // 管理部落权限
+		MChannel   *int64  `form:"m_channel,optional"`   // 管理房间
+	}
+	SaveRoleInfoResp {
+		RoleId string `json:"role_id"` // 角色ID
+
+	}
+
+	DeleteRoleInfoReq {
+		CommonReq
+		TbMid string `form:"tb_mid"`  // 部落ID
+		RoleId int64 `form:"role_id"` // 角色ID
+	}
+	DeleteRoleInfoResp {
+	}
+
+	OptRoleUserReq {
+		CommonReq
+		TbMid string `form:"tb_mid"`            // 部落ID
+		RoleId string `form:"role_id,optional"` // 角色ID
+		OUid string `form:"ouid"`               // 用户ID
+		Opt string `form:"opt,optional"`        // 空：覆盖 添加：ADD 移除：DEL
+	}
+
+	OptRoleUserResp {
+	}
+
+	GetChannelInfoReq {
+		CommonReq
+		TbCid string `form:"tb_cid"` // 房间ID
+		TbMid string `form:"tb_mid"` // 部落ID
+		TbZid string `form:"tb_zid"` // 分组ID
+	}
+
+	ChannelUserSetting {
+		Gag string `json:"gag"`              // 是否能发言 0正常 1全体禁言 2单人禁言
+		IsClean string `json:"is_clean"`     // 是否清除聊天记录 1是 0否 1时调删除聊天记录接口
+		MsgTime string `json:"msg_time"`     // 此时间之前的聊天记录不显示 后端有删除 前端也需要限制
+		CleanTime string `json:"clean_time"` // 聊天记录清理时间值，分钟为单位
+	}
+
+	GetChannelInfoResp {
+		Id string `json:"id"`                        // 房间ID
+		TbMid string `json:"tb_mid"`                 // 部落ID
+		TbZid string `json:"tb_zid"`                 // 分组ID
+		Name string `json:"name"`                    // 房间名称
+		Desc string `json:"desc"`                    // 房间简介
+		Property string `json:"property"`            // 0:无限制，1持有数字货币
+		Chain string `json:"chain"`                  // 所属链
+		Coins string `json:"coins"`                  // 小于0表示不限制，大于等于0为最低额度限制
+		Sort string `json:"sort"`                    // 排序
+		IsBan string `json:"is_ban"`                 // 是否全员禁言：0否1是
+		IsClean string `json:"is_clean"`             // 是否自动清理消息：0否1是
+		ImId string `json:"im_id"`                   // 群id唯一表示
+		IsDel string `json:"is_del"`                 // 是否删除：0否1是
+		Ctime string `json:"ctime"`                  // 频道创建时间
+		Type string `json:"type"`                    //房间类型：0文字房间 2应用房间
+		Icon string `json:"icon"`                    // 图标
+		IsBlock string `json:"is_block"`             // 管理员封禁：0否1是
+		CleanTime string `json:"clean_time"`         // 自动清理时间，单位分钟
+		Dapp          *ChannelDapp       `json:"dapp"`
+		MapId string `json:"map_id"`                 // im服务下的唯一id im第三方接口只识别mapid
+		ChannelNotice string `json:"channel_notice"` // 公告
+		Frozen string `json:"frozen"`                // 超级群用户状态
+		UserNum string `json:"user_num"`             // 人数
+		Setting       ChannelUserSetting `json:"setting"`
+	}
+
+	GetDynamicUnReadStaticReq {
+		CommonReq
+		LastestTime int64  `form:"lastest_time,range=[0:]"` // 未进入过部落社区传 0  进入过部落社区 传最近进步部落社区的时间戳
+		TbMid string `form:"tb_mid"`                        // 部落ID
+	}
+	GetDynamicUnReadStaticResp {
+		UsersAvatar []string `json:"users_avatar"` //  用户头像信息（有序，按部落动态发布时间倒序）
+		UnReadNum   int64    `json:"unread_num"`   // 未阅读数
+	}
+	Notice {
+		Content string `form:"content,optional"` // 公告内容
+		TbMid   string `form:"tb_mid"`           // 部落ID
+		TbZid   string `form:"tb_zid"`           // 分组ID
+		TbCid   string `form:"tb_cid"`           // 频道ID
+		Id      int64  `form:"id,optional"`      // 公告ID
+	}
+	CreateNoticeReq {
+		CommonReq
+		Notice
+	}
+	CreateNoticeResp {
+	}
+	UpdateNoticeReq {
+		CommonReq
+		Notice
+	}
+	UpdateNoticeResp {
+	}
+
+	DeleteNoticeReq {
+		CommonReq
+		Notice
+	}
+	DeleteNoticeResp {
+	}
+
+	BanListReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+		Type  string `form:"type"`   // 类型
+		Page  string `form:"page"`   // 页码
+	}
+	BanUserInfo {
+		OUid string `json:"ouid"`          // 用户id
+		UserId string `json:"user_id"`     // 操作者id
+		Type string `json:"type"`          // '1:禁言 2封禁
+		Ctime string `json:"ctime"`        // 操作时间
+		UserName string `json:"user_name"` // 操作者名称
+		OUName string `json:"ou_name"`     // 用户名称
+		Avatar string `json:"avatar"`      // 用户头像url
+	}
+	BanListResp {
+		List  []BanUserInfo `json:"list"`
+		Page string `json:"page"`  // 页码
+		Pages int64 `json:"pages"` // 总页数
+	}
+
+	OptBanReq {
+		CommonReq
+		OUid  string `form:"ouid"`   // 封禁用户userID
+		TbMid string `form:"tb_mid"` // 部落ID
+		Type string `form:"type"`    // 1:禁言 2封禁
+		Opt string `form:"opt"`      // 添加ADD 移除DEL
+	}
+
+	OptBanResp {
+	}
+
+	GetChannelVisitedReq {
+		CommonReq
+		TbMid  string `form:"tb_mid"`  // 部落ID
+		DappId string `form:"dapp_id"` // 多个Dapp用,分隔
+		Size   int64  `form:"size"`    // 获取最近访问的多少个用户
+	}
+
+	ChannelVIsitedUInfo {
+		Avatar string `json:"avatar"`     // 用户头像
+		NickName string `json:"nickname"` // 用户昵称
+		UserId string `json:"user_id"`    // 用户ID
+		Time int64 `json:"time"`          // 最近进入时间
+	}
+	ChannelVisitedRespInfo {
+		UInfo  []ChannelVIsitedUInfo `json:"uinfo"`   // 用户信息
+		Count  int64                 `json:"count"`   // 总人数
+		DappId string                `json:"dapp_id"` // dappID
+	}
+	GetChannelVisitedResp {
+		List []ChannelVisitedRespInfo `json:"list"`
+	}
+
+	MsgRecallReq {
+		CommonReq
+		TbMid      string `form:"tb_mid"`     // 部落ID
+		Ouid       string `form:"ouid"`       // 对方id
+		Type       int64  `form:"type"`       // chat：单聊，groupchat：群聊
+		TargetId   int64  `form:"targetId"`   // 目标 ID，根据不同的会话类型（type），可能是用户 ID、群组 ID、聊天室 ID、超级群 ID，系统目标 ID。
+		MessageUID int64  `form:"messageUID"` // 信息id
+		SentTime   int64  `form:"sentTime"`   // 发消息时间
+	}
+	MsgRecallInfo {
+		Id         string `json:"id"`
+		UserId string `json:"user_id"` // 用户ID
+		Nick string `json:"nick"`      // 用户昵称
+		Status     string `json:"status"`
+		Age        string `json:"age"` // 目前弃用
+		Avatar     string `json:"avatar"` // 头像
+		ActiveTime string `json:"active_time"` // 最后活跃
+		Sex        string `json:"sex"` // 目前弃用
+		Level      string `json:"level"` // 目前弃用
+		Desc       string `json:"desc"` // 简介
+	}
+	MsgRecallResp {
+		User  MsgRecallInfo `json:"user"`   // 操作人信息
+		OUser MsgRecallInfo `json:"o_user"` // 被操作人信息
+	}
+
+	ClubSearchReq {
+		CommonReq
+		Keywords string `form:"keywords"` // 关键词，分享码/部落名称
+	}
+	ClubSearchInfo {
+		Nick string `json:"nick"`     // 部落名
+		Num int64 `json:"num"`        // 部落人数
+		Avatar string `json:"avatar"` // 部落头像
+		Desc string `json:"desc"`     // 部落描述
+		TbMid string `json:"tb_mid"`  //部落ID
+	}
+	ClubSearchResp {
+		Club []ClubSearchInfo `json:"club"`
+	}
+)
+
+@server (
+	middleware: BeforeMiddleware
+	group:      club
+	prefix:     club
+)
+service club {
+	@doc "用户部落列表"
+	@handler getClubList
+	post /getClubList (ClubListReq) returns (ClubListRes)
+
+	@doc "部落详情"
+	@handler getClubInfo
+	post /getClubInfo (ClubInfoReq) returns (ClubInfoRes)
+
+	@doc "群用户状态"
+	@handler getGroupUserStatus
+	post /geGroupUserStatus (GroupUserStatusReq) returns (GroupUserStatusRes)
+
+	@doc "创建部落"
+	@handler create
+	post /create (CreateReq) returns (CreateResp)
+
+	@doc "申请加入部落"
+	@handler apply
+	post /apply (ApplyReq) returns (ApplyResp)
+
+	@doc "设置部落免打扰"
+	@handler disturb
+	post /disturb (DisturbReq) returns (DisturbResp)
+
+	@doc "部落审核结果"
+	@handler applyRes
+	post /audit (AuditReq) returns (AuditResp)
+
+	@doc "退出部落"
+	@handler quit
+	post /quit (QuitReq) returns (QuitResp)
+
+	@doc "解散部落"
+	@handler dissolution
+	post /dissolution (DissReq) returns (DissResp)
+
+	@doc "踢出用户"
+	@handler kickOut
+	post /kickOut (KickOutReq) returns (KickOutResp)
+
+	@doc "分享码"
+	@handler shareCode
+	post /share (ShareReq) returns (ShareResp)
+
+	@doc "获取分享码状态"
+	@handler getShareCodeInfo
+	post /getShareCodeInfo (getShareCodeInfoReq) returns (getShareCodeInfoResp)
+
+	@doc "成员列表"
+	@handler userList
+	post /userList(UserListReq)returns(UserListResp)
+
+	@doc "部落排序"
+	@handler clubSort
+	post /sort(ClubSortReq)returns(ClubSortResp)
+
+	@doc "设置用户部落昵称"
+	@handler setNick
+	post /setNick (SetNickReq) returns (SetNickResp)
+
+	@doc "部落设置"
+	@handler setting
+	post /set (ClubModifyReq) returns (ClubModifyResp)
+
+	@doc "创建分组"
+	@handler zoneCreate
+	post /zone/create (ZoneCreateReq) returns (ZoneCreateResp)
+
+	@doc "创建房间"
+	@handler channelCreate
+	post /channel/create (ChannelCreateReq) returns (ChannelCreateResp)
+
+	@doc "更新分组"
+	@handler zoneUpdate
+	post /zone/update (ZoneUpdateReq) returns (ZoneUpdateResp)
+
+	@doc "删除分组"
+	@handler zoneDelete
+	post /zone/delete (ZoneDeleteReq) returns (ZoneDeleteResp)
+
+	@doc "分组排序"
+	@handler zoneSort
+	post /zone/sort (ZoneSortReq) returns (ZoneSortResp)
+
+	@doc "更新房间"
+	@handler channelUpdate
+	post /channel/update (ChannelUpdateReq) returns (ChannelUpdateResp)
+
+	@doc "删除房间"
+	@handler channelDelete
+	post /channel/delete (ChannelDeleteReq) returns (ChannelDeleteResp)
+
+	@doc "房间排序"
+	@handler channelSort
+	post /channel/sort (ChannelSortReq) returns (ChannelSortResp)
+
+	@doc "转让群主"
+	@handler transfer
+	post /transfer (TransferReq) returns (TransferResp)
+
+	@doc "获取用户所在部落设置的昵称"
+	@handler getUserCustomInfo
+	post /getUserCustomInfo (GetUserCustomInfoReq) returns (GetUserCustomInfoResp)
+
+	@doc "修改频道、分组、部落信息"
+	@handler modifyInfo
+	post /modify (ModifyInfoReq) returns (ModifyInfoResp)
+
+	@doc "获取频道信息"
+	@handler getChannelInfo
+	post /getChannelInfo (GetChannelInfoReq) returns (GetChannelInfoResp)
+
+	@doc "获取推荐部落"
+	@handler getRecommend
+	post /getRecommend (GetRecommendReq) returns (GetRecommendResp)
+
+	@doc "身份组颜色列表"
+	@handler getRoleColorList
+	post /getRoleColorList (GetRoleColorListReq) returns (GetRoleColorListResp)
+
+	@doc "身份组列表"
+	@handler getRoleList
+	post /getRoleList (GetRoleListReq) returns (GetRoleListResp)
+
+	@doc "身份组详情"
+	@handler getRoleInfo
+	post /getRoleInfo (GetRoleInfoReq) returns (GetRoleInfoResp)
+
+	@doc "身份组排序"
+	@handler setRoleSort
+	post /setRoleSort (SetRoleSortReq) returns (SetRoleSortResp)
+
+	@doc "创新/更新身份组"
+	@handler saveRoleInfo
+	post /saveRoleInfo (SaveRoleInfoReq) returns (SaveRoleInfoResp)
+
+	@doc "删除身份组"
+	@handler deleteRoleInfo
+	post /deleteRoleInfo (DeleteRoleInfoReq) returns (DeleteRoleInfoResp)
+
+	@doc "添加/移除身份组成员"
+	@handler optRoleUser
+	post /optRoleUser (OptRoleUserReq) returns (OptRoleUserResp)
+
+	@doc "部落动态未阅读数"
+	@handler getDynamicUnReadStatic
+	post /getDynamicUnReadStatic (GetDynamicUnReadStaticReq) returns (GetDynamicUnReadStaticResp)
+
+	@doc "Room图标列表"
+	@handler getIconList
+	post /getIconList
+
+	@doc "创建频道公告"
+	@handler createNotice
+	post /createNotice (CreateNoticeReq) returns (CreateNoticeResp)
+
+	@doc "更新频道公告"
+	@handler updateNotice
+	post /updateNotice (UpdateNoticeReq) returns (UpdateNoticeResp)
+
+	@doc "删除频道公告"
+	@handler deleteNotice
+	post /deleteNotice (DeleteNoticeReq) returns (DeleteNoticeResp)
+
+	@doc "封禁、禁言列表"
+	@handler getBanList
+	post /getBanList (BanListReq) returns (BanListResp)
+
+	@doc "添加/移除封禁、禁言"
+	@handler optBan
+	post /optBan (OptBanReq) returns (OptBanResp)
+
+	@doc "获取最近访问部落频道的用户"
+	@handler getChannelVisited
+	post /getChannelVisited (GetChannelVisitedReq) returns (GetChannelVisitedResp)
+
+	@doc "频道消息撤回"
+	@handler msgRecall
+	post /msgRecall (MsgRecallReq) returns (MsgRecallResp)
+
+	@doc "部落搜索"
+	@handler clubSearch
+	post /clubSearch (ClubSearchReq) returns (ClubSearchResp)
+}
