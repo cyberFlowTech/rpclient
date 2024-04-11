@@ -5,8 +5,8 @@ on:
     branches:
       - main
 env:
-  PROJECT_ID:  ${{ vars.APIFOX_PROJECT_ID} }}
-  ACCESS_TOKEN:  ${{ secrets.APIFOX_ACCESS_TOKEN }}
+  PROJECT_ID:  ${{ vars.APIFOXPROJECTID} }}
+  ACCESS_TOKEN:  ${{ secrets.APIFOXACCESSTOKEN }}
 
 jobs:
   ci:
