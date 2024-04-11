@@ -23,7 +23,7 @@ for file in *.json; do
           \"importFormat\":\"openapi\",
           \"apiOverwriteMode\":\"merge\",
           \"schemaOverwriteMode\":\"name\",
-          \"data\":$json_data
+          \"data\":$new_data
         }" > temp_data.json
 
         # 请求apifox开放接口 https://apifox-openapi.apifox.cn/api-48643958
