@@ -41,6 +41,7 @@ const (
 	User_GetLoginAutoInfo_FullMethodName         = "/userinfo.User/GetLoginAutoInfo"
 	User_StatLog_FullMethodName                  = "/userinfo.User/StatLog"
 	User_BannerList_FullMethodName               = "/userinfo.User/BannerList"
+	User_BannerSave_FullMethodName               = "/userinfo.User/BannerSave"
 )
 
 // UserClient is the client API for User service.
@@ -91,6 +92,7 @@ type UserClient interface {
 	StatLog(ctx context.Context, in *StatLogReq, opts ...grpc.CallOption) (*GetLoginAutoInfoResp, error)
 	// banner列表
 	BannerList(ctx context.Context, in *BannerListReq, opts ...grpc.CallOption) (*BannerListResp, error)
+	BannerSave(ctx context.Context, in *BannerSaveReq, opts ...grpc.CallOption) (*BannerSaveResp, error)
 }
 
 type userClient struct {
@@ -299,6 +301,15 @@ func (c *userClient) BannerList(ctx context.Context, in *BannerListReq, opts ...
 	return out, nil
 }
 
+func (c *userClient) BannerSave(ctx context.Context, in *BannerSaveReq, opts ...grpc.CallOption) (*BannerSaveResp, error) {
+	out := new(BannerSaveResp)
+	err := c.cc.Invoke(ctx, User_BannerSave_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -347,6 +358,7 @@ type UserServer interface {
 	StatLog(context.Context, *StatLogReq) (*GetLoginAutoInfoResp, error)
 	// banner列表
 	BannerList(context.Context, *BannerListReq) (*BannerListResp, error)
+	BannerSave(context.Context, *BannerSaveReq) (*BannerSaveResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -419,6 +431,9 @@ func (UnimplementedUserServer) StatLog(context.Context, *StatLogReq) (*GetLoginA
 }
 func (UnimplementedUserServer) BannerList(context.Context, *BannerListReq) (*BannerListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BannerList not implemented")
+}
+func (UnimplementedUserServer) BannerSave(context.Context, *BannerSaveReq) (*BannerSaveResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BannerSave not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -829,6 +844,24 @@ func _User_BannerList_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_BannerSave_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BannerSaveReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).BannerSave(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_BannerSave_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).BannerSave(ctx, req.(*BannerSaveReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -923,6 +956,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BannerList",
 			Handler:    _User_BannerList_Handler,
+		},
+		{
+			MethodName: "BannerSave",
+			Handler:    _User_BannerSave_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
