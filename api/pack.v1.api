@@ -106,8 +106,8 @@ type (
 @server(
 	//jwt: Auth                 //开启jwt鉴权
 	middleware: BeforeHandle    //路由中间件声明
-	group: packservice                   //接口所属组
-	prefix : packservice/v1              //路由公共前缀
+	group: packservice                  //接口所属组
+	prefix: packservice/v1            //路由公共前缀
 )
 service packservice {
 	@doc "获取红包详情"

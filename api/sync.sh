@@ -9,7 +9,7 @@ for file in *.api; do
     echo $file
     if [ -f "$file" ]; then
         goctl api plugin -plugin goctl-swagger="swagger -filename $file.json" -api $file -dir .
-        echo "$json_data"
+        echo "goctl $json_data"
     fi
 done
 
