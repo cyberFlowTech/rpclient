@@ -4121,6 +4121,194 @@ func (x *BannerSaveResp) GetResult() *UserResult {
 	return nil
 }
 
+type BannerInfoReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ID int64 `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
+}
+
+func (x *BannerInfoReq) Reset() {
+	*x = BannerInfoReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_define_userinfo_proto_msgTypes[56]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BannerInfoReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BannerInfoReq) ProtoMessage() {}
+
+func (x *BannerInfoReq) ProtoReflect() protoreflect.Message {
+	mi := &file_define_userinfo_proto_msgTypes[56]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BannerInfoReq.ProtoReflect.Descriptor instead.
+func (*BannerInfoReq) Descriptor() ([]byte, []int) {
+	return file_define_userinfo_proto_rawDescGZIP(), []int{56}
+}
+
+func (x *BannerInfoReq) GetID() int64 {
+	if x != nil {
+		return x.ID
+	}
+	return 0
+}
+
+type BannerInfoResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Banner *BannerInfo `protobuf:"bytes,1,opt,name=Banner,proto3" json:"Banner,omitempty"`
+}
+
+func (x *BannerInfoResp) Reset() {
+	*x = BannerInfoResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_define_userinfo_proto_msgTypes[57]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BannerInfoResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BannerInfoResp) ProtoMessage() {}
+
+func (x *BannerInfoResp) ProtoReflect() protoreflect.Message {
+	mi := &file_define_userinfo_proto_msgTypes[57]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BannerInfoResp.ProtoReflect.Descriptor instead.
+func (*BannerInfoResp) Descriptor() ([]byte, []int) {
+	return file_define_userinfo_proto_rawDescGZIP(), []int{57}
+}
+
+func (x *BannerInfoResp) GetBanner() *BannerInfo {
+	if x != nil {
+		return x.Banner
+	}
+	return nil
+}
+
+type BannerDelReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ID int64 `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
+}
+
+func (x *BannerDelReq) Reset() {
+	*x = BannerDelReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_define_userinfo_proto_msgTypes[58]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BannerDelReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BannerDelReq) ProtoMessage() {}
+
+func (x *BannerDelReq) ProtoReflect() protoreflect.Message {
+	mi := &file_define_userinfo_proto_msgTypes[58]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BannerDelReq.ProtoReflect.Descriptor instead.
+func (*BannerDelReq) Descriptor() ([]byte, []int) {
+	return file_define_userinfo_proto_rawDescGZIP(), []int{58}
+}
+
+func (x *BannerDelReq) GetID() int64 {
+	if x != nil {
+		return x.ID
+	}
+	return 0
+}
+
+type BannerDelResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Result *UserResult `protobuf:"bytes,1,opt,name=Result,proto3" json:"Result,omitempty"`
+}
+
+func (x *BannerDelResp) Reset() {
+	*x = BannerDelResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_define_userinfo_proto_msgTypes[59]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *BannerDelResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BannerDelResp) ProtoMessage() {}
+
+func (x *BannerDelResp) ProtoReflect() protoreflect.Message {
+	mi := &file_define_userinfo_proto_msgTypes[59]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BannerDelResp.ProtoReflect.Descriptor instead.
+func (*BannerDelResp) Descriptor() ([]byte, []int) {
+	return file_define_userinfo_proto_rawDescGZIP(), []int{59}
+}
+
+func (x *BannerDelResp) GetResult() *UserResult {
+	if x != nil {
+		return x.Result
+	}
+	return nil
+}
+
 var File_define_userinfo_proto protoreflect.FileDescriptor
 
 var file_define_userinfo_proto_rawDesc = []byte{
@@ -4570,6 +4758,18 @@ var file_define_userinfo_proto_rawDesc = []byte{
 	0x6e, 0x6e, 0x65, 0x72, 0x53, 0x61, 0x76, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x2c, 0x0a, 0x06,
 	0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x75,
 	0x73, 0x65, 0x72, 0x69, 0x6e, 0x66, 0x6f, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x75,
+	0x6c, 0x74, 0x52, 0x06, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0x1f, 0x0a, 0x0d, 0x42, 0x61,
+	0x6e, 0x6e, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x49,
+	0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x49, 0x44, 0x22, 0x3e, 0x0a, 0x0e, 0x42,
+	0x61, 0x6e, 0x6e, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x12, 0x2c, 0x0a,
+	0x06, 0x42, 0x61, 0x6e, 0x6e, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e,
+	0x75, 0x73, 0x65, 0x72, 0x69, 0x6e, 0x66, 0x6f, 0x2e, 0x42, 0x61, 0x6e, 0x6e, 0x65, 0x72, 0x49,
+	0x6e, 0x66, 0x6f, 0x52, 0x06, 0x42, 0x61, 0x6e, 0x6e, 0x65, 0x72, 0x22, 0x1e, 0x0a, 0x0c, 0x42,
+	0x61, 0x6e, 0x6e, 0x65, 0x72, 0x44, 0x65, 0x6c, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x49,
+	0x44, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x49, 0x44, 0x22, 0x3d, 0x0a, 0x0d, 0x42,
+	0x61, 0x6e, 0x6e, 0x65, 0x72, 0x44, 0x65, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x12, 0x2c, 0x0a, 0x06,
+	0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x75,
+	0x73, 0x65, 0x72, 0x69, 0x6e, 0x66, 0x6f, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x75,
 	0x6c, 0x74, 0x52, 0x06, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x2a, 0x31, 0x0a, 0x0c, 0x50, 0x6c,
 	0x61, 0x74, 0x66, 0x6f, 0x72, 0x6d, 0x54, 0x79, 0x70, 0x65, 0x12, 0x07, 0x0a, 0x03, 0x49, 0x6f,
 	0x73, 0x10, 0x00, 0x12, 0x0b, 0x0a, 0x07, 0x41, 0x6e, 0x64, 0x72, 0x6f, 0x69, 0x64, 0x10, 0x01,
@@ -4607,7 +4807,7 @@ var file_define_userinfo_proto_rawDesc = []byte{
 	0x61, 0x74, 0x65, 0x10, 0x07, 0x12, 0x10, 0x0a, 0x0c, 0x52, 0x65, 0x64, 0x50, 0x61, 0x63, 0x6b,
 	0x65, 0x74, 0x47, 0x65, 0x74, 0x10, 0x08, 0x2a, 0x19, 0x0a, 0x0b, 0x42, 0x61, 0x6e, 0x6e, 0x65,
 	0x72, 0x53, 0x63, 0x65, 0x6e, 0x65, 0x12, 0x0a, 0x0a, 0x06, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
-	0x10, 0x00, 0x32, 0xb0, 0x0c, 0x0a, 0x04, 0x55, 0x73, 0x65, 0x72, 0x12, 0x45, 0x0a, 0x0c, 0x67,
+	0x10, 0x00, 0x32, 0xaf, 0x0d, 0x0a, 0x04, 0x55, 0x73, 0x65, 0x72, 0x12, 0x45, 0x0a, 0x0c, 0x67,
 	0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x73, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x19, 0x2e, 0x75, 0x73,
 	0x65, 0x72, 0x69, 0x6e, 0x66, 0x6f, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x73, 0x49,
 	0x6e, 0x66, 0x6f, 0x52, 0x65, 0x71, 0x1a, 0x1a, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x69, 0x6e, 0x66,
@@ -4706,8 +4906,16 @@ var file_define_userinfo_proto_rawDesc = []byte{
 	0x76, 0x65, 0x12, 0x17, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x69, 0x6e, 0x66, 0x6f, 0x2e, 0x42, 0x61,
 	0x6e, 0x6e, 0x65, 0x72, 0x53, 0x61, 0x76, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x18, 0x2e, 0x75, 0x73,
 	0x65, 0x72, 0x69, 0x6e, 0x66, 0x6f, 0x2e, 0x42, 0x61, 0x6e, 0x6e, 0x65, 0x72, 0x53, 0x61, 0x76,
-	0x65, 0x52, 0x65, 0x73, 0x70, 0x42, 0x0c, 0x5a, 0x0a, 0x2e, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x69,
-	0x6e, 0x66, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x3f, 0x0a, 0x0a, 0x42, 0x61, 0x6e, 0x6e, 0x65, 0x72, 0x49,
+	0x6e, 0x66, 0x6f, 0x12, 0x17, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x69, 0x6e, 0x66, 0x6f, 0x2e, 0x42,
+	0x61, 0x6e, 0x6e, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x71, 0x1a, 0x18, 0x2e, 0x75,
+	0x73, 0x65, 0x72, 0x69, 0x6e, 0x66, 0x6f, 0x2e, 0x42, 0x61, 0x6e, 0x6e, 0x65, 0x72, 0x49, 0x6e,
+	0x66, 0x6f, 0x52, 0x65, 0x73, 0x70, 0x12, 0x3c, 0x0a, 0x09, 0x42, 0x61, 0x6e, 0x6e, 0x65, 0x72,
+	0x44, 0x65, 0x6c, 0x12, 0x16, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x69, 0x6e, 0x66, 0x6f, 0x2e, 0x42,
+	0x61, 0x6e, 0x6e, 0x65, 0x72, 0x44, 0x65, 0x6c, 0x52, 0x65, 0x71, 0x1a, 0x17, 0x2e, 0x75, 0x73,
+	0x65, 0x72, 0x69, 0x6e, 0x66, 0x6f, 0x2e, 0x42, 0x61, 0x6e, 0x6e, 0x65, 0x72, 0x44, 0x65, 0x6c,
+	0x52, 0x65, 0x73, 0x70, 0x42, 0x0c, 0x5a, 0x0a, 0x2e, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x69, 0x6e,
+	0x66, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -4723,7 +4931,7 @@ func file_define_userinfo_proto_rawDescGZIP() []byte {
 }
 
 var file_define_userinfo_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_define_userinfo_proto_msgTypes = make([]protoimpl.MessageInfo, 57)
+var file_define_userinfo_proto_msgTypes = make([]protoimpl.MessageInfo, 61)
 var file_define_userinfo_proto_goTypes = []interface{}{
 	(PlatformType)(0),                    // 0: userinfo.PlatformType
 	(LogOutType)(0),                      // 1: userinfo.LogOutType
@@ -4786,7 +4994,11 @@ var file_define_userinfo_proto_goTypes = []interface{}{
 	(*LanguageData)(nil),                 // 58: userinfo.LanguageData
 	(*BannerSaveReq)(nil),                // 59: userinfo.BannerSaveReq
 	(*BannerSaveResp)(nil),               // 60: userinfo.BannerSaveResp
-	nil,                                  // 61: userinfo.StatLogReq.ExtEntry
+	(*BannerInfoReq)(nil),                // 61: userinfo.BannerInfoReq
+	(*BannerInfoResp)(nil),               // 62: userinfo.BannerInfoResp
+	(*BannerDelReq)(nil),                 // 63: userinfo.BannerDelReq
+	(*BannerDelResp)(nil),                // 64: userinfo.BannerDelResp
+	nil,                                  // 65: userinfo.StatLogReq.ExtEntry
 }
 var file_define_userinfo_proto_depIdxs = []int32{
 	7,  // 0: userinfo.UserInfos.Info:type_name -> userinfo.UserInfo
@@ -4825,7 +5037,7 @@ var file_define_userinfo_proto_depIdxs = []int32{
 	9,  // 33: userinfo.GetLoginAutoInfoResp.Result:type_name -> userinfo.UserResult
 	0,  // 34: userinfo.StatLogReq.Platform:type_name -> userinfo.PlatformType
 	3,  // 35: userinfo.StatLogReq.Action:type_name -> userinfo.ActionType
-	61, // 36: userinfo.StatLogReq.Ext:type_name -> userinfo.StatLogReq.ExtEntry
+	65, // 36: userinfo.StatLogReq.Ext:type_name -> userinfo.StatLogReq.ExtEntry
 	9,  // 37: userinfo.StatLogResp.Result:type_name -> userinfo.UserResult
 	4,  // 38: userinfo.BannerListReq.Scene:type_name -> userinfo.BannerScene
 	54, // 39: userinfo.BannerInfo.Btn:type_name -> userinfo.Button
@@ -4834,57 +5046,63 @@ var file_define_userinfo_proto_depIdxs = []int32{
 	54, // 42: userinfo.LanguageData.Button:type_name -> userinfo.Button
 	55, // 43: userinfo.LanguageData.ExtInfo:type_name -> userinfo.ExtInfo
 	9,  // 44: userinfo.BannerSaveResp.Result:type_name -> userinfo.UserResult
-	10, // 45: userinfo.User.getUsersInfo:input_type -> userinfo.GetUsersInfoReq
-	12, // 46: userinfo.User.getUsers:input_type -> userinfo.GetUsersReq
-	38, // 47: userinfo.User.updateUserInfo:input_type -> userinfo.SetUserInfoReq
-	14, // 48: userinfo.User.ResetUserPwd:input_type -> userinfo.RestUsersPwdReq
-	16, // 49: userinfo.User.GetUsersNotificationConf:input_type -> userinfo.UsersNotificationConfReq
-	18, // 50: userinfo.User.SetUsersNotificationConf:input_type -> userinfo.SetUsersNotificationConfReq
-	20, // 51: userinfo.User.SetCancellation:input_type -> userinfo.SetCancellationReq
-	22, // 52: userinfo.User.Login:input_type -> userinfo.LoginReq
-	24, // 53: userinfo.User.Register:input_type -> userinfo.RegisterReq
-	26, // 54: userinfo.User.SendVerificationCode:input_type -> userinfo.SendVerificationCodeReq
-	28, // 55: userinfo.User.LoginAuto:input_type -> userinfo.LoginAutoReq
-	30, // 56: userinfo.User.Logout:input_type -> userinfo.LogoutReq
-	32, // 57: userinfo.User.Forget:input_type -> userinfo.ForgetReq
-	34, // 58: userinfo.User.CheckUserExists:input_type -> userinfo.CheckUserExistsReq
-	36, // 59: userinfo.User.Bind:input_type -> userinfo.BindReq
-	40, // 60: userinfo.User.Unbind:input_type -> userinfo.UnbindReq
-	41, // 61: userinfo.User.BindList:input_type -> userinfo.BindListReq
-	45, // 62: userinfo.User.GetAuthInfo:input_type -> userinfo.GetAuthInfoReq
-	47, // 63: userinfo.User.VerifyPwd:input_type -> userinfo.VerifyPwdReq
-	49, // 64: userinfo.User.GetLoginAutoInfo:input_type -> userinfo.GetLoginAutoInfoReq
-	51, // 65: userinfo.User.StatLog:input_type -> userinfo.StatLogReq
-	53, // 66: userinfo.User.BannerList:input_type -> userinfo.BannerListReq
-	59, // 67: userinfo.User.BannerSave:input_type -> userinfo.BannerSaveReq
-	11, // 68: userinfo.User.getUsersInfo:output_type -> userinfo.GetUsersInfoResp
-	13, // 69: userinfo.User.getUsers:output_type -> userinfo.GetUsersResp
-	39, // 70: userinfo.User.updateUserInfo:output_type -> userinfo.SetUserInfoResp
-	15, // 71: userinfo.User.ResetUserPwd:output_type -> userinfo.RestUsersPwdResp
-	17, // 72: userinfo.User.GetUsersNotificationConf:output_type -> userinfo.UsersNotificationConfResp
-	19, // 73: userinfo.User.SetUsersNotificationConf:output_type -> userinfo.SetUsersNotificationConfResp
-	21, // 74: userinfo.User.SetCancellation:output_type -> userinfo.SetCancellationResp
-	23, // 75: userinfo.User.Login:output_type -> userinfo.LoginResp
-	25, // 76: userinfo.User.Register:output_type -> userinfo.RegisterResp
-	27, // 77: userinfo.User.SendVerificationCode:output_type -> userinfo.SendVerificationCodeResp
-	29, // 78: userinfo.User.LoginAuto:output_type -> userinfo.LoginAutoResp
-	31, // 79: userinfo.User.Logout:output_type -> userinfo.LogoutResp
-	33, // 80: userinfo.User.Forget:output_type -> userinfo.ForgetResp
-	35, // 81: userinfo.User.CheckUserExists:output_type -> userinfo.CheckUserExistsResp
-	37, // 82: userinfo.User.Bind:output_type -> userinfo.BindResp
-	9,  // 83: userinfo.User.Unbind:output_type -> userinfo.UserResult
-	44, // 84: userinfo.User.BindList:output_type -> userinfo.BindListRes
-	46, // 85: userinfo.User.GetAuthInfo:output_type -> userinfo.GetAuthInfoResp
-	48, // 86: userinfo.User.VerifyPwd:output_type -> userinfo.VerifyPwdResp
-	50, // 87: userinfo.User.GetLoginAutoInfo:output_type -> userinfo.GetLoginAutoInfoResp
-	50, // 88: userinfo.User.StatLog:output_type -> userinfo.GetLoginAutoInfoResp
-	57, // 89: userinfo.User.BannerList:output_type -> userinfo.BannerListResp
-	60, // 90: userinfo.User.BannerSave:output_type -> userinfo.BannerSaveResp
-	68, // [68:91] is the sub-list for method output_type
-	45, // [45:68] is the sub-list for method input_type
-	45, // [45:45] is the sub-list for extension type_name
-	45, // [45:45] is the sub-list for extension extendee
-	0,  // [0:45] is the sub-list for field type_name
+	56, // 45: userinfo.BannerInfoResp.Banner:type_name -> userinfo.BannerInfo
+	9,  // 46: userinfo.BannerDelResp.Result:type_name -> userinfo.UserResult
+	10, // 47: userinfo.User.getUsersInfo:input_type -> userinfo.GetUsersInfoReq
+	12, // 48: userinfo.User.getUsers:input_type -> userinfo.GetUsersReq
+	38, // 49: userinfo.User.updateUserInfo:input_type -> userinfo.SetUserInfoReq
+	14, // 50: userinfo.User.ResetUserPwd:input_type -> userinfo.RestUsersPwdReq
+	16, // 51: userinfo.User.GetUsersNotificationConf:input_type -> userinfo.UsersNotificationConfReq
+	18, // 52: userinfo.User.SetUsersNotificationConf:input_type -> userinfo.SetUsersNotificationConfReq
+	20, // 53: userinfo.User.SetCancellation:input_type -> userinfo.SetCancellationReq
+	22, // 54: userinfo.User.Login:input_type -> userinfo.LoginReq
+	24, // 55: userinfo.User.Register:input_type -> userinfo.RegisterReq
+	26, // 56: userinfo.User.SendVerificationCode:input_type -> userinfo.SendVerificationCodeReq
+	28, // 57: userinfo.User.LoginAuto:input_type -> userinfo.LoginAutoReq
+	30, // 58: userinfo.User.Logout:input_type -> userinfo.LogoutReq
+	32, // 59: userinfo.User.Forget:input_type -> userinfo.ForgetReq
+	34, // 60: userinfo.User.CheckUserExists:input_type -> userinfo.CheckUserExistsReq
+	36, // 61: userinfo.User.Bind:input_type -> userinfo.BindReq
+	40, // 62: userinfo.User.Unbind:input_type -> userinfo.UnbindReq
+	41, // 63: userinfo.User.BindList:input_type -> userinfo.BindListReq
+	45, // 64: userinfo.User.GetAuthInfo:input_type -> userinfo.GetAuthInfoReq
+	47, // 65: userinfo.User.VerifyPwd:input_type -> userinfo.VerifyPwdReq
+	49, // 66: userinfo.User.GetLoginAutoInfo:input_type -> userinfo.GetLoginAutoInfoReq
+	51, // 67: userinfo.User.StatLog:input_type -> userinfo.StatLogReq
+	53, // 68: userinfo.User.BannerList:input_type -> userinfo.BannerListReq
+	59, // 69: userinfo.User.BannerSave:input_type -> userinfo.BannerSaveReq
+	61, // 70: userinfo.User.BannerInfo:input_type -> userinfo.BannerInfoReq
+	63, // 71: userinfo.User.BannerDel:input_type -> userinfo.BannerDelReq
+	11, // 72: userinfo.User.getUsersInfo:output_type -> userinfo.GetUsersInfoResp
+	13, // 73: userinfo.User.getUsers:output_type -> userinfo.GetUsersResp
+	39, // 74: userinfo.User.updateUserInfo:output_type -> userinfo.SetUserInfoResp
+	15, // 75: userinfo.User.ResetUserPwd:output_type -> userinfo.RestUsersPwdResp
+	17, // 76: userinfo.User.GetUsersNotificationConf:output_type -> userinfo.UsersNotificationConfResp
+	19, // 77: userinfo.User.SetUsersNotificationConf:output_type -> userinfo.SetUsersNotificationConfResp
+	21, // 78: userinfo.User.SetCancellation:output_type -> userinfo.SetCancellationResp
+	23, // 79: userinfo.User.Login:output_type -> userinfo.LoginResp
+	25, // 80: userinfo.User.Register:output_type -> userinfo.RegisterResp
+	27, // 81: userinfo.User.SendVerificationCode:output_type -> userinfo.SendVerificationCodeResp
+	29, // 82: userinfo.User.LoginAuto:output_type -> userinfo.LoginAutoResp
+	31, // 83: userinfo.User.Logout:output_type -> userinfo.LogoutResp
+	33, // 84: userinfo.User.Forget:output_type -> userinfo.ForgetResp
+	35, // 85: userinfo.User.CheckUserExists:output_type -> userinfo.CheckUserExistsResp
+	37, // 86: userinfo.User.Bind:output_type -> userinfo.BindResp
+	9,  // 87: userinfo.User.Unbind:output_type -> userinfo.UserResult
+	44, // 88: userinfo.User.BindList:output_type -> userinfo.BindListRes
+	46, // 89: userinfo.User.GetAuthInfo:output_type -> userinfo.GetAuthInfoResp
+	48, // 90: userinfo.User.VerifyPwd:output_type -> userinfo.VerifyPwdResp
+	50, // 91: userinfo.User.GetLoginAutoInfo:output_type -> userinfo.GetLoginAutoInfoResp
+	50, // 92: userinfo.User.StatLog:output_type -> userinfo.GetLoginAutoInfoResp
+	57, // 93: userinfo.User.BannerList:output_type -> userinfo.BannerListResp
+	60, // 94: userinfo.User.BannerSave:output_type -> userinfo.BannerSaveResp
+	62, // 95: userinfo.User.BannerInfo:output_type -> userinfo.BannerInfoResp
+	64, // 96: userinfo.User.BannerDel:output_type -> userinfo.BannerDelResp
+	72, // [72:97] is the sub-list for method output_type
+	47, // [47:72] is the sub-list for method input_type
+	47, // [47:47] is the sub-list for extension type_name
+	47, // [47:47] is the sub-list for extension extendee
+	0,  // [0:47] is the sub-list for field type_name
 }
 
 func init() { file_define_userinfo_proto_init() }
@@ -5565,6 +5783,54 @@ func file_define_userinfo_proto_init() {
 				return nil
 			}
 		}
+		file_define_userinfo_proto_msgTypes[56].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BannerInfoReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_define_userinfo_proto_msgTypes[57].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BannerInfoResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_define_userinfo_proto_msgTypes[58].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BannerDelReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_define_userinfo_proto_msgTypes[59].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*BannerDelResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	file_define_userinfo_proto_msgTypes[1].OneofWrappers = []interface{}{}
 	type x struct{}
@@ -5573,7 +5839,7 @@ func file_define_userinfo_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_define_userinfo_proto_rawDesc,
 			NumEnums:      5,
-			NumMessages:   57,
+			NumMessages:   61,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

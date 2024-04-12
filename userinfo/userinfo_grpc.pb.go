@@ -42,6 +42,8 @@ const (
 	User_StatLog_FullMethodName                  = "/userinfo.User/StatLog"
 	User_BannerList_FullMethodName               = "/userinfo.User/BannerList"
 	User_BannerSave_FullMethodName               = "/userinfo.User/BannerSave"
+	User_BannerInfo_FullMethodName               = "/userinfo.User/BannerInfo"
+	User_BannerDel_FullMethodName                = "/userinfo.User/BannerDel"
 )
 
 // UserClient is the client API for User service.
@@ -93,6 +95,8 @@ type UserClient interface {
 	// banner列表
 	BannerList(ctx context.Context, in *BannerListReq, opts ...grpc.CallOption) (*BannerListResp, error)
 	BannerSave(ctx context.Context, in *BannerSaveReq, opts ...grpc.CallOption) (*BannerSaveResp, error)
+	BannerInfo(ctx context.Context, in *BannerInfoReq, opts ...grpc.CallOption) (*BannerInfoResp, error)
+	BannerDel(ctx context.Context, in *BannerDelReq, opts ...grpc.CallOption) (*BannerDelResp, error)
 }
 
 type userClient struct {
@@ -310,6 +314,24 @@ func (c *userClient) BannerSave(ctx context.Context, in *BannerSaveReq, opts ...
 	return out, nil
 }
 
+func (c *userClient) BannerInfo(ctx context.Context, in *BannerInfoReq, opts ...grpc.CallOption) (*BannerInfoResp, error) {
+	out := new(BannerInfoResp)
+	err := c.cc.Invoke(ctx, User_BannerInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) BannerDel(ctx context.Context, in *BannerDelReq, opts ...grpc.CallOption) (*BannerDelResp, error) {
+	out := new(BannerDelResp)
+	err := c.cc.Invoke(ctx, User_BannerDel_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -359,6 +381,8 @@ type UserServer interface {
 	// banner列表
 	BannerList(context.Context, *BannerListReq) (*BannerListResp, error)
 	BannerSave(context.Context, *BannerSaveReq) (*BannerSaveResp, error)
+	BannerInfo(context.Context, *BannerInfoReq) (*BannerInfoResp, error)
+	BannerDel(context.Context, *BannerDelReq) (*BannerDelResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -434,6 +458,12 @@ func (UnimplementedUserServer) BannerList(context.Context, *BannerListReq) (*Ban
 }
 func (UnimplementedUserServer) BannerSave(context.Context, *BannerSaveReq) (*BannerSaveResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BannerSave not implemented")
+}
+func (UnimplementedUserServer) BannerInfo(context.Context, *BannerInfoReq) (*BannerInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BannerInfo not implemented")
+}
+func (UnimplementedUserServer) BannerDel(context.Context, *BannerDelReq) (*BannerDelResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BannerDel not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -862,6 +892,42 @@ func _User_BannerSave_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_BannerInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BannerInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).BannerInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_BannerInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).BannerInfo(ctx, req.(*BannerInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_BannerDel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BannerDelReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).BannerDel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_BannerDel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).BannerDel(ctx, req.(*BannerDelReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -960,6 +1026,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BannerSave",
 			Handler:    _User_BannerSave_Handler,
+		},
+		{
+			MethodName: "BannerInfo",
+			Handler:    _User_BannerInfo_Handler,
+		},
+		{
+			MethodName: "BannerDel",
+			Handler:    _User_BannerDel_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
