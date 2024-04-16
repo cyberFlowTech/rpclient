@@ -1,0 +1,124 @@
+//api 语法版本
+syntax = "v1"
+
+//介绍
+info(
+	title: "infras 红包公共服务"
+	desc: "packservice发送红包，领取红包，查看红包"
+	author: "infras"
+	version: "v1.0"
+	date: "2023-06-29"
+)
+
+//http抽象的rpc封装
+type (
+	CommonParams {
+		UserId      int64  `form:"user_id"`      //用户唯一标识
+		SessId      string `form:"sessid"`       //用户登录标识
+		Api         string `form:"api"`          //App公钥
+		Version     string `form:"version"`      //版本号
+		VersionCode string `form:"version_code"` //构建号
+		Uuid        string `form:"uuid"`         //设备唯一标识
+		Lan         string `form:"lan"`          //语言，如zh_TW
+		Sign        string `form:"sign"`         //签名
+		SignTime    int64  `form:"sign_time"`    //当前时间
+	}
+	PackInfoParams {
+		CommonParams
+		MorderNo  string `form:"morder_no,optional"` //主表唯一ID
+		PackMsgID string `form:"packMsgId,optional"` //发红包消息关联的消息ID，非必需。做保底处理
+		Page      uint64 `form:"page,default=1"`     //页码
+	}
+	PackInfo {
+		Avatar           string            `json:"avatar"`            //红包主人头像
+		Name             string            `json:"name"`              //红包主人用户名
+		Token            string            `json:"token"`             //红包货币名
+		Status           int64             `json:"status"`            //红包状态
+		Content          string            `json:"content"`           //红包寄语
+		AllNum           int64             `json:"all_num"`           //红包总数
+		RNum             int64             `json:"r_num"`             //红包已领取数
+		AllBalance       string            `json:"all_balance"`       //总金额
+		RBalance         string            `json:"r_balance"`         //已领取金额
+		IsReceive        int64             `json:"is_receive"`        //是否已领取1是0否
+		PayType          int64             `json:"pay_type"`          //红包支付类型 1 钱包 2余额
+		Entrance         string            `json:"entrance"`          //创建入口 1-频道 2-首页发现入口 3-群聊 4-单聊
+		UserID           int64             `json:"user_id"`           //用户id
+		IsSend           int64             `json:"is_send"`           //发红包状态 0:待发放 1:已发
+		ImID             string            `json:"im_id"`             //群聊唯一id
+		ConversationType int64             `json:"conversation_type"` //会话类型1：单聊 3-群聊
+		MapID            string            `json:"map_id"`            //im映射id
+		RoomID           map[string]string `json:"room_id"`           //房间id
+		Icon             string            `json:"icon"`              //红包货币icon
+		Chain            int64             `json:"chain"`             //红包货币编号
+		CType            int64             `json:"c_type"`            //红包类型（1：拼手气，2:普通红包）
+		Balance          string            `json:"balance"`           // 用户领取金额
+	}
+	PackListItem {
+		MorderNo string `json:"morder_no"` //主表唯一ID
+		OrderNo  string `json:"order_no"`  //红包列表唯一ID
+		UserID   int64  `json:"user_id"`   //领取用户id
+		Avatar   string `json:"avatar"`    //领取人头像
+		Name     string `json:"name"`      //领取人用户名
+		Balance  string `json:"balance"`   //领取金额
+		Time     int64  `json:"time"`      //领取时间
+		Lucky    int64  `json:"lucky"`     //运气王 1=是 0不是
+		IsSend   int64  `json:"is_send"`   //发红包状态 0:待发放 1:已发
+	}
+	PackInfoResp {
+		Info  PackInfo       `json:"info"`  //红包信息
+		List  []PackListItem `json:"list"`  //领取记录列表
+		Pages uint64         `json:"pages"` //页码
+		Count int64          `json:"count"` //已领取红包总数
+	}
+
+	AwardPackParams {
+		CommonParams
+		OrderNo string `form:"order_no"` //主表唯一ID
+	}
+	AwardPackResp {
+		IsReceive int64 `json:"is_receive"` //是否领取成功 1-领取成功 0-失败
+		Status    int64 `json:"status"`     //红包状态 1-创建中 2-领奖中 3-已领完 4-红包已过期 -1-创建红包失败 -2-红包金额不足 -3-手续费金额不足 -10-重新发送后老红包删除作废
+	}
+
+	CreatePackParams {
+		CommonParams
+		Num      int64  `form:"num"`              //红包数量
+		Amount   string `form:"amount"`           //红包金额
+		Content  string `form:"content,optional"` //红包内容
+		Chain    int64  `form:"chain"`            //币种
+		Entrance string `form:"entrance"`         //创建入口（1：频道，2：发现入口，3:普通群聊, 4:单聊）
+		CType    int64  `form:"c_type"`           //红包类型（1：拼手气，2:普通红包）
+		TbMid    string `form:"tb_mid,optional"`  //超级群id 创建入口是频道下 必填
+		TbZid    string `form:"tb_zid,optional"`  //超级分组id 创建入口是频道下 必填
+		TbCid    string `form:"tb_cid,optional"`  //超级频道id 创建入口是频道下 必填
+		ImId     string `form:"im_id,optional"`   //普通群聊或者超级群频道im_id 发现入口可不填
+		MapID    string `form:"map_id,optional"`  // 发现入口可不填 其他传环信id
+		To       string `form:"to,optional"`      //钱包地址
+		Set      string `form:"set,optional"`     //num 数量 amount 金额
+		PayType  int64  `form:"pay_type"`         //1钱包 2余额
+	}
+	CreatePackResp {
+		OrderNo string `json:"order_no"` //红包订单号
+		Status  int64  `json:"status"`   //红包状态 1-创建中 2-领奖中 3-已领完 4-红包已过期 -1-创建红包失败 -2-红包金额不足 -3-手续费金额不足 -10-重新发送后老红包删除作废
+	}
+)
+
+@server(
+	//jwt: Auth                 //开启jwt鉴权
+	middleware: BeforeHandle    //路由中间件声明
+	group: packservice                  //接口所属组
+	prefix: packservice/v1            //路由公共前缀
+)
+service packservice {
+	@doc "获取红包详情"
+	@handler detail
+	post /info (PackInfoParams) returns (PackInfoResp)
+
+	@doc "领取红包"
+	@handler award
+	post /award (AwardPackParams) returns (AwardPackResp)
+
+	@doc "创建红包"
+	@handler create
+	post /create (CreatePackParams) returns (CreatePackResp)
+}

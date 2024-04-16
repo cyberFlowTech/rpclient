@@ -1,0 +1,124 @@
+//api 语法版本
+syntax = "v1"
+
+//介绍
+info (
+	title:   "web3 Coin行情&交易服务"
+	desc:    "web3相关能力封装，包括多链，监听、查询，交易"
+	author:  ""
+	email:   "*@cyberflow"
+	version: "v0.1"
+	date:    "2024-01-24"
+)
+
+//统一请求鉴权信息
+type CommonParams {
+	UserId      int64  `form:"user_id"` //用户唯一标识
+	SessId      string `form:"sessid"` //用户登录标识
+	Api         string `form:"api"` //App公钥
+	Version     string `form:"version"` //版本号
+	VersionCode string `form:"version_code"` //构建号
+	Uuid        string `form:"uuid"` //设备唯一标识
+	Lan         string `form:"lan"` //语言，如zh_TW
+	Sign        string `form:"sign"` //签名
+	SignTime    int64  `form:"sign_time"` //当前时间
+}
+
+//统一返回格式
+type CommonJsonResp {
+	Code int32       `json:"iRet"`
+	Msg  string      `json:"sMsg"`
+	Data interface{} `json:"data"`
+}
+
+//请求定义
+//详情
+type GetCoinDetailReq {
+	CommonParams
+	Ids string `form:"ids"` //coin id,多个用,分隔
+}
+
+//热门，飙升榜单
+type GetCoinRankReq {
+	CommonParams
+	Id       string `form:"id"` //coin rank id,
+	Page     int32  `form:"start"` //1开始
+	PageSize int32  `form:"pageSize"` //20
+}
+
+//kline数据，指定区间和interval
+type GetCoinQuotesReq {
+	CommonParams
+	Id       string `form:"id"` //coin id
+	Interval string `form:"interval"` //1d:5m;7d:30m;30d:1h;365d:1d;
+	Start    int64  `form:"start"` //unixtime格式 1d;7d;30d;365d
+	End      int64  `form:"end"` //unixtime格式
+}
+
+type GetCoinOHLCVReq {
+	CommonParams
+	Ids string `form:"ids"` //coin ids
+}
+
+type GetCoinStatsReq {
+	CommonParams
+	Id string `form:"id"` //coin ids
+}
+
+//收藏coin，指定区间和interval
+type GetFavoriteCoinsReq {
+	CommonParams
+	Page     int64 `form:"page"` //
+	PageSize int64 `form:"pageSize"` //
+}
+
+type SetFavoriteCoinReq {
+	CommonParams
+	CoinId int64  `form:"coinId"`
+	Opt    string `form:"opt"` //add,del,sort
+	Pos    string `form:"pos,optional"` //1:1,102:2
+}
+
+@server (
+	//jwt: Auth                 //开启jwt鉴权
+	middleware: BeforeHandle //路由中间件声明
+	group:      web3swap //接口所属组
+	prefix:     web3swap //路由公共前缀
+)
+service web3swap {
+	@doc "查询coin基本信息"
+	@handler getCoinInfo
+	post /getCoinInfo (GetCoinDetailReq) returns (CommonJsonResp)
+
+	@handler getCoinPrice
+	get /getCoinPrice returns (CommonJsonResp)
+
+	@doc "查询coin交易详情tick"
+	@handler getCoinQuotes
+	post /getCoinQuotes (GetCoinQuotesReq) returns (CommonJsonResp)
+
+	@doc "查询coin OHLCV"
+	@handler getCoinOHLCV
+	post /getCoinOhlcv (GetCoinOHLCVReq) returns (CommonJsonResp)
+
+	@doc "查询coin price performance"
+	@handler getCoinPriceStats
+	post /getCoinPriceStats (GetCoinStatsReq) returns (CommonJsonResp)
+
+	@doc "查询榜单：热门，飙升等coin list"
+	@handler getCoinRank
+	post /getCoinRank (GetCoinRankReq) returns (CommonJsonResp)
+
+	@doc "运行指定任务限定权限才可以"
+	@handler runTask
+	post /runTask returns (CommonJsonResp)
+
+	@doc "查询我的收藏coin list"
+	@handler getMyFavoriteCoins
+	post /getMyFavoriteCoins (GetFavoriteCoinsReq) returns (CommonJsonResp)
+
+	@doc "修改收藏coin list"
+	@handler setMyFavoriteCoin
+	post /setMyFavoriteCoin (SetFavoriteCoinReq) returns (CommonJsonResp)
+}
+

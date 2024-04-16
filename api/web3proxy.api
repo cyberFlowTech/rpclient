@@ -1,0 +1,368 @@
+//api 语法版本
+syntax = "v1"
+
+//介绍
+info (
+	title:   "web3 proxy服务"
+	desc:    "web3相关能力封装，包括多链，监听、查询，交易"
+	author:  ""
+	email:   "*@cyberflow"
+	version: "v0.1"
+	date:    "2023-06-01"
+)
+
+//统一请求鉴权信息
+type CommonParams {
+	UserId      int64  `form:"user_id"` //用户唯一标识
+	SessId      string `form:"sessid"` //用户登录标识
+	Api         string `form:"api"` //App公钥
+	Version     string `form:"version"` //版本号
+	VersionCode string `form:"version_code"` //构建号
+	Uuid        string `form:"uuid"` //设备唯一标识
+	Lan         string `form:"lan"` //语言，如zh_TW
+	Sign        string `form:"sign"` //签名
+	SignTime    int64  `form:"sign_time"` //当前时间
+}
+
+//统一返回格式
+type CommonJsonResp {
+	Code int32       `json:"iRet"`
+	Msg  string      `json:"sMsg"`
+	Data interface{} `json:"data"`
+}
+
+type Account {
+	Wallet      string            `json:"account"` //钱包账户
+	Balance     map[string]string `json:"balance"` //账户余额,包括主币，token，零钱
+	MainBalance string            `json:"mainBalance"` //zhubi
+}
+
+type AccountBalance {
+	Account string            `json:"account"` //钱包账户
+	Balance string            `json:"balance"` //zhubi
+	Tokens  map[string]string `json:"token"` //账户余额,包括主币，token，零钱
+}
+
+type GetAccountBalanceReq {
+	CommonParams
+	Accounts  string `form:"accounts,optional"` //钱包地址,多个用,分隔
+	ChainCode string `form:"chainCode"` //链代码，etmp:2000000
+	BAsset    int32  `form:"bAsset,default=0"` //0默认值，1是查询零钱账户
+	Tokens    string `form:"tokens,optional"` //要查询的token,多个用,分隔。用大写表示USDT,USDC
+}
+
+type GetAccountBalanceResp {
+	Accounts []Account `json:"accounts"` //账户list
+}
+
+type GetAccountTokenBalanceReq {
+	CommonParams
+	Account   string `form:"account"` //钱包地址,多个用,分隔
+	ChainCode string `form:"chainCode"` //链代码，etmp:2000000
+	Tokens    string `form:"tokens,optional"` //要查询的token合约地址
+}
+
+type GetTokenMetaReq {
+	CommonParams
+	token     string `form:"account"` //钱包地址,多个用,分隔
+	ChainCode string `form:"chainCode"` //链代码，etmp:2000000
+}
+
+type GetAccountNftsReq {
+	CommonParams
+	Account   string `form:"account"` //钱包地址
+	ChainCode string `form:"chainCode"` //链代码，etmp:2000000
+	Count     int32  `form:"count"`
+	Cursor    string `form:"cursor,optional"` //next 游标
+}
+
+type GetAccountNftTransReq {
+	CommonParams
+	Account   string `form:"account"` //钱包地址
+	ChainCode string `form:"chainCode"` //链代码，etmp:2000000
+	Count     int32  `form:"count"`
+	Cursor    string `form:"cursor,optional"` //next 游标
+}
+
+type GetNftCollectionReq {
+	CommonParams
+	Collection string `form:"collection"` //collection
+	ChainCode  string `form:"chainCode"` //链代码，etmp:2000000
+}
+
+type GetNftListByCollectionReq {
+	CommonParams
+	Collection string `form:"collection"` //collection
+	ChainCode  string `form:"chainCode"` //链代码，etmp:2000000
+	Count      int32  `form:"count"`
+	Cursor     string `form:"cursor,optional"` //next 游标
+}
+
+type GetAccountTokenBalanceResp {
+	Account AccountBalance `json:"account"` //账户list
+}
+
+type TransactionItem {
+	Hash   string `json:"hash"`
+	From   string `json:"from"`
+	To     string `json:"to"`
+	Nick   string `json:"nick"`
+	Avatar string `json:"avatar"`
+}
+
+type GetAccountTransactionListReq {
+	CommonParams
+	Account   string `form:"account,optional"` //账户(钱包地址)
+	ChainID   int64  `form:"chain_id,optional"` // 链id -1查询全部
+	Page      int32  `form:"page,default=1"`
+	Count     int32  `form:"count"`
+	Type      int32  `form:"type"` // 1: 转入 2: 转出 0: all
+	Contract  string `form:"contract,optional"` // -1查询全部
+	TimeRange string `form:"timeRange,optional"` // 时间范围
+}
+
+type AccountTransactionListData {
+	TxID           string `json:"txId"`
+	From           string `json:"from"`
+	To             string `json:"to"`
+	Amount         string `json:"amount"`
+	Fee            string `json:"fee"`
+	Timestamp      int64  `json:"timestamp"`
+	BlockTimeStamp int64  `json:"blockTimeStamp"`
+	State          int64  `json:"state"`
+	Token          string `json:"token"`
+	ToAvatar       string `json:"toAvatar"`
+	ToNick         string `json:"toNick"`
+	Nonce          int64  `json:"nonce"`
+	Type           int32  `json:"type"`
+	ToUserID       int64  `json:"toUserId"`
+	Chain          int64  `json:"chain"`
+	ScaleShow      int64  `json:"scaleShow"`
+	Unit           int64  `json:"unit"`
+	GasSymbol      string `json:"gasSymbol"`
+	IsChange       int32  `json:"isChange"`
+}
+
+type GetAccountTransactionListResp {
+	Accounts []Account `json:"accounts"` //账户list
+}
+
+//地址薄
+type ContactItem {
+	Type     int32  `json:"type"` //0 出，1 入
+	From     string `json:"from"` //对方地址
+	Nick     string `json:"nick"`
+	Avatar   string `json:"avatar"`
+	LastTime int64  `json:"lastTime"`
+}
+
+type GetAccountContactListReq {
+	CommonParams
+	Account string `form:"account"` //账户(钱包地址)
+	Page    int32  `form:"page"`
+	Count   int32  `form:"count"`
+	Chain   int64  `form:"chain"` // 链id
+	Type    int32  `form:"type"` // 记录类型
+}
+
+type GetAccountContactsListResp {
+	Contacts []ContactItem `json:"contacts"` //账户list
+}
+
+type RunTaskReq {
+	CommonParams
+	TaskCmd   string `form:"taskCmd"`
+	TaskParam string `form:"taskParam"`
+}
+
+//配置信息
+type ChainInfo {
+	ChainCode int64       `json:"chainCode"` //代币链的唯一字符串如：ETMP 2000000 唯一分配
+	ChainID   int64       `json:"chainId"` //"chainId": 5,
+	Hosts     []string    `json:"hosts"` //["https://rpc.ankr.com/eth_goerli",]
+	ChainIcon string      `json:"icon"` //"icon": "https://assets.mimo.immo/sys_icon/network/icon-ETH.png",
+	ChainName string      `json:"chainName"` //"name": "Ethereum",
+	PCode     int64       `json:"pCode"` //"parent code": ETMP 2000000,
+	Tokens    []TokenInfo `json:"tokens"` //要支持的token
+	ChainScan string      `json:"chainScan"` //scan浏览器地址
+}
+
+type TokenInfo {
+	Contact string `json:"contact"` //"contract": "",为空表示主币
+	ExApi   string `json:"exApi"` //"ex_api": "https://min-api.cryptocompare.com/data/price?fsym=eth&tsyms=USD",
+	//ExPath  string `json:"exPath"`  //"ex_path": "USD",
+	GasLimit  int64  `json:"gasLimit"` //"gasLimit": 26600,
+	Icon      string `json:"icon"` //"icon": "https://assets.mimo.immo/sys_icon/network/icon-ETH.png",
+	Name      string `json:"name"` //"name": "TRX",
+	Symbol    string `json:"token"` //symbol
+	PackIcon  string `json:"packIcon"` //"pack_icon": "https://assets.mimo.immo/202210244157321029288501311.png",
+	ScaleShow int64  `json:"scaleShow"` //"小数点后面精度": 6,
+	Unit      int64  `json:"unit"` //精度
+	UnitWei   string `json:"unitWei"` //"小数点前面单位": Ether,Gwei,Wei
+	ChainCode int64  `json:"chainCode"`
+	ChainName string `json:"chainName"`
+	ID        int64  `json:"id"`
+	GasSymbol string `json:"gasSymbol"`
+	Sort      int64  `json:"sort"`
+	Issuer    string `json:"issuer"`
+	Official  int64  `json:"official"` // 是否为官方token  1是0否
+	ChainId   int64  `json:"chainId"`
+}
+
+type GetChainsReq {
+	CommonParams
+}
+
+type GetChainsResp {
+	Chains []ChainInfo `json:"chains"`
+}
+
+type WalletListReq {
+	CommonParams
+	OuID int64 `form:"ouid"`
+}
+
+type WalletSearchReq {
+	CommonParams
+	Keywords string `form:"keywords"`
+	Chain    int64  `form:"chain"`
+}
+
+type WalletSearchResp {
+	User       UserInfo `json:"user"`
+	TransLimit int32    `json:"trans_limit"`
+}
+
+type UserInfo {
+	UserId  int64  `json:"user_id"`
+	Nick    string `json:"nick"`
+	Avatar  string `json:"avatar"`
+	Desc    string `json:"desc"`
+	Address string `json:"address"`
+	Chain   int64  `json:"chain"`
+}
+
+type GetTransLogByTxidReq {
+	CommonParams
+	Txid string `form:"txid"`
+}
+
+type TokensAddReq {
+	CommonParams
+	Chain    int64  `form:"chain"`
+	Contract string `form:"contract"`
+	Symbol   string `form:"symbol"` //
+	Issuer   string `form:"issuer,optional"`
+	Decimals int64  `form:"decimals"`
+}
+
+type TokensDelReq {
+	CommonParams
+	Chain    int64  `form:"chain"`
+	Contract string `form:"contract"`
+}
+
+type TokensSortReq {
+	CommonParams
+	Sort  string `form:"sort"` // 排序
+	Chain int64  `form:"chain"` // 链id
+}
+
+type TokensReq {
+	CommonParams
+	Chain int64 `form:"chain"`
+}
+
+type SymbolListReq {
+	CommonParams
+	Symbol string `form:"symbol"` // 币种类型
+}
+
+@server (
+	//jwt: Auth                 //开启jwt鉴权
+	middleware: BeforeHandle //路由中间件声明
+	group:      web3proxy //接口所属组
+	prefix:     web3proxy //路由公共前缀
+)
+service web3proxy {
+	@doc "查询balance"
+	@handler balance
+	post /balance (GetAccountBalanceReq) returns (CommonJsonResp)
+
+	@doc "查询链上tokenBalance"
+	@handler tokenBalance
+	post /tokenBalance (GetAccountTokenBalanceReq) returns (CommonJsonResp)
+
+	@doc "查询链上token meta"
+	@handler tokenMeta
+	post /tokenMeta (GetTokenMetaReq) returns (CommonJsonResp)
+
+	@doc "查询Nft交易历史"
+	@handler getNftTransactions
+	post /getNftTransactions (GetAccountNftTransReq) returns (CommonJsonResp)
+
+	@doc "查询Nft资产"
+	@handler getNftsByWallet
+	post /getAccountNfts (GetAccountNftsReq) returns (CommonJsonResp)
+
+	@doc "查询Nft Collection"
+	@handler getNftCollection
+	post /getNftCollection (GetNftCollectionReq) returns (CommonJsonResp)
+
+	@doc "查询Nft Collection"
+	@handler getNftListByCollectionReq
+	post /getNftListByCollection (GetNftListByCollectionReq) returns (CommonJsonResp)
+
+	@doc "查询交易历史"
+	@handler getTransactions
+	post /getTransactions (GetAccountTransactionListReq) returns (CommonJsonResp)
+
+	@doc "查询地址薄"
+	@handler getContacts
+	post /getContracts (GetAccountContactListReq) returns (CommonJsonResp)
+
+	@doc "运行指定任务限定权限才可以"
+	@handler runTask
+	post /runTask (RunTaskReq) returns (CommonJsonResp)
+
+	@doc "获取多链配置"
+	@handler chains
+	post /chains (GetChainsReq) returns (CommonJsonResp)
+
+	@doc "查询用户钱包列表"
+	@handler walletList
+	post /wallet/list (WalletListReq) returns (CommonJsonResp)
+
+	@doc "钱包地址查询用户"
+	@handler walletSearch
+	post /wallet/search (WalletSearchReq) returns (CommonJsonResp)
+
+	@doc "查询交易详情"
+	@handler getOneTransaction
+	post /getOneTransaction (GetTransLogByTxidReq) returns (CommonJsonResp)
+
+	@doc "添加代币"
+	@handler tokensAdd
+	post /tokens/add (TokensAddReq) returns (CommonJsonResp)
+
+	@doc "删除代币"
+	@handler tokensDel
+	post /tokens/del (TokensDelReq) returns (CommonJsonResp)
+
+	@doc "排序代币"
+	@handler tokensSort
+	post /tokens/sort (TokensSortReq) returns (CommonJsonResp)
+
+	@doc "获取token"
+	@handler tokensList
+	post /tokens (TokensReq) returns (CommonJsonResp)
+
+	@doc "根据symbol获取币种信息"
+	@handler symbolList
+	post /tokens/symbol (SymbolListReq) returns (CommonJsonResp)
+
+	@doc "查询交易历史"
+	@handler getTransList
+	post /trans/list (GetAccountTransactionListReq) returns (CommonJsonResp)
+}
+

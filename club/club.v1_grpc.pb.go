@@ -66,6 +66,12 @@ const (
 	ClubServer_GetBanList_FullMethodName               = "/club.ClubServer/GetBanList"
 	ClubServer_OptBan_FullMethodName                   = "/club.ClubServer/OptBan"
 	ClubServer_SetChannelVisited_FullMethodName        = "/club.ClubServer/SetChannelVisited"
+	ClubServer_GetChannelVisited_FullMethodName        = "/club.ClubServer/GetChannelVisited"
+	ClubServer_GetShareCode_FullMethodName             = "/club.ClubServer/GetShareCode"
+	ClubServer_GetShareCodeInfo_FullMethodName         = "/club.ClubServer/GetShareCodeInfo"
+	ClubServer_ClubSearch_FullMethodName               = "/club.ClubServer/ClubSearch"
+	ClubServer_StatLog_FullMethodName                  = "/club.ClubServer/StatLog"
+	ClubServer_HasAuth_FullMethodName                  = "/club.ClubServer/hasAuth"
 )
 
 // ClubServerClient is the client API for ClubServer service.
@@ -167,8 +173,20 @@ type ClubServerClient interface {
 	GetBanList(ctx context.Context, in *GetBanListRequest, opts ...grpc.CallOption) (*GetBanListResponse, error)
 	// 封禁/禁言
 	OptBan(ctx context.Context, in *OptBanRequest, opts ...grpc.CallOption) (*OptBanResponse, error)
-	// 设置最近访问频道用户
+	// 设置最近访问频道应用房间用户
 	SetChannelVisited(ctx context.Context, in *SetChannelVisitedRequest, opts ...grpc.CallOption) (*SetChannelVisitedResponse, error)
+	// 获取最近访问频道应用房间用户
+	GetChannelVisited(ctx context.Context, in *GetChannelVisitedRequest, opts ...grpc.CallOption) (*GetChannelVisitedResponse, error)
+	// 生成部落分享码
+	GetShareCode(ctx context.Context, in *GetShareCodeRequest, opts ...grpc.CallOption) (*GetShareCodeResponse, error)
+	// 获取部落分享码信息
+	GetShareCodeInfo(ctx context.Context, in *GetShareCodeInfoRequest, opts ...grpc.CallOption) (*GetShareCodeInfoResponse, error)
+	// 部落搜索
+	ClubSearch(ctx context.Context, in *ClubSearchRequest, opts ...grpc.CallOption) (*ClubSearchResponse, error)
+	// 后台管理 - 日志记录
+	StatLog(ctx context.Context, in *StatLogReq, opts ...grpc.CallOption) (*StatLogResp, error)
+	// 判断是否具备权限能力
+	HasAuth(ctx context.Context, in *HasAuthReq, opts ...grpc.CallOption) (*HasAuthResp, error)
 }
 
 type clubServerClient struct {
@@ -602,6 +620,60 @@ func (c *clubServerClient) SetChannelVisited(ctx context.Context, in *SetChannel
 	return out, nil
 }
 
+func (c *clubServerClient) GetChannelVisited(ctx context.Context, in *GetChannelVisitedRequest, opts ...grpc.CallOption) (*GetChannelVisitedResponse, error) {
+	out := new(GetChannelVisitedResponse)
+	err := c.cc.Invoke(ctx, ClubServer_GetChannelVisited_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) GetShareCode(ctx context.Context, in *GetShareCodeRequest, opts ...grpc.CallOption) (*GetShareCodeResponse, error) {
+	out := new(GetShareCodeResponse)
+	err := c.cc.Invoke(ctx, ClubServer_GetShareCode_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) GetShareCodeInfo(ctx context.Context, in *GetShareCodeInfoRequest, opts ...grpc.CallOption) (*GetShareCodeInfoResponse, error) {
+	out := new(GetShareCodeInfoResponse)
+	err := c.cc.Invoke(ctx, ClubServer_GetShareCodeInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) ClubSearch(ctx context.Context, in *ClubSearchRequest, opts ...grpc.CallOption) (*ClubSearchResponse, error) {
+	out := new(ClubSearchResponse)
+	err := c.cc.Invoke(ctx, ClubServer_ClubSearch_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) StatLog(ctx context.Context, in *StatLogReq, opts ...grpc.CallOption) (*StatLogResp, error) {
+	out := new(StatLogResp)
+	err := c.cc.Invoke(ctx, ClubServer_StatLog_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) HasAuth(ctx context.Context, in *HasAuthReq, opts ...grpc.CallOption) (*HasAuthResp, error) {
+	out := new(HasAuthResp)
+	err := c.cc.Invoke(ctx, ClubServer_HasAuth_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClubServerServer is the server API for ClubServer service.
 // All implementations must embed UnimplementedClubServerServer
 // for forward compatibility
@@ -701,8 +773,20 @@ type ClubServerServer interface {
 	GetBanList(context.Context, *GetBanListRequest) (*GetBanListResponse, error)
 	// 封禁/禁言
 	OptBan(context.Context, *OptBanRequest) (*OptBanResponse, error)
-	// 设置最近访问频道用户
+	// 设置最近访问频道应用房间用户
 	SetChannelVisited(context.Context, *SetChannelVisitedRequest) (*SetChannelVisitedResponse, error)
+	// 获取最近访问频道应用房间用户
+	GetChannelVisited(context.Context, *GetChannelVisitedRequest) (*GetChannelVisitedResponse, error)
+	// 生成部落分享码
+	GetShareCode(context.Context, *GetShareCodeRequest) (*GetShareCodeResponse, error)
+	// 获取部落分享码信息
+	GetShareCodeInfo(context.Context, *GetShareCodeInfoRequest) (*GetShareCodeInfoResponse, error)
+	// 部落搜索
+	ClubSearch(context.Context, *ClubSearchRequest) (*ClubSearchResponse, error)
+	// 后台管理 - 日志记录
+	StatLog(context.Context, *StatLogReq) (*StatLogResp, error)
+	// 判断是否具备权限能力
+	HasAuth(context.Context, *HasAuthReq) (*HasAuthResp, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -850,6 +934,24 @@ func (UnimplementedClubServerServer) OptBan(context.Context, *OptBanRequest) (*O
 }
 func (UnimplementedClubServerServer) SetChannelVisited(context.Context, *SetChannelVisitedRequest) (*SetChannelVisitedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetChannelVisited not implemented")
+}
+func (UnimplementedClubServerServer) GetChannelVisited(context.Context, *GetChannelVisitedRequest) (*GetChannelVisitedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChannelVisited not implemented")
+}
+func (UnimplementedClubServerServer) GetShareCode(context.Context, *GetShareCodeRequest) (*GetShareCodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetShareCode not implemented")
+}
+func (UnimplementedClubServerServer) GetShareCodeInfo(context.Context, *GetShareCodeInfoRequest) (*GetShareCodeInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetShareCodeInfo not implemented")
+}
+func (UnimplementedClubServerServer) ClubSearch(context.Context, *ClubSearchRequest) (*ClubSearchResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClubSearch not implemented")
+}
+func (UnimplementedClubServerServer) StatLog(context.Context, *StatLogReq) (*StatLogResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StatLog not implemented")
+}
+func (UnimplementedClubServerServer) HasAuth(context.Context, *HasAuthReq) (*HasAuthResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method HasAuth not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
 
@@ -1710,6 +1812,114 @@ func _ClubServer_SetChannelVisited_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClubServer_GetChannelVisited_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetChannelVisitedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetChannelVisited(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetChannelVisited_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetChannelVisited(ctx, req.(*GetChannelVisitedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_GetShareCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetShareCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetShareCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetShareCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetShareCode(ctx, req.(*GetShareCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_GetShareCodeInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetShareCodeInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetShareCodeInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetShareCodeInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetShareCodeInfo(ctx, req.(*GetShareCodeInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_ClubSearch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClubSearchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).ClubSearch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_ClubSearch_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).ClubSearch(ctx, req.(*ClubSearchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_StatLog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StatLogReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).StatLog(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_StatLog_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).StatLog(ctx, req.(*StatLogReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_HasAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HasAuthReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).HasAuth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_HasAuth_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).HasAuth(ctx, req.(*HasAuthReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClubServer_ServiceDesc is the grpc.ServiceDesc for ClubServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1904,6 +2114,30 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetChannelVisited",
 			Handler:    _ClubServer_SetChannelVisited_Handler,
+		},
+		{
+			MethodName: "GetChannelVisited",
+			Handler:    _ClubServer_GetChannelVisited_Handler,
+		},
+		{
+			MethodName: "GetShareCode",
+			Handler:    _ClubServer_GetShareCode_Handler,
+		},
+		{
+			MethodName: "GetShareCodeInfo",
+			Handler:    _ClubServer_GetShareCodeInfo_Handler,
+		},
+		{
+			MethodName: "ClubSearch",
+			Handler:    _ClubServer_ClubSearch_Handler,
+		},
+		{
+			MethodName: "StatLog",
+			Handler:    _ClubServer_StatLog_Handler,
+		},
+		{
+			MethodName: "hasAuth",
+			Handler:    _ClubServer_HasAuth_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
