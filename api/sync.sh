@@ -5,9 +5,14 @@ ProjectId=$1
 #apifox开放token
 Token=$2
 # 生成json文件
+Total=0
+Success=0
+Fail=0
+FailFiles=""
 for file in *.api; do
     echo $file
     if [ -f "$file" ]; then
+        Total=$((Total + 1))
         goctl api plugin -plugin goctl-swagger="swagger -filename $file.json" -api $file -dir .
         echo "goctl $json_data"
     fi
@@ -34,9 +39,12 @@ for file in *.json; do
         --header 'Content-Type: application/json' \
         --data @temp_data.json > res.log
         if grep -q '"success":true' res.log; then
+          Success=$((Success + 1))
           echo "$file 导入成功"
         else
+          Fail=$((Fail + 1))
           echo "$file 导入失败"
+          FailFiles= += ",${file}"
           echo $(cat res.log)
         fi
         rm res.log
@@ -44,3 +52,9 @@ for file in *.json; do
         rm $file
     fi
 done
+if [ "$Fail" -gt "0" ]
+then
+  echo "一共${Total}个API文件，导入成功${Success}个，导入失败${Fail}。失败的文件:${FailFiles}"
+else
+    echo "一共${Total}个API文件，导入成功${Success}个"
+fi
