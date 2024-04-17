@@ -124,9 +124,9 @@ type (
 )
 
 @server (
-	middleware: BeforeHandle
-	group: accountservice
-	prefix: account/v1
+	middleware:BeforeHandle
+	group:accountservice
+	prefix:account/v1
 )
 
 service accountservice{
