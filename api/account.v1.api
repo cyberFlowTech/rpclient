@@ -1,11 +1,11 @@
 syntax = "v1"
 
 info (
-	title :"用户资产公共服务"
+	title:"用户资产公共服务"
 	desc:"用户钱包,余额操作"
-	author :"leon"
-	email :"zhangchaonin@infras.tech"
-	version :"v0.1"
+	author:"leon"
+	email:"zhangchaonin@infras.tech"
+	version:"v0.1"
 	date:"2023-07-03"
 )
 

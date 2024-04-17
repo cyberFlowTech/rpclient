@@ -77,7 +77,7 @@ type (
 		SignTime    int64  `form:"sign_time"`
 	}
 	// 无data响应
-	NoDataRes     struct{}
+	NoDataRes   {}
 	GetImTokenRes {
 		AccessToken string `json:"access_token"`
 		ExpiresIn   int64  `json:"expires_in"`

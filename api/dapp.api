@@ -75,7 +75,7 @@ type (
 		ID     int64 `form:"id,optional"`               // dappid
 		Depend int64 `form:"depend,optional,default=0"` // 是否删除所有依赖
 	}
-	DelResp   struct{}
+	DelResp {}
 	SearchReq {
 		CommonParams
 		Page     int64  `form:"page,default=1"`
