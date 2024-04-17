@@ -1,24 +1,24 @@
 syntax = "v1"
 
-info(
-	title: "mimo http api services"
-	desc: "统一api服务"
-	author: "x@cyberflow.cc"
-	email: "x@cyberflow.cc"
+info (
+	title:   "mimo http api services"
+	desc:    "统一api服务"
+	author:  "x@cyberflow.cc"
+	email:   "x@cyberflow.cc"
 	version: "v1.0"
 )
 
 //统一请求鉴权信息
 type CommonParams {
-	UserId      int64  `form:"user_id"`      //用户唯一标识
-	SessId      string `form:"sessid"`       //用户登录标识
-	Api         string `form:"api"`          //App公钥
-	Version     string `form:"version"`      //版本号
+	UserId      int64  `form:"user_id"` //用户唯一标识
+	SessId      string `form:"sessid"` //用户登录标识
+	Api         string `form:"api"` //App公钥
+	Version     string `form:"version"` //版本号
 	VersionCode string `form:"version_code"` //构建号
-	Uuid        string `form:"uuid"`         //设备唯一标识
-	Lan         string `form:"lan"`          //语言，如zh_TW
-	Sign        string `form:"sign"`         //签名
-	SignTime    int64  `form:"sign_time"`    //当前时间
+	Uuid        string `form:"uuid"` //设备唯一标识
+	Lan         string `form:"lan"` //语言，如zh_TW
+	Sign        string `form:"sign"` //签名
+	SignTime    int64  `form:"sign_time"` //当前时间
 }
 
 //统一返回格式
@@ -30,51 +30,53 @@ type CommonJsonResp {
 
 //--------用户信息和登录---------
 type UserConfig {
-	Asset        int32  `json:"asset"`         //"asset":1,
-	NftSet       int32  `json:"nft_set"`       //"nft_set":1,
-	NoticeType   int32  `json:"notice_type"`   //"notice_type":0,
-	DynamicShow  int32  `json:"dynamic_show"`  //"dynamic_show":1,
-	StrangeMsg   int32  `json:"strange_msg"`   //"strange_msg":0,
-	Cover        string `json:"cover"`         //"cover":0,
-	NetWork      string `json:"network"`       //"network":"",
-	Lan          string `json:"lan"`           //"lan":"",
-	IsSearch     int32  `json:"is_search"`     //"is_search":"0",
+	Asset        int32  `json:"asset"` //"asset":1,
+	NftSet       int32  `json:"nft_set"` //"nft_set":1,
+	NoticeType   int32  `json:"notice_type"` //"notice_type":0,
+	DynamicShow  int32  `json:"dynamic_show"` //"dynamic_show":1,
+	StrangeMsg   int32  `json:"strange_msg"` //"strange_msg":0,
+	Cover        string `json:"cover"` //"cover":0,
+	NetWork      string `json:"network"` //"network":"",
+	Lan          string `json:"lan"` //"lan":"",
+	IsSearch     int32  `json:"is_search"` //"is_search":"0",
 	RelationShow int32  `json:"relation_show"` //"relation_show":"1"
 }
 
 type UserNotificationConfig {
 	UserId            string `json:"user_id"`
-	NewNotification   int64  `json:"new_notification"`    // 新消息通知：0 关闭 1开启（默认）
+	NewNotification   int64  `json:"new_notification"` // 新消息通知：0 关闭 1开启（默认）
 	ShowSenderContent int64  `json:"show_sender_content"` // 通知显示发送人及消息内容： 0 关闭 1开启（默认）
-	Sounds            int64  `json:"sounds"`              // 声音：0 关闭 1开启（默认）
-	Vibrate           int64  `json:"vibrate"`             // 振动：0 关闭 1开启（默认）
-	Badges            int64  `json:"badges"`              // 消息通知横幅：0 关闭 1开启（默认）
+	Sounds            int64  `json:"sounds"` // 声音：0 关闭 1开启（默认）
+	Vibrate           int64  `json:"vibrate"` // 振动：0 关闭 1开启（默认）
+	Badges            int64  `json:"badges"` // 消息通知横幅：0 关闭 1开启（默认）
 }
+
 type UserInfo {
-	UserID    int64      `json:"user_id"`    //"user_id":548226,
+	UserID    int64      `json:"user_id"` //"user_id":548226,
 	MidUnique string     `json:"mid_unique"` //"mid_unique":"mid_vqudi3gia7",
-	Sex       string     `json:"sex"`        //"sex":"0",
-	Desc      string     `json:"desc"`       //"desc":"",
-	Avatar    string     `json:"avatar"`     //"avatar":"https://rd-center.mimelabs.xyz/RD-mime/Upload/nft/Meemo/1/100/1/Meemo1108824.png",
-	Nick      string     `json:"nick"`       //"nick":"rrr",
-	Address   string     `json:"address"`    //"address":"0xb4c4504B429FE076dcf31C8361e1a5Dde19D2CF2",
-	UserType  string     `json:"user_type"`  //"user_type":"10",
-	UserConf  UserConfig `json:"u_conf"`     //u_conf
-	Phrase    string     `json:"phrase"`     //"phrase":"",
-	NetWork   string     `json:"network"`    //"network":"1000000",
-	Remark    string     `json:"remarks"`    //"remarks":"",
-	Fans      int32      `json:"fans"`       //"fans":0,
-	Focus     int32      `json:"focus"`      //"focus":0,
-	IsFocus   int32      `json:"is_focus"`   //"is_focus":0,
-	RegTime   string     `json:"reg_time"`   //"reg_time":"2023-03-10 17:28:44",
-	IsBlock   int32      `json:"is_block"`   //"is_block":0,
+	Sex       string     `json:"sex"` //"sex":"0",
+	Desc      string     `json:"desc"` //"desc":"",
+	Avatar    string     `json:"avatar"` //"avatar":"https://rd-center.mimelabs.xyz/RD-mime/Upload/nft/Meemo/1/100/1/Meemo1108824.png",
+	Nick      string     `json:"nick"` //"nick":"rrr",
+	Address   string     `json:"address"` //"address":"0xb4c4504B429FE076dcf31C8361e1a5Dde19D2CF2",
+	UserType  string     `json:"user_type"` //"user_type":"10",
+	UserConf  UserConfig `json:"u_conf"` //u_conf
+	Phrase    string     `json:"phrase"` //"phrase":"",
+	NetWork   string     `json:"network"` //"network":"1000000",
+	Remark    string     `json:"remarks"` //"remarks":"",
+	Fans      int32      `json:"fans"` //"fans":0,
+	Focus     int32      `json:"focus"` //"focus":0,
+	IsFocus   int32      `json:"is_focus"` //"is_focus":0,
+	RegTime   string     `json:"reg_time"` //"reg_time":"2023-03-10 17:28:44",
+	IsBlock   int32      `json:"is_block"` //"is_block":0,
 	IsPwd     int32      `json:"is_pwd,optional"`
 	IsGeneral int32      `json:"is_general"` //"is_general":0,
-	IsFriend  int32      `json:"is_friend"`  //"is_friend":0
+	IsFriend  int32      `json:"is_friend"` //"is_friend":0
 }
+
 type GetUsersRequest {
 	CommonParams
-	Ouids string `form:"ouids"`                 //55942,55941 逗号分隔
+	Ouids string `form:"ouids"` //55942,55941 逗号分隔
 	Field string `form:"fields,default='info'"` //指定要查的信息info,conf,dynamic,relation 逗号分隔, 默认只查info
 }
 
@@ -87,18 +89,18 @@ type GetUsersResponse {
 
 type SetUserRequest {
 	CommonParams
-	CmdCode string `form:"cmd_code"`       //1000001修改用户；1000003修改配置；1000004修改密码；1000006修改网络；1000008修改好友备注
-	SubCode string `form:"code,optional"`  //用户配置操作子项1000003
+	CmdCode string `form:"cmd_code"` //1000001修改用户；1000003修改配置；1000004修改密码；1000006修改网络；1000008修改好友备注
+	SubCode string `form:"code,optional"` //用户配置操作子项1000003
 	Value   string `form:"value,optional"` //子操作等值，单项修改
 	Nick    string `form:"nick,optional"`
 	Desc    string `form:"desc,optional"`
 	Age     string `form:"age,optional"`
 	Custom  string `form:"custom,optional"` //是否自定义头像
-	Url     string `form:"url,optional"`    //自定义头像url
-	Pwd     string `form:"pwd,optional"`    //加密存储的密码
-	Opwd    string `form:"opwd,optional"`   //确认新密码
-	Npwd    string `form:"npwd,optional"`   //新密码
-	NSort   string `form:"sort,optional"`   //排序
+	Url     string `form:"url,optional"` //自定义头像url
+	Pwd     string `form:"pwd,optional"` //加密存储的密码
+	Opwd    string `form:"opwd,optional"` //确认新密码
+	Npwd    string `form:"npwd,optional"` //新密码
+	NSort   string `form:"sort,optional"` //排序
 	Ouid    string `form:"ouid,optional"`
 	Remarks string `form:"remarks,optional"` //好友备注
 }
@@ -116,25 +118,25 @@ type GetUsersNotificationConfResponse {
 
 type SetUsersNotificationConfRequest {
 	CommonParams
-	NewNotification   *int64 `form:"new_notification,optional"`    // 新消息通知：0 关闭 1开启
+	NewNotification   *int64 `form:"new_notification,optional"` // 新消息通知：0 关闭 1开启
 	ShowSenderContent *int64 `form:"show_sender_content,optional"` // 通知显示发送人消息：0 关闭 1开启
-	Sounds            *int64 `form:"sounds,optional"`              // 声音：0 关闭 1开启
-	Vibrate           *int64 `form:"vibrate,optional"`             // 振动：0 关闭 1开启
-	Badges            *int64 `form:"badges,optional"`              // 消息通知横幅：0 关闭 1开启
+	Sounds            *int64 `form:"sounds,optional"` // 声音：0 关闭 1开启
+	Vibrate           *int64 `form:"vibrate,optional"` // 振动：0 关闭 1开启
+	Badges            *int64 `form:"badges,optional"` // 消息通知横幅：0 关闭 1开启
 }
 
 // 登陆、注册、忘记密码
 type LoginRegisterForm {
-	Openudid  string `form:"openudid"`            // 账号（邮箱或自定义账号，或者是第三方登录的code，或钱包地址）
-	UserType  int64  `form:"user_type"`           // 账号类型10=>邮箱，20=>钱包(没有在用)，30=>google，40=>facebook（(没有在用)），50=>apple，60=>手机号（(没有在用)），70=>自定义账号，80=>一键注册
+	Openudid  string `form:"openudid"` // 账号（邮箱或自定义账号，或者是第三方登录的code，或钱包地址）
+	UserType  int64  `form:"user_type"` // 账号类型10=>邮箱，20=>钱包(没有在用)，30=>google，40=>facebook（(没有在用)），50=>apple，60=>手机号（(没有在用)），70=>自定义账号，80=>一键注册
 	OnlyCheck int64  `form:"only_check,optional"` // 检测账号占用 0否 1是（邮箱，自定义账号登录时需要）
-	Pwd       string `form:"pwd,optional"`        // 密码（登录，注册时必要）
-	OPwd      string `form:"opwd,optional"`       // 确认密码（注册时必要）
+	Pwd       string `form:"pwd,optional"` // 密码（登录，注册时必要）
+	OPwd      string `form:"opwd,optional"` // 确认密码（注册时必要）
 	EmailCode string `form:"email_code,optional"` // 邮箱验证码
-	Uuid      string `form:"uuid,optional"`       // 设备ID
-	Api       string `form:"api,optional"`        // api
-	Version   string `form:"version,optional"`    // APP版本
-	Lan       string `form:"lan"`                 //  语言
+	Uuid      string `form:"uuid,optional"` // 设备ID
+	Api       string `form:"api,optional"` // api
+	Version   string `form:"version,optional"` // APP版本
+	Lan       string `form:"lan"` //  语言
 }
 
 type LoginRegisterResponseTimeStruct {
@@ -143,31 +145,32 @@ type LoginRegisterResponseTimeStruct {
 }
 
 type LoginRegisterResponseStruct {
-	UserId       string                          `json:"user_id"`
-	Nick         string                          `json:"nick"`
-	Status       string                          `json:"status"`
-	Age          string                          `json:"age"`
-	Avatar       string                          `json:"avatar"`
-	ActiveTime   int64                           `json:"active_time"`
-	Sex          string                          `json:"sex"`
-	Level        string                          `json:"level"`
-	Desc         string                          `json:"desc"`
-	Sessid       string                          `json:"sessid"`
-	IsRegister   int64                           `json:"isRegister"`
-	IsTodayFirst string                          `json:"isTodayFirst"`
-	UserType     string                          `json:"user_type"`
-	HasWallet    string                          `json:"hasWallet"`
-	HasSign      string                          `json:"hasSign"`
-	Time         LoginRegisterResponseTimeStruct `json:"time"`
-	RegTime      string                          `json:"reg_time"`
-	OpenFun      bool                            `json:"open_fun"`
-	OpenApplet   bool                            `json:"open_applet"`
-	Openudid     string                          `json:"openudid"`
+	UserId       string                          `json:"user_id"` // 用户ID
+	Nick         string                          `json:"nick"` // 用户昵称
+	Status       string                          `json:"status"` // 状态
+	Age          string                          `json:"age"` // （弃用）年龄
+	Avatar       string                          `json:"avatar"` // 头像
+	ActiveTime   int64                           `json:"active_time"` // 最后活跃时间
+	Sex          string                          `json:"sex"` // （弃用）性别
+	Level        string                          `json:"level"` // （弃用）等级
+	Desc         string                          `json:"desc"` // 个签
+	Sessid       string                          `json:"sessid"` // sessid
+	IsRegister   int64                           `json:"isRegister"` // 是否是注册0否 1是
+	IsTodayFirst string                          `json:"isTodayFirst"` // 是否当天首次登录0否1是
+	UserType     string                          `json:"user_type"` // 用户账号类型
+	HasWallet    string                          `json:"hasWallet"` // 是否有钱包地址 0否1是
+	HasSign      string                          `json:"hasSign"` //
+	Time         LoginRegisterResponseTimeStruct `json:"time"` // 服务端时间
+	RegTime      string                          `json:"reg_time"` //注册时间
+	OpenFun      bool                            `json:"open_fun"` // （弃用）
+	OpenApplet   bool                            `json:"open_applet"` // （弃用）
+	Openudid     string                          `json:"openudid"` // （弃用）
 }
 
 type LoginIndexRequest {
 	LoginRegisterForm
 }
+
 type LoginIndexResp {
 	Code int32       `json:"iRet"`
 	Msg  string      `json:"sMsg"`
@@ -177,6 +180,7 @@ type LoginIndexResp {
 type LoginRequest {
 	LoginRegisterForm
 }
+
 type LoginResp {
 	Code int32                       `json:"iRet"`
 	Msg  string                      `json:"sMsg"`
@@ -186,8 +190,8 @@ type LoginResp {
 type LoginAutoRequest {
 	CommonParams
 	ResetSession int64 `form:"reset_sess,optional"` // 是否刷新session 0否 1是
-
 }
+
 type LoginAutoResp {
 	Code int32                       `json:"iRet"`
 	Msg  string                      `json:"sMsg"`
@@ -197,6 +201,7 @@ type LoginAutoResp {
 type LogoutRequest {
 	CommonParams
 }
+
 type LogoutResp {
 	Code int32    `json:"iRet"`
 	Msg  string   `json:"sMsg"`
@@ -207,6 +212,7 @@ type RegisterRequest {
 	LoginRegisterForm
 	AuthEmail string `form:"auth_email,optional"` // 第三方登陆邮箱
 }
+
 type RegisterResp {
 	Code int32                       `json:"iRet"`
 	Msg  string                      `json:"sMsg"`
@@ -216,6 +222,7 @@ type RegisterResp {
 type ForgetRequest {
 	LoginRegisterForm
 }
+
 type ForgetResp {
 	Code int32    `json:"iRet"`
 	Msg  string   `json:"sMsg"`
@@ -223,11 +230,12 @@ type ForgetResp {
 }
 
 type SendVerificationCodeRequest {
-	Openudid string `form:"openudid"` // 邮箱
+	Openudid string `form:"openudid"` //  邮箱
 	Scene    int64  `form:"scene"`    //  场景：1注册；2绑定；3忘記密碼，4pin
 	Lan      string `form:"lan"`      //  语言
 	Uuid     string `form:"uuid"`     //  设备id
 }
+
 type SendVerificationCodeResp {
 	Code int32    `json:"iRet"`
 	Msg  string   `json:"sMsg"`
@@ -237,6 +245,7 @@ type SendVerificationCodeResp {
 type CancellationRequest {
 	CommonParams
 }
+
 type CancellationResp {
 	Code int32    `json:"iRet"`
 	Msg  string   `json:"sMsg"`
@@ -248,9 +257,10 @@ type BindRequest {
 	Openudid  string `form:"openudid"`            // 第三方账号
 	EmailCode string `form:"email_code,optional"` // 邮箱验证码
 	UserType  int64  `form:"user_type"`           // 账号类型 10 邮箱 30 google 50 apple
-	Pwd       string `form:"pwd,optional"`        //密码
-	OPwd      string `form:"opwd,optional"`       //确认密码
+	Pwd       string `form:"pwd,optional"`        // 密码
+	OPwd      string `form:"opwd,optional"`       // 确认密码
 }
+
 type BindResp {
 	Code int32    `json:"iRet"`
 	Msg  string   `json:"sMsg"`
@@ -269,6 +279,7 @@ type BindStatus {
 	Diy     int64 `json:"diy"`
 	Quick   int64 `json:"quick"`
 }
+
 type BindListRes {
 	Bind    BindStatus `json:"bind"`
 	Account string     `json:"account"`
@@ -288,10 +299,10 @@ type VerifyPwdRes {
 	IsPass bool `json:"is_pass"`
 }
 
-@server(
+@server (
 	middleware: UniUserAuth
-	group: user
-	prefix: user
+	group:      user
+	prefix:     user
 )
 service mimoapi {
 	@doc "获取用户信息、配置"
@@ -357,7 +368,6 @@ service mimoapi {
 	@doc "验证账号密码"
 	@handler VerifyPwd
 	post /VerifyPwd (VerifyPwdReq) returns (VerifyPwdRes)
-
 }
 
 //--------通讯录--------
@@ -371,14 +381,17 @@ type FriendInfo {
 	IsGeneral  int32  `json:"is_general"`
 	StrangeMsg int32  `json:"strange_msg"`
 }
+
 type FormFriendInfo {
 	OuID     string `form:"ouid"`
-	Nick     string `form:"nick,optional"`       //备注昵称
+	Nick     string `form:"nick,optional"` //备注昵称
 	IsNotice int32  `form:"is_notice,default=0"` //是否屏蔽
 }
+
 type GetContactsRequest {
 	CommonParams
 }
+
 type GetContactsResponse {
 	List []FriendInfo `json:"y"`
 }
@@ -388,6 +401,7 @@ type SetContactRequest {
 	FormFriendInfo
 	SetType int32 `form:"type"` //1 add 2del
 }
+
 type SetContactNoticeRequest {
 	CommonParams
 	OuID    string `form:"ouid"`
@@ -402,9 +416,11 @@ type MyGroup {
 	MapID    string `json:"map_id"`
 	IsNotice string `json:"notice"`
 }
+
 type GetMyGroupsRequest {
 	CommonParams
 }
+
 type GetMyGroupsResponse {
 	List []MyGroup `json:"#"`
 }
@@ -422,11 +438,13 @@ type FRequestInfo {
 	CTime   string `json:"ctime"`
 	Remarks string `json:"remarks"`
 }
+
 type GetFRequestsRequest {
 	CommonParams
 	Pages int32 `form:"pages,default=1"`
 	Scene int32 `form:"scene,default=0"` //0 通讯录 1 交友申请
 }
+
 type GetFRequestsResponse {
 	FRList []FRequestInfo `json:"list"`
 	Pages  int32          `json:"pages"`
@@ -442,13 +460,15 @@ type DelFRequestRequest {
 //--------黑名单-------------
 type BlackInfo {
 	UserId int64  `json:"user_id"` //用户唯一标识
-	Nick   string `json:"nick"`    //昵称
-	Avatar string `json:"avatar"`  //头像
+	Nick   string `json:"nick"` //昵称
+	Avatar string `json:"avatar"` //头像
 }
+
 type GetBlacksRequest {
 	CommonParams
 	Page int32 `form:"page,default=1"`
 }
+
 type GetBlacksResponse {
 	BList []BlackInfo `json:"list"`
 	Pages int32       `json:"pages"`
@@ -460,39 +480,152 @@ type SetBlackRequest {
 	Opt  string `form:"opt"` //add del
 }
 
-@server(
+@server (
 	middleware: UniUserAuth
-	group: contacts
-	prefix: contacts
+	group:      contacts
+	prefix:     contacts
 )
 service mimoapi {
-	@handler getContacts // TODO: replace handler name and delete this comment
+	@doc "好友列表"
+	@handler getContacts
 	post /getContacts (GetContactsRequest) returns (CommonJsonResp)
 
-	@handler setContact // TODO: replace handler name and delete this comment
+	@handler setContact
 	post /setContact (SetContactRequest) returns (CommonJsonResp)
 
-	@handler setContactNotice // TODO: replace handler name and delete this comment
+	@doc "开启关闭免打扰"
+	@handler setContactNotice
 	post /setContactNotice (SetContactNoticeRequest) returns (CommonJsonResp)
 
-	@handler setContactFan // TODO: replace handler name and delete this comment
+	@doc "添加/删除好友"
+	@handler setContactFan
 	post /setContactFan (SetContactNoticeRequest) returns (CommonJsonResp)
 
-	@handler getMyGroups // TODO: replace handler name and delete this comment
+	@doc "我的群列表"
+	@handler getMyGroups
 	post /getGroups (GetMyGroupsRequest) returns (CommonJsonResp)
 
-	@handler setGroup // TODO: replace handler name and delete this comment
+	@handler setGroup
 	post /setGroup (SetMyGroupRequest) returns (CommonJsonResp)
 
-	@handler getFRequests // TODO: replace handler name and delete this comment
+	@doc "加我好友列表"
+	@handler getFRequests
 	post /getFRequests (GetFRequestsRequest) returns (CommonJsonResp)
 
-	@handler delFRequest // TODO: replace handler name and delete this comment
+	@doc "好友申请删除"
+	@handler delFRequest
 	post /delFRequest (DelFRequestRequest) returns (CommonJsonResp)
 
-	@handler getBlacks // TODO: replace handler name and delete this comment
+	@doc "黑名单列表"
+	@handler getBlacks
 	post /getBlacks (GetBlacksRequest) returns (CommonJsonResp)
 
-	@handler setBlack // TODO: replace handler name and delete this comment
+	@doc "加入黑名单"
+	@handler setBlack
 	post /setBlack (SetBlackRequest) returns (CommonJsonResp)
 }
+
+type GetBannerRequest {
+	CommonParams
+	Scene    int32 `form:"scene"` // banner 场景
+	Page     int32 `form:"page,default=1"`
+	PageSize int32 `form:"pageSize,default=20"`
+}
+
+type BannerInfo {
+	ID           int64     `json:"id"` // 公告唯一标识
+	Title        string    `json:"title"` // 标题
+	Content      string    `json:"content"` // 内容
+	Btn          []Button  `json:"btn"` // 按钮列表
+	DailyDisplay int32     `json:"dailyDisplay"` // 展示次数 0 每次打开 > 0 每日展示次数
+	ExtInfo      []ExtInfo `json:"extInfo"` // 附加信息
+	Closable     int32     `json:"closable"` // 是否可以被用户关闭 0 不可关闭 1 可关闭
+	Template     int32     `json:"template"` // 公告模板 后续增加
+	StartTime    int64     `json:"startTime"` // 开启时间
+	EndTime      int64     `json:"endTime"` // 结束时间
+	BannerNo     string    `json:"bannerNo"` // banner唯一id
+	Lan          string    `json:"lan"`
+	Scene        int32     `json:"scene"` // 场景
+	Plat         string    `json:"plat"` // 平台
+	Version      string    `json:"version"`
+}
+
+type ExtInfo {
+	Key string `json:"key"` // 附加信息 键值对
+	Val string `json:"val"`
+}
+
+type Button {
+	Title  string `json:"title"` // btn 标题
+	Action string `json:"action"` // btn 动作
+	Type   string `json:"type"` // 按钮类型
+}
+
+type SaveBannerRequest {
+	CommonParams
+	ID      int64  `form:"id,optional"`
+	Content string `form:"content"`
+}
+
+type LanguageData {
+	Title   string    `json:"title"`
+	Content string    `json:"content"`
+	Button  []Button  `json:"buttons"`
+	ExtInfo []ExtInfo `json:"extInfos"`
+	Lan     string    `json:"lan"`
+}
+
+type BannerInfoRequest {
+	CommonParams
+	ID int64 `form:"id"`
+}
+
+type BannerDelRequest {
+	CommonParams
+	ID int64 `form:"id"`
+}
+
+type Content {
+	Buttons  []Button  `json:"buttons"`
+	ExtInfos []ExtInfo `json:"extInfos"`
+	Title    string    `json:"title"`
+	Content  string    `json:"content"`
+	Lan      string    `json:"lan"`
+}
+
+type BannerList {
+	ID           int64     `json:"id"` // 公告唯一标识
+	ContentOri   string    `json:"contentOri"` // 原始内容
+	DailyDisplay int32     `json:"dailyDisplay"` // 展示次数 0 每次打开 > 0 每日展示次数
+	Closable     int32     `json:"closable"` // 是否可以被用户关闭 0 不可关闭 1 可关闭
+	Template     int32     `json:"template"` // 公告模板 后续增加
+	StartTime    string    `json:"startTime"` // 开启时间
+	EndTime      string    `json:"endTime"` // 结束时间
+	Scene        int32     `json:"scene"` // 场景
+	Plat         string    `json:"plat"` // 平台
+	Version      string    `json:"version"`
+	Content      []Content `json:"content"` // 数据列表
+}
+
+@server (
+	middleware: UniUserAuth
+	group:      banner
+	prefix:     banner
+)
+service mimoapi {
+	@handler getBanner
+	post /list (GetBannerRequest) returns (CommonJsonResp)
+
+	@handler saveBanner
+	post /save (SaveBannerRequest) returns (CommonJsonResp)
+
+	@handler bannerInfo
+	post /info (BannerInfoRequest) returns (CommonJsonResp)
+
+	@handler bannerDel
+	post /del (BannerDelRequest) returns (CommonJsonResp)
+
+	@handler getBannerAdmin
+	post /list/admin (GetBannerRequest) returns (CommonJsonResp)
+}
+

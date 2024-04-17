@@ -28,7 +28,7 @@ type (
 		Page int64 `form:"page,default=1"` // 页码
 	}
 	ClubListResList {
-		Id          string   `json:"id"`            // 部落id，加密后的
+		Id string `json:"id"`                       // 部落id
 		Name        string   `json:"name"`          // 部落名称
 		Avatar      string   `json:"avatar"`        // 部落头像
 		Bg          string   `json:"bg"`            // 部落背景
@@ -121,38 +121,38 @@ type (
 	}
 	ClubInfoResAccessList {
 		IsMaster int64                       `json:"is_master"` // 是否群主
-		IsRole   int64                       `json:"is_role"`   // 是否管理员
-		MinSort  int64                       `json:"min_sort"`  // 最大权重值
+		IsRole int64 `json:"is_role"`                           // （已弃用）是否管理员
+		MinSort int64 `json:"min_sort"`                         // （已弃用最大权重值
 		Access   ClubInfoResAccessListAccess `json:"access"`    // 权限列表
 	}
 	ClubInfoResAccessListAccess {
-		MCommunity int64 `json:"m_community"` // 管理社区权限
-		MMain      int64 `json:"m_main"`      // 管理部落权限
-		MMembers   int64 `json:"m_members"`   // 管理成员权限
-		MMessage   int64 `json:"m_message"`   // 管理消息权限
-		PComment   int64 `json:"p_comment"`   // 评论动态权限
-		PStories   int64 `json:"p_stories"`   // 发送动态权限
-		SInvite    int64 `json:"s_invite"`    // 创建邀请（1有权限 0没有 默认值是全体成员默认权限）
+		MCommunity int64 `json:"m_community"` // 管理社区权限 0 无权限 1 有权限
+		MMain int64 `json:"m_main"`           // 管理部落权限 0 无权限 1 有权限
+		MMembers int64 `json:"m_members"`     // 管理成员权限 0 无权限 1 有权限
+		MMessage int64 `json:"m_message"`     // 管理消息权限 0 无权限 1 有权限
+		PComment int64 `json:"p_comment"`     // （已弃用）评论动态权限 0 无权限 1 有权限
+		PStories int64 `json:"p_stories"`     // 发送动态权限 0 无权限 1 有权限
+		SInvite int64 `json:"s_invite"`       // 创建邀请（ 0没有 1有 权限 默认值是全体成员默认权限）
 		SMessage   int64 `json:"s_message"`   // 发送消息权限
 		MChannel   int64 `json:"m_channel"`   // 管理房间权限
 	}
 	ClubInfoResDynamic {
 		ID           int64                 `json:"id"`
-		Type         int64                 `json:"type"`   // 0：普通用户动态，1：抖音链接，2长文
-		Title        string                `json:"title"`  // 标题
-		Imgs         string                `json:"imgs"`   // 图片
-		Desc         string                `json:"desc"`   // 内容
-		Ctime        int64                 `json:"ctime"`  // 创建时间
-		Etime        int64                 `json:"etime"`  // 最后编辑时间
-		Status       int64                 `json:"status"` // 状态 -1已删除,0编辑中，1已发布
-		Ext ClubInfoResDynamicExt `json:"ext"`             // 弃用
-		ImgType      int64                 `json:"imgType"`      // 客户端布局处理（0 多图 1横图 2竖图）
-		IsRecommend  int64                 `json:"is_recommend"` // 是否推荐 0否，1是
-		Nick         string                `json:"nick"`         // 发布者昵称
-		Avatar       string                `json:"avatar"`       // 发布者头像
-		Did int64 `json:"did"` // 动态ID
-		Duid         int64                 `json:"duid"` // 发布者id
-		HasPraised int64 `json:"has_praised"` // 是否点赞 0否 1是
+		Type int64 `json:"type"`                                  // 0：普通用户动态，1：抖音链接，2长文
+		Title string `json:"title"`                               // 标题
+		Imgs string `json:"imgs"`                                 // 图片
+		Desc string `json:"desc"`                                 // 内容
+		Ctime int64 `json:"ctime"`                                // 创建时间
+		Etime int64 `json:"etime"`                                // 最后编辑时间
+		Status int64 `json:"status"`                              // 状态 -1已删除,0编辑中，1已发布
+		Ext ClubInfoResDynamicExt `json:"ext"`                    // 弃用
+		ImgType int64 `json:"imgType"`                            // 客户端布局处理（0 多图 1横图 2竖图）
+		IsRecommend int64 `json:"is_recommend"`                   // 是否推荐 0否，1是
+		Nick string `json:"nick"`                                 // 发布者昵称
+		Avatar string `json:"avatar"`                             // 发布者头像
+		Did int64 `json:"did"`                                    // 动态ID
+		Duid int64 `json:"duid"`                                  // 发布者id
+		HasPraised int64 `json:"has_praised"`                     // 是否点赞 0否 1是
 		PraiseCount  int64                 `json:"praise_count"`  // 点赞数
 		CommentCount int64                 `json:"comment_count"` // 评论数
 		CanShare     int64                 `json:"can_share"`     // 是否可以被分享
@@ -177,7 +177,7 @@ type (
 		DappName   string `json:"dapp_name"`   // 名称
 		DappUrl    string `json:"dapp_url"`    // 应用地址
 		ID         int64  `json:"id"`          // id
-		IsOfficial int64  `json:"is_official"` // 是否官方 2否，1是 0?
+		IsOfficial int64 `json:"is_official"`  // 是否官方 2否，1是
 		TbMid      string `json:"tb_mid"`      // 部落加密id
 		UserID     int64  `json:"user_id"`     // 添加应用者
 	}
@@ -198,16 +198,16 @@ type (
 	DisturbReq {
 		CommonReq
 		TbMid   string `form:"tb_mid"`           //  部落id
-		MapIDs  string `form:"map_ids,optional"` //  环信id，如果需要设置多个，以`,`连接
-		Disturb int64  `form:"disturb"`          //  免打扰类型 1 开启 2 关闭
+		MapIDs string `form:"map_ids,optional"`  //  环信id，如果需要设置多个，以`,`连接
+		Disturb int64 `form:"disturb"`           //  免打扰类型 1 开启 2 关闭
 	}
 	DisturbResp {
 	}
-	ApplyReq    {
+	ApplyReq {
 		CommonReq
 		TbMid     string `form:"tb_mid"`              // 部落id
 		Content   string `form:"content,optional"`    // 申请理由
-		ShareCode string `form:"share_code,optional"` // 分享码
+		ShareCode string `form:"share_code,optional"` // 分享码，快速码可快速加入
 	}
 	ApplyResp {
 		IsPass bool `json:"is_pass"` // 是否通过
@@ -228,7 +228,7 @@ type (
 	}
 	QuitResp {
 	}
-	DissReq  {
+	DissReq {
 		CommonReq
 		TbMid string `form:"tb_mid"` // 部落ID
 	}
@@ -240,7 +240,6 @@ type (
 		OuID int64 `form:"ou_id"`    // 用户id
 	}
 	KickOutResp {
-
 	}
 	ShareReq {
 		CommonReq
@@ -252,7 +251,7 @@ type (
 	}
 	ShareResp {
 		Code       string `json:"code"`        // 分享码
-		ExpireTime int64  `json:"expire_time"` // 过期时间
+		ExpireTime int64 `json:"expire_time"`  // 过期时间，时间戳。0为不过期
 	}
 
 	getShareCodeInfoReq {
@@ -261,8 +260,8 @@ type (
 	}
 	getShareCodeInfoResp {
 		Code string `json:"code"`             // 分享码
-		QrCodeTyp int64 `json:"qrcode_type"`  // 0 永久码 1 永久码
-		ExpireTime int64 `json:"expire_time"` // 过期时间 0 不过期
+		QrCodeTyp int64 `json:"qrcode_type"`  // 0 永久码 1 快速码
+		ExpireTime int64 `json:"expire_time"` // 过期时间，时间戳 0 不过期
 		TbMid string `json:"tb_mid"`          // 部落ID
 	}
 	ClubModifyReq {
@@ -270,7 +269,7 @@ type (
 		ID string `form:"id"`                       // 部落ID
 		Type string `form:"type"`                   // 类型 SUP
 		Name *string `form:"name,optional"`         // 部落名称
-		Desc *string `form:"desc,optional"`         // 部落介绍
+		Desc *string `form:"desc"`                  // 部落介绍
 		Avatar *string `form:"avatar,optional"`     // 部落头像
 		Bg *string `form:"bg,optional"`             // 部落背景
 		IsVerify *int32 `form:"is_verify,optional"` // 是否需要审核1是0否
@@ -279,7 +278,7 @@ type (
 	}
 	ClubModifyResp {
 	}
-	SetNickReq     {
+	SetNickReq {
 		CommonReq
 		TbMid string `form:"tb_mid"`               // 部落ID
 		Nickname string `form:"nickname,optional"` // 部落昵称
@@ -368,7 +367,7 @@ type (
 	ZoneSortReq {
 		CommonReq
 		TbMid string `form:"tb_mid"` // 部落ID
-		Sort string `form:"sort"`    //排序，tb_zid为移动的id， tb_ozid为移动到的下一个分组id
+		Sort string `form:"sort"`    //排序，示例:[{"tb_zid":"YqyXamo=","tb_ozid":""},{"tb_zid":"YqyZamY=","tb_ozid":"YqyXams="}],tb_zid为移动的id， tb_ozid为移动到的下一个分组id,移到末尾时该值为空
 	}
 	ZoneSortResp {
 	}
@@ -387,7 +386,7 @@ type (
 	}
 	ChannelUpdateResp {
 	}
-	ChannelDeleteReq  {
+	ChannelDeleteReq {
 		CommonReq
 		TbCid string `form:"tb_cid"` // 房间ID
 		TbMid string `form:"tb_mid"` // 部落ID
@@ -399,7 +398,7 @@ type (
 
 	ChannelSortReq {
 		CommonReq
-		SortArr string `form:"sort_arr"` //排序，tb_zid为移动分组的id， tb_ozid为目标分组id，tb_cid为移动的频道id，tb_ocid为目标频道id
+		SortArr string `form:"sort_arr"` //排序，tb_zid为移动分组的id， tb_ozid为目标分组id，tb_cid为移动的频道id，tb_ocid为目标频道id 示例：[{"tb_zid":"YqyXams=","im_id":"202403-3e8bf7fe-7313-4bfc-83e2-aee5b765bf28","tb_ozid":"YqyXamo=","number":1},{"tb_zid":"YqyXams=","im_id":"202404-a82d29b0-c3e9-4189-b629-35782812791e","tb_ozid":"YqyXamo=","number":1}]
 		TbMid string `form:"tb_mid"`     // 部落id
 	}
 
@@ -435,7 +434,7 @@ type (
 		UserId   int64    `json:"user_id"`   // 用户ID
 		Nick     string   `json:"nick"`      // 用户昵称
 		Avatar   string   `json:"avatar"`    // 头像
-		Master   int64    `json:"master"`    // 是否是部落主
+		Master int64 `json:"master"`         // 是否是部落主 1是 0 否
 		Nickname string   `json:"nickname"`  // 用户在部落/群聊的昵称
 		Remarks  string   `json:"remarks"`   // 用户备注
 		RoleIds  []string `json:"role_ids"`  //角色ids
@@ -458,7 +457,7 @@ type (
 	GetUserCustomInfoResp {
 		RoleName   string `json:"role_name"`   // 角色名称
 		ColorId    string `json:"color_id"`    // 颜色ID
-		CustomName string `json:"custom_name"` // 自定义名称`
+		CustomName string `json:"custom_name"` // 部落自定义名称
 	}
 	ModifyInfoReq {
 		CommonReq
@@ -532,15 +531,15 @@ type (
 	}
 
 	AccessInfo {
-		SInvite    int64 `json:"s_invite"`    // 邀请权限（默认值是全体成员默认权限）
-		MMembers   int64 `json:"m_members"`   // 管理成员权限
-		SMessage   int64 `json:"s_message"`   // 发送消息权限
-		MMessage   int64 `json:"m_message"`   // 管理消息权限
-		PComment   int64 `json:"p_comment"`   // 评论动态权限
-		MCommunity int64 `json:"m_community"` // 管理社区权限
-		PStories   int64 `json:"p_stories"`   // 发送动态权限
-		MMain      int64 `json:"m_main"`      // 管理部落权限
-		MChannel   int64 `json:"m_channel"`   // 管理房间权限
+		SInvite int64 `json:"s_invite"`       // 邀请权限 1 有 0 无
+		MMembers int64 `json:"m_members"`     // 管理成员权限 1 有 0 无
+		SMessage int64 `json:"s_message"`     // 发送消息权限 1 有 0 无
+		MMessage int64 `json:"m_message"`     // 管理消息权限 1 有 0 无
+		PComment int64 `json:"p_comment"`     // 评论动态权限 1 有 0 无
+		MCommunity int64 `json:"m_community"` // 管理社区权限 1 有 0 无
+		PStories int64 `json:"p_stories"`     // 发送动态权限 1 有 0 无
+		MMain int64 `json:"m_main"`           // 管理部落权限 1 有 0 无
+		MChannel int64 `json:"m_channel"`     // 管理房间权限 1 有 0 无
 	}
 
 	GetRoleListReq {
@@ -566,7 +565,7 @@ type (
 	SetRoleSortReq {
 		CommonReq
 		TbMid string `form:"tb_mid"` // 部落ID
-		Sort string `form:"sort"`    // 排序
+		Sort string `form:"sort"`    // 排序,排序 身份组ID从上到下 示例:[357,356,355]
 	}
 
 	SetRoleSortResp {
@@ -578,15 +577,15 @@ type (
 		RoleId     *string `form:"role_id,optional"`     // 身份组ID
 		ColorId    *string `form:"color_id,optional"`    // 颜色ID
 		Name       *string `form:"name,optional"`        // 身份组名称
-		SInvite    *int64  `form:"s_invite,optional"`    // 邀请权限（默认值是全体成员默认权限）
-		MMembers   *int64  `form:"m_members,optional"`   // 管理成员权限
-		SMessage   *int64  `form:"s_message,optional"`   // 发送消息权限
-		MMessage   *int64  `form:"m_message,optional"`   // 管理消息权限
-		PComment   *int64  `form:"p_comment,optional"`   // 评论动态权限
-		MCommunity *int64  `form:"m_community,optional"` // 管理社区权限
-		PStories   *int64  `form:"p_stories,optional"`   // 发送动态权限
-		MMain      *int64  `form:"m_main,optional"`      // 管理部落权限
-		MChannel   *int64  `form:"m_channel,optional"`   // 管理房间
+		SInvite *int64 `form:"s_invite,optional"`        // 邀请权限 1 有 0 无
+		MMembers *int64 `form:"m_members,optional"`      // 管理成员权限 1 有 0 无
+		SMessage *int64 `form:"s_message,optional"`      // 发送消息权限 1 有 0 无
+		MMessage *int64 `form:"m_message,optional"`      // 管理消息权限 1 有 0 无
+		PComment *int64 `form:"p_comment,optional"`      // 评论动态权限 1 有 0 无
+		MCommunity *int64 `form:"m_community,optional"`  // 管理社区权限 1 有 0 无
+		PStories *int64 `form:"p_stories,optional"`      // 发送动态权限 1 有 0 无
+		MMain *int64 `form:"m_main,optional"`            // 管理部落权限 1 有 0 无
+		MChannel *int64 `form:"m_channel,optional"`      // 管理房间权限 1 有 0 无
 	}
 	SaveRoleInfoResp {
 		RoleId string `json:"role_id"` // 角色ID
@@ -754,15 +753,15 @@ type (
 	}
 	MsgRecallInfo {
 		Id         string `json:"id"`
-		UserId string `json:"user_id"` // 用户ID
-		Nick string `json:"nick"`      // 用户昵称
+		UserId string `json:"user_id"`         // 用户ID
+		Nick string `json:"nick"`              // 用户昵称
 		Status     string `json:"status"`
-		Age        string `json:"age"` // 目前弃用
-		Avatar     string `json:"avatar"` // 头像
+		Age string `json:"age"`                // 目前弃用
+		Avatar string `json:"avatar"`          // 头像
 		ActiveTime string `json:"active_time"` // 最后活跃
-		Sex        string `json:"sex"` // 目前弃用
-		Level      string `json:"level"` // 目前弃用
-		Desc       string `json:"desc"` // 简介
+		Sex string `json:"sex"`                // 目前弃用
+		Level string `json:"level"`            // 目前弃用
+		Desc string `json:"desc"`              // 简介
 	}
 	MsgRecallResp {
 		User  MsgRecallInfo `json:"user"`   // 操作人信息
@@ -835,7 +834,7 @@ service club {
 	@handler shareCode
 	post /share (ShareReq) returns (ShareResp)
 
-	@doc "获取分享码状态"
+	@doc "获取分享码信息"
 	@handler getShareCodeInfo
 	post /getShareCodeInfo (getShareCodeInfoReq) returns (getShareCodeInfoResp)
 

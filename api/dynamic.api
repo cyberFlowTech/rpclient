@@ -98,7 +98,7 @@ type ClubDynamicListReq {
 	CommonReq
 	Page        int64  `form:"page,range=(0:100]"` //页码
 	TbMid       string `form:"tb_mid"`             // 部落加密后的ID
-	IsRecommend int64  `form:"is_recommend,optional,range=[-1:1]"`
+	IsRecommend int64  `form:"is_recommend,optional,range=[-1:1]"` // 弃用
 	SortType    int64  `form:"type,optional,range=[0:1]"` // 排序类型 0按时间排序 1按热度排序,新版本只有时间排序
 }
 
@@ -284,10 +284,10 @@ type CommentInfo {
 	CommentType   int64         `json:"type"`           // 评论类型 1 评论 2 回复
 	Nick          string        `json:"nick"`           // 昵称
 	Avatar        string        `json:"avatar"`         // 头像
-	Level         string        `json:"level"`          // 0普通等级，100名人,功能废弃⚠️
+	Level         string        `json:"level"`          // (已废弃)0普通等级，100名人
 	Onick         string        `json:"onick"`          // 被回复的用户昵称
 	Praises       int64         `json:"praises"`        // 点赞数
-	HasPraised    int64         `json:"has_praised"`    // 是否已经点赞
+	HasPraised    int64         `json:"has_praised"`    // 是否已经点赞 0 未点赞 1 已点赞
 	ChildComments ChildComments `json:"child_comments"` // 子评论列表
 }
 
@@ -298,7 +298,7 @@ type ChildComments {
 
 type CommentListResp {
 	Comments    []CommentInfo `json:"comments"` // 评论列表
-	Pages       int64         `json:"pages"`
+	Pages       int64         `json:"pages"` // 总页数
 	CurrentPage int64         `json:"current_page"` // 当前页
 	Count       int64         `json:"count"`        // 评论总数
 	ServerTime  int64         `json:"server_time"`  // 服务器时间
@@ -308,11 +308,11 @@ type MsgListReq {
 	Page int64 `form:"page,range=(0:100]"` // 页码 1 - 100
 }
 
-type ShareCodeReq {
-	CommonReq
-	Did  int64 `form:"did,range=(0:]"`  // 动态ID 1 - ♾️
-	Duid int64 `form:"duid,range=(0:]"` // 动态发布者UID 1 - ♾️
-}
+//type ShareCodeReq {
+//	CommonReq
+//	Did  int64 `form:"did,range=(0:]"`  // 动态ID 1 - ♾️
+//	Duid int64 `form:"duid,range=(0:]"` // 动态发布者UID 1 - ♾️
+//}
 
 type DataResp {
 	Discover []string `json:"discover"`
