@@ -43,8 +43,8 @@ for file in *.json; do
           echo "$file 导入成功"
         else
           Fail=$((Fail + 1))
+          FailFiles+=",${file}"
           echo "$file 导入失败"
-          FailFiles= += ",${file}"
           echo $(cat res.log)
         fi
         rm res.log
