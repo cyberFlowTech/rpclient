@@ -36,7 +36,7 @@ type (
 	}
 	CallbackReq {
 		CallId          string           `json:"callId"`
-		EventType       string           `json:"eventType,optional,default="""`
+		EventType       string           `json:"eventType,optional,default="`
 		Timestamp       uint64           `json:"timestamp"`
 		ChatType        string           `json:"chat_type"`
 		GroupId         string           `json:"group_id,optional"`
@@ -84,8 +84,8 @@ type (
 	}
 	GetGroupInfoReq {
 		CommonReq
-		GroupUniqid    string `form:"group_uniqid,optional,default="""`
-		MapId          string `form:"map_id,optional,default="""`
+		GroupUniqid    string `form:"group_uniqid,optional,default="`
+		MapId          string `form:"map_id,optional,default="`
 		GetMembers     int32  `form:"get_members,optional,default=1"`
 		GetUserSetting int32  `form:"get_user_setting,optional,default=1"`
 	}
@@ -165,15 +165,15 @@ type (
 	}
 	SetGroupManageReq {
 		CommonReq
-		MapId       string `form:"map_id,optional,default="""`
+		MapId       string `form:"map_id,optional,default="`
 		Type        int    `form:"type,range=[1:2]"`                 // 1添加， 2删除
-		GroupUniqid string `form:"group_uniqid,optional,default="""` // 兼容uniapp
+		GroupUniqid string `form:"group_uniqid,optional,default="` // 兼容uniapp
 		ManageId    int64  `form:"manage_id"`                        // 管理员id
 	}
 	InGroupReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 		Ouid        int64  `form:"ouid,optional,default=0"`
 	}
 	InGroupRes {
@@ -182,54 +182,54 @@ type (
 	}
 	OutGroupReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 	}
 	MoveGroupReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 		Ouid        string `form:"ouid"`
 	}
 	// 设置名称，介绍
 	SetGroupInfoReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 		Type        int    `form:"type,optional"`
-		Name        string `form:"name,optional,default="""`
-		Desc        string `form:"desc,optional,default="""`
+		Name        string `form:"name,optional,default="`
+		Desc        string `form:"desc,optional,default="`
 	}
 	BanGroupReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 		Type        int    `form:"type,range=[1:2]"` // 1开启2关闭
 	}
 	// 群消息清理
 	SetGroupCleanReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 		Type        int    `form:"type,range=[1:2]"`  // 1开启2关闭
 		MinTime     int64  `form:"min_time,optional"` // 自动清理聊天记录的时间，分钟为单位
 	}
 	SetGroupNoticeReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
-		Content     string `form:"content,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
+		Content     string `form:"content,optional,default="`
 	}
 	SetGroupOwnerReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 		Ouid        int64  `form:"ouid"`
 	}
 	GetGroupSettingsReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 	}
 	GetGroupSettingsRes {
 		Setting []*GroupSettingInfo `json:"setting"`
@@ -244,22 +244,22 @@ type (
 	}
 	GetGroupMembersReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 	}
 	GetGroupMembersRes {
 		List map[string][]*GroupInfoMembers `json:"data"`
 	}
 	SetBookReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 		Type        int    `form:"type,range=[1:2]"` // 1添加2删除
 	}
 	SetNoticeReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 		Type        int    `form:"type,range=[1:2]"` // 1开启2关闭
 	}
 	GetNoticeReq {
@@ -271,24 +271,24 @@ type (
 	}
 	SetUserNickReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
-		Gnick       string `form:"gnick,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
+		Gnick       string `form:"gnick,optional,default="`
 	}
 	SaveGroupDappReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 		DappId      int64  `form:"dapp_id,optional,default=0"`
-		Icon        string `form:"icon,optional,default="""`
-		Name        string `form:"name,optional,default="""`
-		Desc        string `form:"desc,optional,default="""`
-		Url         string `form:"url,optional,default="""`
+		Icon        string `form:"icon,optional,default="`
+		Name        string `form:"name,optional,default="`
+		Desc        string `form:"desc,optional,default="`
+		Url         string `form:"url,optional,default="`
 	}
 	GetGroupDappListReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 		Page        int64  `form:"page,optional,default=1"`
 	}
 	DappListItem {
@@ -305,8 +305,8 @@ type (
 	}
 	DelGroupDappReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional,default="""`
-		MapId       string `form:"map_id,optional,default="""`
+		GroupUniqid string `form:"group_uniqid,optional,default="`
+		MapId       string `form:"map_id,optional,default="`
 		DappId      int64  `form:"id,optional,default=0"`
 	}
 	GetUserOldGroupRes {
@@ -322,7 +322,7 @@ type (
 		Width  string `form:"width"`
 		Height string `form:"height"`
 		Size   string `form:"size"`
-		Cover  string `form:"cover,optional,default="""` // 展示图，一般是gif的首帧
+		Cover  string `form:"cover,optional,default="` // 展示图，一般是gif的首帧
 	}
 	UploadEmojiRes {
 		EmojiId int64 `json:"emoji_id"`
@@ -330,13 +330,13 @@ type (
 	CollectEmojiReq {
 		CommonReq
 		EmojiId int64  `form:"emoji_id,optional,default=0"`
-		TbMid   string `form:"tb_mid,optional,default="""`
-		Url     string `form:"url,optional,default="""`
+		TbMid   string `form:"tb_mid,optional,default="`
+		Url     string `form:"url,optional,default="`
 	}
 	DelEmojiReq {
 		CommonReq
 		EmojiId string `form:"emoji_id"` // 多个使用,隔开
-		TbMid   string `form:"tb_mid,optional,default="""`
+		TbMid   string `form:"tb_mid,optional,default="`
 	}
 	SortEmojiReq {
 		CommonReq
@@ -345,7 +345,7 @@ type (
 	}
 	GetEmojiListReq {
 		CommonReq
-		TbMid string `form:"tb_mid,optional,default="""` // 部落加密id，空和不传代表查询用户的
+		TbMid string `form:"tb_mid,optional,default="` // 部落加密id，空和不传代表查询用户的
 		Page  int64  `form:"page,optional,range=[1:20]"`
 	}
 	GetEmojiListRes {
@@ -499,7 +499,7 @@ service imservice {
 	//jwt: Auth                 //开启jwt鉴权
 	middleware: AgoraBeforeHandle    //路由中间件声明
 	group: imservice                   //接口所属组
-	prefix : imservice/v1              //路由公共前缀
+	prefix: imservice/v1              //路由公共前缀
 )
 service imservice {
 	@doc "声网回调"

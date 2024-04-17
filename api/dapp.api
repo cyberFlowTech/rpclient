@@ -50,14 +50,14 @@ type (
 		ID                   int64  `form:"id,optional"`                                                                  // dappid 更新时需要
 		DappLogo             string `form:"dapp_logo,default=https://assets.mimo.immo/images/dapp/dapp-default-icon.png"` // logo
 		DappName             string `form:"dapp_name"`                                                                    // name
-		DappSite             string `form:"dapp_site,optional,default="""`                                                // site
+		DappSite             string `form:"dapp_site,optional,default="`                                                // site
 		DappUrl              string `form:"dapp_url"`                                                                     // 页面
-		DappBigPicture       string `form:"dapp_big_picture,optional,default="""`                                         // 缩略图
+		DappBigPicture       string `form:"dapp_big_picture,optional,default="`                                         // 缩略图
 		DappRank             int64  `form:"dapp_rank,optional,default=0"`                                                 // 排序
-		DappDesc             string `form:"dapp_desc,optional,default="""`                                                // 描述
+		DappDesc             string `form:"dapp_desc,optional,default="`                                                // 描述
 		IsSearchRecommend    int64  `form:"is_search_recommend,optional,default=0"`                                       // 是否推荐
 		IsDiscoveryRecommend int64  `form:"is_discovery_recommend,optional,default=0"`                                    // 是否发现页推荐
-		RelationId           string `form:"relation_id,optional,default="""`                                              //  关联id
+		RelationId           string `form:"relation_id,optional,default="`                                              //  关联id
 	}
 	SaveResp {
 		ID         int64  `json:"id"`
