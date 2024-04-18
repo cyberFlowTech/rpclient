@@ -790,11 +790,11 @@ type (
 	GetInfoByShareCodeResp {
 		Id     string `json:"id"`      // 分享者ID
 		UserId int64  `json:"user_id"` // 分享者ID
-		Nick   int64  `json:"num"`     // 部落名称
+		Nick   string `json:"nick"`    // 部落名称
 		Avatar string `json:"avatar"`  // 部落头像
 		Desc   string `json:"desc"`    // 部落描述
-		IsDel  string `json:"is_del"`  //弃用
-		Num    string `json:"num"`     //部落人数
+		IsDel  int64  `json:"is_del"`  //弃用
+		Num    int64  `json:"num"`     //部落人数
 	}
 )
 
