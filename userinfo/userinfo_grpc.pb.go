@@ -102,7 +102,7 @@ type UserClient interface {
 	// 搜索用户
 	Search(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*SearchResp, error)
 	// 通过分享码获取用户信息
-	GetInfoByShareCode(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*GetInfoByShareCodeResp, error)
+	GetInfoByShareCode(ctx context.Context, in *GetInfoByShareCodeReq, opts ...grpc.CallOption) (*GetInfoByShareCodeResp, error)
 }
 
 type userClient struct {
@@ -347,7 +347,7 @@ func (c *userClient) Search(ctx context.Context, in *SearchReq, opts ...grpc.Cal
 	return out, nil
 }
 
-func (c *userClient) GetInfoByShareCode(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*GetInfoByShareCodeResp, error) {
+func (c *userClient) GetInfoByShareCode(ctx context.Context, in *GetInfoByShareCodeReq, opts ...grpc.CallOption) (*GetInfoByShareCodeResp, error) {
 	out := new(GetInfoByShareCodeResp)
 	err := c.cc.Invoke(ctx, User_GetInfoByShareCode_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -410,7 +410,7 @@ type UserServer interface {
 	// 搜索用户
 	Search(context.Context, *SearchReq) (*SearchResp, error)
 	// 通过分享码获取用户信息
-	GetInfoByShareCode(context.Context, *SearchReq) (*GetInfoByShareCodeResp, error)
+	GetInfoByShareCode(context.Context, *GetInfoByShareCodeReq) (*GetInfoByShareCodeResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -496,7 +496,7 @@ func (UnimplementedUserServer) BannerDel(context.Context, *BannerDelReq) (*Banne
 func (UnimplementedUserServer) Search(context.Context, *SearchReq) (*SearchResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
 }
-func (UnimplementedUserServer) GetInfoByShareCode(context.Context, *SearchReq) (*GetInfoByShareCodeResp, error) {
+func (UnimplementedUserServer) GetInfoByShareCode(context.Context, *GetInfoByShareCodeReq) (*GetInfoByShareCodeResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetInfoByShareCode not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
@@ -981,7 +981,7 @@ func _User_Search_Handler(srv interface{}, ctx context.Context, dec func(interfa
 }
 
 func _User_GetInfoByShareCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SearchReq)
+	in := new(GetInfoByShareCodeReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -993,7 +993,7 @@ func _User_GetInfoByShareCode_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: User_GetInfoByShareCode_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetInfoByShareCode(ctx, req.(*SearchReq))
+		return srv.(UserServer).GetInfoByShareCode(ctx, req.(*GetInfoByShareCodeReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
