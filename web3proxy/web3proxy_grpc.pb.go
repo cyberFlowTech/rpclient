@@ -37,6 +37,7 @@ const (
 	WebTProxy_SymbolList_FullMethodName        = "/webTProxy.webTProxy/symbolList"
 	WebTProxy_TransLog_FullMethodName          = "/webTProxy.webTProxy/transLog"
 	WebTProxy_TransactionDetail_FullMethodName = "/webTProxy.webTProxy/transactionDetail"
+	WebTProxy_SendTransaction_FullMethodName   = "/webTProxy.webTProxy/sendTransaction"
 )
 
 // WebTProxyClient is the client API for WebTProxy service.
@@ -61,6 +62,7 @@ type WebTProxyClient interface {
 	SymbolList(ctx context.Context, in *SymbolListReq, opts ...grpc.CallOption) (*SymbolListResp, error)
 	TransLog(ctx context.Context, in *GetTransactionListReq, opts ...grpc.CallOption) (*GetTransactionListResp, error)
 	TransactionDetail(ctx context.Context, in *GetTransactionDetailReq, opts ...grpc.CallOption) (*GetTransactionDetailResp, error)
+	SendTransaction(ctx context.Context, in *SendTransactionReq, opts ...grpc.CallOption) (*SendTransactionResp, error)
 }
 
 type webTProxyClient struct {
@@ -233,6 +235,15 @@ func (c *webTProxyClient) TransactionDetail(ctx context.Context, in *GetTransact
 	return out, nil
 }
 
+func (c *webTProxyClient) SendTransaction(ctx context.Context, in *SendTransactionReq, opts ...grpc.CallOption) (*SendTransactionResp, error) {
+	out := new(SendTransactionResp)
+	err := c.cc.Invoke(ctx, WebTProxy_SendTransaction_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // WebTProxyServer is the server API for WebTProxy service.
 // All implementations must embed UnimplementedWebTProxyServer
 // for forward compatibility
@@ -255,6 +266,7 @@ type WebTProxyServer interface {
 	SymbolList(context.Context, *SymbolListReq) (*SymbolListResp, error)
 	TransLog(context.Context, *GetTransactionListReq) (*GetTransactionListResp, error)
 	TransactionDetail(context.Context, *GetTransactionDetailReq) (*GetTransactionDetailResp, error)
+	SendTransaction(context.Context, *SendTransactionReq) (*SendTransactionResp, error)
 	mustEmbedUnimplementedWebTProxyServer()
 }
 
@@ -315,6 +327,9 @@ func (UnimplementedWebTProxyServer) TransLog(context.Context, *GetTransactionLis
 }
 func (UnimplementedWebTProxyServer) TransactionDetail(context.Context, *GetTransactionDetailReq) (*GetTransactionDetailResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TransactionDetail not implemented")
+}
+func (UnimplementedWebTProxyServer) SendTransaction(context.Context, *SendTransactionReq) (*SendTransactionResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendTransaction not implemented")
 }
 func (UnimplementedWebTProxyServer) mustEmbedUnimplementedWebTProxyServer() {}
 
@@ -653,6 +668,24 @@ func _WebTProxy_TransactionDetail_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _WebTProxy_SendTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendTransactionReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WebTProxyServer).SendTransaction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: WebTProxy_SendTransaction_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WebTProxyServer).SendTransaction(ctx, req.(*SendTransactionReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // WebTProxy_ServiceDesc is the grpc.ServiceDesc for WebTProxy service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -731,6 +764,10 @@ var WebTProxy_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "transactionDetail",
 			Handler:    _WebTProxy_TransactionDetail_Handler,
+		},
+		{
+			MethodName: "sendTransaction",
+			Handler:    _WebTProxy_SendTransaction_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
