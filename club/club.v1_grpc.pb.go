@@ -71,7 +71,8 @@ const (
 	ClubServer_GetShareCodeInfo_FullMethodName         = "/club.ClubServer/GetShareCodeInfo"
 	ClubServer_ClubSearch_FullMethodName               = "/club.ClubServer/ClubSearch"
 	ClubServer_StatLog_FullMethodName                  = "/club.ClubServer/StatLog"
-	ClubServer_HasAuth_FullMethodName                  = "/club.ClubServer/hasAuth"
+	ClubServer_HasAuth_FullMethodName                  = "/club.ClubServer/HasAuth"
+	ClubServer_GetInfoByShareCode_FullMethodName       = "/club.ClubServer/GetInfoByShareCode"
 )
 
 // ClubServerClient is the client API for ClubServer service.
@@ -187,6 +188,8 @@ type ClubServerClient interface {
 	StatLog(ctx context.Context, in *StatLogReq, opts ...grpc.CallOption) (*StatLogResp, error)
 	// 判断是否具备权限能力
 	HasAuth(ctx context.Context, in *HasAuthReq, opts ...grpc.CallOption) (*HasAuthResp, error)
+	// 根据分享码获取部落信息
+	GetInfoByShareCode(ctx context.Context, in *GetInfoByShareCodeReq, opts ...grpc.CallOption) (*GetInfoByShareCodeResp, error)
 }
 
 type clubServerClient struct {
@@ -674,6 +677,15 @@ func (c *clubServerClient) HasAuth(ctx context.Context, in *HasAuthReq, opts ...
 	return out, nil
 }
 
+func (c *clubServerClient) GetInfoByShareCode(ctx context.Context, in *GetInfoByShareCodeReq, opts ...grpc.CallOption) (*GetInfoByShareCodeResp, error) {
+	out := new(GetInfoByShareCodeResp)
+	err := c.cc.Invoke(ctx, ClubServer_GetInfoByShareCode_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClubServerServer is the server API for ClubServer service.
 // All implementations must embed UnimplementedClubServerServer
 // for forward compatibility
@@ -787,6 +799,8 @@ type ClubServerServer interface {
 	StatLog(context.Context, *StatLogReq) (*StatLogResp, error)
 	// 判断是否具备权限能力
 	HasAuth(context.Context, *HasAuthReq) (*HasAuthResp, error)
+	// 根据分享码获取部落信息
+	GetInfoByShareCode(context.Context, *GetInfoByShareCodeReq) (*GetInfoByShareCodeResp, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -952,6 +966,9 @@ func (UnimplementedClubServerServer) StatLog(context.Context, *StatLogReq) (*Sta
 }
 func (UnimplementedClubServerServer) HasAuth(context.Context, *HasAuthReq) (*HasAuthResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method HasAuth not implemented")
+}
+func (UnimplementedClubServerServer) GetInfoByShareCode(context.Context, *GetInfoByShareCodeReq) (*GetInfoByShareCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetInfoByShareCode not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
 
@@ -1920,6 +1937,24 @@ func _ClubServer_HasAuth_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClubServer_GetInfoByShareCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetInfoByShareCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetInfoByShareCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetInfoByShareCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetInfoByShareCode(ctx, req.(*GetInfoByShareCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClubServer_ServiceDesc is the grpc.ServiceDesc for ClubServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2136,8 +2171,12 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ClubServer_StatLog_Handler,
 		},
 		{
-			MethodName: "hasAuth",
+			MethodName: "HasAuth",
 			Handler:    _ClubServer_HasAuth_Handler,
+		},
+		{
+			MethodName: "GetInfoByShareCode",
+			Handler:    _ClubServer_GetInfoByShareCode_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
