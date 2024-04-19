@@ -46,6 +46,8 @@ const (
 	User_BannerDel_FullMethodName                = "/userinfo.User/BannerDel"
 	User_Search_FullMethodName                   = "/userinfo.User/Search"
 	User_GetInfoByShareCode_FullMethodName       = "/userinfo.User/GetInfoByShareCode"
+	User_GenerateWallet_FullMethodName           = "/userinfo.User/GenerateWallet"
+	User_UnbindWallet_FullMethodName             = "/userinfo.User/UnbindWallet"
 )
 
 // UserClient is the client API for User service.
@@ -103,6 +105,10 @@ type UserClient interface {
 	Search(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*SearchResp, error)
 	// 通过分享码获取用户信息
 	GetInfoByShareCode(ctx context.Context, in *GetInfoByShareCodeReq, opts ...grpc.CallOption) (*GetInfoByShareCodeResp, error)
+	// 创建/绑定钱包
+	GenerateWallet(ctx context.Context, in *GenerateWalletReq, opts ...grpc.CallOption) (*GenerateWalletResp, error)
+	// 解绑钱包
+	UnbindWallet(ctx context.Context, in *UnbindWalletReq, opts ...grpc.CallOption) (*UnbindWalletResp, error)
 }
 
 type userClient struct {
@@ -356,6 +362,24 @@ func (c *userClient) GetInfoByShareCode(ctx context.Context, in *GetInfoByShareC
 	return out, nil
 }
 
+func (c *userClient) GenerateWallet(ctx context.Context, in *GenerateWalletReq, opts ...grpc.CallOption) (*GenerateWalletResp, error) {
+	out := new(GenerateWalletResp)
+	err := c.cc.Invoke(ctx, User_GenerateWallet_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UnbindWallet(ctx context.Context, in *UnbindWalletReq, opts ...grpc.CallOption) (*UnbindWalletResp, error) {
+	out := new(UnbindWalletResp)
+	err := c.cc.Invoke(ctx, User_UnbindWallet_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -411,6 +435,10 @@ type UserServer interface {
 	Search(context.Context, *SearchReq) (*SearchResp, error)
 	// 通过分享码获取用户信息
 	GetInfoByShareCode(context.Context, *GetInfoByShareCodeReq) (*GetInfoByShareCodeResp, error)
+	// 创建/绑定钱包
+	GenerateWallet(context.Context, *GenerateWalletReq) (*GenerateWalletResp, error)
+	// 解绑钱包
+	UnbindWallet(context.Context, *UnbindWalletReq) (*UnbindWalletResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -498,6 +526,12 @@ func (UnimplementedUserServer) Search(context.Context, *SearchReq) (*SearchResp,
 }
 func (UnimplementedUserServer) GetInfoByShareCode(context.Context, *GetInfoByShareCodeReq) (*GetInfoByShareCodeResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetInfoByShareCode not implemented")
+}
+func (UnimplementedUserServer) GenerateWallet(context.Context, *GenerateWalletReq) (*GenerateWalletResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateWallet not implemented")
+}
+func (UnimplementedUserServer) UnbindWallet(context.Context, *UnbindWalletReq) (*UnbindWalletResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnbindWallet not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -998,6 +1032,42 @@ func _User_GetInfoByShareCode_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_GenerateWallet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateWalletReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GenerateWallet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_GenerateWallet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GenerateWallet(ctx, req.(*GenerateWalletReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UnbindWallet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnbindWalletReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UnbindWallet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UnbindWallet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UnbindWallet(ctx, req.(*UnbindWalletReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1112,6 +1182,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetInfoByShareCode",
 			Handler:    _User_GetInfoByShareCode_Handler,
+		},
+		{
+			MethodName: "GenerateWallet",
+			Handler:    _User_GenerateWallet_Handler,
+		},
+		{
+			MethodName: "UnbindWallet",
+			Handler:    _User_UnbindWallet_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
