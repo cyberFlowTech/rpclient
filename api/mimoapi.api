@@ -326,8 +326,7 @@ type SearchResp {
 }
 
 type GetInfoByShareCodeReq {
-	CommonParams
-	Keywords string `form:"keywords"`
+	Code string `form:"code"`
 }
 
 type ShareCodeUInfo {
@@ -342,6 +341,32 @@ type ShareCodeUInfo {
 type GetInfoByShareCodeResp {
 	UInfo ShareCodeUInfo `json:"info"`
 }
+
+type GenerateWalletReq {
+	CommonParams
+	MneAddress string       `form:"mne_address"` // 钱包地址 0x6a75b116797cbadc47b8e5a918a87d5e7bebbfbb
+	MneSign    string       `form:"mne_sign"`    // （弃用）明文签名信息 548235|0x6a75b116797cbadc47b8e5a918a87d5e7bebbfbb|1679469260997
+	MneMsg     string       `form:"mne_msg"`     // （弃用）消息明文（钱包地址|时间戳） 0xca1f68142af0d417a8cdfa17b662c25fdbd5cffd1a7028184fd09d06b8e89dd36abdfe7d475872587ac922ebd07a4fca54887c12e19f2ef5258ecd32917644bb1c
+	Anew       string       `form:"anew"`        // （弃用）重新创建钱包 0否 1是
+	Pri        string       `form:"pri"`         // （弃用）加密后的私钥
+	Pin        string       `form:"pin"`         // （弃用）加密后的pin
+	OldPin     string       `form:"old_pin"`     // （弃用）原始pin md5
+	Code       string       `form:"code"`        // （弃用）验证码
+	Extend     []ExtendInfo `form:"extend"`      // 多链钱包信息 json字符串 [{"chain":2000000,"wallet":"xxxxxx"},{"chain":3000000,"wallet":"aaaaa"}]
+}
+
+type ExtendInfo {
+	Wallet string `json:"wallet"` // 钱包
+	Chain  string `json:"chain"`  // 链
+}
+
+type GenerateWalletResp {}
+
+type UnbindWalletReq {
+	CommonParams
+}
+
+type UnbindWalletResp {}
 
 @server (
 	middleware: UniUserAuth
@@ -420,6 +445,14 @@ service mimoapi {
 	@doc "用户搜索"
 	@handler Search
 	post /search (SearchReq) returns (SearchResp)
+
+	@doc "创建钱包"
+	@handler GenerateWallet
+	post /generateWallet (GenerateWalletReq) returns (GenerateWalletResp)
+
+	@doc "解绑钱包"
+	@handler UnbindWallet
+	post /unbindWallet (UnbindWalletReq) returns (UnbindWalletResp)
 }
 
 //--------通讯录--------
