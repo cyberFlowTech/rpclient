@@ -38,6 +38,7 @@ const (
 	ImServer_GetNotification_FullMethodName             = "/im.ImServer/GetNotification"
 	ImServer_AddUserOldGroup_FullMethodName             = "/im.ImServer/AddUserOldGroup"
 	ImServer_GetUserChannelNotice_FullMethodName        = "/im.ImServer/GetUserChannelNotice"
+	ImServer_SetUserGroupNick_FullMethodName            = "/im.ImServer/SetUserGroupNick"
 	ImServer_SetNotificationDisturbing_FullMethodName   = "/im.ImServer/SetNotificationDisturbing"
 	ImServer_SetNotificationDisplayStyle_FullMethodName = "/im.ImServer/SetNotificationDisplayStyle"
 	ImServer_UploadEmoji_FullMethodName                 = "/im.ImServer/UploadEmoji"
@@ -48,6 +49,16 @@ const (
 	ImServer_MsgRecall_FullMethodName                   = "/im.ImServer/MsgRecall"
 	ImServer_UserDisconnect_FullMethodName              = "/im.ImServer/UserDisconnect"
 	ImServer_UserImToken_FullMethodName                 = "/im.ImServer/UserImToken"
+	ImServer_VoiceCalling_FullMethodName                = "/im.ImServer/VoiceCalling"
+	ImServer_VoiceCallCancelInvite_FullMethodName       = "/im.ImServer/VoiceCallCancelInvite"
+	ImServer_VoiceCallReject_FullMethodName             = "/im.ImServer/VoiceCallReject"
+	ImServer_VoiceCallAccept_FullMethodName             = "/im.ImServer/VoiceCallAccept"
+	ImServer_VoiceCallLeave_FullMethodName              = "/im.ImServer/VoiceCallLeave"
+	ImServer_VoiceCallInfo_FullMethodName               = "/im.ImServer/VoiceCallInfo"
+	ImServer_AgoraCallback_FullMethodName               = "/im.ImServer/AgoraCallback"
+	ImServer_VoiceTask_FullMethodName                   = "/im.ImServer/VoiceTask"
+	ImServer_SetFriend_FullMethodName                   = "/im.ImServer/SetFriend"
+	ImServer_SetFriendRemark_FullMethodName             = "/im.ImServer/SetFriendRemark"
 )
 
 // ImServerClient is the client API for ImServer service.
@@ -73,6 +84,7 @@ type ImServerClient interface {
 	GetNotification(ctx context.Context, in *GetNotificationReq, opts ...grpc.CallOption) (*GetNotificationRes, error)
 	AddUserOldGroup(ctx context.Context, in *AddUserOldGroupReq, opts ...grpc.CallOption) (*CommonRes, error)
 	GetUserChannelNotice(ctx context.Context, in *GetUserChannelNoticeReq, opts ...grpc.CallOption) (*GetUserChannelNoticeRes, error)
+	SetUserGroupNick(ctx context.Context, in *SetUserGroupNickReq, opts ...grpc.CallOption) (*CommonRes, error)
 	// 设置离线消息推送免打扰
 	SetNotificationDisturbing(ctx context.Context, in *SetNotificationDisturbingReq, opts ...grpc.CallOption) (*SetNotificationDisturbingRes, error)
 	// 设置离线消息推送展示样式
@@ -85,6 +97,23 @@ type ImServerClient interface {
 	MsgRecall(ctx context.Context, in *MsgRecallReq, opts ...grpc.CallOption) (*EmptyData, error)
 	UserDisconnect(ctx context.Context, in *UserDisconnectReq, opts ...grpc.CallOption) (*CommonRes, error)
 	UserImToken(ctx context.Context, in *UserImTokenReq, opts ...grpc.CallOption) (*UserImTokenRes, error)
+	// 拨打语音
+	VoiceCalling(ctx context.Context, in *VoiceCallingReq, opts ...grpc.CallOption) (*VoiceCallingRes, error)
+	// 主叫取消
+	VoiceCallCancelInvite(ctx context.Context, in *VoiceCallCancelInviteReq, opts ...grpc.CallOption) (*CommonRes, error)
+	// 拒接
+	VoiceCallReject(ctx context.Context, in *VoiceCallRejectReq, opts ...grpc.CallOption) (*CommonRes, error)
+	// 接听
+	VoiceCallAccept(ctx context.Context, in *VoiceCallAcceptReq, opts ...grpc.CallOption) (*VoiceCallAcceptRes, error)
+	// 离开
+	VoiceCallLeave(ctx context.Context, in *VoiceCallLeaveReq, opts ...grpc.CallOption) (*CommonRes, error)
+	// 房间信息
+	VoiceCallInfo(ctx context.Context, in *VoiceCallInfoReq, opts ...grpc.CallOption) (*VoiceCallInfoRes, error)
+	// 回调
+	AgoraCallback(ctx context.Context, in *AgoraCallbackReq, opts ...grpc.CallOption) (*EmptyData, error)
+	VoiceTask(ctx context.Context, in *EmptyData, opts ...grpc.CallOption) (*EmptyData, error)
+	SetFriend(ctx context.Context, in *SetFriendReq, opts ...grpc.CallOption) (*CommonRes, error)
+	SetFriendRemark(ctx context.Context, in *SetFriendRemarkReq, opts ...grpc.CallOption) (*CommonRes, error)
 }
 
 type imServerClient struct {
@@ -266,6 +295,15 @@ func (c *imServerClient) GetUserChannelNotice(ctx context.Context, in *GetUserCh
 	return out, nil
 }
 
+func (c *imServerClient) SetUserGroupNick(ctx context.Context, in *SetUserGroupNickReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_SetUserGroupNick_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *imServerClient) SetNotificationDisturbing(ctx context.Context, in *SetNotificationDisturbingReq, opts ...grpc.CallOption) (*SetNotificationDisturbingRes, error) {
 	out := new(SetNotificationDisturbingRes)
 	err := c.cc.Invoke(ctx, ImServer_SetNotificationDisturbing_FullMethodName, in, out, opts...)
@@ -356,6 +394,96 @@ func (c *imServerClient) UserImToken(ctx context.Context, in *UserImTokenReq, op
 	return out, nil
 }
 
+func (c *imServerClient) VoiceCalling(ctx context.Context, in *VoiceCallingReq, opts ...grpc.CallOption) (*VoiceCallingRes, error) {
+	out := new(VoiceCallingRes)
+	err := c.cc.Invoke(ctx, ImServer_VoiceCalling_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) VoiceCallCancelInvite(ctx context.Context, in *VoiceCallCancelInviteReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_VoiceCallCancelInvite_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) VoiceCallReject(ctx context.Context, in *VoiceCallRejectReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_VoiceCallReject_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) VoiceCallAccept(ctx context.Context, in *VoiceCallAcceptReq, opts ...grpc.CallOption) (*VoiceCallAcceptRes, error) {
+	out := new(VoiceCallAcceptRes)
+	err := c.cc.Invoke(ctx, ImServer_VoiceCallAccept_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) VoiceCallLeave(ctx context.Context, in *VoiceCallLeaveReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_VoiceCallLeave_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) VoiceCallInfo(ctx context.Context, in *VoiceCallInfoReq, opts ...grpc.CallOption) (*VoiceCallInfoRes, error) {
+	out := new(VoiceCallInfoRes)
+	err := c.cc.Invoke(ctx, ImServer_VoiceCallInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) AgoraCallback(ctx context.Context, in *AgoraCallbackReq, opts ...grpc.CallOption) (*EmptyData, error) {
+	out := new(EmptyData)
+	err := c.cc.Invoke(ctx, ImServer_AgoraCallback_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) VoiceTask(ctx context.Context, in *EmptyData, opts ...grpc.CallOption) (*EmptyData, error) {
+	out := new(EmptyData)
+	err := c.cc.Invoke(ctx, ImServer_VoiceTask_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) SetFriend(ctx context.Context, in *SetFriendReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_SetFriend_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) SetFriendRemark(ctx context.Context, in *SetFriendRemarkReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_SetFriendRemark_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImServerServer is the server API for ImServer service.
 // All implementations must embed UnimplementedImServerServer
 // for forward compatibility
@@ -379,6 +507,7 @@ type ImServerServer interface {
 	GetNotification(context.Context, *GetNotificationReq) (*GetNotificationRes, error)
 	AddUserOldGroup(context.Context, *AddUserOldGroupReq) (*CommonRes, error)
 	GetUserChannelNotice(context.Context, *GetUserChannelNoticeReq) (*GetUserChannelNoticeRes, error)
+	SetUserGroupNick(context.Context, *SetUserGroupNickReq) (*CommonRes, error)
 	// 设置离线消息推送免打扰
 	SetNotificationDisturbing(context.Context, *SetNotificationDisturbingReq) (*SetNotificationDisturbingRes, error)
 	// 设置离线消息推送展示样式
@@ -391,6 +520,23 @@ type ImServerServer interface {
 	MsgRecall(context.Context, *MsgRecallReq) (*EmptyData, error)
 	UserDisconnect(context.Context, *UserDisconnectReq) (*CommonRes, error)
 	UserImToken(context.Context, *UserImTokenReq) (*UserImTokenRes, error)
+	// 拨打语音
+	VoiceCalling(context.Context, *VoiceCallingReq) (*VoiceCallingRes, error)
+	// 主叫取消
+	VoiceCallCancelInvite(context.Context, *VoiceCallCancelInviteReq) (*CommonRes, error)
+	// 拒接
+	VoiceCallReject(context.Context, *VoiceCallRejectReq) (*CommonRes, error)
+	// 接听
+	VoiceCallAccept(context.Context, *VoiceCallAcceptReq) (*VoiceCallAcceptRes, error)
+	// 离开
+	VoiceCallLeave(context.Context, *VoiceCallLeaveReq) (*CommonRes, error)
+	// 房间信息
+	VoiceCallInfo(context.Context, *VoiceCallInfoReq) (*VoiceCallInfoRes, error)
+	// 回调
+	AgoraCallback(context.Context, *AgoraCallbackReq) (*EmptyData, error)
+	VoiceTask(context.Context, *EmptyData) (*EmptyData, error)
+	SetFriend(context.Context, *SetFriendReq) (*CommonRes, error)
+	SetFriendRemark(context.Context, *SetFriendRemarkReq) (*CommonRes, error)
 	mustEmbedUnimplementedImServerServer()
 }
 
@@ -455,6 +601,9 @@ func (UnimplementedImServerServer) AddUserOldGroup(context.Context, *AddUserOldG
 func (UnimplementedImServerServer) GetUserChannelNotice(context.Context, *GetUserChannelNoticeReq) (*GetUserChannelNoticeRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserChannelNotice not implemented")
 }
+func (UnimplementedImServerServer) SetUserGroupNick(context.Context, *SetUserGroupNickReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetUserGroupNick not implemented")
+}
 func (UnimplementedImServerServer) SetNotificationDisturbing(context.Context, *SetNotificationDisturbingReq) (*SetNotificationDisturbingRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetNotificationDisturbing not implemented")
 }
@@ -484,6 +633,36 @@ func (UnimplementedImServerServer) UserDisconnect(context.Context, *UserDisconne
 }
 func (UnimplementedImServerServer) UserImToken(context.Context, *UserImTokenReq) (*UserImTokenRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserImToken not implemented")
+}
+func (UnimplementedImServerServer) VoiceCalling(context.Context, *VoiceCallingReq) (*VoiceCallingRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VoiceCalling not implemented")
+}
+func (UnimplementedImServerServer) VoiceCallCancelInvite(context.Context, *VoiceCallCancelInviteReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VoiceCallCancelInvite not implemented")
+}
+func (UnimplementedImServerServer) VoiceCallReject(context.Context, *VoiceCallRejectReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VoiceCallReject not implemented")
+}
+func (UnimplementedImServerServer) VoiceCallAccept(context.Context, *VoiceCallAcceptReq) (*VoiceCallAcceptRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VoiceCallAccept not implemented")
+}
+func (UnimplementedImServerServer) VoiceCallLeave(context.Context, *VoiceCallLeaveReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VoiceCallLeave not implemented")
+}
+func (UnimplementedImServerServer) VoiceCallInfo(context.Context, *VoiceCallInfoReq) (*VoiceCallInfoRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VoiceCallInfo not implemented")
+}
+func (UnimplementedImServerServer) AgoraCallback(context.Context, *AgoraCallbackReq) (*EmptyData, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AgoraCallback not implemented")
+}
+func (UnimplementedImServerServer) VoiceTask(context.Context, *EmptyData) (*EmptyData, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VoiceTask not implemented")
+}
+func (UnimplementedImServerServer) SetFriend(context.Context, *SetFriendReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetFriend not implemented")
+}
+func (UnimplementedImServerServer) SetFriendRemark(context.Context, *SetFriendRemarkReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetFriendRemark not implemented")
 }
 func (UnimplementedImServerServer) mustEmbedUnimplementedImServerServer() {}
 
@@ -840,6 +1019,24 @@ func _ImServer_GetUserChannelNotice_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImServer_SetUserGroupNick_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetUserGroupNickReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).SetUserGroupNick(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_SetUserGroupNick_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).SetUserGroupNick(ctx, req.(*SetUserGroupNickReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ImServer_SetNotificationDisturbing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetNotificationDisturbingReq)
 	if err := dec(in); err != nil {
@@ -1020,6 +1217,186 @@ func _ImServer_UserImToken_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImServer_VoiceCalling_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VoiceCallingReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).VoiceCalling(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_VoiceCalling_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).VoiceCalling(ctx, req.(*VoiceCallingReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_VoiceCallCancelInvite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VoiceCallCancelInviteReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).VoiceCallCancelInvite(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_VoiceCallCancelInvite_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).VoiceCallCancelInvite(ctx, req.(*VoiceCallCancelInviteReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_VoiceCallReject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VoiceCallRejectReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).VoiceCallReject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_VoiceCallReject_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).VoiceCallReject(ctx, req.(*VoiceCallRejectReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_VoiceCallAccept_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VoiceCallAcceptReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).VoiceCallAccept(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_VoiceCallAccept_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).VoiceCallAccept(ctx, req.(*VoiceCallAcceptReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_VoiceCallLeave_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VoiceCallLeaveReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).VoiceCallLeave(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_VoiceCallLeave_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).VoiceCallLeave(ctx, req.(*VoiceCallLeaveReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_VoiceCallInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VoiceCallInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).VoiceCallInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_VoiceCallInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).VoiceCallInfo(ctx, req.(*VoiceCallInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_AgoraCallback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AgoraCallbackReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).AgoraCallback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_AgoraCallback_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).AgoraCallback(ctx, req.(*AgoraCallbackReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_VoiceTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyData)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).VoiceTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_VoiceTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).VoiceTask(ctx, req.(*EmptyData))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_SetFriend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetFriendReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).SetFriend(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_SetFriend_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).SetFriend(ctx, req.(*SetFriendReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_SetFriendRemark_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetFriendRemarkReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).SetFriendRemark(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_SetFriendRemark_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).SetFriendRemark(ctx, req.(*SetFriendRemarkReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ImServer_ServiceDesc is the grpc.ServiceDesc for ImServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1104,6 +1481,10 @@ var ImServer_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ImServer_GetUserChannelNotice_Handler,
 		},
 		{
+			MethodName: "SetUserGroupNick",
+			Handler:    _ImServer_SetUserGroupNick_Handler,
+		},
+		{
 			MethodName: "SetNotificationDisturbing",
 			Handler:    _ImServer_SetNotificationDisturbing_Handler,
 		},
@@ -1142,6 +1523,46 @@ var ImServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserImToken",
 			Handler:    _ImServer_UserImToken_Handler,
+		},
+		{
+			MethodName: "VoiceCalling",
+			Handler:    _ImServer_VoiceCalling_Handler,
+		},
+		{
+			MethodName: "VoiceCallCancelInvite",
+			Handler:    _ImServer_VoiceCallCancelInvite_Handler,
+		},
+		{
+			MethodName: "VoiceCallReject",
+			Handler:    _ImServer_VoiceCallReject_Handler,
+		},
+		{
+			MethodName: "VoiceCallAccept",
+			Handler:    _ImServer_VoiceCallAccept_Handler,
+		},
+		{
+			MethodName: "VoiceCallLeave",
+			Handler:    _ImServer_VoiceCallLeave_Handler,
+		},
+		{
+			MethodName: "VoiceCallInfo",
+			Handler:    _ImServer_VoiceCallInfo_Handler,
+		},
+		{
+			MethodName: "AgoraCallback",
+			Handler:    _ImServer_AgoraCallback_Handler,
+		},
+		{
+			MethodName: "VoiceTask",
+			Handler:    _ImServer_VoiceTask_Handler,
+		},
+		{
+			MethodName: "SetFriend",
+			Handler:    _ImServer_SetFriend_Handler,
+		},
+		{
+			MethodName: "SetFriendRemark",
+			Handler:    _ImServer_SetFriendRemark_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
