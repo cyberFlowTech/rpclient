@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package userups;
+
+// protoc-gen-go 版本大于1.4.0, proto文件需要加上go_package,否则无法生成
+option go_package = "./userups";
+
+message GetUserPointsReq{
+  int64 UserID=1;
+}
+
+message UserPoint{
+  int64 Points=1; //积分
+  int32 Level=2;  //等级
+  string Status=3;//用户状态
+}
+
+message GetUserPointsResp{
+  int32 Ret=1;
+  string Msg=2;
+  UserPoint UPoint=3;
+}
+message GetUserPointDetailsReq{
+  int64 UserID=1;
+  string PType=2;//任务类型，默认为空
+}
+message PointDetail{
+  int64 UserID=1;
+  string PType=2; //积分任务类型
+  int64 Amount=3; //可正可负，本次变动的积分值
+  string Desc=4;  //任务描述
+  int64 PTime=5;  //获得时间
+  int64 RPoints=6; //剩余积分
+}
+message GetUserPointDetailsResp{
+  int32 Ret=1;
+  string Msg=2;
+  repeated PointDetail Details=3;
+}
+message SetUserPointReq{
+  int64 UserID=1;
+  int64 TaskID=2; //通过taskID来限制
+}
+message SetUserPointResp{
+  int32 Ret=1;
+  string Msg=2;
+  UserPoint UPoint=3;
+}
+message GetUserTaskReq{
+  int64 UserID=1;
+  string TaskType=2;//newuser,daily,
+}
+message PointTask{
+  int64 TaskID=1;
+  string TType=2;//任务类型
+  int64 Amount=3;//任务积分值，可以为负
+  string Desc =4;//任务描述
+  int32 Status=5;//任务完成状态
+  int64 UTime=6;//任务完成时间，
+  string Icon=7;//icon
+  int64 Times=8;//任务已经完成次数
+  int64 Limit=9;//任务要求次数
+}
+message GetUserTaskResp{
+  int32 Ret=1;
+  string Msg=2;
+  repeated PointTask Tasks=3;
+}
+
+service UserUps {
+  //用户积分查询，包括积分，等级
+  rpc getUserPoints(GetUserPointsReq) returns(GetUserPointsResp);
+  //积分明细查询，包括增加，销毁等
+  rpc getUserPointDetails(GetUserPointDetailsReq) returns(GetUserPointDetailsResp);
+  //用户积分信息修改，添加一条明显。并修改记录更新前后的积分情况
+  rpc addUserPoints(SetUserPointReq) returns(SetUserPointResp);
+  //查询当前任务（根据状态分类 新手，日常）
+  rpc getUserTask(GetUserTaskReq) returns(GetUserTaskResp);
+}
