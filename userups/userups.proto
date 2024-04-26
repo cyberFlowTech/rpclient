@@ -13,6 +13,7 @@ message UserPoint{
   int64 Points=1; //积分
   int32 Level=2;  //等级
   string Status=3;//用户状态
+  int64 UserID=4;
 }
 
 message GetUserPointsResp{
