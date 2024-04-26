@@ -6,7 +6,7 @@ package userups;
 option go_package = "./userups";
 
 message GetUserPointsReq{
-  int64 UserID=1;
+  repeated int64 UserIDS=1;
 }
 
 message UserPoint{
@@ -18,7 +18,7 @@ message UserPoint{
 message GetUserPointsResp{
   int32 Ret=1;
   string Msg=2;
-  UserPoint UPoint=3;
+  repeated UserPoint UPoint=3;
 }
 message GetUserPointDetailsReq{
   int64 UserID=1;
