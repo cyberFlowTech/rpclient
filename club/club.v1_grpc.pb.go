@@ -73,6 +73,7 @@ const (
 	ClubServer_StatLog_FullMethodName                  = "/club.ClubServer/StatLog"
 	ClubServer_HasAuth_FullMethodName                  = "/club.ClubServer/HasAuth"
 	ClubServer_GetInfoByShareCode_FullMethodName       = "/club.ClubServer/GetInfoByShareCode"
+	ClubServer_GetClubTags_FullMethodName              = "/club.ClubServer/GetClubTags"
 )
 
 // ClubServerClient is the client API for ClubServer service.
@@ -190,6 +191,7 @@ type ClubServerClient interface {
 	HasAuth(ctx context.Context, in *HasAuthReq, opts ...grpc.CallOption) (*HasAuthResp, error)
 	// 根据分享码获取部落信息
 	GetInfoByShareCode(ctx context.Context, in *GetInfoByShareCodeReq, opts ...grpc.CallOption) (*GetInfoByShareCodeResp, error)
+	GetClubTags(ctx context.Context, in *GetClubTagsReq, opts ...grpc.CallOption) (*GetClubTagsResp, error)
 }
 
 type clubServerClient struct {
@@ -686,6 +688,15 @@ func (c *clubServerClient) GetInfoByShareCode(ctx context.Context, in *GetInfoBy
 	return out, nil
 }
 
+func (c *clubServerClient) GetClubTags(ctx context.Context, in *GetClubTagsReq, opts ...grpc.CallOption) (*GetClubTagsResp, error) {
+	out := new(GetClubTagsResp)
+	err := c.cc.Invoke(ctx, ClubServer_GetClubTags_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClubServerServer is the server API for ClubServer service.
 // All implementations must embed UnimplementedClubServerServer
 // for forward compatibility
@@ -801,6 +812,7 @@ type ClubServerServer interface {
 	HasAuth(context.Context, *HasAuthReq) (*HasAuthResp, error)
 	// 根据分享码获取部落信息
 	GetInfoByShareCode(context.Context, *GetInfoByShareCodeReq) (*GetInfoByShareCodeResp, error)
+	GetClubTags(context.Context, *GetClubTagsReq) (*GetClubTagsResp, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -969,6 +981,9 @@ func (UnimplementedClubServerServer) HasAuth(context.Context, *HasAuthReq) (*Has
 }
 func (UnimplementedClubServerServer) GetInfoByShareCode(context.Context, *GetInfoByShareCodeReq) (*GetInfoByShareCodeResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetInfoByShareCode not implemented")
+}
+func (UnimplementedClubServerServer) GetClubTags(context.Context, *GetClubTagsReq) (*GetClubTagsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetClubTags not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
 
@@ -1955,6 +1970,24 @@ func _ClubServer_GetInfoByShareCode_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClubServer_GetClubTags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetClubTagsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetClubTags(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_GetClubTags_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetClubTags(ctx, req.(*GetClubTagsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClubServer_ServiceDesc is the grpc.ServiceDesc for ClubServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2177,6 +2210,10 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetInfoByShareCode",
 			Handler:    _ClubServer_GetInfoByShareCode_Handler,
+		},
+		{
+			MethodName: "GetClubTags",
+			Handler:    _ClubServer_GetClubTags_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
