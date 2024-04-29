@@ -59,6 +59,8 @@ const (
 	ImServer_VoiceTask_FullMethodName                   = "/im.ImServer/VoiceTask"
 	ImServer_SetFriend_FullMethodName                   = "/im.ImServer/SetFriend"
 	ImServer_SetFriendRemark_FullMethodName             = "/im.ImServer/SetFriendRemark"
+	ImServer_SyncUserClubNick_FullMethodName            = "/im.ImServer/SyncUserClubNick"
+	ImServer_RunTask_FullMethodName                     = "/im.ImServer/RunTask"
 )
 
 // ImServerClient is the client API for ImServer service.
@@ -114,6 +116,8 @@ type ImServerClient interface {
 	VoiceTask(ctx context.Context, in *EmptyData, opts ...grpc.CallOption) (*EmptyData, error)
 	SetFriend(ctx context.Context, in *SetFriendReq, opts ...grpc.CallOption) (*CommonRes, error)
 	SetFriendRemark(ctx context.Context, in *SetFriendRemarkReq, opts ...grpc.CallOption) (*CommonRes, error)
+	SyncUserClubNick(ctx context.Context, in *SyncUserClubNickReq, opts ...grpc.CallOption) (*CommonRes, error)
+	RunTask(ctx context.Context, in *RunTaskReq, opts ...grpc.CallOption) (*CommonRes, error)
 }
 
 type imServerClient struct {
@@ -484,6 +488,24 @@ func (c *imServerClient) SetFriendRemark(ctx context.Context, in *SetFriendRemar
 	return out, nil
 }
 
+func (c *imServerClient) SyncUserClubNick(ctx context.Context, in *SyncUserClubNickReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_SyncUserClubNick_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) RunTask(ctx context.Context, in *RunTaskReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_RunTask_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImServerServer is the server API for ImServer service.
 // All implementations must embed UnimplementedImServerServer
 // for forward compatibility
@@ -537,6 +559,8 @@ type ImServerServer interface {
 	VoiceTask(context.Context, *EmptyData) (*EmptyData, error)
 	SetFriend(context.Context, *SetFriendReq) (*CommonRes, error)
 	SetFriendRemark(context.Context, *SetFriendRemarkReq) (*CommonRes, error)
+	SyncUserClubNick(context.Context, *SyncUserClubNickReq) (*CommonRes, error)
+	RunTask(context.Context, *RunTaskReq) (*CommonRes, error)
 	mustEmbedUnimplementedImServerServer()
 }
 
@@ -663,6 +687,12 @@ func (UnimplementedImServerServer) SetFriend(context.Context, *SetFriendReq) (*C
 }
 func (UnimplementedImServerServer) SetFriendRemark(context.Context, *SetFriendRemarkReq) (*CommonRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetFriendRemark not implemented")
+}
+func (UnimplementedImServerServer) SyncUserClubNick(context.Context, *SyncUserClubNickReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SyncUserClubNick not implemented")
+}
+func (UnimplementedImServerServer) RunTask(context.Context, *RunTaskReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RunTask not implemented")
 }
 func (UnimplementedImServerServer) mustEmbedUnimplementedImServerServer() {}
 
@@ -1397,6 +1427,42 @@ func _ImServer_SetFriendRemark_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImServer_SyncUserClubNick_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SyncUserClubNickReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).SyncUserClubNick(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_SyncUserClubNick_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).SyncUserClubNick(ctx, req.(*SyncUserClubNickReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_RunTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RunTaskReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).RunTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_RunTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).RunTask(ctx, req.(*RunTaskReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ImServer_ServiceDesc is the grpc.ServiceDesc for ImServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1563,6 +1629,14 @@ var ImServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetFriendRemark",
 			Handler:    _ImServer_SetFriendRemark_Handler,
+		},
+		{
+			MethodName: "SyncUserClubNick",
+			Handler:    _ImServer_SyncUserClubNick_Handler,
+		},
+		{
+			MethodName: "RunTask",
+			Handler:    _ImServer_RunTask_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
