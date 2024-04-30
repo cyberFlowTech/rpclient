@@ -62,7 +62,7 @@ type (
 	// md5(key+senderid+mapId+version)
 	GetKeyByVersionRes {
 		KeyVersion int    `form:"key_version"` // 秘钥版本
-		Key        string `form:"key"`         // 秘钥key
+		Key        string `form:"key"` // 秘钥key
 	}
 	// 公共请求参数 所有接口都有的
 	CommonReq {
@@ -77,56 +77,56 @@ type (
 		SignTime    int64  `form:"sign_time"`
 	}
 	// 无data响应
-	NoDataRes     struct{}
+	NoDataRes  {}
 	GetImTokenRes {
 		AccessToken string `json:"access_token"`
 		ExpiresIn   int64  `json:"expires_in"`
 	}
 	GetGroupInfoReq {
 		CommonReq
-		GroupUniqid    string `form:"group_uniqid,optional"`               // 群聊id
-		MapId          string `form:"map_id,optional"`                     // 会话id
-		GetMembers     int32  `form:"get_members,optional,default=1"`      // 是否获取成员 0否，1是
+		GroupUniqid    string `form:"group_uniqid,optional"` // 群聊id
+		MapId          string `form:"map_id,optional"` // 会话id
+		GetMembers     int32  `form:"get_members,optional,default=1"` // 是否获取成员 0否，1是
 		GetUserSetting int32  `form:"get_user_setting,optional,default=1"` // 是否获取我在群聊的设置 0否，1是
 	}
 	GetGroupInfoRes {
 		GroupInfo map[string]*GetGroupInfo `json:"group_info"`
 	}
 	GetGroupInfo {
-		Uniqid      string              `json:"uniqid"`       // 服务端唯一id
-		MapId       string              `json:"map_id"`       // 群聊Id（第三方IM生成的）
-		UserId      string              `json:"user_id"`      // 群主Id
-		Name        string              `json:"name"`         // 群名称
-		Desc        string              `json:"desc"`         // 群介绍
-		Avatar      string              `json:"avatar"`       // 群头像
-		Ctime       int64               `json:"ctime"`        // 创建时间
-		IsBan       string              `json:"is_ban"`       // 是否禁言 0否 1是
-		IsDel       string              `json:"is_del"`       // 是否删除 0否 1是
-		IsBlock     string              `json:"is_block"`     // 管理员封禁 0否 1是
-		IsClean     string              `json:"is_clean"`     // 是否清理消息 0否 1是
-		CleanTime   string              `json:"clean_time"`   // 清理时间 单位：分钟
+		Uniqid      string              `json:"uniqid"` // 服务端唯一id
+		MapId       string              `json:"map_id"` // 群聊Id（第三方IM生成的）
+		UserId      string              `json:"user_id"` // 群主Id
+		Name        string              `json:"name"` // 群名称
+		Desc        string              `json:"desc"` // 群介绍
+		Avatar      string              `json:"avatar"` // 群头像
+		Ctime       int64               `json:"ctime"` // 创建时间
+		IsBan       string              `json:"is_ban"` // 是否禁言 0否 1是
+		IsDel       string              `json:"is_del"` // 是否删除 0否 1是
+		IsBlock     string              `json:"is_block"` // 管理员封禁 0否 1是
+		IsClean     string              `json:"is_clean"` // 是否清理消息 0否 1是
+		CleanTime   string              `json:"clean_time"` // 清理时间 单位：分钟
 		GroupNotice string              `json:"group_notice"` // 群公告
-		Type        int64               `json:"type"`         // 群类型：频道： 0文字 1语音（废弃） 2应用，普通群聊 固定为 1
-		IsChannel   bool                `json:"is_channel"`   // 是否频道
-		Property    int64               `json:"property"`     // 0:持有数字货币，1:持有数字藏品,2:无限制
-		Chain       int64               `json:"chain"`        // 所属链
-		Coins       float64             `json:"coins"`        // 限制额度
-		Sort        int64               `json:"sort"`         // 排序
-		Frozen      int64               `json:"frozen"`       // 用户状态 0正常 1锁定 2冻结
-		Id          string              `json:"id"`           // 频道id，数据库自增
-		TbMid       string              `json:"tb_mid"`       // 关联部落id
-		TbZid       string              `json:"tb_zid"`       // 关联分钟id
-		InMember    int64               `json:"in_member"`    // 是否在群 0 否 1 是
-		Notice      int64               `json:"notice"`       // 消息免打扰 0否 1是
-		Bookmark    int64               `json:"bookmark"`     // 是否保存通讯录 0否 1是
-		IsTop       int64               `json:"is_top"`       // 是否置顶 0否 1是
-		Gnick       string              `json:"gnick"`        // 群组中昵称
-		Dapp        *GroupInfoDapp      `json:"dapp"`         // 应用信息
-		UserInfo    *GroupInfoUserInfo  `json:"userInfo"`     // 群主信息
-		Members     []*GroupInfoMembers `json:"members"`      // 成员信息
-		Manages     []*GroupInfoManages `json:"managers"`     // 管理员信息
+		Type        int64               `json:"type"` // 群类型：频道： 0文字 1语音（废弃） 2应用，普通群聊 固定为 1
+		IsChannel   bool                `json:"is_channel"` // 是否频道
+		Property    int64               `json:"property"` // 0:持有数字货币，1:持有数字藏品,2:无限制
+		Chain       int64               `json:"chain"` // 所属链
+		Coins       float64             `json:"coins"` // 限制额度
+		Sort        int64               `json:"sort"` // 排序
+		Frozen      int64               `json:"frozen"` // 用户状态 0正常 1锁定 2冻结
+		Id          string              `json:"id"` // 频道id，数据库自增
+		TbMid       string              `json:"tb_mid"` // 关联部落id
+		TbZid       string              `json:"tb_zid"` // 关联分钟id
+		InMember    int64               `json:"in_member"` // 是否在群 0 否 1 是
+		Notice      int64               `json:"notice"` // 消息免打扰 0否 1是
+		Bookmark    int64               `json:"bookmark"` // 是否保存通讯录 0否 1是
+		IsTop       int64               `json:"is_top"` // 是否置顶 0否 1是
+		Gnick       string              `json:"gnick"` // 群组中昵称
+		Dapp        *GroupInfoDapp      `json:"dapp"` // 应用信息
+		UserInfo    *GroupInfoUserInfo  `json:"userInfo"` // 群主信息
+		Members     []*GroupInfoMembers `json:"members"` // 成员信息
+		Manages     []*GroupInfoManages `json:"managers"` // 管理员信息
 		GroupType   int64               `json:"group_type"`
-		//             Icon        string              `json:"icon"`         // 兼容频道头像
+	//             Icon        string              `json:"icon"`         // 兼容频道头像
 	}
 	GroupInfoDapp {
 		DappId     int64  `json:"dapp_id"`
@@ -150,8 +150,8 @@ type (
 		UserId  string `json:"user_id"`
 		Nick    string `json:"nick"`
 		Avatar  string `json:"avatar"`
-		Status  int32  `json:"status"`  // 群状态 0：正常，1：冻结；2:删除
-		Gnick   string `json:"gnick"`   // 群组中昵称
+		Status  int32  `json:"status"` // 群状态 0：正常，1：冻结；2:删除
+		Gnick   string `json:"gnick"` // 群组中昵称
 		Remarks string `json:"remarks"` // 备注
 	}
 	GroupInfoManages {
@@ -165,87 +165,87 @@ type (
 	}
 	SetGroupManageReq {
 		CommonReq
-		MapId       string `form:"map_id,optional"`       // 会话id
-		Type        int    `form:"type,range=[1:2]"`      // 1添加， 2删除
+		MapId       string `form:"map_id,optional"` // 会话id
+		Type        int    `form:"type,range=[1:2]"` // 1添加， 2删除
 		GroupUniqid string `form:"group_uniqid,optional"` // 兼容uniapp
-		ManageId    int64  `form:"manage_id"`             // 管理员id
+		ManageId    int64  `form:"manage_id"` // 管理员id
 	}
 	InGroupReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional"`   // 群聊id
-		MapId       string `form:"map_id,optional"`         // 会话id
+		GroupUniqid string `form:"group_uniqid,optional"` // 群聊id
+		MapId       string `form:"map_id,optional"` // 会话id
 		Ouid        int64  `form:"ouid,optional,default=0"` // 加入者id
 	}
 	InGroupRes {
 		Status int           `json:"status"` // 0 加入成功 1 用户已存在
-		Group  *GetGroupInfo `json:"group"`  // 群信息
+		Group  *GetGroupInfo `json:"group"` // 群信息
 	}
 	OutGroupReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群聊id
-		MapId       string `form:"map_id,optional"`       // 会话id
+		MapId       string `form:"map_id,optional"` // 会话id
 	}
 	MoveGroupReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群聊id
-		MapId       string `form:"map_id,optional"`       // 会话id
-		Ouid        string `form:"ouid"`                  // 被操作者id
+		MapId       string `form:"map_id,optional"` // 会话id
+		Ouid        string `form:"ouid"` // 被操作者id
 	}
 	// 设置名称，介绍
 	SetGroupInfoReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群聊id
-		MapId       string `form:"map_id,optional"`       // 会话id
-		Type        int    `form:"type,optional"`         // 1群名称，2群介绍（弃用）
-		Name        string `form:"name,optional"`         // 名称
-		Desc        string `form:"desc,optional"`         // 介绍
+		MapId       string `form:"map_id,optional"` // 会话id
+		Type        int    `form:"type,optional"` // 1群名称，2群介绍（弃用）
+		Name        string `form:"name,optional"` // 名称
+		Desc        string `form:"desc,optional"` // 介绍
 	}
 	BanGroupReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` //  群聊id
-		MapId       string `form:"map_id,optional"`       // 会话id
-		Type        int    `form:"type,range=[1:2]"`      // 1开启2关闭
+		MapId       string `form:"map_id,optional"` // 会话id
+		Type        int    `form:"type,range=[1:2]"` // 1开启2关闭
 	}
 	// 群消息清理
 	SetGroupCleanReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群聊id
-		MapId       string `form:"map_id,optional"`       // 会话id
-		Type        int    `form:"type,range=[1:2]"`      // 1开启2关闭
-		MinTime     int64  `form:"min_time,optional"`     // 自动清理聊天记录的时间，分钟为单位
+		MapId       string `form:"map_id,optional"` // 会话id
+		Type        int    `form:"type,range=[1:2]"` // 1开启2关闭
+		MinTime     int64  `form:"min_time,optional"` // 自动清理聊天记录的时间，分钟为单位
 	}
 	SetGroupNoticeReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群聊id
-		MapId       string `form:"map_id,optional"`       // 会话id
-		Content     string `form:"content,optional"`      // 公告内容
+		MapId       string `form:"map_id,optional"` // 会话id
+		Content     string `form:"content,optional"` // 公告内容
 	}
 	SetGroupOwnerReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群聊id
-		MapId       string `form:"map_id,optional"`       // 会话id
-		Ouid        int64  `form:"ouid"`                  // 新群主id
+		MapId       string `form:"map_id,optional"` // 会话id
+		Ouid        int64  `form:"ouid"` // 新群主id
 	}
 	GetGroupSettingsReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群聊id
-		MapId       string `form:"map_id,optional"`       // 会话id
+		MapId       string `form:"map_id,optional"` // 会话id
 	}
 	GetGroupSettingsRes {
 		Setting []*GroupSettingInfo `json:"setting"`
 	}
 	GroupSettingInfo {
 		GroupUniqid string `json:"group_uniqid"` // 群id
-		Gag         int64  `json:"gag"`          // 是否禁言 0否，1是
-		CanSend     int64  `json:"can_send"`     // 是否能发言 0否，1是
-		IsClean     int64  `json:"is_clean"`     // 是否清理
-		MsgTime     int64  `json:"msg_time"`     // 此时间之前的聊天记录不显示
-		CleanTime   int64  `json:"clean_time"`   // 消息清理时间
+		Gag         int64  `json:"gag"` // 是否禁言 0否，1是
+		CanSend     int64  `json:"can_send"` // 是否能发言 0否，1是
+		IsClean     int64  `json:"is_clean"` // 是否清理
+		MsgTime     int64  `json:"msg_time"` // 此时间之前的聊天记录不显示
+		CleanTime   int64  `json:"clean_time"` // 消息清理时间
 	}
 	GetGroupMembersReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群id
-		MapId       string `form:"map_id,optional"`       // 会话id
+		MapId       string `form:"map_id,optional"` // 会话id
 	}
 	GetGroupMembersRes {
 		List map[string][]*GroupInfoMembers `json:"data"`
@@ -253,14 +253,14 @@ type (
 	SetBookReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群id
-		MapId       string `form:"map_id,optional"`       // 会话id
-		Type        int    `form:"type,range=[1:2]"`      // 1添加2删除
+		MapId       string `form:"map_id,optional"` // 会话id
+		Type        int    `form:"type,range=[1:2]"` // 1添加2删除
 	}
 	SetNoticeReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群id
-		MapId       string `form:"map_id,optional"`       // 会话id
-		Type        int    `form:"type,range=[1:2]"`      // 1开启2关闭
+		MapId       string `form:"map_id,optional"` // 会话id
+		Type        int    `form:"type,range=[1:2]"` // 1开启2关闭
 	}
 	GetNoticeReq {
 		CommonReq
@@ -272,13 +272,13 @@ type (
 	SetUserNickReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群id
-		MapId       string `form:"map_id,optional"`       // 会话id
-		Gnick       string `form:"gnick,optional"`        // 群昵称
+		MapId       string `form:"map_id,optional"` // 会话id
+		Gnick       string `form:"gnick,optional"` // 群昵称
 	}
 	SaveGroupDappReq {
 		CommonReq
-		GroupUniqid string `form:"group_uniqid,optional"`      // 群id
-		MapId       string `form:"map_id,optional"`            // 会话id
+		GroupUniqid string `form:"group_uniqid,optional"` // 群id
+		MapId       string `form:"map_id,optional"` // 会话id
 		DappId      int64  `form:"dapp_id,optional,default=0"` // dappid
 		Icon        string `form:"icon,optional"`
 		Name        string `form:"name,optional"`
@@ -288,7 +288,7 @@ type (
 	GetGroupDappListReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群id
-		MapId       string `form:"map_id,optional"`       // 会话id
+		MapId       string `form:"map_id,optional"` // 会话id
 		Page        int64  `form:"page,optional,default=1"`
 	}
 	DappListItem {
@@ -306,7 +306,7 @@ type (
 	DelGroupDappReq {
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群id
-		MapId       string `form:"map_id,optional"`       // 会话id
+		MapId       string `form:"map_id,optional"` // 会话id
 		DappId      int64  `form:"id,optional,default=0"`
 	}
 	GetUserOldGroupRes {
@@ -330,17 +330,17 @@ type (
 	CollectEmojiReq {
 		CommonReq
 		EmojiId int64  `form:"emoji_id,optional,default=0"` // 表情id
-		TbMid   string `form:"tb_mid,optional"`             // 部落id
-		Url     string `form:"url,optional"`                // 表情地址
+		TbMid   string `form:"tb_mid,optional"` // 部落id
+		Url     string `form:"url,optional"` // 表情地址
 	}
 	DelEmojiReq {
 		CommonReq
-		EmojiId string `form:"emoji_id"`        // 多个使用,隔开
+		EmojiId string `form:"emoji_id"` // 多个使用,隔开
 		TbMid   string `form:"tb_mid,optional"` // 部落id
 	}
 	SortEmojiReq {
 		CommonReq
-		MoveId   string `form:"move_id"`   // 要移动的列表 , 分隔多个
+		MoveId   string `form:"move_id"` // 要移动的列表 , 分隔多个
 		TargetId int64  `form:"target_id"` // 目标位置Id
 	}
 	GetEmojiListReq {
@@ -392,7 +392,6 @@ type (
 		ErrMsg     string `json:"errMsg"`
 		NextCode   int64  `json:"nextCode"`
 	}
-
 	AgoraCallbackReq {
 		NoticeId  string                 `json:"noticeId"`
 		ProductId int64                  `json:"productId"`
@@ -405,8 +404,8 @@ type (
 	GetCloudFrontSignReq {
 		CommonReq
 		SignType int64  `form:"signType"` //0 cookieSign,1 urlSign
-		SignUrl  string `form:"signUrl"`  //url & path to sign
-		Expire   int64  `form:"expire"`   //expire in seconds
+		SignUrl  string `form:"signUrl"` //url & path to sign
+		Expire   int64  `form:"expire"` //expire in seconds
 	}
 	GetCloudFrontSignRes {
 		SignType  int64             `json:"signType"`
@@ -415,19 +414,19 @@ type (
 	}
 	MuteGroupUserReq {
 		CommonReq
-		MapId  string `form:"map_id,optional"`  // 会话id
+		MapId  string `form:"map_id,optional"` // 会话id
 		Type   int64  `form:"type,range=[1:2]"` //1 禁言 2 解除禁言
-		Ouid   int64  `form:"ouid"`             // 禁言用户id
-		Uniqid string `form:"uniqid,optional"`  // 群id
+		Ouid   int64  `form:"ouid"` // 禁言用户id
+		Uniqid string `form:"uniqid,optional"` // 群id
 	}
 	VoiceCallReq {
 		CommonReq
-		ImId  string `form:"im_id,optional"`   // 会话Id
+		ImId  string `form:"im_id,optional"` // 会话Id
 		Type  int    `form:"type,range=[1:3]"` //  1单聊 2群组 3频道
-		Ouid  string `form:"ouid,optional"`    // 群聊可不传
-		TbMid string `form:"tb_mid,optional"`  // 部落id
-		TbZid string `form:"tb_zid,optional"`  // 分组id
-		TbCid string `form:"tb_cid,optional"`  // 频道id
+		Ouid  string `form:"ouid,optional"` // 群聊可不传
+		TbMid string `form:"tb_mid,optional"` // 部落id
+		TbZid string `form:"tb_zid,optional"` // 分组id
+		TbCid string `form:"tb_cid,optional"` // 频道id
 	}
 	VoiceCallRes {
 		Cid   string `json:"c_id"` // 房间id
@@ -456,10 +455,10 @@ type (
 	MsgRecallReq {
 		CommonReq
 		TbMid      string `form:"tb_mid,optional"` // 部落id
-		Ouid       int64  `form:"ouid"`            // 消息发送者
-		Type       string `form:"type"`            // 会话类型 chat ：单聊 ，groupchat：群聊
-		TargetId   string `form:"targetId"`        // 会话id
-		MessageUID string `form:"messageUID"`      // 消息id
+		Ouid       int64  `form:"ouid"` // 消息发送者
+		Type       string `form:"type"` // 会话类型 chat ：单聊 ，groupchat：群聊
+		TargetId   string `form:"targetId"` // 会话id
+		MessageUID string `form:"messageUID"` // 消息id
 	}
 	MsgRecallRes {
 		User  *MsgRecallResItem `json:"user"`
@@ -468,6 +467,10 @@ type (
 	MsgRecallResItem {
 		UserId string `json:"user_id"`
 		Nick   string `json:"nick"`
+	}
+	RUnTaskReq {
+		CommonReq
+		TaskName string `form:"task_name"`
 	}
 )
 
@@ -495,11 +498,11 @@ service imservice {
 	post /openimCallback (OpenImCallbackReq) returns (OpenImCallbackRes)
 }
 
-@server(
+@server (
 	//jwt: Auth                 //开启jwt鉴权
-	middleware: AgoraBeforeHandle    //路由中间件声明
-	group: imservice                   //接口所属组
-	prefix : imservice/v1              //路由公共前缀
+	middleware: AgoraBeforeHandle //路由中间件声明
+	group:      imservice //接口所属组
+	prefix:     imservice/v1 //路由公共前缀
 )
 service imservice {
 	@doc "声网回调"
@@ -507,11 +510,11 @@ service imservice {
 	post /agoraCallback (AgoraCallbackReq) returns (NoDataRes)
 }
 
-@server(
+@server (
 	//jwt: Auth                 //开启jwt鉴权
-	middleware: BeforeHandle    //路由中间件声明
-	group: imservice                   //接口所属组
-	prefix : imservice/v1              //路由公共前缀
+	middleware: BeforeHandle //路由中间件声明
+	group:      imservice //接口所属组
+	prefix:     imservice/v1 //路由公共前缀
 )
 service imservice {
 	@doc "imservice获取会话密钥"
@@ -673,4 +676,9 @@ service imservice {
 	@doc "消息撤回"
 	@handler MsgRecall
 	post /MsgRrecall (MsgRecallReq) returns (MsgRecallRes)
+
+	@doc "单次脚本"
+	@handler runTask
+	post /runTask (RUnTaskReq) returns (NoDataRes)
 }
+
