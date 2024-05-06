@@ -1,146 +1,151 @@
 syntax = "v1"
 
 info (
-	title:"用户资产公共服务"
-	desc:"用户钱包,余额操作"
-	author:"leon"
-	email:"zhangchaonin@infras.tech"
-	version:"v0.1"
-	date:"2023-07-03"
+	title:   "用户资产公共服务"
+	desc:    "用户钱包,余额操作"
+	version: "v0.1"
+	date:    "2023-07-03"
 )
 
 type (
 	CommonParams {
-		UserId      int64  `form:"user_id"`      //用户唯一标识
-		SessId      string `form:"sessid"`       //用户登录标识
-		Api         string `form:"api"`          //App公钥
-		Version     string `form:"version"`      //版本号
+		UserId      int64  `form:"user_id"` //用户唯一标识
+		SessId      string `form:"sessid"` //用户登录标识
+		Api         string `form:"api"` //App公钥
+		Version     string `form:"version"` //版本号
 		VersionCode string `form:"version_code"` //构建号
-		Uuid        string `form:"uuid"`         //设备唯一标识
-		Lan         string `form:"lan"`          //语言，如zh_TW
-		Sign        string `form:"sign"`         //签名
-		SignTime    int64  `form:"sign_time"`    //当前时间
+		Uuid        string `form:"uuid"` //设备唯一标识
+		Lan         string `form:"lan"` //语言，如zh_TW
+		Sign        string `form:"sign"` //签名
+		SignTime    int64  `form:"sign_time"` //当前时间
 	}
-
 	BalanceListReq {
 		CommonParams
 	}
-
 	BalanceListItem {
-		Chain   string `json:"chain"`   // 当前链id
-		Token   string `json:"token"`   // 币种名
-		Pid     int64  `json:"pid"`     // 链所属id
-		Icon    string `json:"icon"`    // token icon
-		Name    string `json:"name"`    // token 完整名称
+		Chain   string `json:"chain"` // 当前链id
+		Token   string `json:"token"` // 币种名
+		Pid     int64  `json:"pid"` // 链所属id
+		Icon    string `json:"icon"` // token icon
+		Name    string `json:"name"` // token 完整名称
 		Balance string `json:"balance"` // 余额
-		Frozen  string `json:"frozen"`  // 冻结资金
+		Frozen  string `json:"frozen"` // 冻结资金
 	}
-
 	NetListReq {
 		CommonParams
 		Page uint64 `form:"page,default=1"` // 分页
 	}
-
 	NetListItem {
-		ID      int64 `json:"id"`      // id
+		ID      int64 `json:"id"` // id
 		UserID  int64 `json:"user_id"` // 用户id
-		Sort    int64 `json:"sort"`    // 排序
+		Sort    int64 `json:"sort"` // 排序
 		Network int64 `json:"network"` // 网络id
-		Ctime   int64 `json:"ctime"`   // 时间
-		IsDel   int64 `json:"is_del"`  // 是否删除 1是 0否
+		Ctime   int64 `json:"ctime"` // 时间
+		IsDel   int64 `json:"is_del"` // 是否删除 1是 0否
 	}
-
 	NetListResp {
-		List  []NetListItem `json:"list"`  // 网络列表
-		Page  uint64        `json:"page"`  // 当前页码
+		List  []NetListItem `json:"list"` // 网络列表
+		Page  uint64        `json:"page"` // 当前页码
 		Pages uint64        `json:"pages"` // 总页码
-
-	}
-
-	BalanceOptReq {
-		CommonParams
-		OptVal  float64 `form:"opt_val"`       // 操作金额
-		OUserID int64   `form:"ouid,optional"` // 红包操作时需要发红包方id
-		Chain   int64   `form:"chain"`         // 链
-		ActID   int64   `form:"act_id"`        // 操作id
-		Type    int64   `form:"type"`          // 操作类型
-		SID     string  `form:"sid"`           // 对应id
-	}
-	BalanceOptResp {
 	}
 
 	RechargeApplyReq {
 		CommonParams
-		Amount float64 `form:"amount"`        // 充值金额
-		Chain  int64   `form:"chain"`         // 充值链id
+		Amount float64 `form:"amount"` // 充值金额
+		Chain  int64   `form:"chain"` // 充值链id
 		TxID   string  `form:"txid,optional"` // 交易hash
 	}
 	RechargeApplyResp {
 		OrderNo string `json:"order_no"` // 充值订单号
 	}
-
 	BalanceLogItem {
-		ActID   string `json:"act_id"`  // 操作id
-		Act     string `json:"act"`     // 操作类型
-		Opt     string `json:"opt"`     // 操作字符串
+		ActID   string `json:"act_id"` // 操作id
+		Act     string `json:"act"` // 操作类型
+		Opt     string `json:"opt"` // 操作字符串
 		OptVal  string `json:"opt_val"` // 变动金额
 		Balance string `json:"balance"` // 账户余额
-		CTime   string `json:"ctime"`   // 变动时间
-		SID     string `json:"sid"`     // 关联订单号
-		Wallet  string `json:"wallet"`  // 钱包地址
+		CTime   string `json:"ctime"` // 变动时间
+		SID     string `json:"sid"` // 关联订单号
+		Wallet  string `json:"wallet"` // 钱包地址
+		Status  int32  `json:"status"` // 交易状态
 	}
 	BalanceLogReq {
 		CommonParams
-		Year  int64 `form:"year,optional"`  // 过滤年份
+		Year  int64 `form:"year,optional"` // 过滤年份
 		Page  int64 `form:"page,default=1"` // 页码
-		Chain int64 `form:"chain"`          // 指定币种流水
+		Chain int64 `form:"chain"` // 指定币种流水
 	}
-
 	BalanceLogResp {
 		Balance string           `json:"balance"` // 用户余额
-		List    []BalanceLogItem `json:"list"`    // 余额变动列表
-		Pages   int64            `json:"pages"`   // 总页码
-		Count   int64            `json:"count"`   // 记录总条数
+		List    []BalanceLogItem `json:"list"` // 余额变动列表
+		Pages   int64            `json:"pages"` // 总页码
+		Count   int64            `json:"count"` // 记录总条数
 	}
-
 	WithdrawReq {
 		CommonParams
-		Amount float64 `form:"amount"` // 数目
-		Chain  int64   `form:"chain,optional"` // 链id
+		Amount float64 `form:"amount"`
+		Chain  int64   `form:"chain,optional"`
 	}
-
 	WithdrawResp {
 		OrderNo string `json:"order_no"` // 提现订单号
 	}
-
 	RechargeSubmitReq {
 		CommonParams
 		OrderNo string `form:"order_no"` // 充值订单号
-		TxID    string `form:"txid"`     // 交易hash
+		TxID    string `form:"txid"` // 交易hash
 	}
-
-	RechargeSubmitResp {
+	RechargeSubmitResp  {}
+	CallbackReq {
+		CommonParams
+		OrderNo string `form:"order_no"` // 处理完毕的订单号
+		Status  int32  `form:"status"` // 交易状态 1 成功 2 失败
+		Amount  string `form:"amount"` // 交易实际金额
+		TxID    string `form:"txid,optional"`
+		UserID  int64  `form:"user_id"` // 发生交易的用户id
+		Type    int32  `form:"type"` // 回调类型 1 充值 2 提现
+	}
+	CallbackResp  {}
+	TransInfoReq {
+		CommonParams
+		OrderNo string `form:"order_no"` // 订单号
+		Type    int64  `form:"type,default=0"` // 交易类型
+	}
+	TransInfoResp {
+		//             `id`, `user_id`,`order_no`,`chain`,`txid`,`amount`,`p_fee`,`fee`,`status`,`ctime`,`utime`,`from`,`to`
+		ID      int64  `json:"id"`
+		UserID  int64  `json:"user_id"`
+		OrderNo string `json:"order_no"`
+		Chain   int64  `json:"chain"`
+		TxID    string `json:"txid"`
+		UTime   int64  `json:"utime"`
+		Amount  string `json:"amount"`
+		AptTime int64  `json:"apt_time"`
+		ActID   int64  `json:"act_id"`
+		Fee     string `json:"fee"`
+		From    string `json:"from"`
+		Token   string `json:"token"`
+		Ctime   int64  `json:"ctime"`
+		Ext     string `json:"ext"`
+		Status  int64  `json:"status"`
+		To      string `json:"to"`
 	}
 )
 
 @server (
-	middleware:BeforeHandle
-	group:accountservice
-	prefix:account/v1
+	middleware: BeforeHandle
+	group:      accountservice
+	prefix:     account/v1
 )
-
-service accountservice{
+service accountservice {
 	@doc "获取余额"
 	@handler balanceList
-	post /balance/list (BalanceListReq) returns ( []BalanceListItem )
+	post /balance/list (BalanceListReq) returns ([]BalanceListItem)
 
 	@doc "获取网络列表"
 	@handler netList
 	post /net/list (NetListReq) returns (NetListResp)
 
-	@doc "操作余额"
-	@handler balanceOpt
-	post /balance/opt (BalanceOptReq) returns (BalanceOptResp)
+
 
 	@doc "充值创建"
 	@handler rechargeApply
@@ -157,4 +162,13 @@ service accountservice{
 	@doc "提现"
 	@handler withdraw
 	post /balance/withdraw (WithdrawReq) returns (WithdrawResp)
+
+	@doc "充值回调"
+	@handler callback
+	post /callback (CallbackReq) returns (CallbackResp)
+
+	@doc "充值提现详情"
+	@handler transDetail
+	post /balance/transInfo (TransInfoReq) returns (TransInfoResp)
 }
+
