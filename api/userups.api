@@ -1,0 +1,82 @@
+//api 语法版本
+syntax = "v1"
+
+//介绍
+info (
+	title:   "user points system 服务"
+	desc:    "包括积分查询，任务查询，积分明细，上报积分任务"
+	author:  ""
+	email:   "*@cyberflow"
+	version: "v0.1"
+	date:    "2023-06-01"
+)
+
+//统一请求鉴权信息
+type CommonParams {
+	UserId      int64  `form:"user_id"` //用户唯一标识
+	SessId      string `form:"sessid"` //用户登录标识
+	Api         string `form:"api"` //App公钥
+	Version     string `form:"version"` //版本号
+	VersionCode string `form:"version_code"` //构建号
+	Uuid        string `form:"uuid"` //设备唯一标识
+	Lan         string `form:"lan"` //语言，如zh_TW
+	Sign        string `form:"sign"` //签名
+	SignTime    int64  `form:"sign_time"` //当前时间
+}
+
+//统一返回格式
+type CommonJsonResp {
+	Code int32       `json:"iRet"`
+	Msg  string      `json:"sMsg"`
+	Data interface{} `json:"data"`
+}
+
+//查询积分和等级
+type GetUserPointsReq {
+	CommonParams
+	OuserID int64 `form:"ouserID"` //可以是自己或其他用户id
+}
+
+//积分明细list
+type GetUserPointsDetailReq {
+	CommonParams
+	Page  int64 `form:"page,default=1"`
+	Count int64 `form:"count,default=20"`
+}
+
+//领取任务积分
+type ReceiveUserPointsReq {
+	CommonParams
+	TaskIDs string `form:"taskID"`
+}
+
+//查询用户任务和状态
+type GetUserPointsTasksReq {
+	CommonParams
+	TaskType string `form:"taskType,optional"` //
+}
+
+@server (
+	//jwt: Auth                 //开启jwt鉴权
+	middleware: BeforeHandle //路由中间件声明
+	group:      userups //接口所属组
+	prefix:     userups //路由公共前缀
+)
+service userups {
+	@doc "查询积分信息"
+	@handler getUserPoints
+	post /getUserPoints (GetUserPointsReq) returns (CommonJsonResp)
+
+	@doc "查询积分明细"
+	@handler getUserPointsList
+	post /getUserPointsList (GetUserPointsDetailReq) returns (CommonJsonResp)
+
+	@doc "领取积分"
+	@handler receiveUserPoints
+	post /receiveUserPoints (ReceiveUserPointsReq) returns (CommonJsonResp)
+
+	@doc "查询积分任务"
+	@handler getUserPointsTasks
+	post /getUserPointsTasks (GetUserPointsTasksReq) returns (CommonJsonResp)
+}
+

@@ -1,0 +1,556 @@
+syntax = "proto3";
+
+package userinfo;
+
+// protoc-gen-go 版本大于1.4.0, proto文件需要加上go_package,否则无法生成
+option go_package = "./userinfo";
+
+message UserConf{
+  string UserID=1;
+  int32 Asset  =2;  //资产展示设置：0关闭；1开启
+  int32 IsSearch  =3; //nft头像展示：0关闭，1开启
+  int32 TribeNoticeType   =4; //部落消息通知设置：0接受全部，
+  int32 DynamicShow   =5; //动态展示设置：0关闭，1开启
+  int32 StrangeMsg  =6; //默生人私信是否限制：0不限制，1限制
+  string Cover  =7; //  用户资料卡封面
+  string Lan = 8;
+  int32  RelationShow = 9;//是否展示粉丝关注列表
+  int32 FriendVerify = 10; // 加我好友验证 0关，1开
+}
+
+message UserNotificationConf{
+  string UserID = 1;
+  optional int64 NewNotification  = 2;  //新消息通知：0关闭 1开启
+  optional int64 ShowSenderContent  = 3; //通知显示发送人消息：0关闭 1开启
+  optional int64 Sounds   = 4; //声音：0关闭 1开启
+  optional int64 Vibrate   = 5; //震动：0关闭 1开启
+  optional int64 Badges  = 6; //消息通知横幅：0关闭 1开启
+}
+
+message UserInfo{
+  string UserID =1;
+  string Avatar =2;
+  string Nick =3;
+  int32 Age =4;
+  int32 Sex =5;
+  int64 CTime=6;
+  string Desc=7; //简介
+  int32 IsFrozen =8; //帐号是否被系统冻结
+  string Wallet=9;//钱包地址
+  int32 IsPwd=10; //是否设置密码
+  int32 UserType=11;//用户注册登陆类型
+  int64 UserPoints=12;//积分
+  int64 UserLevel=13;//用户等级
+}
+
+//用户综合信息，包括info，conf，relation
+message UserInfos{
+  string UserID=1;
+  UserInfo Info=2;
+  UserConf Conf=3;
+}
+
+message UserResult{
+  int32 Ret = 1;
+  string Message =2;
+}
+
+message GetUsersInfoReq {
+  repeated string UserIDs =1;
+}
+
+message GetUsersInfoResp {
+  UserResult Result =1;
+  repeated UserInfo Users =2;
+}
+
+//查询用户设置信息，包括设置
+message GetUsersReq {
+  string UserId=1;//查询用户
+  repeated string Ouids =2; //目标用户
+  string Fields =3;    //info,conf, 两种可选,逗号分隔,如果查询用户关系，请在上层api层调用通讯录查询
+}
+
+message GetUsersResp {
+  UserResult Result =1;
+  repeated UserInfos Users =2;
+}
+
+//设置密码重新设置
+message RestUsersPwdReq {
+  string UserId=1;//查询用户
+  string Pwd=2; //新密码
+  string OPwd=3; //旧密码
+  string NPwd=4; //新密码（新密码）
+}
+
+message RestUsersPwdResp {
+  UserResult Result =1;
+}
+
+//获取用户消息通知配置
+message UsersNotificationConfReq {
+  repeated string UserIds=1;//查询用户
+}
+
+message UsersNotificationConfResp {
+  UserResult Result =1;
+  repeated UserNotificationConf Confs = 2;
+}
+
+//设置用户消息通知配置
+message SetUsersNotificationConfReq {
+  UserNotificationConf conf = 1;
+}
+
+message SetUsersNotificationConfResp {
+  UserResult Result =1;
+}
+
+// SetCancellation 申请注销账号
+message SetCancellationReq {
+  string UserId  = 1;
+}
+
+message SetCancellationResp {
+  UserResult Result = 1;
+}
+
+
+enum PlatformType {
+      Ios = 0;
+      Android = 1;
+      Unknown = 99;
+}
+
+// Login 登陆
+message LoginReq {
+  string Openudid  = 1;
+  int64 UserType  = 2;
+  string Pwd  = 3;
+  string UUID  = 4;
+  string Version  = 5; // 登陆的APP版本
+  PlatformType Platform  = 6; // 登陆的设备平台 ios/Android
+  string Api  = 7; // Api参数
+  string Ip  = 8; // Ip
+}
+
+message LoginResp {
+  UserResult Result =1;
+  string SessionId = 2;
+  int64 UserId = 3;
+}
+
+// RegisterReq 注册
+message RegisterReq {
+  string Openudid = 1; // 账号（邮箱或自定义账号，或者是第三方登录的code，或钱包地址）
+  int64 UserType = 2; // 账号类型10=>邮箱，20=>钱包(目前没有了)，30=>google，40=>facebook（(目前没有了)），50=>apple，60=>手机号（(目前没有了)），70=>自定义账号，80=>一键注册
+  string Pwd = 3; // 密码
+  string EmailCode = 4; // 邮箱验证码
+  string Api = 5; // 请求过来的api参数
+  string AuthEmail = 6; // 第三方登陆时的邮箱，比如苹果、谷歌登陆获取到的邮箱
+  PlatformType Platform  = 7; // 登陆的设备平台 ios/Android
+}
+
+message RegisterResp {
+  UserResult Result =1;
+  int64 UserId = 2;
+  string Openudid = 3; //快捷登陆时，生成返回
+}
+
+// SendVerificationCodeReq 发送验证码
+message SendVerificationCodeReq {
+  string Uuid = 1; // 设备唯一标识
+  string Openudid = 2; // 邮箱
+  string Scene = 3; //场景：1注册；2绑定；3忘記密碼，4.pin
+  string Language = 4; // 邮件语言
+}
+
+message SendVerificationCodeResp {
+  UserResult Result =1;
+}
+
+// LoginAutoReq 自动登陆
+message LoginAutoReq {
+  int64 ResetSessionId  = 1; // 重置sessionId 0 否 1是
+  string UUID = 2;
+  string UserId = 3;
+  string Version  = 4; // 登陆的APP版本
+  PlatformType Platform  = 5; // 登陆的设备平台 ios/Android
+  string Api  = 6; // Api参数
+  string Ip  = 7; // Ip
+}
+
+message LoginAutoResp {
+  UserResult Result =1;
+  string SessionId =2;
+}
+
+enum LogOutType {
+  APP = 0;
+  Web = 1;
+}
+
+// LogoutReq 退出
+message LogoutReq {
+  string UserId  = 1;
+  LogOutType Type  = 2;
+}
+
+message LogoutResp {
+  UserResult Result =1;
+}
+
+// ForgetReq 忘记密码
+message ForgetReq {
+  string Openudid  = 1; // 账号
+  int64 UserType =2; // 账号类型
+  string Pwd = 3; // 密码
+  string VerificationCode =4; // 验证码
+}
+
+message ForgetResp {
+  UserResult Result =1;
+}
+
+// CheckUserExists 检查用户是否已经存在
+message CheckUserExistsReq {
+  string Openudid  = 1; // 账号
+  int64 UserType =2; // 账号类型
+}
+
+message CheckUserExistsResp {
+  UserResult Result =1;
+  bool Exists  = 2;
+}
+
+// Bind 绑定
+message BindReq {
+  string Openudid  = 1; // 账号
+  int64 UserType =2; // 账号类型
+  string EmailCode =3; // 邮箱验证码
+  int64 UserId = 4; // 用户ID
+  string AuthEmail = 5; // 第三方登陆的邮箱，苹果、谷歌登陆时会有
+  string Pwd = 6; // 用户初次设置密码时传递
+}
+
+message BindResp {
+  UserResult Result =1;
+}
+
+enum SetUserType{
+  SetInfoAdd=0;
+  SetInfoNick=1;
+  SetInfoDesc=2;
+  SetInfoAvatar=3;
+  SetInfoReset=4;
+  SetInfoDel=5;
+
+  SetConfAsset=6;
+  SetConfNotice=7;
+  SetConfDynamicShow=8;
+  SetConfStrangeMsg=9;
+  SetConfCover=10;
+  SetConfLan=11;
+  SetconfIsSearch=12;
+  SetRelationShow=13;
+  SetFriendVerify=14;
+}
+
+message SetUserInfoReq {
+  SetUserType SetType = 1;
+  UserInfo Info =2;
+  UserConf Conf =3;
+}
+
+message SetUserInfoResp {
+    UserResult Result =1;
+}
+
+message UnbindReq {
+  int64 UserId = 1;
+  int64 UserType = 2;
+}
+
+message BindListReq {
+  int64 UserId = 1;
+}
+
+message BindStatus {
+  int64  Account = 1;
+  int64  Google = 2;
+  int64  Apple = 3;
+  int64  Diy = 4;
+  int64  Quick = 5;
+}
+message BindListInfo {
+  BindStatus Bind = 1;
+  string Account = 2;
+  int64 Pwd = 3;
+  string PhoneNo = 4;
+  string DiyNo = 5;
+  string GEmail = 6;
+  string AEmail = 7;
+}
+
+message BindListRes {
+  UserResult Result = 1;
+  BindListInfo Data = 2;
+}
+
+message GetAuthInfoReq {
+  string Openudid =1;
+   int64 UserType = 2;
+}
+
+message GetAuthInfoResp {
+  string Sub = 1; // 第三方唯一用户标识
+  string Email = 2; // 邮箱
+  UserResult Result = 3;
+}
+message VerifyPwdReq {
+  string UserId =1;
+  string Pwd = 2;
+}
+
+message VerifyPwdResp {
+  bool IsPass =1;
+  UserResult Result = 2;
+}
+
+message GetLoginAutoInfoReq {
+  int64 UserId = 1;
+}
+
+message GetLoginAutoInfoResp {
+  int64 UserId = 1;
+  string Nick = 2;
+  int64 Status = 3;
+  int64 Age = 4;
+  string Avatar = 5;
+  int64 ActiveTime = 6; //上次登陆时间
+  int64 Sex = 7;
+  string Level = 8;
+  string Desc = 9;
+  int64 IsTodayFirst = 12; // 今天是否第一次登陆
+  int64 UserType = 13;
+  int64 HasWallet = 14;
+  int64 RegTime = 16; // 注册时间
+  UserResult Result = 17;
+  int64 hasSign = 18;
+}
+
+enum ActionType {
+  UserLogin = 0; // 用户登陆
+  UserRegister = 1; // 用户注册
+  UserCardVisited = 2; // 用户名片被访问
+  UserCardScan = 3; // 用户名片被扫描
+  UserCardH5Visited = 4; // 用户名片h5页 被访问次数
+  UserCardH5Download = 5; //名片H5页拉新次数
+  UserCardH5Active = 6; //名片H5页促活次数
+  RedPacketCreate = 7; // 发红包
+  RedPacketGet = 8; // 领红包
+}
+
+message StatLogReq {
+  int64 UserId = 1;
+  PlatformType Platform = 2;
+  ActionType Action = 3;
+  map<string,string> Ext = 4; // redpackCreate 红包数量:quantity  clubVisted 部落ID:tb_mid
+}
+
+message StatLogResp {
+  UserResult Result = 1;
+}
+
+enum BannerScene{
+  Update = 0; // 更新
+}
+message BannerListReq{
+  int64 UserId = 1; // 用户id
+  BannerScene Scene = 2; // 场景
+  string Lan = 3; // 语言
+  string Version = 4; // 当前版本号
+  string Platform = 5; // 平台
+  int32  Page = 6;
+  int32  PageSize = 7;
+}
+message Button{
+  string Title = 1;
+  string Action = 2;
+  string Type = 3;
+}
+message ExtInfo{
+  string Key = 1;
+  string Val = 2;
+}
+message BannerInfo{
+  int64 ID =1;
+  string Title =2;
+  string Content = 3;
+  repeated Button Btn = 4;
+  int32 DailyDisplay = 5;
+  repeated ExtInfo ExtInfo = 6;
+  int32 Closeable = 7;
+  int32  Template = 8;
+  int64  StartTime = 9;
+  int64 EndTime = 10;
+  string BannerNo = 11;
+  string Lan = 12;
+  int32 Scene = 13;
+  int32 Plat = 14;
+  string Version =15;
+  int64 Ctime = 16;
+}
+message BannerListResp{
+  repeated BannerInfo Banner = 1;
+  int32 Total = 2;
+  int32 Pages = 3;
+}
+message LanguageData{
+  repeated Button Button = 1;
+  repeated ExtInfo ExtInfo = 2;
+  string Title = 3;
+  string Content = 4;
+  string Lan = 5;
+}
+message BannerSaveReq{
+  int32 Closeable = 1;
+  int32  Template = 2;
+  string DateRange = 3;
+  int32 Plat = 4;
+  int32  DailyDisplay = 5;
+  int32 Scene = 6;
+  string Version = 7;
+  int64 ID= 8;
+  string Content = 13;
+}
+message BannerSaveResp{
+    UserResult Result = 1;
+}
+message BannerInfoReq{
+  int64 ID = 1;
+}
+message BannerInfoResp{
+  BannerInfo Banner = 1;
+}
+message BannerDelReq{
+  int64 ID = 1;
+}
+message BannerDelResp{
+  UserResult Result = 1;
+}
+message SearchReq {
+  string Keyword = 1; // 关键词
+}
+
+message SearchResp {
+  UserResult Result = 1;
+  message UInfo {
+    int64 UserId = 1; // 用户ID
+    string Nick = 2; // 昵称
+    int64 Age =3; // 年龄
+    string Avatar =4; //头像
+    int64 ActiveTime =5; //最后活跃时间
+    string Desc = 6;//简介
+    string Address = 7; //钱包地址
+  }
+  repeated UInfo Users = 2;
+}
+
+message GetInfoByShareCodeReq {
+  string ShareCode = 1; // 分享码
+}
+
+message GetInfoByShareCodeResp {
+  UserResult Result = 1;
+  UserInfo UserInfo = 2; // 用户信息
+}
+
+// 创建钱包
+message GenerateWalletReq {
+  string Address = 1;
+  message WalletExtend {
+      int64 Chain = 1;
+      string Wallet = 2;
+  }
+  repeated WalletExtend Extends = 2;
+  int64 UserId = 3;
+}
+
+message GenerateWalletResp {
+  UserResult Result =1;
+}
+
+// 解绑钱包
+message UnbindWalletReq {
+  int64 UserId = 1;
+}
+
+message UnbindWalletResp {
+  UserResult Result =1;
+  string Address = 2;
+}
+
+service User {
+  //只支持info查询
+  rpc getUsersInfo(GetUsersInfoReq) returns(GetUsersInfoResp);
+  //支持info，conf, relation组合查询
+  rpc getUsers(GetUsersReq) returns(GetUsersResp);
+  //用户信息或设置修改
+  rpc updateUserInfo(SetUserInfoReq) returns(SetUserInfoResp);
+  //修改账号密码
+  rpc ResetUserPwd(RestUsersPwdReq) returns(RestUsersPwdResp);
+
+  //获取用户的消息配置
+  rpc GetUsersNotificationConf(UsersNotificationConfReq) returns(UsersNotificationConfResp);
+  //设置用户的消息配置
+  rpc SetUsersNotificationConf(SetUsersNotificationConfReq) returns(SetUsersNotificationConfResp);
+
+  // 申请注销账号
+  rpc SetCancellation(SetCancellationReq) returns(SetCancellationResp);
+  // 登陆
+  rpc Login(LoginReq) returns(LoginResp);
+  // 注册
+  rpc Register(RegisterReq) returns(RegisterResp);
+  // 发送邮箱验证码
+  rpc SendVerificationCode(SendVerificationCodeReq) returns(SendVerificationCodeResp);
+  // 自动登陆
+  rpc LoginAuto(LoginAutoReq) returns(LoginAutoResp);
+  // 退出登陆
+  rpc Logout(LogoutReq) returns(LogoutResp);
+  // 忘记密码
+  rpc Forget(ForgetReq) returns(ForgetResp);
+  // 检查用户是否已经存在
+  rpc CheckUserExists(CheckUserExistsReq) returns(CheckUserExistsResp);
+  // 绑定邮箱、或者第三方账号
+  rpc Bind(BindReq) returns(BindResp);
+  // 解绑账号
+  rpc Unbind(UnbindReq) returns(UserResult);
+  // 绑定列表
+  rpc BindList(BindListReq) returns(BindListRes);
+  // 获取第三方认证信息
+  rpc GetAuthInfo(GetAuthInfoReq) returns(GetAuthInfoResp);
+  // 验证用户密码
+  rpc VerifyPwd(VerifyPwdReq) returns(VerifyPwdResp);
+
+  // 获取自动登陆信息
+  rpc GetLoginAutoInfo(GetLoginAutoInfoReq) returns(GetLoginAutoInfoResp);
+  // 管理后台 - 数据上报
+  rpc StatLog(StatLogReq) returns(GetLoginAutoInfoResp);
+  // banner列表
+  rpc BannerList(BannerListReq) returns(BannerListResp);
+  rpc BannerSave(BannerSaveReq) returns(BannerSaveResp);
+  rpc BannerInfo(BannerInfoReq) returns(BannerInfoResp);
+  rpc BannerDel(BannerDelReq) returns(BannerDelResp);
+  // 搜索用户
+  rpc Search(SearchReq) returns(SearchResp);
+
+  // 通过分享码获取用户信息
+  rpc GetInfoByShareCode(GetInfoByShareCodeReq) returns(GetInfoByShareCodeResp);
+
+  // 创建/绑定钱包
+  rpc GenerateWallet(GenerateWalletReq) returns(GenerateWalletResp);
+  // 解绑钱包
+  rpc UnbindWallet(UnbindWalletReq) returns(UnbindWalletResp);
+}
