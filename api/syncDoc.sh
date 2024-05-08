@@ -54,7 +54,7 @@ for file in *.json; do
 done
 if [ "$Fail" -gt "0" ]
 then
-  echo "一共${Total}个API文件，导入成功${Success}个，导入失败${Fail}。失败的文件:${FailFiles}"
+    echo "一共${Total}个API文件，导入成功${Success}个，导入失败${Fail}。失败的文件:${FailFiles}"
 else
     echo "一共${Total}个API文件，导入成功${Success}个"
 fi

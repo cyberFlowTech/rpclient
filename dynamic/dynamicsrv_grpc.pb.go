@@ -32,6 +32,7 @@ const (
 	Dynamicsrv_HasPraise_FullMethodName                      = "/dynamicsrv.Dynamicsrv/HasPraise"
 	Dynamicsrv_GetPraiseList_FullMethodName                  = "/dynamicsrv.Dynamicsrv/GetPraiseList"
 	Dynamicsrv_RemoveDiscoverDynamicIds_FullMethodName       = "/dynamicsrv.Dynamicsrv/RemoveDiscoverDynamicIds"
+	Dynamicsrv_RemoveClubDynamicIds_FullMethodName           = "/dynamicsrv.Dynamicsrv/RemoveClubDynamicIds"
 	Dynamicsrv_Collect_FullMethodName                        = "/dynamicsrv.Dynamicsrv/Collect"
 	Dynamicsrv_HasCollect_FullMethodName                     = "/dynamicsrv.Dynamicsrv/HasCollect"
 	Dynamicsrv_GetCollectList_FullMethodName                 = "/dynamicsrv.Dynamicsrv/GetCollectList"
@@ -44,6 +45,8 @@ const (
 	Dynamicsrv_Comment_FullMethodName                        = "/dynamicsrv.Dynamicsrv/Comment"
 	Dynamicsrv_DeleteComment_FullMethodName                  = "/dynamicsrv.Dynamicsrv/DeleteComment"
 	Dynamicsrv_GetUsersFansCountAndFocusCount_FullMethodName = "/dynamicsrv.Dynamicsrv/GetUsersFansCountAndFocusCount"
+	Dynamicsrv_StatLog_FullMethodName                        = "/dynamicsrv.Dynamicsrv/StatLog"
+	Dynamicsrv_SyncDynamicFeed_FullMethodName                = "/dynamicsrv.Dynamicsrv/SyncDynamicFeed"
 )
 
 // DynamicsrvClient is the client API for Dynamicsrv service.
@@ -57,7 +60,7 @@ type DynamicsrvClient interface {
 	// 发现页动态列表
 	GetDiscoverDynamicList(ctx context.Context, in *DiscoverDynamicListRequest, opts ...grpc.CallOption) (*DiscoverDynamicListResponse, error)
 	// 指定用户动态列表
-	GetUserDynamicList(ctx context.Context, in *UserDynamicListRequest, opts ...grpc.CallOption) (*DynamicInfoResponse, error)
+	GetUserDynamicList(ctx context.Context, in *UserDynamicListRequest, opts ...grpc.CallOption) (*UserDynamicListResponse, error)
 	// 部落动态列表
 	GetClubDynamicList(ctx context.Context, in *ClubDynamicListRequest, opts ...grpc.CallOption) (*ClubDynamicListResponse, error)
 	// 动态详情
@@ -76,6 +79,8 @@ type DynamicsrvClient interface {
 	GetPraiseList(ctx context.Context, in *PraiseListRequest, opts ...grpc.CallOption) (*PraiseListResponse, error)
 	// 从动态列表中移除动态
 	RemoveDiscoverDynamicIds(ctx context.Context, in *RemoveDiscoverDynamicIdsRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
+	// 从部落动态列表中移除动态
+	RemoveClubDynamicIds(ctx context.Context, in *RemoveClubDynamicIdsRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 收藏动态
 	Collect(ctx context.Context, in *CollectRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 该用户是否已收藏该动态
@@ -100,6 +105,10 @@ type DynamicsrvClient interface {
 	DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 获取多个用户的粉丝数和关注数
 	GetUsersFansCountAndFocusCount(ctx context.Context, in *UsersFansCountAndFocusCountRequest, opts ...grpc.CallOption) (*UsersFansCountAndFocusCountResponse, error)
+	// 管理后台 - 数据上报
+	StatLog(ctx context.Context, in *StatLogReq, opts ...grpc.CallOption) (*StatLogResp, error)
+	// 同步动态到广场、朋友圈
+	SyncDynamicFeed(ctx context.Context, in *SyncDynamicFeedReq, opts ...grpc.CallOption) (*SyncDynamicFeedResp, error)
 }
 
 type dynamicsrvClient struct {
@@ -137,8 +146,8 @@ func (c *dynamicsrvClient) GetDiscoverDynamicList(ctx context.Context, in *Disco
 	return out, nil
 }
 
-func (c *dynamicsrvClient) GetUserDynamicList(ctx context.Context, in *UserDynamicListRequest, opts ...grpc.CallOption) (*DynamicInfoResponse, error) {
-	out := new(DynamicInfoResponse)
+func (c *dynamicsrvClient) GetUserDynamicList(ctx context.Context, in *UserDynamicListRequest, opts ...grpc.CallOption) (*UserDynamicListResponse, error) {
+	out := new(UserDynamicListResponse)
 	err := c.cc.Invoke(ctx, Dynamicsrv_GetUserDynamicList_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -221,6 +230,15 @@ func (c *dynamicsrvClient) GetPraiseList(ctx context.Context, in *PraiseListRequ
 func (c *dynamicsrvClient) RemoveDiscoverDynamicIds(ctx context.Context, in *RemoveDiscoverDynamicIdsRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
 	out := new(APICommonResponse)
 	err := c.cc.Invoke(ctx, Dynamicsrv_RemoveDiscoverDynamicIds_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dynamicsrvClient) RemoveClubDynamicIds(ctx context.Context, in *RemoveClubDynamicIdsRequest, opts ...grpc.CallOption) (*APICommonResponse, error) {
+	out := new(APICommonResponse)
+	err := c.cc.Invoke(ctx, Dynamicsrv_RemoveClubDynamicIds_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -335,6 +353,24 @@ func (c *dynamicsrvClient) GetUsersFansCountAndFocusCount(ctx context.Context, i
 	return out, nil
 }
 
+func (c *dynamicsrvClient) StatLog(ctx context.Context, in *StatLogReq, opts ...grpc.CallOption) (*StatLogResp, error) {
+	out := new(StatLogResp)
+	err := c.cc.Invoke(ctx, Dynamicsrv_StatLog_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dynamicsrvClient) SyncDynamicFeed(ctx context.Context, in *SyncDynamicFeedReq, opts ...grpc.CallOption) (*SyncDynamicFeedResp, error) {
+	out := new(SyncDynamicFeedResp)
+	err := c.cc.Invoke(ctx, Dynamicsrv_SyncDynamicFeed_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DynamicsrvServer is the server API for Dynamicsrv service.
 // All implementations must embed UnimplementedDynamicsrvServer
 // for forward compatibility
@@ -346,7 +382,7 @@ type DynamicsrvServer interface {
 	// 发现页动态列表
 	GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*DiscoverDynamicListResponse, error)
 	// 指定用户动态列表
-	GetUserDynamicList(context.Context, *UserDynamicListRequest) (*DynamicInfoResponse, error)
+	GetUserDynamicList(context.Context, *UserDynamicListRequest) (*UserDynamicListResponse, error)
 	// 部落动态列表
 	GetClubDynamicList(context.Context, *ClubDynamicListRequest) (*ClubDynamicListResponse, error)
 	// 动态详情
@@ -365,6 +401,8 @@ type DynamicsrvServer interface {
 	GetPraiseList(context.Context, *PraiseListRequest) (*PraiseListResponse, error)
 	// 从动态列表中移除动态
 	RemoveDiscoverDynamicIds(context.Context, *RemoveDiscoverDynamicIdsRequest) (*APICommonResponse, error)
+	// 从部落动态列表中移除动态
+	RemoveClubDynamicIds(context.Context, *RemoveClubDynamicIdsRequest) (*APICommonResponse, error)
 	// 收藏动态
 	Collect(context.Context, *CollectRequest) (*APICommonResponse, error)
 	// 该用户是否已收藏该动态
@@ -389,6 +427,10 @@ type DynamicsrvServer interface {
 	DeleteComment(context.Context, *DeleteCommentRequest) (*APICommonResponse, error)
 	// 获取多个用户的粉丝数和关注数
 	GetUsersFansCountAndFocusCount(context.Context, *UsersFansCountAndFocusCountRequest) (*UsersFansCountAndFocusCountResponse, error)
+	// 管理后台 - 数据上报
+	StatLog(context.Context, *StatLogReq) (*StatLogResp, error)
+	// 同步动态到广场、朋友圈
+	SyncDynamicFeed(context.Context, *SyncDynamicFeedReq) (*SyncDynamicFeedResp, error)
 	mustEmbedUnimplementedDynamicsrvServer()
 }
 
@@ -405,7 +447,7 @@ func (UnimplementedDynamicsrvServer) UpdateDynamic(context.Context, *UpdateDynam
 func (UnimplementedDynamicsrvServer) GetDiscoverDynamicList(context.Context, *DiscoverDynamicListRequest) (*DiscoverDynamicListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDiscoverDynamicList not implemented")
 }
-func (UnimplementedDynamicsrvServer) GetUserDynamicList(context.Context, *UserDynamicListRequest) (*DynamicInfoResponse, error) {
+func (UnimplementedDynamicsrvServer) GetUserDynamicList(context.Context, *UserDynamicListRequest) (*UserDynamicListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserDynamicList not implemented")
 }
 func (UnimplementedDynamicsrvServer) GetClubDynamicList(context.Context, *ClubDynamicListRequest) (*ClubDynamicListResponse, error) {
@@ -434,6 +476,9 @@ func (UnimplementedDynamicsrvServer) GetPraiseList(context.Context, *PraiseListR
 }
 func (UnimplementedDynamicsrvServer) RemoveDiscoverDynamicIds(context.Context, *RemoveDiscoverDynamicIdsRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveDiscoverDynamicIds not implemented")
+}
+func (UnimplementedDynamicsrvServer) RemoveClubDynamicIds(context.Context, *RemoveClubDynamicIdsRequest) (*APICommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveClubDynamicIds not implemented")
 }
 func (UnimplementedDynamicsrvServer) Collect(context.Context, *CollectRequest) (*APICommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Collect not implemented")
@@ -470,6 +515,12 @@ func (UnimplementedDynamicsrvServer) DeleteComment(context.Context, *DeleteComme
 }
 func (UnimplementedDynamicsrvServer) GetUsersFansCountAndFocusCount(context.Context, *UsersFansCountAndFocusCountRequest) (*UsersFansCountAndFocusCountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsersFansCountAndFocusCount not implemented")
+}
+func (UnimplementedDynamicsrvServer) StatLog(context.Context, *StatLogReq) (*StatLogResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StatLog not implemented")
+}
+func (UnimplementedDynamicsrvServer) SyncDynamicFeed(context.Context, *SyncDynamicFeedReq) (*SyncDynamicFeedResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SyncDynamicFeed not implemented")
 }
 func (UnimplementedDynamicsrvServer) mustEmbedUnimplementedDynamicsrvServer() {}
 
@@ -718,6 +769,24 @@ func _Dynamicsrv_RemoveDiscoverDynamicIds_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Dynamicsrv_RemoveClubDynamicIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveClubDynamicIdsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DynamicsrvServer).RemoveClubDynamicIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Dynamicsrv_RemoveClubDynamicIds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DynamicsrvServer).RemoveClubDynamicIds(ctx, req.(*RemoveClubDynamicIdsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Dynamicsrv_Collect_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CollectRequest)
 	if err := dec(in); err != nil {
@@ -934,6 +1003,42 @@ func _Dynamicsrv_GetUsersFansCountAndFocusCount_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Dynamicsrv_StatLog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StatLogReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DynamicsrvServer).StatLog(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Dynamicsrv_StatLog_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DynamicsrvServer).StatLog(ctx, req.(*StatLogReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dynamicsrv_SyncDynamicFeed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SyncDynamicFeedReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DynamicsrvServer).SyncDynamicFeed(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Dynamicsrv_SyncDynamicFeed_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DynamicsrvServer).SyncDynamicFeed(ctx, req.(*SyncDynamicFeedReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Dynamicsrv_ServiceDesc is the grpc.ServiceDesc for Dynamicsrv service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -994,6 +1099,10 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Dynamicsrv_RemoveDiscoverDynamicIds_Handler,
 		},
 		{
+			MethodName: "RemoveClubDynamicIds",
+			Handler:    _Dynamicsrv_RemoveClubDynamicIds_Handler,
+		},
+		{
 			MethodName: "Collect",
 			Handler:    _Dynamicsrv_Collect_Handler,
 		},
@@ -1040,6 +1149,14 @@ var Dynamicsrv_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUsersFansCountAndFocusCount",
 			Handler:    _Dynamicsrv_GetUsersFansCountAndFocusCount_Handler,
+		},
+		{
+			MethodName: "StatLog",
+			Handler:    _Dynamicsrv_StatLog_Handler,
+		},
+		{
+			MethodName: "SyncDynamicFeed",
+			Handler:    _Dynamicsrv_SyncDynamicFeed_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
