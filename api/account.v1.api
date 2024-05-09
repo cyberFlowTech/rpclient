@@ -23,13 +23,14 @@ type (
 		CommonParams
 	}
 	BalanceListItem {
-		Chain   string `json:"chain"` // 当前链id
-		Token   string `json:"token"` // 币种名
-		Pid     int64  `json:"pid"` // 链所属id
-		Icon    string `json:"icon"` // token icon
-		Name    string `json:"name"` // token 完整名称
-		Balance string `json:"balance"` // 余额
-		Frozen  string `json:"frozen"` // 冻结资金
+		Chain    int64  `json:"chain"` // 当前链id
+		Token    string `json:"token"` // 币种名
+		Pid      int64  `json:"pid"` // 链所属id
+		Icon     string `json:"icon"` // token icon
+		Name     string `json:"name"` // token 完整名称
+		Balance  string `json:"balance"` // 余额
+		Frozen   string `json:"frozen"` // 冻结资金
+		Contract string `json:"contract"` // 合约地址
 	}
 	NetListReq {
 		CommonParams
@@ -48,12 +49,12 @@ type (
 		Page  uint64        `json:"page"` // 当前页码
 		Pages uint64        `json:"pages"` // 总页码
 	}
-
 	RechargeApplyReq {
 		CommonParams
-		Amount float64 `form:"amount"` // 充值金额
-		Chain  int64   `form:"chain"` // 充值链id
-		TxID   string  `form:"txid,optional"` // 交易hash
+		Amount   float64 `form:"amount"` // 充值金额
+		Chain    int64   `form:"chain"` // 充值链id
+		TxID     string  `form:"txid,optional"` // 交易hash
+		Contract string  `form:"contract,optional"` // 代币合约
 	}
 	RechargeApplyResp {
 		OrderNo string `json:"order_no"` // 充值订单号
@@ -71,9 +72,10 @@ type (
 	}
 	BalanceLogReq {
 		CommonParams
-		Year  int64 `form:"year,optional"` // 过滤年份
-		Page  int64 `form:"page,default=1"` // 页码
-		Chain int64 `form:"chain"` // 指定币种流水
+		Year     int64  `form:"year,optional"` // 过滤年份
+		Page     int64  `form:"page,default=1"` // 页码
+		Chain    int64  `form:"chain"` // 指定链数据
+		Contract string `form:"contract,optional"` // 指定币数据
 	}
 	BalanceLogResp {
 		Balance string           `json:"balance"` // 用户余额
@@ -83,8 +85,9 @@ type (
 	}
 	WithdrawReq {
 		CommonParams
-		Amount float64 `form:"amount"`
-		Chain  int64   `form:"chain,optional"`
+		Amount   float64 `form:"amount"` // 提现金额
+		Chain    int64   `form:"chain,optional"` // 提现链
+		Contract string  `form:"contract,optional"` // 提现代币合约
 	}
 	WithdrawResp {
 		OrderNo string `json:"order_no"` // 提现订单号
@@ -144,8 +147,6 @@ service accountservice {
 	@doc "获取网络列表"
 	@handler netList
 	post /net/list (NetListReq) returns (NetListResp)
-
-
 
 	@doc "充值创建"
 	@handler rechargeApply
