@@ -9,7 +9,7 @@ env:
   ACCESS_TOKEN:  ${{ vars.APIFOXACCESSTOKEN }} # Github仓库中配置的APIFOXACCESSTOKEN
 
 jobs:
-  ci:
+  syncDoc:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,5 @@ jobs:
       - name: Build image # 构建镜像并执行
         id: build-image
         run: |
-          echo "PROJECT_ID"
-          echo ${{ env.PROJECT_ID }}
           docker build -t rpclient/rpclient:v1 -f deploy/docker/Dockerfile .
-          docker run --rm -v ./api:/app/   rpclient/rpclient:v1 /bin/sh /app/sync.sh ${{ env.PROJECT_ID }} ${{ env.ACCESS_TOKEN }}
+          docker run --rm -v ./api:/app/   rpclient/rpclient:v1 /bin/sh /app/syncDoc.sh ${{ env.PROJECT_ID }} ${{ env.ACCESS_TOKEN }}
