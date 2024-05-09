@@ -94,11 +94,16 @@ type (
 		To       string `form:"to,optional"` //钱包地址
 		Set      string `form:"set,optional"` //num 数量 amount 金额
 		PayType  int64  `form:"pay_type"` //1钱包 2余额
-		Contract string `form:"contract"` // 代币合约地址
+		Contract string `form:"contract,optional,default="` // 代币合约地址
 	}
 	CreatePackResp {
 		OrderNo string `json:"order_no"` //红包订单号
 		Status  int64  `json:"status"` //红包状态 1-创建中 2-领奖中 3-已领完 4-红包已过期 -1-创建红包失败 -2-红包金额不足 -3-手续费金额不足 -10-重新发送后老红包删除作废
+	}
+	InfoBySubOrderParams {
+		CommonParams
+		OrderNo string `form:"order_no,optional"` //主表唯一ID
+		Page    uint64 `form:"page,default=1"` //页码
 	}
 )
 
@@ -120,5 +125,9 @@ service packservice {
 	@doc "创建红包"
 	@handler create
 	post /create (CreatePackParams) returns (CreatePackResp)
+
+	@doc "子订单查询红包详情"
+	@handler subOrderDetail
+	post /info/bySubOrder (InfoBySubOrderParams) returns (PackInfoResp)
 }
 
