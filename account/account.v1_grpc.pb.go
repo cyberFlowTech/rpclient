@@ -19,16 +19,22 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AccountServer_GetBalanceList_FullMethodName = "/account.accountServer/getBalanceList"
-	AccountServer_GetNetworkList_FullMethodName = "/account.accountServer/getNetworkList"
-	AccountServer_BalanceOpt_FullMethodName     = "/account.accountServer/balanceOpt"
-	AccountServer_GetBalanceLog_FullMethodName  = "/account.accountServer/getBalanceLog"
-	AccountServer_GetNetCfg_FullMethodName      = "/account.accountServer/getNetCfg"
-	AccountServer_RechargeApply_FullMethodName  = "/account.accountServer/rechargeApply"
-	AccountServer_RechargeSubmit_FullMethodName = "/account.accountServer/rechargeSubmit"
-	AccountServer_Withdraw_FullMethodName       = "/account.accountServer/withdraw"
-	AccountServer_CheckTrans_FullMethodName     = "/account.accountServer/checkTrans"
-	AccountServer_Callback_FullMethodName       = "/account.accountServer/callback"
+	AccountServer_GetBalanceList_FullMethodName  = "/account.accountServer/getBalanceList"
+	AccountServer_GetNetworkList_FullMethodName  = "/account.accountServer/getNetworkList"
+	AccountServer_BalanceOpt_FullMethodName      = "/account.accountServer/balanceOpt"
+	AccountServer_GetBalanceLog_FullMethodName   = "/account.accountServer/getBalanceLog"
+	AccountServer_GetNetCfg_FullMethodName       = "/account.accountServer/getNetCfg"
+	AccountServer_RechargeApply_FullMethodName   = "/account.accountServer/rechargeApply"
+	AccountServer_RechargeSubmit_FullMethodName  = "/account.accountServer/rechargeSubmit"
+	AccountServer_Withdraw_FullMethodName        = "/account.accountServer/withdraw"
+	AccountServer_CheckTrans_FullMethodName      = "/account.accountServer/checkTrans"
+	AccountServer_Callback_FullMethodName        = "/account.accountServer/callback"
+	AccountServer_TransInfo_FullMethodName       = "/account.accountServer/transInfo"
+	AccountServer_WithdrawList_FullMethodName    = "/account.accountServer/withdrawList"
+	AccountServer_ProcessWithdraw_FullMethodName = "/account.accountServer/processWithdraw"
+	AccountServer_ProcessRecharge_FullMethodName = "/account.accountServer/processRecharge"
+	AccountServer_RechargeList_FullMethodName    = "/account.accountServer/rechargeList"
+	AccountServer_GetSign_FullMethodName         = "/account.accountServer/getSign"
 )
 
 // AccountServerClient is the client API for AccountServer service.
@@ -45,6 +51,12 @@ type AccountServerClient interface {
 	Withdraw(ctx context.Context, in *WithdrawReq, opts ...grpc.CallOption) (*WithdrawResp, error)
 	CheckTrans(ctx context.Context, in *TransReq, opts ...grpc.CallOption) (*TransResp, error)
 	Callback(ctx context.Context, in *CallbackReq, opts ...grpc.CallOption) (*CallbackResp, error)
+	TransInfo(ctx context.Context, in *TransInfoReq, opts ...grpc.CallOption) (*TransInfoResp, error)
+	WithdrawList(ctx context.Context, in *WithdrawMainReq, opts ...grpc.CallOption) (*WithdrawMainResp, error)
+	ProcessWithdraw(ctx context.Context, in *ProcessWithdrawReq, opts ...grpc.CallOption) (*ProcessWithdrawResp, error)
+	ProcessRecharge(ctx context.Context, in *ProcessRechargeReq, opts ...grpc.CallOption) (*ProcessRechargeResp, error)
+	RechargeList(ctx context.Context, in *RechargeListReq, opts ...grpc.CallOption) (*RechargeListResp, error)
+	GetSign(ctx context.Context, in *GetSignReq, opts ...grpc.CallOption) (*GetSignResp, error)
 }
 
 type accountServerClient struct {
@@ -145,6 +157,60 @@ func (c *accountServerClient) Callback(ctx context.Context, in *CallbackReq, opt
 	return out, nil
 }
 
+func (c *accountServerClient) TransInfo(ctx context.Context, in *TransInfoReq, opts ...grpc.CallOption) (*TransInfoResp, error) {
+	out := new(TransInfoResp)
+	err := c.cc.Invoke(ctx, AccountServer_TransInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServerClient) WithdrawList(ctx context.Context, in *WithdrawMainReq, opts ...grpc.CallOption) (*WithdrawMainResp, error) {
+	out := new(WithdrawMainResp)
+	err := c.cc.Invoke(ctx, AccountServer_WithdrawList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServerClient) ProcessWithdraw(ctx context.Context, in *ProcessWithdrawReq, opts ...grpc.CallOption) (*ProcessWithdrawResp, error) {
+	out := new(ProcessWithdrawResp)
+	err := c.cc.Invoke(ctx, AccountServer_ProcessWithdraw_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServerClient) ProcessRecharge(ctx context.Context, in *ProcessRechargeReq, opts ...grpc.CallOption) (*ProcessRechargeResp, error) {
+	out := new(ProcessRechargeResp)
+	err := c.cc.Invoke(ctx, AccountServer_ProcessRecharge_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServerClient) RechargeList(ctx context.Context, in *RechargeListReq, opts ...grpc.CallOption) (*RechargeListResp, error) {
+	out := new(RechargeListResp)
+	err := c.cc.Invoke(ctx, AccountServer_RechargeList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServerClient) GetSign(ctx context.Context, in *GetSignReq, opts ...grpc.CallOption) (*GetSignResp, error) {
+	out := new(GetSignResp)
+	err := c.cc.Invoke(ctx, AccountServer_GetSign_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountServerServer is the server API for AccountServer service.
 // All implementations must embed UnimplementedAccountServerServer
 // for forward compatibility
@@ -159,6 +225,12 @@ type AccountServerServer interface {
 	Withdraw(context.Context, *WithdrawReq) (*WithdrawResp, error)
 	CheckTrans(context.Context, *TransReq) (*TransResp, error)
 	Callback(context.Context, *CallbackReq) (*CallbackResp, error)
+	TransInfo(context.Context, *TransInfoReq) (*TransInfoResp, error)
+	WithdrawList(context.Context, *WithdrawMainReq) (*WithdrawMainResp, error)
+	ProcessWithdraw(context.Context, *ProcessWithdrawReq) (*ProcessWithdrawResp, error)
+	ProcessRecharge(context.Context, *ProcessRechargeReq) (*ProcessRechargeResp, error)
+	RechargeList(context.Context, *RechargeListReq) (*RechargeListResp, error)
+	GetSign(context.Context, *GetSignReq) (*GetSignResp, error)
 	mustEmbedUnimplementedAccountServerServer()
 }
 
@@ -195,6 +267,24 @@ func (UnimplementedAccountServerServer) CheckTrans(context.Context, *TransReq) (
 }
 func (UnimplementedAccountServerServer) Callback(context.Context, *CallbackReq) (*CallbackResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Callback not implemented")
+}
+func (UnimplementedAccountServerServer) TransInfo(context.Context, *TransInfoReq) (*TransInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TransInfo not implemented")
+}
+func (UnimplementedAccountServerServer) WithdrawList(context.Context, *WithdrawMainReq) (*WithdrawMainResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WithdrawList not implemented")
+}
+func (UnimplementedAccountServerServer) ProcessWithdraw(context.Context, *ProcessWithdrawReq) (*ProcessWithdrawResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProcessWithdraw not implemented")
+}
+func (UnimplementedAccountServerServer) ProcessRecharge(context.Context, *ProcessRechargeReq) (*ProcessRechargeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProcessRecharge not implemented")
+}
+func (UnimplementedAccountServerServer) RechargeList(context.Context, *RechargeListReq) (*RechargeListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RechargeList not implemented")
+}
+func (UnimplementedAccountServerServer) GetSign(context.Context, *GetSignReq) (*GetSignResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSign not implemented")
 }
 func (UnimplementedAccountServerServer) mustEmbedUnimplementedAccountServerServer() {}
 
@@ -389,6 +479,114 @@ func _AccountServer_Callback_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountServer_TransInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TransInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServerServer).TransInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountServer_TransInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServerServer).TransInfo(ctx, req.(*TransInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountServer_WithdrawList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WithdrawMainReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServerServer).WithdrawList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountServer_WithdrawList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServerServer).WithdrawList(ctx, req.(*WithdrawMainReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountServer_ProcessWithdraw_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProcessWithdrawReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServerServer).ProcessWithdraw(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountServer_ProcessWithdraw_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServerServer).ProcessWithdraw(ctx, req.(*ProcessWithdrawReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountServer_ProcessRecharge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProcessRechargeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServerServer).ProcessRecharge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountServer_ProcessRecharge_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServerServer).ProcessRecharge(ctx, req.(*ProcessRechargeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountServer_RechargeList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RechargeListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServerServer).RechargeList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountServer_RechargeList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServerServer).RechargeList(ctx, req.(*RechargeListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountServer_GetSign_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSignReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServerServer).GetSign(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountServer_GetSign_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServerServer).GetSign(ctx, req.(*GetSignReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountServer_ServiceDesc is the grpc.ServiceDesc for AccountServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -435,6 +633,30 @@ var AccountServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "callback",
 			Handler:    _AccountServer_Callback_Handler,
+		},
+		{
+			MethodName: "transInfo",
+			Handler:    _AccountServer_TransInfo_Handler,
+		},
+		{
+			MethodName: "withdrawList",
+			Handler:    _AccountServer_WithdrawList_Handler,
+		},
+		{
+			MethodName: "processWithdraw",
+			Handler:    _AccountServer_ProcessWithdraw_Handler,
+		},
+		{
+			MethodName: "processRecharge",
+			Handler:    _AccountServer_ProcessRecharge_Handler,
+		},
+		{
+			MethodName: "rechargeList",
+			Handler:    _AccountServer_RechargeList_Handler,
+		},
+		{
+			MethodName: "getSign",
+			Handler:    _AccountServer_GetSign_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
