@@ -35,6 +35,7 @@ const (
 	AccountServer_ProcessRecharge_FullMethodName = "/account.accountServer/processRecharge"
 	AccountServer_RechargeList_FullMethodName    = "/account.accountServer/rechargeList"
 	AccountServer_GetSign_FullMethodName         = "/account.accountServer/getSign"
+	AccountServer_MigrateData_FullMethodName     = "/account.accountServer/migrateData"
 )
 
 // AccountServerClient is the client API for AccountServer service.
@@ -57,6 +58,7 @@ type AccountServerClient interface {
 	ProcessRecharge(ctx context.Context, in *ProcessRechargeReq, opts ...grpc.CallOption) (*ProcessRechargeResp, error)
 	RechargeList(ctx context.Context, in *RechargeListReq, opts ...grpc.CallOption) (*RechargeListResp, error)
 	GetSign(ctx context.Context, in *GetSignReq, opts ...grpc.CallOption) (*GetSignResp, error)
+	MigrateData(ctx context.Context, in *MigrateReq, opts ...grpc.CallOption) (*MigrateResp, error)
 }
 
 type accountServerClient struct {
@@ -211,6 +213,15 @@ func (c *accountServerClient) GetSign(ctx context.Context, in *GetSignReq, opts 
 	return out, nil
 }
 
+func (c *accountServerClient) MigrateData(ctx context.Context, in *MigrateReq, opts ...grpc.CallOption) (*MigrateResp, error) {
+	out := new(MigrateResp)
+	err := c.cc.Invoke(ctx, AccountServer_MigrateData_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountServerServer is the server API for AccountServer service.
 // All implementations must embed UnimplementedAccountServerServer
 // for forward compatibility
@@ -231,6 +242,7 @@ type AccountServerServer interface {
 	ProcessRecharge(context.Context, *ProcessRechargeReq) (*ProcessRechargeResp, error)
 	RechargeList(context.Context, *RechargeListReq) (*RechargeListResp, error)
 	GetSign(context.Context, *GetSignReq) (*GetSignResp, error)
+	MigrateData(context.Context, *MigrateReq) (*MigrateResp, error)
 	mustEmbedUnimplementedAccountServerServer()
 }
 
@@ -285,6 +297,9 @@ func (UnimplementedAccountServerServer) RechargeList(context.Context, *RechargeL
 }
 func (UnimplementedAccountServerServer) GetSign(context.Context, *GetSignReq) (*GetSignResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSign not implemented")
+}
+func (UnimplementedAccountServerServer) MigrateData(context.Context, *MigrateReq) (*MigrateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MigrateData not implemented")
 }
 func (UnimplementedAccountServerServer) mustEmbedUnimplementedAccountServerServer() {}
 
@@ -587,6 +602,24 @@ func _AccountServer_GetSign_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountServer_MigrateData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MigrateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServerServer).MigrateData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountServer_MigrateData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServerServer).MigrateData(ctx, req.(*MigrateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountServer_ServiceDesc is the grpc.ServiceDesc for AccountServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -657,6 +690,10 @@ var AccountServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getSign",
 			Handler:    _AccountServer_GetSign_Handler,
+		},
+		{
+			MethodName: "migrateData",
+			Handler:    _AccountServer_MigrateData_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
