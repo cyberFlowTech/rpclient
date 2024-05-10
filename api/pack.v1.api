@@ -28,7 +28,7 @@ type (
 		MorderNo  string `form:"morder_no,optional"` //主表唯一ID
 		PackMsgID string `form:"packMsgId,optional"` //发红包消息关联的消息ID，非必需。做保底处理
 		Page      uint64 `form:"page,default=1"` //页码
-		Type      int32  `form:"type,default=1"` // 查询类型
+		Type      int32  `form:"type,default=1"` // 查询类型 默认值为1，若为非1值，通过子订单号查询订单
 	}
 	PackInfo {
 		Avatar           string            `json:"avatar"` //红包主人头像
