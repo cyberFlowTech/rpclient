@@ -69,9 +69,10 @@ type (
 		Keyword []string `json:"keyword"` // 命中关键字
 	}
 	DynamicItem {
-		UserId      int64              `json:"user_id"` // 用户滴
+		UserId      int64              `json:"duid"` // 用户id
 		Avatar      string             `json:"avatar"` // 用户头像
 		Nick        string             `json:"nick"` // 用户昵称
+		Did         int64              `json:"did"` // 动态id
 		Title       string             `json:"title"` // 动态标题
 		Content     string             `json:"content"` // 动态内容
 		CTime       string             `json:"ctime"` // 发布时间
