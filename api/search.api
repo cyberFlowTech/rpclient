@@ -42,31 +42,31 @@ type (
 		Dynamic []*DynamicItem `json:"dynamic"` // 动态
 	}
 	MarketItem {
-		Logo             string  `json:"logo"` // logo
-		Name             string  `json:"name"` // 名称
-		Volume24H        float64 `json:"volume_24h"` // 24h成交额
-		Price            float64 `json:"price"` // 最新价格
-		PercentChange24H float64 `json:"percent_change_24h"` // 24h价格变化
-		Keyword          string  `json:"keyword"` // 命中关键字
+		Logo             string   `json:"logo"` // logo
+		Name             string   `json:"name"` // 名称
+		Volume24H        float64  `json:"volume_24h"` // 24h成交额
+		Price            float64  `json:"price"` // 最新价格
+		PercentChange24H float64  `json:"percent_change_24h"` // 24h价格变化
+		Keyword          []string `json:"keyword"` // 命中关键字
 	}
 	NftItem {
 		Url string `json:"url"`
 	}
 	ClubItem {
-		Avatar  string `json:"avatar"` // 部落头像
-		Name    string `json:"name"` // 部落名称
-		Desc    string `json:"desc"` // 部落介绍
-		Number  int    `json:"number"` // 成员数量
-		TbMid   string `json:"tb_mid"` // 部落加密id
-		Keyword string `json:"keyword"` // 命中关键字
+		Avatar  string   `json:"avatar"` // 部落头像
+		Name    string   `json:"name"` // 部落名称
+		Desc    string   `json:"desc"` // 部落介绍
+		Number  int      `json:"number"` // 成员数量
+		TbMid   string   `json:"tb_mid"` // 部落加密id
+		Keyword []string `json:"keyword"` // 命中关键字
 	}
 	DappItem {
-		Logo    string `json:"logo"` // 应用图标
-		Url     string `json:"url"` // 应用链接
-		Name    string `json:"name"` // 应用名称
-		Desc    string `json:"desc"` // 应用介绍
-		DappId  int    `json:"dapp_id"` // 应用id
-		Keyword string `json:"keyword"` // 命中关键字
+		Logo    string   `json:"logo"` // 应用图标
+		Url     string   `json:"url"` // 应用链接
+		Name    string   `json:"name"` // 应用名称
+		Desc    string   `json:"desc"` // 应用介绍
+		DappId  int      `json:"dapp_id"` // 应用id
+		Keyword []string `json:"keyword"` // 命中关键字
 	}
 	DynamicItem {
 		UserId      int64              `json:"user_id"` // 用户滴
@@ -77,7 +77,7 @@ type (
 		CTime       string             `json:"ctime"` // 发布时间
 		Media       []*DynamicMedia    `json:"media"` // 媒体
 		PraisedList []*PraisedListItem `json:"praised_list"` // 点赞列表
-		Keyword     string             `json:"keyword"` // 命中关键字
+		Keyword     []string           `json:"keyword"` // 命中关键字
 	}
 	PraisedListItem {
 		UserId int64  `json:"user_id"`
