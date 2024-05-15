@@ -1,0 +1,110 @@
+syntax = "v1"
+
+info (
+	title:   "search"
+	desc:    "zapry search server"
+	author:  "ron"
+	email:   "ron@cyberflow.cc"
+	version: "v0.0.1"
+)
+
+type (
+	// 公共请求参数 所有接口都有的
+	CommonReq {
+		UserId      int64  `form:"user_id"`
+		SessId      string `form:"sessid"`
+		Api         string `form:"api"`
+		Version     string `form:"version"`
+		VersionCode string `form:"version_code"`
+		Uuid        string `form:"uuid"`
+		Lan         string `form:"lan"`
+		Sign        string `form:"sign"`
+		SignTime    int64  `form:"sign_time"`
+	}
+	CommonRes {
+		IRet int    `json:"iRet"`
+		SMsg string `json:"sMsg"`
+	}
+	SearchReq {
+		CommonReq
+		Keyword string `form:"keyword"` // 关键字
+		Type    int    `form:"type,range=[0:5]"` // 0:全部 1:行情 2:NFT 3:部落 4:应用 5:动态
+	}
+	SearchResp {
+		CommonRes
+		Data []string `json:"list"`
+	}
+	SearchItme {
+		Market  []*MarketItem `json:"market"` // 行情
+		Nft     []*NftItem    `json:"nft"` // nft
+		Club    []*ClubItem   `json:"club"` // 部落
+		Dapp    []*DappItem   `json:"dapp"` // dapp
+		Dynamic string        `json:"dynamic"` // 动态
+	}
+	MarketItem {
+		Logo             string  `json:"logo"` // logo
+		Name             string  `json:"name"` // 名称
+		Volume24H        float64 `json:"volume_24h"` // 24h成交额
+		Price            float64 `json:"price"` // 最新价格
+		PercentChange24H float64 `json:"percent_change_24h"` // 24h价格变化
+	}
+	NftItem {
+		Url string `json:"url"`
+	}
+	ClubItem {
+		Avatar string `json:"avatar"` // 部落头像
+		Name   string `json:"name"` // 部落名称
+		Desc   string `json:"desc"` // 部落介绍
+		Number int    `json:"number"` // 成员数量
+		TbMid  string `json:"tb_mid"` // 部落加密id
+	}
+	DappItem {
+		Logo   string `json:"logo"` // 应用图标
+		Url    string `json:"url"` // 应用链接
+		Name   string `json:"name"` // 应用名称
+		Desc   string `json:"desc"` // 应用介绍
+		DappId int    `json:"dapp_id"` // 应用id
+	}
+	DynamicItem {
+		UserId      int64              `json:"user_id"` // 用户滴
+		Avatar      string             `json:"avatar"` // 用户头像
+		Nick        string             `json:"nick"` // 用户昵称
+		Title       string             `json:"title"` // 动态标题
+		Content     string             `json:"content"` // 动态内容
+		CTime       string             `json:"ctime"` // 发布时间
+		PraisedList []*PraisedListItem `json:"praised_list"` // 点赞列表
+	}
+	PraisedListItem {
+		UserId int64  `json:"user_id"`
+		Avatar string `json:"avatar"` // 用户头像
+		Nick   string `json:"nick"` // 用户昵称
+	}
+	HotSearchReq {
+		CommonReq
+	}
+	HotSearchResp {
+		CommonRes
+		Data []*HotSearchItem `json:"data"`
+	}
+	HotSearchItem {
+		HotWord string `json:"hot_word"` // 热词
+		Label   int    `json:"label"` // 标签：0 无标签，1：hot，2：new
+		Num     string `json:"num"` // 热词出现次数
+	}
+)
+
+@server (
+	middleware: BeforeHandle //路由中间件声明
+	group:      search //接口所属组
+	prefix:     search/v1 //路由公共前缀
+)
+service search {
+	@doc "公域搜索"
+	@handler Search
+	post /Search (SearchReq) returns (SearchResp)
+
+	@doc "热搜列表"
+	@handler HotSearch
+	post /HotSearch (HotSearchReq) returns (HotSearchResp)
+}
+
