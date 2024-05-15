@@ -32,14 +32,14 @@ type (
 	}
 	SearchResp {
 		CommonRes
-		Data []string `json:"list"`
+		Data *SearchItme `json:"list"`
 	}
 	SearchItme {
-		Market  []*MarketItem `json:"market"` // 行情
-		Nft     []*NftItem    `json:"nft"` // nft
-		Club    []*ClubItem   `json:"club"` // 部落
-		Dapp    []*DappItem   `json:"dapp"` // dapp
-		Dynamic string        `json:"dynamic"` // 动态
+		Market  []*MarketItem  `json:"market"` // 行情
+		Nft     []*NftItem     `json:"nft"` // nft
+		Club    []*ClubItem    `json:"club"` // 部落
+		Dapp    []*DappItem    `json:"dapp"` // dapp
+		Dynamic []*DynamicItem `json:"dynamic"` // 动态
 	}
 	MarketItem {
 		Logo             string  `json:"logo"` // logo
@@ -72,12 +72,19 @@ type (
 		Title       string             `json:"title"` // 动态标题
 		Content     string             `json:"content"` // 动态内容
 		CTime       string             `json:"ctime"` // 发布时间
+		Media       []*DynamicMedia    `json:"media"` // 媒体
 		PraisedList []*PraisedListItem `json:"praised_list"` // 点赞列表
 	}
 	PraisedListItem {
 		UserId int64  `json:"user_id"`
 		Avatar string `json:"avatar"` // 用户头像
 		Nick   string `json:"nick"` // 用户昵称
+	}
+	DynamicMedia {
+		Url         string      `json:"url"` // URL
+		MediaType   string      `json:"type"` // 媒体类型 img or video
+		AspectRatio interface{} `json:"aspectRatio"` //
+		Thumb       string      `json:"thumb"` // 缩略图
 	}
 	HotSearchReq {
 		CommonReq
