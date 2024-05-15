@@ -32,7 +32,7 @@ type (
 	}
 	SearchResp {
 		CommonRes
-		Data *SearchItme `json:"list"`
+		Data *SearchItme `json:"data"`
 	}
 	SearchItme {
 		Market  []*MarketItem  `json:"market"` // 行情
