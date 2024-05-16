@@ -132,7 +132,7 @@ type LoginRegisterForm {
 	Openudid   string `form:"openudid"`             // 账号（邮箱或自定义账号，或者是第三方登录的code，或钱包地址）
 	UserType   int64  `form:"user_type"`            // 账号类型10=>邮箱，20=>钱包(没有在用)，30=>google，40=>facebook（(没有在用)），50=>apple，60=>手机号（(没有在用)），70=>自定义账号，80=>一键注册
 	OnlyCheck  int64  `form:"only_check,optional"`  // 检测账号占用 0否 1是（邮箱，自定义账号登录时需要）
-	InviteCode int64  `form:"invite_code,optional"` // 邀请码
+	InviteCode string `form:"invite_code,optional"` // 邀请码
 	Pwd        string `form:"pwd,optional"`         // 密码（登录，注册时必要）
 	OPwd       string `form:"opwd,optional"`        // 确认密码（注册时必要）
 	EmailCode  string `form:"email_code,optional"`  // 邮箱验证码
