@@ -84,7 +84,8 @@ type DynamicInfo {
 //动态列表页请求表单
 type DynamicListReq {
 	CommonReq
-	Page int64 `form:"page,range=(0:100]"` // 页码 1- 100
+	Page int64 `form:"page,range=(0:100]"`                   // 页码 1- 100
+	Type int64 `form:"type,range=[0:10],optional,default=0"` // 0：获取自然推荐的内容 1:获取运营设置推荐的内容 2:获取关注的内容
 }
 
 //动态列表页响应结果
@@ -99,7 +100,7 @@ type ClubDynamicListReq {
 	Page        int64  `form:"page,range=(0:100]"`                 //页码
 	TbMid       string `form:"tb_mid"`                             // 部落加密后的ID
 	IsRecommend int64  `form:"is_recommend,optional,range=[-1:1]"` // 弃用
-	SortType    int64  `form:"type,optional,range=[0:1]"`          // 排序类型 0按时间排序 1按热度排序,新版本只有时间排序
+	SortType    int64  `form:"type,optional,range=[0:1]"`          // 弃用
 }
 
 type ClubDynamicListResp {
@@ -150,8 +151,9 @@ type DeleteDynamicReq {
 //查看动态详情
 type DynamicInfoReq {
 	CommonReq
-	Did  int64 `form:"did,range=(0:]"`  // 动态ID
-	Duid int64 `form:"duid,range=(0:]"` // 动态发布者ID
+	Did   int64  `form:"did,range=(0:]"`  // 动态ID
+	Duid  int64  `form:"duid,range=(0:]"` // 动态发布者ID
+	Tbmid string `form:"tb_mid,optional"` // 部落ID，从部落进入详情页时传递
 }
 
 type DynamicInfoResp {
