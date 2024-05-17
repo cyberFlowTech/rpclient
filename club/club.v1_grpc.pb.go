@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	ClubServer_GetClubList_FullMethodName              = "/club.ClubServer/getClubList"
 	ClubServer_GetClubInfo_FullMethodName              = "/club.ClubServer/getClubInfo"
+	ClubServer_BatchClubInfo_FullMethodName            = "/club.ClubServer/batchClubInfo"
 	ClubServer_GetGroupUserStatus_FullMethodName       = "/club.ClubServer/getGroupUserStatus"
 	ClubServer_GetGroupInfo_FullMethodName             = "/club.ClubServer/getGroupInfo"
 	ClubServer_SetClubDynamicAct_FullMethodName        = "/club.ClubServer/setClubDynamicAct"
@@ -84,6 +85,8 @@ type ClubServerClient interface {
 	GetClubList(ctx context.Context, in *ClubListReq, opts ...grpc.CallOption) (*ClubListResp, error)
 	// 部落详情
 	GetClubInfo(ctx context.Context, in *ClubInfoReq, opts ...grpc.CallOption) (*ClubInfoRes, error)
+	// 批量
+	BatchClubInfo(ctx context.Context, in *BatchClubInfoReq, opts ...grpc.CallOption) (*BatchClubInfoResp, error)
 	// 群用户状态
 	GetGroupUserStatus(ctx context.Context, in *GroupUserStatusReq, opts ...grpc.CallOption) (*GroupUserStatusRes, error)
 	GetGroupInfo(ctx context.Context, in *GroupInfoReq, opts ...grpc.CallOption) (*GroupInfoRes, error)
@@ -145,7 +148,7 @@ type ClubServerClient interface {
 	ZoneSort(ctx context.Context, in *ZoneSortReq, opts ...grpc.CallOption) (*APICommonResponse, error)
 	// 部落排序
 	ClubSort(ctx context.Context, in *ClubSortReq, opts ...grpc.CallOption) (*APICommonResponse, error)
-	// 获取用户在部落里自定义信息
+	// 获取用户在部落里自定义信息（部落昵称
 	GetUserCustomInfo(ctx context.Context, in *GetUserCustomInfoReq, opts ...grpc.CallOption) (*GetUserCustomInfoResp, error)
 	// 获取部落推荐
 	GetRecommend(ctx context.Context, in *GetRecommendRequest, opts ...grpc.CallOption) (*GetRecommendResponse, error)
@@ -191,6 +194,7 @@ type ClubServerClient interface {
 	HasAuth(ctx context.Context, in *HasAuthReq, opts ...grpc.CallOption) (*HasAuthResp, error)
 	// 根据分享码获取部落信息
 	GetInfoByShareCode(ctx context.Context, in *GetInfoByShareCodeReq, opts ...grpc.CallOption) (*GetInfoByShareCodeResp, error)
+	// 获取推荐部落分类
 	GetClubTags(ctx context.Context, in *GetClubTagsReq, opts ...grpc.CallOption) (*GetClubTagsResp, error)
 }
 
@@ -214,6 +218,15 @@ func (c *clubServerClient) GetClubList(ctx context.Context, in *ClubListReq, opt
 func (c *clubServerClient) GetClubInfo(ctx context.Context, in *ClubInfoReq, opts ...grpc.CallOption) (*ClubInfoRes, error) {
 	out := new(ClubInfoRes)
 	err := c.cc.Invoke(ctx, ClubServer_GetClubInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) BatchClubInfo(ctx context.Context, in *BatchClubInfoReq, opts ...grpc.CallOption) (*BatchClubInfoResp, error) {
+	out := new(BatchClubInfoResp)
+	err := c.cc.Invoke(ctx, ClubServer_BatchClubInfo_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -705,6 +718,8 @@ type ClubServerServer interface {
 	GetClubList(context.Context, *ClubListReq) (*ClubListResp, error)
 	// 部落详情
 	GetClubInfo(context.Context, *ClubInfoReq) (*ClubInfoRes, error)
+	// 批量
+	BatchClubInfo(context.Context, *BatchClubInfoReq) (*BatchClubInfoResp, error)
 	// 群用户状态
 	GetGroupUserStatus(context.Context, *GroupUserStatusReq) (*GroupUserStatusRes, error)
 	GetGroupInfo(context.Context, *GroupInfoReq) (*GroupInfoRes, error)
@@ -766,7 +781,7 @@ type ClubServerServer interface {
 	ZoneSort(context.Context, *ZoneSortReq) (*APICommonResponse, error)
 	// 部落排序
 	ClubSort(context.Context, *ClubSortReq) (*APICommonResponse, error)
-	// 获取用户在部落里自定义信息
+	// 获取用户在部落里自定义信息（部落昵称
 	GetUserCustomInfo(context.Context, *GetUserCustomInfoReq) (*GetUserCustomInfoResp, error)
 	// 获取部落推荐
 	GetRecommend(context.Context, *GetRecommendRequest) (*GetRecommendResponse, error)
@@ -812,6 +827,7 @@ type ClubServerServer interface {
 	HasAuth(context.Context, *HasAuthReq) (*HasAuthResp, error)
 	// 根据分享码获取部落信息
 	GetInfoByShareCode(context.Context, *GetInfoByShareCodeReq) (*GetInfoByShareCodeResp, error)
+	// 获取推荐部落分类
 	GetClubTags(context.Context, *GetClubTagsReq) (*GetClubTagsResp, error)
 	mustEmbedUnimplementedClubServerServer()
 }
@@ -825,6 +841,9 @@ func (UnimplementedClubServerServer) GetClubList(context.Context, *ClubListReq) 
 }
 func (UnimplementedClubServerServer) GetClubInfo(context.Context, *ClubInfoReq) (*ClubInfoRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClubInfo not implemented")
+}
+func (UnimplementedClubServerServer) BatchClubInfo(context.Context, *BatchClubInfoReq) (*BatchClubInfoResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchClubInfo not implemented")
 }
 func (UnimplementedClubServerServer) GetGroupUserStatus(context.Context, *GroupUserStatusReq) (*GroupUserStatusRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetGroupUserStatus not implemented")
@@ -1030,6 +1049,24 @@ func _ClubServer_GetClubInfo_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ClubServerServer).GetClubInfo(ctx, req.(*ClubInfoReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_BatchClubInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchClubInfoReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).BatchClubInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ClubServer_BatchClubInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).BatchClubInfo(ctx, req.(*BatchClubInfoReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2002,6 +2039,10 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getClubInfo",
 			Handler:    _ClubServer_GetClubInfo_Handler,
+		},
+		{
+			MethodName: "batchClubInfo",
+			Handler:    _ClubServer_BatchClubInfo_Handler,
 		},
 		{
 			MethodName: "getGroupUserStatus",
