@@ -521,9 +521,9 @@ service imservice {
 	@handler getKeyByVersion
 	post /getKeyByVersion (GetKeyByVersionReq) returns (GetKeyByVersionRes)
 
-	@doc "获取环信token"
-	@handler getImToken
-	post /getImToken (CommonReq) returns (GetImTokenRes)
+//	@doc "获取环信token"
+//	@handler getImToken
+//	post /getImToken (CommonReq) returns (GetImTokenRes)
 
 	@doc "获取群信息"
 	@handler GetGroupInfo
@@ -641,7 +641,7 @@ service imservice {
 	@handler GetEmojiList
 	post /GetEmojiList (GetEmojiListReq) returns (GetEmojiListRes)
 
-	@doc "获取表情包列表"
+	@doc "获取用户im token"
 	@handler GetUserImToken
 	post /GetUserImToken (CommonReq) returns (UserImTokenRes)
 
