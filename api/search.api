@@ -48,6 +48,8 @@ type (
 		Price            float64  `json:"price"` // 最新价格
 		PercentChange24H float64  `json:"percent_change_24h"` // 24h价格变化
 		Keyword          []string `json:"keyword"` // 命中关键字
+		CoinId           int64    `json:"id"`
+		Symbol           string   `json:"symbol"`
 	}
 	NftItem {
 		Url string `json:"url"`
@@ -75,7 +77,8 @@ type (
 		Did         int64              `json:"did"` // 动态id
 		Title       string             `json:"title"` // 动态标题
 		Content     string             `json:"content"` // 动态内容
-		CTime       string             `json:"ctime"` // 发布时间
+		CTime       int64              `json:"ctime"` // 发布时间
+		ETime       int64              `json:"etime"` // 编辑时间
 		Media       []*DynamicMedia    `json:"media"` // 媒体
 		PraisedList []*PraisedListItem `json:"praised_list"` // 点赞列表
 		Keyword     []string           `json:"keyword"` // 命中关键字
@@ -103,6 +106,14 @@ type (
 		Label   int    `json:"label"` // 标签：0 无标签，1：hot，2：new
 		Num     string `json:"num"` // 热词出现次数
 	}
+	RunTaskReq {
+		CommonReq
+		TaskName string `form:"task_name"` // 任务名称
+	}
+	RunTaskResp {
+		CommonRes
+		Data interface{} `json:"data"` // 任务执行结果
+	}
 )
 
 @server (
@@ -118,5 +129,9 @@ service search {
 	@doc "热搜列表"
 	@handler HotSearch
 	post /HotSearch (HotSearchReq) returns (HotSearchResp)
+
+	@doc "脚本执行"
+	@handler RunTask
+	post /RunTask (RunTaskReq) returns (RunTaskResp)
 }
 
