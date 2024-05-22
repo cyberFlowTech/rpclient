@@ -86,7 +86,7 @@ type DynamicListReq {
 	CommonReq
 	Page       int64 `form:"page,range=(0:100]"`                   // 页码 1- 100
 	Type       int64 `form:"type,range=[0:10],optional,default=0"` // 0：获取自然推荐的内容 1:获取运营设置推荐的内容 2:获取关注的内容
-	HotComment int64 `form:"type,optional,default=0"`              // 1: 只获取热评
+	HotComment int64 `form:"hotcomment,optional,default=0"`              // 1: 只获取热评
 }
 
 //动态列表页响应结果
@@ -272,7 +272,7 @@ type CommentListReq {
 	Duid       int64 `form:"duid,range=(0:]"`          // 动态发布者UID
 	Page       int64 `form:"page,range=(0:100]"`       // 页码
 	Gcid       int64 `form:"gcid,optional,range=[0:]"` // 一级评论ID(获取子评论列表时传递
-	HotComment int64 `form:"type,optional,default=0"`  // 1: 只获取热评
+	HotComment int64 `form:"hotcomment,optional,default=0"`  // 1: 只获取热评
 }
 
 type CommentInfo {
