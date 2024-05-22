@@ -7,11 +7,12 @@ option go_package = "./contacts";
 
 message Contact {
   string OID      = 1; // 好友ID或群聊ID
-  string Nick      = 2; // 备注昵称
+  string Nick      = 2; // 用户昵称
   bool IsNotice = 3; //是否屏蔽系统消息
   string avatar  =4; //头像
   int32 Status  = 5; // 状态，是否已经删除
   string Letter = 6; // 昵称首字母，用于排序
+  string  Remark=7;//好友备注
 }
 
 message MyGroup {
@@ -54,6 +55,8 @@ message SetContactReq{
   string UserID = 1;
   Contact Contact = 2; //覆盖更新
   SetContactType SetType = 3; //0 add;1 update notice;2 udpate remark 3、delete
+  string Context = 4;
+  string Remark = 5;
 }
 
 message SetContactResp{
@@ -127,6 +130,9 @@ message FriendRequest{
   uint64 Time =5;
   string Nick = 6; //昵称，remark
   string Avatar = 7;
+  string Context = 8;
+  string Remark = 9;
+  int64 Num = 10;
 }
 
 //好友申请记录管理
@@ -139,14 +145,17 @@ message GetFriendRequestListResp{
 }
 
 enum SetFRequestType{
-  AddFRequest=0;
-  AcceptFRequest=1;
-  DelFRequest=2;
+  AddFRequest=0; // 申请
+  AcceptFRequest=1; // 同意
+  DelFRequest=2; // 删除
+  RejectFRequest=3; // 拒绝
 }
 message SetFriendRequestReq{
   int64 UserID =1;
   int64 OuID =2;
   SetFRequestType Type = 3;//0 add request, 1 accept, 2 del
+  string Context = 4; // 申请信息
+  string Remark = 5; // 对接收者的备注
 }
 message SetFriendRequestResp{
   ContactResult Result =1;
@@ -157,6 +166,7 @@ enum RelationType{
   CheckBlock=1;
   CheckFocus=2;
   CheckGeneral=3;
+  CheckBook = 4;
 }
 message CheckRelationReq {
   RelationType SetType = 1;
@@ -171,6 +181,10 @@ message Relation{
 message CheckRelationResp {
   ContactResult Result =1;
   map<string,Relation> Relations=2; //key为relationtype的字符串
+}
+
+message RunTaskReq {
+  string TaskName = 1;
 }
 
 service Contacts {
@@ -193,5 +207,7 @@ service Contacts {
 
   //relation 检查
   rpc CheckRelation(CheckRelationReq)returns(CheckRelationResp);
+
+  rpc RunTask(RunTaskReq)returns(ContactResult);
 
 }
