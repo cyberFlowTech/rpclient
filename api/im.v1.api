@@ -472,6 +472,18 @@ type (
 		CommonReq
 		TaskName string `form:"task_name"`
 	}
+	SetChatMsgCleanReq {
+		CommonReq
+		ChatId string `form:"chat_id"` // 会话id
+		Value  int64  `form:"value"` // 清理时间，0为不清理，单位秒
+	}
+	GetChatMsgCleanReq {
+		CommonReq
+		ChatId string `form:"chat_id"` // 会话id：多个使用,隔开
+	}
+	GetChatMsgCleanRes {
+		CleanValue map[string]int64 `json:"clean_value"`
+	}
 )
 
 @server (
@@ -680,5 +692,13 @@ service imservice {
 	@doc "单次脚本"
 	@handler runTask
 	post /runTask (RUnTaskReq) returns (NoDataRes)
+
+	@doc "设置会话消息清理"
+	@handler SetChatMsgClean
+	post /SetChatMsgClean (SetChatMsgCleanReq) returns (NoDataRes)
+
+	@doc "获取会话消息清理"
+	@handler GetChatMsgClean
+	post /GetChatMsgClean (GetChatMsgCleanReq) returns (GetChatMsgCleanRes)
 }
 
