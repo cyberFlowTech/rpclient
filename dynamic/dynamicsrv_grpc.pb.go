@@ -63,7 +63,7 @@ type DynamicsrvClient interface {
 	GetUserDynamicList(ctx context.Context, in *UserDynamicListRequest, opts ...grpc.CallOption) (*UserDynamicListResponse, error)
 	// 部落动态列表
 	GetClubDynamicList(ctx context.Context, in *ClubDynamicListRequest, opts ...grpc.CallOption) (*ClubDynamicListResponse, error)
-	// 动态详情
+	// 动态详情(支持批量查询
 	GetDynamicInfo(ctx context.Context, in *DynamicInfoRequest, opts ...grpc.CallOption) (*DynamicInfoResponse, error)
 	// 删除动态
 	DeleteDynamic(ctx context.Context, in *DeleteDynamicRequest, opts ...grpc.CallOption) (*APICommonResponse, error)
@@ -385,7 +385,7 @@ type DynamicsrvServer interface {
 	GetUserDynamicList(context.Context, *UserDynamicListRequest) (*UserDynamicListResponse, error)
 	// 部落动态列表
 	GetClubDynamicList(context.Context, *ClubDynamicListRequest) (*ClubDynamicListResponse, error)
-	// 动态详情
+	// 动态详情(支持批量查询
 	GetDynamicInfo(context.Context, *DynamicInfoRequest) (*DynamicInfoResponse, error)
 	// 删除动态
 	DeleteDynamic(context.Context, *DeleteDynamicRequest) (*APICommonResponse, error)
