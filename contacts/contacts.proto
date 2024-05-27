@@ -187,6 +187,14 @@ message RunTaskReq {
   string TaskName = 1;
 }
 
+message GetSingleContactsReq {
+  int64 UserId = 1;
+}
+
+message GetSingleContactsResp {
+  repeated int64 UserIds = 1;
+}
+
 service Contacts {
   //获取申请list
   rpc GetFriendRequestList(GetFriendRequestListReq)returns(GetFriendRequestListResp);
@@ -209,5 +217,7 @@ service Contacts {
   rpc CheckRelation(CheckRelationReq)returns(CheckRelationResp);
 
   rpc RunTask(RunTaskReq)returns(ContactResult);
+
+  rpc GetSingleContacts(GetSingleContactsReq)returns(GetSingleContactsResp);
 
 }
