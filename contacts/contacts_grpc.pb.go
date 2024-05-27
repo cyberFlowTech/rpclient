@@ -29,6 +29,7 @@ const (
 	Contacts_SetBlackList_FullMethodName         = "/contacts.Contacts/SetBlackList"
 	Contacts_CheckRelation_FullMethodName        = "/contacts.Contacts/CheckRelation"
 	Contacts_RunTask_FullMethodName              = "/contacts.Contacts/RunTask"
+	Contacts_GetSingleContacts_FullMethodName    = "/contacts.Contacts/GetSingleContacts"
 )
 
 // ContactsClient is the client API for Contacts service.
@@ -50,6 +51,7 @@ type ContactsClient interface {
 	// relation 检查
 	CheckRelation(ctx context.Context, in *CheckRelationReq, opts ...grpc.CallOption) (*CheckRelationResp, error)
 	RunTask(ctx context.Context, in *RunTaskReq, opts ...grpc.CallOption) (*ContactResult, error)
+	GetSingleContacts(ctx context.Context, in *GetSingleContactsReq, opts ...grpc.CallOption) (*GetSingleContactsResp, error)
 }
 
 type contactsClient struct {
@@ -150,6 +152,15 @@ func (c *contactsClient) RunTask(ctx context.Context, in *RunTaskReq, opts ...gr
 	return out, nil
 }
 
+func (c *contactsClient) GetSingleContacts(ctx context.Context, in *GetSingleContactsReq, opts ...grpc.CallOption) (*GetSingleContactsResp, error) {
+	out := new(GetSingleContactsResp)
+	err := c.cc.Invoke(ctx, Contacts_GetSingleContacts_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ContactsServer is the server API for Contacts service.
 // All implementations must embed UnimplementedContactsServer
 // for forward compatibility
@@ -169,6 +180,7 @@ type ContactsServer interface {
 	// relation 检查
 	CheckRelation(context.Context, *CheckRelationReq) (*CheckRelationResp, error)
 	RunTask(context.Context, *RunTaskReq) (*ContactResult, error)
+	GetSingleContacts(context.Context, *GetSingleContactsReq) (*GetSingleContactsResp, error)
 	mustEmbedUnimplementedContactsServer()
 }
 
@@ -205,6 +217,9 @@ func (UnimplementedContactsServer) CheckRelation(context.Context, *CheckRelation
 }
 func (UnimplementedContactsServer) RunTask(context.Context, *RunTaskReq) (*ContactResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RunTask not implemented")
+}
+func (UnimplementedContactsServer) GetSingleContacts(context.Context, *GetSingleContactsReq) (*GetSingleContactsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSingleContacts not implemented")
 }
 func (UnimplementedContactsServer) mustEmbedUnimplementedContactsServer() {}
 
@@ -399,6 +414,24 @@ func _Contacts_RunTask_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Contacts_GetSingleContacts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSingleContactsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContactsServer).GetSingleContacts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Contacts_GetSingleContacts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContactsServer).GetSingleContacts(ctx, req.(*GetSingleContactsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Contacts_ServiceDesc is the grpc.ServiceDesc for Contacts service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -445,6 +478,10 @@ var Contacts_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RunTask",
 			Handler:    _Contacts_RunTask_Handler,
+		},
+		{
+			MethodName: "GetSingleContacts",
+			Handler:    _Contacts_GetSingleContacts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
