@@ -23,6 +23,7 @@ const (
 	Search_HotSearch_FullMethodName    = "/search.Search/HotSearch"
 	Search_RunTask_FullMethodName      = "/search.Search/RunTask"
 	Search_SyncDataToEs_FullMethodName = "/search.Search/SyncDataToEs"
+	Search_DataSyncTask_FullMethodName = "/search.Search/DataSyncTask"
 )
 
 // SearchClient is the client API for Search service.
@@ -33,6 +34,7 @@ type SearchClient interface {
 	HotSearch(ctx context.Context, in *HotSearchReq, opts ...grpc.CallOption) (*HotSearchResp, error)
 	RunTask(ctx context.Context, in *RunTaskReq, opts ...grpc.CallOption) (*CommonResp, error)
 	SyncDataToEs(ctx context.Context, in *SyncDataToEsReq, opts ...grpc.CallOption) (*CommonResp, error)
+	DataSyncTask(ctx context.Context, in *EmptyData, opts ...grpc.CallOption) (*CommonResp, error)
 }
 
 type searchClient struct {
@@ -79,6 +81,15 @@ func (c *searchClient) SyncDataToEs(ctx context.Context, in *SyncDataToEsReq, op
 	return out, nil
 }
 
+func (c *searchClient) DataSyncTask(ctx context.Context, in *EmptyData, opts ...grpc.CallOption) (*CommonResp, error) {
+	out := new(CommonResp)
+	err := c.cc.Invoke(ctx, Search_DataSyncTask_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SearchServer is the server API for Search service.
 // All implementations must embed UnimplementedSearchServer
 // for forward compatibility
@@ -87,6 +98,7 @@ type SearchServer interface {
 	HotSearch(context.Context, *HotSearchReq) (*HotSearchResp, error)
 	RunTask(context.Context, *RunTaskReq) (*CommonResp, error)
 	SyncDataToEs(context.Context, *SyncDataToEsReq) (*CommonResp, error)
+	DataSyncTask(context.Context, *EmptyData) (*CommonResp, error)
 	mustEmbedUnimplementedSearchServer()
 }
 
@@ -105,6 +117,9 @@ func (UnimplementedSearchServer) RunTask(context.Context, *RunTaskReq) (*CommonR
 }
 func (UnimplementedSearchServer) SyncDataToEs(context.Context, *SyncDataToEsReq) (*CommonResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SyncDataToEs not implemented")
+}
+func (UnimplementedSearchServer) DataSyncTask(context.Context, *EmptyData) (*CommonResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DataSyncTask not implemented")
 }
 func (UnimplementedSearchServer) mustEmbedUnimplementedSearchServer() {}
 
@@ -191,6 +206,24 @@ func _Search_SyncDataToEs_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Search_DataSyncTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyData)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SearchServer).DataSyncTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Search_DataSyncTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SearchServer).DataSyncTask(ctx, req.(*EmptyData))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Search_ServiceDesc is the grpc.ServiceDesc for Search service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -213,6 +246,10 @@ var Search_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SyncDataToEs",
 			Handler:    _Search_SyncDataToEs_Handler,
+		},
+		{
+			MethodName: "DataSyncTask",
+			Handler:    _Search_DataSyncTask_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
