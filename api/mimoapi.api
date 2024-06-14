@@ -490,15 +490,15 @@ service mimoapi {
 
 	@doc "创建登陆二维码"
 	@handler CreateLoginQrCode
-	post /createLoginQrCode (CreateLoginQrCodeReq) returns (GenerateWalletResp)
+	post /createLoginQrCode (CreateLoginQrCodeReq) returns (CreateLoginQrCodeResp)
 
 	@doc "更新登陆二维码"
-	@handler UpdateLoginQrcode
-	post /updateLoginQrcode (UnbindWalletReq) returns (UnbindWalletResp)
+	@handler UpdateLoginQrCode
+	post /updateLoginQrcode (UpdateLoginQrCodeReq) returns (UpdateLoginQrCodeResp)
 
 	@doc "获取登陆二维码"
-	@handler GetLoginQrcode
-	post /getLoginQrcode (UnbindWalletReq) returns (UnbindWalletResp)
+	@handler GetLoginQrCode
+	post /getLoginQrcode (GetLoginQrCodeReq) returns (GetLoginQrCodeResp)
 }
 
 //--------通讯录--------
