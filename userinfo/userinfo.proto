@@ -120,6 +120,7 @@ message SetCancellationResp {
 enum PlatformType {
       Ios = 0;
       Android = 1;
+      Web = 2;
       Unknown = 99;
 }
 
@@ -130,7 +131,7 @@ message LoginReq {
   string Pwd  = 3;
   string UUID  = 4;
   string Version  = 5; // 登陆的APP版本
-  PlatformType Platform  = 6; // 登陆的设备平台 ios/Android
+  PlatformType Platform  = 6; // 登陆的设备平台 ios/Android/PC
   string Api  = 7; // Api参数
   string Ip  = 8; // Ip
 }
@@ -139,6 +140,7 @@ message LoginResp {
   UserResult Result =1;
   string SessionId = 2;
   int64 UserId = 3;
+  string Uuid = 4; // uuid,pc登陆时返回
 }
 
 // RegisterReq 注册
@@ -150,6 +152,7 @@ message RegisterReq {
   string Api = 5; // 请求过来的api参数
   string AuthEmail = 6; // 第三方登陆时的邮箱，比如苹果、谷歌登陆获取到的邮箱
   PlatformType Platform  = 7; // 登陆的设备平台 ios/Android
+  string InviteCode = 8; // 注册邀请码，可选
 }
 
 message RegisterResp {
@@ -186,15 +189,11 @@ message LoginAutoResp {
   string SessionId =2;
 }
 
-enum LogOutType {
-  APP = 0;
-  Web = 1;
-}
 
 // LogoutReq 退出
 message LogoutReq {
   string UserId  = 1;
-  LogOutType Type  = 2;
+  PlatformType Type  = 2;
 }
 
 message LogoutResp {
@@ -492,6 +491,42 @@ message UnbindWalletResp {
   string Address = 2;
 }
 
+
+
+// 创建二维码信息
+message CreateLoginQrCodeReq {
+  string Uuid = 1; // 设备信息ID
+}
+
+message CreateLoginQrCodeResp {
+  int64 Id = 1; // 二维码ID
+}
+
+// 更新二维码信息
+message UpdateLoginQrCodeReq {
+  int64 Id = 1;    // 二维码ID
+  int64 UserId = 2; // 用户ID
+  int64 Status = 3; // 1:扫描  2:同意授权 3:拒绝授权
+  string Token = 4; // 2:同意授权 时传递临时token
+}
+
+message UpdateLoginQrCodeResp {
+  string Token = 1; // 临时token
+  int64 HasLogin = 2; // 是否已经在其它web设备登陆
+}
+
+// 获取二维码信息
+message GetLoginQrCodeReq {
+  int64 Id = 1; // 二维码ID
+}
+
+message GetLoginQrCodeResp {
+  string Avatar = 1;  // 头像链接
+  int64  Status = 2;  // 状态 0:未扫描 1:已扫描，等待用户确认 2:已扫描，用户同意授权 3:已扫描，用户取消授权 4:已过期
+  string  Sessid = 3;  // APP sessid
+  string  Uuid = 4;  // App uuid
+}
+
 service User {
   //只支持info查询
   rpc getUsersInfo(GetUsersInfoReq) returns(GetUsersInfoResp);
@@ -553,4 +588,11 @@ service User {
   rpc GenerateWallet(GenerateWalletReq) returns(GenerateWalletResp);
   // 解绑钱包
   rpc UnbindWallet(UnbindWalletReq) returns(UnbindWalletResp);
+
+  // 创建二维码信息
+  rpc CreateLoginQrCode (CreateLoginQrCodeReq) returns(CreateLoginQrCodeResp);
+  // 更新二维码信息
+  rpc UpdateLoginQrCode (UpdateLoginQrCodeReq) returns(UpdateLoginQrCodeResp);
+  // 获取二维码信息
+  rpc GetLoginQrCode (GetLoginQrCodeReq) returns(GetLoginQrCodeResp);
 }
