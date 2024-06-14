@@ -372,7 +372,7 @@ type UnbindWalletReq {
 type UnbindWalletResp {}
 
 type CreateLoginQrCodeReq {
-	WUuid string `form:"w_uuid""` // web终端的uuid
+	WUuid string `form:"w_uuid"` // web终端的uuid
 }
 
 type CreateLoginQrCodeResp {
