@@ -10,15 +10,15 @@ info (
 
 type (
 	CommonParams {
-		UserId      int64  `form:"user_id"`      //用户唯一标识
-		SessId      string `form:"sessid"`       //用户登录标识
-		Api         string `form:"api"`          //App公钥
-		Version     string `form:"version"`      //版本号
+		UserId      int64  `form:"user_id"` //用户唯一标识
+		SessId      string `form:"sessid"` //用户登录标识
+		Api         string `form:"api"` //App公钥
+		Version     string `form:"version"` //版本号
 		VersionCode string `form:"version_code"` //构建号
-		Uuid        string `form:"uuid"`         //设备唯一标识
-		Lan         string `form:"lan"`          //语言，如zh_TW
-		Sign        string `form:"sign"`         //签名
-		SignTime    int64  `form:"sign_time"`    //当前时间
+		Uuid        string `form:"uuid"` //设备唯一标识
+		Lan         string `form:"lan"` //语言，如zh_TW
+		Sign        string `form:"sign"` //签名
+		SignTime    int64  `form:"sign_time"` //当前时间
 	}
 	ListReq {
 		CommonParams
@@ -26,56 +26,58 @@ type (
 		Official int64 `form:"official,default=1"`
 	}
 	ListResp {
-		Count   int64  `json:"count"`   // 总条数
-		Pages   int64  `json:"pages"`   // 总页码
+		Count   int64  `json:"count"` // 总条数
+		Pages   int64  `json:"pages"` // 总页码
 		Results []Item `json:"results"` // dapplist
 	}
 	Item {
 		ID                   int64  `json:"id"`
-		DappLogo             string `json:"dapp_logo"`              // logo
-		DappName             string `json:"dapp_name"`              // name
-		DappSite             string `json:"dapp_site"`              // site
-		DappUrl              string `json:"dapp_url"`               // 页面
-		DappBigPicture       string `json:"dapp_big_picture"`       // 缩略图
-		DappRank             int64  `json:"dapp_rank"`              // 排序
-		DappDesc             string `json:"dapp_desc"`              // 描述
-		IsSearchRecommend    int64  `json:"is_search_recommend"`    // 是否推荐
+		DappLogo             string `json:"dapp_logo"` // logo
+		DappName             string `json:"dapp_name"` // name
+		DappSite             string `json:"dapp_site"` // site
+		DappUrl              string `json:"dapp_url"` // 页面
+		DappBigPicture       string `json:"dapp_big_picture"` // 缩略图
+		DappRank             int64  `json:"dapp_rank"` // 排序
+		DappDesc             string `json:"dapp_desc"` // 描述
+		IsSearchRecommend    int64  `json:"is_search_recommend"` // 是否推荐
 		IsDiscoveryRecommend int64  `json:"is_discovery_recommend"` // 是否发现页推荐
-		Created              string `json:"created"`                // 创建时间
-		UserID               int64  `json:"user_id"`                // 创建者 官方的为0
+		Created              string `json:"created"` // 创建时间
+		UserID               int64  `json:"user_id"` // 创建者 官方的为0
 		DappId               string `json:"dapp_id"`
+		FullScreen           int64  `json:"full_screen"` // 全屏展示 0否 1是
 	}
 	SaveReq {
 		CommonParams
-		ID                   int64  `form:"id,optional"`                                                                  // dappid 更新时需要
+		ID                   int64  `form:"id,optional"` // dappid 更新时需要
 		DappLogo             string `form:"dapp_logo,default=https://assets.mimo.immo/images/dapp/dapp-default-icon.png"` // logo
-		DappName             string `form:"dapp_name"`                                                                    // name
-		DappSite             string `form:"dapp_site,optional,default="`                                                // site
-		DappUrl              string `form:"dapp_url"`                                                                     // 页面
-		DappBigPicture       string `form:"dapp_big_picture,optional,default="`                                         // 缩略图
-		DappRank             int64  `form:"dapp_rank,optional,default=0"`                                                 // 排序
-		DappDesc             string `form:"dapp_desc,optional,default="`                                                // 描述
-		IsSearchRecommend    int64  `form:"is_search_recommend,optional,default=0"`                                       // 是否推荐
-		IsDiscoveryRecommend int64  `form:"is_discovery_recommend,optional,default=0"`                                    // 是否发现页推荐
-		RelationId           string `form:"relation_id,optional,default="`                                              //  关联id
+		DappName             string `form:"dapp_name"` // name
+		DappSite             string `form:"dapp_site,optional,default="""` // site
+		DappUrl              string `form:"dapp_url"` // 页面
+		DappBigPicture       string `form:"dapp_big_picture,optional,default="""` // 缩略图
+		DappRank             int64  `form:"dapp_rank,optional,default=0"` // 排序
+		DappDesc             string `form:"dapp_desc,optional,default="""` // 描述
+		IsSearchRecommend    int64  `form:"is_search_recommend,optional,default=0"` // 是否推荐
+		IsDiscoveryRecommend int64  `form:"is_discovery_recommend,optional,default=0"` // 是否发现页推荐
+		RelationId           string `form:"relation_id,optional,default="""` //  关联id
+		FullScreen           int64  `form:"full_screen,optional,default=0"` // 全屏展示 0否 1是
 	}
 	SaveResp {
 		ID         int64  `json:"id"`
 		DappLogo   string `json:"dapp_logo"` // logo
 		DappName   string `json:"dapp_name"` // name
-		DappUrl    string `json:"dapp_url"`  // 页面
+		DappUrl    string `json:"dapp_url"` // 页面
 		DappDesc   string `json:"dapp_desc"` // 描述
-		Created    int64  `json:"ctime"`     // 创建时间
-		UserID     string `json:"user_id"`   // 创建者 官方的为0
+		Created    int64  `json:"ctime"` // 创建时间
+		UserID     string `json:"user_id"` // 创建者 官方的为0
 		IsOfficial int64  `json:"is_official"`
 		DappId     string `json:"dapp_id"`
 	}
 	DelReq {
 		CommonParams
-		ID     int64 `form:"id,optional"`               // dappid
+		ID     int64 `form:"id,optional"` // dappid
 		Depend int64 `form:"depend,optional,default=0"` // 是否删除所有依赖
 	}
-	DelResp {}
+	DelResp  {}
 	SearchReq {
 		CommonParams
 		Page     int64  `form:"page,default=1"`
@@ -97,13 +99,14 @@ type (
 		ID         string `json:"id"`
 		DappLogo   string `json:"dapp_logo"` // logo
 		DappName   string `json:"dapp_name"` // name
-		DappUrl    string `json:"dapp_url"`  // 页面
+		DappUrl    string `json:"dapp_url"` // 页面
 		DappDesc   string `json:"dapp_desc"` // 描述
-		Ctime      string `json:"ctime"`     // 创建时间
-		UserID     string `json:"user_id"`   // 创建者 官方的为0
+		Ctime      string `json:"ctime"` // 创建时间
+		UserID     string `json:"user_id"` // 创建者 官方的为0
 		DappId     string `json:"dapp_id"`
 		IsOfficial string `json:"is_official"`
 		IsDel      string `json:"is_del"`
+		FullScreen int64  `json:"full_screen"` // 全屏展示 0否 1是
 	}
 	CommonResp {
 		IRet int         `json:"iRet"`
@@ -147,3 +150,4 @@ service dappservice {
 	@handler categorys
 	get /category (GetCategoryReq) returns (ListResp)
 }
+
