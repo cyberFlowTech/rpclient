@@ -28,6 +28,10 @@ jobs:
           aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Login to Amazon ECR # 终端登录ecr
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
       - name: Build image and run task # 构建镜像并执行
         id: build-image
         run: |
