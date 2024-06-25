@@ -29,7 +29,6 @@ const (
 	WebTProxy_WalletSearch_FullMethodName      = "/webTProxy.webTProxy/walletSearch"
 	WebTProxy_GetTransLogByTxid_FullMethodName = "/webTProxy.webTProxy/getTransLogByTxid"
 	WebTProxy_TokensAdd_FullMethodName         = "/webTProxy.webTProxy/tokensAdd"
-	WebTProxy_TokensList_FullMethodName        = "/webTProxy.webTProxy/tokensList"
 	WebTProxy_TokensDel_FullMethodName         = "/webTProxy.webTProxy/tokensDel"
 	WebTProxy_TokensSort_FullMethodName        = "/webTProxy.webTProxy/tokensSort"
 	WebTProxy_UserTokensList_FullMethodName    = "/webTProxy.webTProxy/userTokensList"
@@ -54,7 +53,6 @@ type WebTProxyClient interface {
 	WalletSearch(ctx context.Context, in *WalletSearchReq, opts ...grpc.CallOption) (*WalletSearchResp, error)
 	GetTransLogByTxid(ctx context.Context, in *GetTransLogByTxidReq, opts ...grpc.CallOption) (*TransactionInfo, error)
 	TokensAdd(ctx context.Context, in *TokensAddReq, opts ...grpc.CallOption) (*TokensAddResp, error)
-	TokensList(ctx context.Context, in *TokensListReq, opts ...grpc.CallOption) (*TokensListResp, error)
 	TokensDel(ctx context.Context, in *TokensDelReq, opts ...grpc.CallOption) (*TokensDelResp, error)
 	TokensSort(ctx context.Context, in *TokensSortReq, opts ...grpc.CallOption) (*TokensSortResp, error)
 	UserTokensList(ctx context.Context, in *UserTokensListReq, opts ...grpc.CallOption) (*UserTokensListResp, error)
@@ -163,15 +161,6 @@ func (c *webTProxyClient) TokensAdd(ctx context.Context, in *TokensAddReq, opts 
 	return out, nil
 }
 
-func (c *webTProxyClient) TokensList(ctx context.Context, in *TokensListReq, opts ...grpc.CallOption) (*TokensListResp, error) {
-	out := new(TokensListResp)
-	err := c.cc.Invoke(ctx, WebTProxy_TokensList_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *webTProxyClient) TokensDel(ctx context.Context, in *TokensDelReq, opts ...grpc.CallOption) (*TokensDelResp, error) {
 	out := new(TokensDelResp)
 	err := c.cc.Invoke(ctx, WebTProxy_TokensDel_FullMethodName, in, out, opts...)
@@ -258,7 +247,6 @@ type WebTProxyServer interface {
 	WalletSearch(context.Context, *WalletSearchReq) (*WalletSearchResp, error)
 	GetTransLogByTxid(context.Context, *GetTransLogByTxidReq) (*TransactionInfo, error)
 	TokensAdd(context.Context, *TokensAddReq) (*TokensAddResp, error)
-	TokensList(context.Context, *TokensListReq) (*TokensListResp, error)
 	TokensDel(context.Context, *TokensDelReq) (*TokensDelResp, error)
 	TokensSort(context.Context, *TokensSortReq) (*TokensSortResp, error)
 	UserTokensList(context.Context, *UserTokensListReq) (*UserTokensListResp, error)
@@ -303,9 +291,6 @@ func (UnimplementedWebTProxyServer) GetTransLogByTxid(context.Context, *GetTrans
 }
 func (UnimplementedWebTProxyServer) TokensAdd(context.Context, *TokensAddReq) (*TokensAddResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TokensAdd not implemented")
-}
-func (UnimplementedWebTProxyServer) TokensList(context.Context, *TokensListReq) (*TokensListResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method TokensList not implemented")
 }
 func (UnimplementedWebTProxyServer) TokensDel(context.Context, *TokensDelReq) (*TokensDelResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TokensDel not implemented")
@@ -524,24 +509,6 @@ func _WebTProxy_TokensAdd_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _WebTProxy_TokensList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TokensListReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WebTProxyServer).TokensList(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: WebTProxy_TokensList_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WebTProxyServer).TokensList(ctx, req.(*TokensListReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _WebTProxy_TokensDel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TokensDelReq)
 	if err := dec(in); err != nil {
@@ -732,10 +699,6 @@ var WebTProxy_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "tokensAdd",
 			Handler:    _WebTProxy_TokensAdd_Handler,
-		},
-		{
-			MethodName: "tokensList",
-			Handler:    _WebTProxy_TokensList_Handler,
 		},
 		{
 			MethodName: "tokensDel",
