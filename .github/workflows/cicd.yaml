@@ -31,6 +31,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+
+      #  docker build -t $ECR_REGISTRY/common:rpclient_v1 -f deploy/docker/Dockerfile .
+      #  docker push $ECR_REGISTRY/common:rpclient_v1
       - name: Build image and run task # 构建镜像并执行
         id: build-image
         run: |

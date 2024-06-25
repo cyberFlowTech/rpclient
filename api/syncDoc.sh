@@ -10,11 +10,21 @@ Success=0
 Fail=0
 FailFiles=""
 for file in *.api; do
-    echo $file
+    echo "扫描api文件：$file"
     if [ -f "$file" ]; then
         Total=$((Total + 1))
         goctl api plugin -plugin goctl-swagger="swagger -filename $file.json" -api $file -dir .
-        echo "goctl $json_data"
+    fi
+
+    if [ -f "$file.json" ]; then
+          echo "$file.json,success"
+    else
+          if [ "$Fail" -gt "0" ]; then
+              FailFiles+=",${file}"
+          else
+              FailFiles+="${file}"
+          fi
+          Fail=$((Fail + 1))
     fi
 done
 
@@ -52,9 +62,9 @@ for file in *.json; do
         rm $file
     fi
 done
-if [ "$Fail" -gt "0" ]
-then
+#if [ "$Fail" -gt "0" ]
+#then
     echo "一共${Total}个API文件，导入成功${Success}个，导入失败${Fail}。失败的文件:${FailFiles}"
-else
-    echo "一共${Total}个API文件，导入成功${Success}个"
-fi
+#else
+#    echo "一共${Total}个API文件，导入成功${Success}个"
+#fi
