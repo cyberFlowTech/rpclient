@@ -7,6 +7,8 @@ on:
 env:
   PROJECT_ID:  ${{ vars.APIFOXPROJECTID }} # Github仓库中配置的APIFOXPROJECTID
   ACCESS_TOKEN:  ${{ vars.APIFOXACCESSTOKEN }} # Github仓库中配置的APIFOXACCESSTOKEN
+  ECR_REGISTRY: 024905375334.dkr.ecr.ap-southeast-1.amazonaws.com #${{ secrets.ECR_REGISTRY }}
+
 
 jobs:
   syncDoc:
@@ -19,5 +21,6 @@ jobs:
       - name: Build image # 构建镜像并执行
         id: build-image
         run: |
-          docker build -t rpclient/rpclient:v1 -f deploy/docker/Dockerfile .
-          docker run --rm -v ./api:/app/   rpclient/rpclient:v1 /bin/sh /app/syncDoc.sh ${{ env.PROJECT_ID }} ${{ env.ACCESS_TOKEN }}
+          docker build -t $ECR_REGISTRY/common:rpclient:v1 -f deploy/docker/Dockerfile .
+          docker push $ECR_REGISTRY/common:rpclient:v1
+          docker run --rm -v ./api:/app/   $ECR_REGISTRY/rpclient:v1 /bin/sh /app/syncDoc.sh ${{ env.PROJECT_ID }} ${{ env.ACCESS_TOKEN }}
