@@ -494,19 +494,19 @@ service mimoapi {
 	@handler UnbindWallet
 	post /unbindWallet (UnbindWalletReq) returns (UnbindWalletResp)
 
-	@doc "[扫码登陆]PC创建二维码"
+	@doc "[扫码登录]PC创建二维码"
 	@handler CreateLoginQrCode
 	post /createLoginQrCode (CreateLoginQrCodeReq) returns (CreateLoginQrCodeResp)
 
-	@doc "[扫码登陆]PC获取二维码状态"
+	@doc "[扫码登录]PC获取二维码状态"
 	@handler GetLoginQrCode
 	post /getLoginQrcodeStatus (GetLoginQrCodeStatusReq) returns (GetLoginQrCodeStatusResp)
 
-	@doc "[扫码登陆]移动端扫码获取二维码信息"
+	@doc "[扫码登录]移动端扫码获取二维码信息"
 	@handler GetQrLoginInfo
 	post /GetQrLoginInfo (GetQrLoginInfoReq) returns (GetQrLoginInfoResp)
 
-	@doc "[扫码登陆]移动端授权登录"
+	@doc "[扫码登录]移动端授权登录"
 	@handler AuthorizationLogin
 	post /AuthorizationLogin (AuthorizationLoginReq) returns (AuthorizationLoginResp)
 }
