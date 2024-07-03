@@ -377,30 +377,30 @@ type CreateLoginQrCodeReq {
 }
 
 type CreateLoginQrCodeResp {
-	Id string `json:"id"` // 二维码Id
+	QrcodeId string `json:"qrcode_id"` // 二维码Id
 }
 
-type GetQrLoginTokenReq {
+type GetQrLoginInfoReq {
 	CommonParams
-	Id string `form:"id"` // 二维码Id
+	QrcodeId string `form:"qrcode_id"` // 二维码Id
 }
 
-type GetQrLoginTokenResp {
+type GetQrLoginInfoResp {
 	Token    string `json:"token"` // 临时token
 	HasLogin int64  `json:"hasLogin"` // 是否已经登录其它设备
 }
 
 type AuthorizationLoginReq {
 	CommonParams
-	Token  string `form:"token"` // 授权token
-	Id     string `form:"id"` // 二维码ID
-	Status int64  `form:"status,range=[2:3]"` // 2:同意授权 3:拒绝授权
+	Token    string `form:"token"` // 授权token
+	QrcodeId string `form:"qrcode_id"` // 二维码ID
+	Status   int64  `form:"status,range=[2:3]"` // 2:同意授权 3:拒绝授权
 }
 
 type AuthorizationLoginResp {}
 
 type GetLoginQrCodeStatusReq {
-	Id string `form:"id"` // 二维码ID
+	Id string `form:"qrcode_id"` // 二维码ID
 }
 
 type GetLoginQrCodeStatusResp {
@@ -494,19 +494,19 @@ service mimoapi {
 	@handler UnbindWallet
 	post /unbindWallet (UnbindWalletReq) returns (UnbindWalletResp)
 
-	@doc "创建登录二维码"
+	@doc "[扫码登陆]PC创建二维码"
 	@handler CreateLoginQrCode
 	post /createLoginQrCode (CreateLoginQrCodeReq) returns (CreateLoginQrCodeResp)
 
-	@doc "获取登录二维码信息"
+	@doc "[扫码登陆]PC获取二维码状态"
 	@handler GetLoginQrCode
 	post /getLoginQrcodeStatus (GetLoginQrCodeStatusReq) returns (GetLoginQrCodeStatusResp)
 
-	@doc "获取二维码登录Token"
-	@handler GetQrLoginToken
-	post /GetQrLoginToken (GetQrLoginTokenReq) returns (GetQrLoginTokenResp)
+	@doc "[扫码登陆]移动端扫码获取二维码信息"
+	@handler GetQrLoginInfo
+	post /GetQrLoginInfo (GetQrLoginInfoReq) returns (GetQrLoginInfoResp)
 
-	@doc "授权登录"
+	@doc "[扫码登陆]移动端授权登录"
 	@handler AuthorizationLogin
 	post /AuthorizationLogin (AuthorizationLoginReq) returns (AuthorizationLoginResp)
 }
