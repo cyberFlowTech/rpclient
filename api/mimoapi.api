@@ -399,11 +399,11 @@ type AuthorizationLoginReq {
 
 type AuthorizationLoginResp {}
 
-type GetLoginQrCodeReq {
+type GetLoginQrCodeStatusReq {
 	Id string `form:"id"` // 二维码ID
 }
 
-type GetLoginQrCodeResp {
+type GetLoginQrCodeStatusResp {
 	QrcodeStatus int64 `json:"qrcode_status"` // 二维码状态 0:未扫描 1:已扫描，等待用户确认 2:已扫描，用户同意授权 3:已扫描，用户取消授权 4:已过期
 	LoginRegisterResponseStruct
 }
@@ -500,7 +500,7 @@ service mimoapi {
 
 	@doc "获取登录二维码信息"
 	@handler GetLoginQrCode
-	post /getLoginQrcode (GetLoginQrCodeReq) returns (GetLoginQrCodeResp)
+	post /getLoginQrcodeStatus (GetLoginQrCodeStatusReq) returns (GetLoginQrCodeStatusResp)
 
 	@doc "获取二维码登录Token"
 	@handler GetQrLoginToken
