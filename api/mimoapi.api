@@ -168,8 +168,8 @@ type LoginRegisterResponseStruct {
 	RegTime      string                          `json:"reg_time"` //注册时间
 	OpenFun      bool                            `json:"open_fun"` // （弃用）
 	OpenApplet   bool                            `json:"open_applet"` // （弃用）
-	Openudid     string                          `json:"openudid"` // （弃用）
-	Uuid         string                          `json:"uuid"` // （弃用）
+	Openudid     string                          `json:"openudid"` // 第三方账号
+	Uuid         string                          `json:"uuid"` // uuid
 }
 
 type LoginIndexRequest {
@@ -386,8 +386,9 @@ type GetQrLoginInfoReq {
 }
 
 type GetQrLoginInfoResp {
-	Token    string `json:"token"` // 临时token
-	HasLogin int64  `json:"hasLogin"` // 是否已经登录其它设备
+	Token        string `json:"token"` // 临时token
+	HasLogin     int64  `json:"hasLogin"` // 是否已经登录其它设备
+	QrcodeStatus int64  `json:"qrcode_status"` // 0 未扫描 1 已扫描 2已登陆 3已拒绝 4已过期
 }
 
 type AuthorizationLoginReq {
