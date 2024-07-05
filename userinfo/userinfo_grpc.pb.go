@@ -48,6 +48,9 @@ const (
 	User_GetInfoByShareCode_FullMethodName       = "/userinfo.User/GetInfoByShareCode"
 	User_GenerateWallet_FullMethodName           = "/userinfo.User/GenerateWallet"
 	User_UnbindWallet_FullMethodName             = "/userinfo.User/UnbindWallet"
+	User_CreateLoginQrCode_FullMethodName        = "/userinfo.User/CreateLoginQrCode"
+	User_UpdateLoginQrCode_FullMethodName        = "/userinfo.User/UpdateLoginQrCode"
+	User_GetLoginQrCode_FullMethodName           = "/userinfo.User/GetLoginQrCode"
 )
 
 // UserClient is the client API for User service.
@@ -109,6 +112,12 @@ type UserClient interface {
 	GenerateWallet(ctx context.Context, in *GenerateWalletReq, opts ...grpc.CallOption) (*GenerateWalletResp, error)
 	// 解绑钱包
 	UnbindWallet(ctx context.Context, in *UnbindWalletReq, opts ...grpc.CallOption) (*UnbindWalletResp, error)
+	// 创建二维码信息
+	CreateLoginQrCode(ctx context.Context, in *CreateLoginQrCodeReq, opts ...grpc.CallOption) (*CreateLoginQrCodeResp, error)
+	// 更新二维码信息
+	UpdateLoginQrCode(ctx context.Context, in *UpdateLoginQrCodeReq, opts ...grpc.CallOption) (*UpdateLoginQrCodeResp, error)
+	// 获取二维码信息
+	GetLoginQrCode(ctx context.Context, in *GetLoginQrCodeReq, opts ...grpc.CallOption) (*GetLoginQrCodeResp, error)
 }
 
 type userClient struct {
@@ -380,6 +389,33 @@ func (c *userClient) UnbindWallet(ctx context.Context, in *UnbindWalletReq, opts
 	return out, nil
 }
 
+func (c *userClient) CreateLoginQrCode(ctx context.Context, in *CreateLoginQrCodeReq, opts ...grpc.CallOption) (*CreateLoginQrCodeResp, error) {
+	out := new(CreateLoginQrCodeResp)
+	err := c.cc.Invoke(ctx, User_CreateLoginQrCode_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UpdateLoginQrCode(ctx context.Context, in *UpdateLoginQrCodeReq, opts ...grpc.CallOption) (*UpdateLoginQrCodeResp, error) {
+	out := new(UpdateLoginQrCodeResp)
+	err := c.cc.Invoke(ctx, User_UpdateLoginQrCode_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetLoginQrCode(ctx context.Context, in *GetLoginQrCodeReq, opts ...grpc.CallOption) (*GetLoginQrCodeResp, error) {
+	out := new(GetLoginQrCodeResp)
+	err := c.cc.Invoke(ctx, User_GetLoginQrCode_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -439,6 +475,12 @@ type UserServer interface {
 	GenerateWallet(context.Context, *GenerateWalletReq) (*GenerateWalletResp, error)
 	// 解绑钱包
 	UnbindWallet(context.Context, *UnbindWalletReq) (*UnbindWalletResp, error)
+	// 创建二维码信息
+	CreateLoginQrCode(context.Context, *CreateLoginQrCodeReq) (*CreateLoginQrCodeResp, error)
+	// 更新二维码信息
+	UpdateLoginQrCode(context.Context, *UpdateLoginQrCodeReq) (*UpdateLoginQrCodeResp, error)
+	// 获取二维码信息
+	GetLoginQrCode(context.Context, *GetLoginQrCodeReq) (*GetLoginQrCodeResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -532,6 +574,15 @@ func (UnimplementedUserServer) GenerateWallet(context.Context, *GenerateWalletRe
 }
 func (UnimplementedUserServer) UnbindWallet(context.Context, *UnbindWalletReq) (*UnbindWalletResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnbindWallet not implemented")
+}
+func (UnimplementedUserServer) CreateLoginQrCode(context.Context, *CreateLoginQrCodeReq) (*CreateLoginQrCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateLoginQrCode not implemented")
+}
+func (UnimplementedUserServer) UpdateLoginQrCode(context.Context, *UpdateLoginQrCodeReq) (*UpdateLoginQrCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateLoginQrCode not implemented")
+}
+func (UnimplementedUserServer) GetLoginQrCode(context.Context, *GetLoginQrCodeReq) (*GetLoginQrCodeResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLoginQrCode not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -1068,6 +1119,60 @@ func _User_UnbindWallet_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_CreateLoginQrCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateLoginQrCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).CreateLoginQrCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_CreateLoginQrCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).CreateLoginQrCode(ctx, req.(*CreateLoginQrCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UpdateLoginQrCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateLoginQrCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UpdateLoginQrCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UpdateLoginQrCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UpdateLoginQrCode(ctx, req.(*UpdateLoginQrCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetLoginQrCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLoginQrCodeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetLoginQrCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_GetLoginQrCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetLoginQrCode(ctx, req.(*GetLoginQrCodeReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1190,6 +1295,18 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UnbindWallet",
 			Handler:    _User_UnbindWallet_Handler,
+		},
+		{
+			MethodName: "CreateLoginQrCode",
+			Handler:    _User_CreateLoginQrCode_Handler,
+		},
+		{
+			MethodName: "UpdateLoginQrCode",
+			Handler:    _User_UpdateLoginQrCode_Handler,
+		},
+		{
+			MethodName: "GetLoginQrCode",
+			Handler:    _User_GetLoginQrCode_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

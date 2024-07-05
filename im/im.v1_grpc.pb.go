@@ -61,6 +61,8 @@ const (
 	ImServer_SetFriendRemark_FullMethodName             = "/im.ImServer/SetFriendRemark"
 	ImServer_SyncUserClubNick_FullMethodName            = "/im.ImServer/SyncUserClubNick"
 	ImServer_RunTask_FullMethodName                     = "/im.ImServer/RunTask"
+	ImServer_SetChatMsgClean_FullMethodName             = "/im.ImServer/SetChatMsgClean"
+	ImServer_GetChatMsgClean_FullMethodName             = "/im.ImServer/GetChatMsgClean"
 )
 
 // ImServerClient is the client API for ImServer service.
@@ -118,6 +120,8 @@ type ImServerClient interface {
 	SetFriendRemark(ctx context.Context, in *SetFriendRemarkReq, opts ...grpc.CallOption) (*CommonRes, error)
 	SyncUserClubNick(ctx context.Context, in *SyncUserClubNickReq, opts ...grpc.CallOption) (*CommonRes, error)
 	RunTask(ctx context.Context, in *RunTaskReq, opts ...grpc.CallOption) (*CommonRes, error)
+	SetChatMsgClean(ctx context.Context, in *SetChatMsgCleanReq, opts ...grpc.CallOption) (*CommonRes, error)
+	GetChatMsgClean(ctx context.Context, in *GetChatMsgCleanReq, opts ...grpc.CallOption) (*GetChatMsgCleanRes, error)
 }
 
 type imServerClient struct {
@@ -506,6 +510,24 @@ func (c *imServerClient) RunTask(ctx context.Context, in *RunTaskReq, opts ...gr
 	return out, nil
 }
 
+func (c *imServerClient) SetChatMsgClean(ctx context.Context, in *SetChatMsgCleanReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_SetChatMsgClean_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) GetChatMsgClean(ctx context.Context, in *GetChatMsgCleanReq, opts ...grpc.CallOption) (*GetChatMsgCleanRes, error) {
+	out := new(GetChatMsgCleanRes)
+	err := c.cc.Invoke(ctx, ImServer_GetChatMsgClean_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImServerServer is the server API for ImServer service.
 // All implementations must embed UnimplementedImServerServer
 // for forward compatibility
@@ -561,6 +583,8 @@ type ImServerServer interface {
 	SetFriendRemark(context.Context, *SetFriendRemarkReq) (*CommonRes, error)
 	SyncUserClubNick(context.Context, *SyncUserClubNickReq) (*CommonRes, error)
 	RunTask(context.Context, *RunTaskReq) (*CommonRes, error)
+	SetChatMsgClean(context.Context, *SetChatMsgCleanReq) (*CommonRes, error)
+	GetChatMsgClean(context.Context, *GetChatMsgCleanReq) (*GetChatMsgCleanRes, error)
 	mustEmbedUnimplementedImServerServer()
 }
 
@@ -693,6 +717,12 @@ func (UnimplementedImServerServer) SyncUserClubNick(context.Context, *SyncUserCl
 }
 func (UnimplementedImServerServer) RunTask(context.Context, *RunTaskReq) (*CommonRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RunTask not implemented")
+}
+func (UnimplementedImServerServer) SetChatMsgClean(context.Context, *SetChatMsgCleanReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetChatMsgClean not implemented")
+}
+func (UnimplementedImServerServer) GetChatMsgClean(context.Context, *GetChatMsgCleanReq) (*GetChatMsgCleanRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChatMsgClean not implemented")
 }
 func (UnimplementedImServerServer) mustEmbedUnimplementedImServerServer() {}
 
@@ -1463,6 +1493,42 @@ func _ImServer_RunTask_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImServer_SetChatMsgClean_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetChatMsgCleanReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).SetChatMsgClean(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_SetChatMsgClean_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).SetChatMsgClean(ctx, req.(*SetChatMsgCleanReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_GetChatMsgClean_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetChatMsgCleanReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).GetChatMsgClean(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_GetChatMsgClean_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).GetChatMsgClean(ctx, req.(*GetChatMsgCleanReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ImServer_ServiceDesc is the grpc.ServiceDesc for ImServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1637,6 +1703,14 @@ var ImServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RunTask",
 			Handler:    _ImServer_RunTask_Handler,
+		},
+		{
+			MethodName: "SetChatMsgClean",
+			Handler:    _ImServer_SetChatMsgClean_Handler,
+		},
+		{
+			MethodName: "GetChatMsgClean",
+			Handler:    _ImServer_GetChatMsgClean_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

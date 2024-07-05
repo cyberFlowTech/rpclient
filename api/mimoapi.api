@@ -53,27 +53,28 @@ type UserNotificationConfig {
 }
 
 type UserInfo {
-	UserID    int64      `json:"user_id"` //"user_id":548226,
-	MidUnique string     `json:"mid_unique"` //"mid_unique":"mid_vqudi3gia7",
-	Sex       string     `json:"sex"` //"sex":"0",
-	Desc      string     `json:"desc"` //"desc":"",
-	Avatar    string     `json:"avatar"` //"avatar":"https://rd-center.mimelabs.xyz/RD-mime/Upload/nft/Meemo/1/100/1/Meemo1108824.png",
-	Nick      string     `json:"nick"` //"nick":"rrr",
-	Address   string     `json:"address"` //"address":"0xb4c4504B429FE076dcf31C8361e1a5Dde19D2CF2",
-	UserType  string     `json:"user_type"` //"user_type":"10",
-	UserConf  UserConfig `json:"u_conf"` //u_conf
-	Phrase    string     `json:"phrase"` //"phrase":"",
-	NetWork   string     `json:"network"` //"network":"1000000",
-	Remark    string     `json:"remarks"` //"remarks":"",
-	Fans      int32      `json:"fans"` //"fans":0,
-	Focus     int32      `json:"focus"` //"focus":0,
-	IsFocus   int32      `json:"is_focus"` //"is_focus":0,
-	RegTime   string     `json:"reg_time"` //"reg_time":"2023-03-10 17:28:44",
-	IsBlock   int32      `json:"is_block"` //"is_block":0,
-	IsPwd     int32      `json:"is_pwd,optional"`
-	IsGeneral int32      `json:"is_general"` //"is_general":0,
-	IsFriend  int32      `json:"is_friend"` //"is_friend":0
-	InBook    int32      `json:"in_book"`
+	UserID       int64      `json:"user_id"` //"user_id":548226,
+	MidUnique    string     `json:"mid_unique"` //"mid_unique":"mid_vqudi3gia7",
+	Sex          string     `json:"sex"` //"sex":"0",
+	Desc         string     `json:"desc"` //"desc":"",
+	Avatar       string     `json:"avatar"` //"avatar":"https://rd-center.mimelabs.xyz/RD-mime/Upload/nft/Meemo/1/100/1/Meemo1108824.png",
+	OriginAvatar string     `json:"origin_avatar"` // 原图
+	Nick         string     `json:"nick"` //"nick":"rrr",
+	Address      string     `json:"address"` //"address":"0xb4c4504B429FE076dcf31C8361e1a5Dde19D2CF2",
+	UserType     string     `json:"user_type"` //"user_type":"10",
+	UserConf     UserConfig `json:"u_conf"` //u_conf
+	Phrase       string     `json:"phrase"` //"phrase":"",
+	NetWork      string     `json:"network"` //"network":"1000000",
+	Remark       string     `json:"remarks"` //"remarks":"",
+	Fans         int32      `json:"fans"` //"fans":0,
+	Focus        int32      `json:"focus"` //"focus":0,
+	IsFocus      int32      `json:"is_focus"` //"is_focus":0,
+	RegTime      string     `json:"reg_time"` //"reg_time":"2023-03-10 17:28:44",
+	IsBlock      int32      `json:"is_block"` //"is_block":0,
+	IsPwd        int32      `json:"is_pwd,optional"`
+	IsGeneral    int32      `json:"is_general"` //"is_general":0,
+	IsFriend     int32      `json:"is_friend"` //"is_friend":0
+	InBook       int32      `json:"in_book"`
 }
 
 type GetUsersRequest {
@@ -127,7 +128,7 @@ type SetUsersNotificationConfRequest {
 	Badges            *int64 `form:"badges,optional"` // 消息通知横幅：0 关闭 1开启
 }
 
-// 登陆、注册、忘记密码
+// 登录、注册、忘记密码
 type LoginRegisterForm {
 	Openudid   string `form:"openudid"` // 账号（邮箱或自定义账号，或者是第三方登录的code，或钱包地址）
 	UserType   int64  `form:"user_type"` // 账号类型10=>邮箱，20=>钱包(没有在用)，30=>google，40=>facebook（(没有在用)），50=>apple，60=>手机号（(没有在用)），70=>自定义账号，80=>一键注册
@@ -167,7 +168,8 @@ type LoginRegisterResponseStruct {
 	RegTime      string                          `json:"reg_time"` //注册时间
 	OpenFun      bool                            `json:"open_fun"` // （弃用）
 	OpenApplet   bool                            `json:"open_applet"` // （弃用）
-	Openudid     string                          `json:"openudid"` // （弃用）
+	Openudid     string                          `json:"openudid"` // 第三方账号
+	Uuid         string                          `json:"uuid"` // uuid
 }
 
 type LoginIndexRequest {
@@ -213,7 +215,7 @@ type LogoutResp {
 
 type RegisterRequest {
 	LoginRegisterForm
-	AuthEmail string `form:"auth_email,optional"` // 第三方登陆邮箱
+	AuthEmail string `form:"auth_email,optional"` // 第三方登录邮箱
 }
 
 type RegisterResp {
@@ -314,7 +316,7 @@ type SearchInfo {
 	Status     string `json:"status"` // (弃用)状态
 	Age        string `json:"age"` // （弃用）年龄
 	Avatar     string `json:"avatar"` // 小头像
-	ActiveTime string `json:"active_time"` // 最后登陆时间
+	ActiveTime string `json:"active_time"` // 最后登录时间
 	Sex        string `json:"sex"` // （弃用）性别
 	Level      string `json:"level"` // 弃用
 	Desc       string `json:"desc"` // 简介
@@ -370,6 +372,43 @@ type UnbindWalletReq {
 
 type UnbindWalletResp {}
 
+type CreateLoginQrCodeReq {
+	WUuid string `form:"w_uuid"` // web终端的uuid
+}
+
+type CreateLoginQrCodeResp {
+	QrcodeId string `json:"qrcode_id"` // 二维码Id
+}
+
+type GetQrLoginInfoReq {
+	CommonParams
+	QrcodeId string `form:"qrcode_id"` // 二维码Id
+}
+
+type GetQrLoginInfoResp {
+	Token        string `json:"token"` // 临时token
+	HasLogin     int64  `json:"hasLogin"` // 是否已经登录其它PC设备 1已登陆 0 未登陆
+	QrcodeStatus int64  `json:"qrcode_status"` // 0 未扫描 1 已扫描 2已登陆 3已拒绝 4已过期
+}
+
+type AuthorizationLoginReq {
+	CommonParams
+	Token    string `form:"token"` // 授权token
+	QrcodeId string `form:"qrcode_id"` // 二维码ID
+	Status   int64  `form:"status,range=[2:3]"` // 2:同意授权 3:拒绝授权
+}
+
+type AuthorizationLoginResp {}
+
+type GetLoginQrCodeStatusReq {
+	Id string `form:"qrcode_id"` // 二维码ID
+}
+
+type GetLoginQrCodeStatusResp {
+	QrcodeStatus int64 `json:"qrcode_status"` // 二维码状态 0:未扫描 1:已扫描，等待用户确认 2:已扫描，用户同意授权 3:已扫描，用户取消授权 4:已过期
+	LoginRegisterResponseStruct
+}
+
 @server (
 	middleware: UniUserAuth
 	group:      user
@@ -396,19 +435,19 @@ service mimoapi {
 	@handler setUsersNotificationConf
 	post /setUsersNotification (SetUsersNotificationConfRequest) returns (CommonJsonResp)
 
-	@doc "检查用户是否存在&注册&登陆（兼容老系统接口）"
+	@doc "检查用户是否存在&注册&登录（兼容老系统接口）"
 	@handler LoginIndex
 	post /loginIndex (LoginIndexRequest) returns (LoginIndexResp)
 
-	@doc "登陆"
+	@doc "登录"
 	@handler Login
 	post /login (LoginRequest) returns (LoginResp)
 
-	@doc "自动登陆"
+	@doc "自动登录"
 	@handler LoginAuto
 	post /loginAuto (LoginAutoRequest) returns (LoginAutoResp)
 
-	@doc "退出登陆"
+	@doc "退出登录"
 	@handler Logout
 	post /logout (LogoutRequest) returns (LogoutResp)
 
@@ -455,6 +494,22 @@ service mimoapi {
 	@doc "解绑钱包"
 	@handler UnbindWallet
 	post /unbindWallet (UnbindWalletReq) returns (UnbindWalletResp)
+
+	@doc "[扫码登录]PC创建二维码"
+	@handler CreateLoginQrCode
+	post /createLoginQrCode (CreateLoginQrCodeReq) returns (CreateLoginQrCodeResp)
+
+	@doc "[扫码登录]PC获取二维码状态"
+	@handler GetLoginQrCode
+	post /getLoginQrcodeStatus (GetLoginQrCodeStatusReq) returns (GetLoginQrCodeStatusResp)
+
+	@doc "[扫码登录]移动端扫码获取二维码信息"
+	@handler GetQrLoginInfo
+	post /GetQrLoginInfo (GetQrLoginInfoReq) returns (GetQrLoginInfoResp)
+
+	@doc "[扫码登录]移动端授权登录"
+	@handler AuthorizationLogin
+	post /AuthorizationLogin (AuthorizationLoginReq) returns (AuthorizationLoginResp)
 }
 
 //--------通讯录--------
