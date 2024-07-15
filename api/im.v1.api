@@ -76,6 +76,10 @@ type (
 		Sign        string `form:"sign"`
 		SignTime    int64  `form:"sign_time"`
 	}
+	CommonRes {
+		IRet int    `json:"iRet"`
+		SMsg string `json:"sMsg"`
+	}
 	// 无data响应
 	NoDataRes  {}
 	GetImTokenRes {
@@ -137,6 +141,7 @@ type (
 		DappDesc   string `json:"dapp_desc"`
 		UserId     int64  `json:"user_id"`
 		IsOfficial int64  `json:"is_official"`
+		FullScreen int64  `json:"full_screen"` // 全屏展示 0否 1是
 	}
 	GroupInfoUserInfo {
 		UserId    string `json:"user_id"`
@@ -292,11 +297,12 @@ type (
 		Page        int64  `form:"page,optional,default=1"`
 	}
 	DappListItem {
-		DappId   int64  `json:"id"`
-		DappIcon string `json:"icon"`
-		DappName string `json:"name"`
-		DappUrl  string `json:"url"`
-		IsDel    int64  `json:"is_del"`
+		DappId     int64  `json:"id"`
+		DappIcon   string `json:"icon"`
+		DappName   string `json:"name"`
+		DappUrl    string `json:"url"`
+		IsDel      int64  `json:"is_del"`
+		FullScreen int64  `json:"full_screen"` // 全屏展示 0否 1是
 	}
 	GetGroupDappListRes {
 		List  []*DappListItem `json:"list"`
@@ -482,7 +488,30 @@ type (
 		ChatId string `form:"chat_id"` // 会话id：多个使用,隔开
 	}
 	GetChatMsgCleanRes {
-		CleanValue map[string]int64 `json:"clean_value"`
+		CleanValue []ChatMsgCleanItem `json:"clean_value"`
+	}
+	ChatMsgCleanItem {
+		ChatId   string `json:"chat_id"`
+		Duration int64  `json:"duration"`
+		SetTime  int64  `json:"setTime"`
+	}
+	GetS3TokenReq {
+		CommonReq
+		Type string `form:"type"`
+	}
+	GetS3TokenRes {
+		CommonRes
+		Data *S3TokenItem `json:"data"`
+	}
+	S3TokenItem {
+		AccessKeyId     string `json:"AccessKeyId"`
+		SecretAccessKey string `json:"SecretAccessKey"`
+		SessionToken    string `json:"SessionToken"`
+		Region          string `json:"region"`
+		ExpiresIn       string `json:"expires_in"`
+		Bucket          string `json:"bucket"`
+		Suffix          string `json:"suffix"`
+		Cdn             string `json:"cdn"`
 	}
 )
 
@@ -533,10 +562,9 @@ service imservice {
 	@handler getKeyByVersion
 	post /getKeyByVersion (GetKeyByVersionReq) returns (GetKeyByVersionRes)
 
-//	@doc "获取环信token"
-//	@handler getImToken
-//	post /getImToken (CommonReq) returns (GetImTokenRes)
-
+	// @doc "获取环信token"
+	// @handler getImToken
+	// post /getImToken (CommonReq) returns (GetImTokenRes)
 	@doc "获取群信息"
 	@handler GetGroupInfo
 	post /GetGroupInfo (GetGroupInfoReq) returns (GetGroupInfoRes)
@@ -700,5 +728,9 @@ service imservice {
 	@doc "获取会话消息清理"
 	@handler GetChatMsgClean
 	post /GetChatMsgClean (GetChatMsgCleanReq) returns (GetChatMsgCleanRes)
+
+	@doc "获取s3临时凭证"
+	@handler GetS3TempToken
+	post /GetS3TempToken (GetS3TokenReq) returns (GetS3TokenRes)
 }
 
