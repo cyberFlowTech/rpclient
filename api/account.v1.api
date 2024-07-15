@@ -54,7 +54,7 @@ type (
 		Amount   float64 `form:"amount"` // 充值金额
 		Chain    int64   `form:"chain"` // 充值链id
 		TxID     string  `form:"txid,optional"` // 交易hash
-		Contract string  `form:"contract,optional"` // 代币合约
+		Contract string  `form:"contract,optional,default="` // 代币合约
 	}
 	RechargeApplyResp {
 		OrderNo string `json:"order_no"` // 充值订单号
@@ -115,22 +115,28 @@ type (
 	}
 	TransInfoResp {
 		//             `id`, `user_id`,`order_no`,`chain`,`txid`,`amount`,`p_fee`,`fee`,`status`,`ctime`,`utime`,`from`,`to`
-		ID      int64  `json:"id"`
-		UserID  int64  `json:"user_id"`
-		OrderNo string `json:"order_no"`
-		Chain   int64  `json:"chain"`
-		TxID    string `json:"txid"`
-		UTime   int64  `json:"utime"`
-		Amount  string `json:"amount"`
-		AptTime int64  `json:"apt_time"`
-		ActID   int64  `json:"act_id"`
-		Fee     string `json:"fee"`
-		From    string `json:"from"`
-		Token   string `json:"token"`
-		Ctime   int64  `json:"ctime"`
-		Ext     string `json:"ext"`
-		Status  int64  `json:"status"`
-		To      string `json:"to"`
+		ID       int64  `json:"id"`
+		UserID   int64  `json:"user_id"`
+		OrderNo  string `json:"order_no"`
+		Chain    int64  `json:"chain"`
+		TxID     string `json:"txid"`
+		UTime    int64  `json:"utime"`
+		Amount   string `json:"amount"`
+		AptTime  int64  `json:"apt_time"`
+		ActID    int64  `json:"act_id"`
+		Fee      string `json:"fee"`
+		From     string `json:"from"`
+		Token    string `json:"token"`
+		Ctime    int64  `json:"ctime"`
+		Ext      string `json:"ext"`
+		Status   int64  `json:"status"`
+		To       string `json:"to"`
+		FeeToken string `json:"feeToken"`
+	}
+
+	CfgReq  {}
+	CfgResp {
+		Wallet map[int64]string `json:"wallet"` // 地址
 	}
 )
 
@@ -171,5 +177,9 @@ service accountservice {
 	@doc "充值提现详情"
 	@handler transDetail
 	post /balance/transInfo (TransInfoReq) returns (TransInfoResp)
+
+	@doc "充值配置"
+	@handler cfg
+	post /cfg (CfgReq) returns (CfgResp)
 }
 
