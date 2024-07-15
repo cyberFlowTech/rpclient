@@ -136,7 +136,11 @@ type (
 
 	CfgReq  {}
 	CfgResp {
-		Wallet map[int64]string `json:"wallet"` // 地址
+		List []Wallet `json:"list"`
+	}
+	Wallet {
+		ChainCode int64  `json:"chainCode"`
+		Wallet    string `json:"wallet"`
 	}
 )
 
