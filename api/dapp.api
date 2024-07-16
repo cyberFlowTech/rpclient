@@ -151,7 +151,7 @@ service dappservice {
 	@handler categorys
 	get /category (GetCategoryReq) returns (ListResp)
 
-	@doc "获取指定类型dapp"
+	@doc "指定类型dapp"
 	@handler cate
 	post /cate (CategoryReq) returns (CommonResp)
 }
