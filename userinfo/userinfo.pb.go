@@ -932,7 +932,7 @@ type GetUsersReq struct {
 
 	UserId string   `protobuf:"bytes,1,opt,name=UserId,proto3" json:"UserId,omitempty"` //查询用户
 	Ouids  []string `protobuf:"bytes,2,rep,name=Ouids,proto3" json:"Ouids,omitempty"`   //目标用户
-	Fields string   `protobuf:"bytes,3,opt,name=Fields,proto3" json:"Fields,omitempty"` //info,conf, 两种可选,逗号分隔,如果查询用户关系，请在上层api层调用通讯录查询
+	Fields string   `protobuf:"bytes,3,opt,name=Fields,proto3" json:"Fields,omitempty"` //info,conf,device 三种可选,逗号分隔,如果查询用户关系，请在上层api层调用通讯录查询
 }
 
 func (x *GetUsersReq) Reset() {

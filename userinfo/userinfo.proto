@@ -77,7 +77,7 @@ message GetUsersInfoResp {
 message GetUsersReq {
   string UserId=1;//查询用户
   repeated string Ouids =2; //目标用户
-  string Fields =3;    //info,conf, 两种可选,逗号分隔,如果查询用户关系，请在上层api层调用通讯录查询
+  string Fields =3;    //info,conf,device 三种可选,逗号分隔,如果查询用户关系，请在上层api层调用通讯录查询
 }
 
 message GetUsersResp {
@@ -542,7 +542,7 @@ message GetLoginQrCodeResp {
 service User {
   //只支持info查询
   rpc getUsersInfo(GetUsersInfoReq) returns(GetUsersInfoResp);
-  //支持info，conf, relation组合查询
+  //支持info，conf, relation,device组合查询
   rpc getUsers(GetUsersReq) returns(GetUsersResp);
   //用户信息或设置修改
   rpc updateUserInfo(SetUserInfoReq) returns(SetUserInfoResp);
