@@ -135,6 +135,7 @@ type (
 		SInvite    int64 `json:"s_invite"` // 创建邀请（ 0没有 1有 权限 默认值是全体成员默认权限）
 		SMessage   int64 `json:"s_message"` // 发送消息权限
 		MChannel   int64 `json:"m_channel"` // 管理房间权限
+		SGrade     int64 `json:"m_channel"` // 展示等级 1 展示 0 不展示
 	}
 	ClubInfoResDynamic {
 		ID           int64                 `json:"id"`
