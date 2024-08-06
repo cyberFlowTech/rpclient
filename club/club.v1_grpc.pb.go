@@ -141,6 +141,8 @@ type ClubServerClient interface {
 	ChannelBan(ctx context.Context, in *ChannelBanReq, opts ...grpc.CallOption) (*CommonResp, error)
 	// 更新推荐部落
 	UpdateRecommend(ctx context.Context, in *UpdateRecommendReq, opts ...grpc.CallOption) (*UpdateRecommendResp, error)
+	// 根据Ip获取部落Ids
+	GetClubsByIp(ctx context.Context, in *GetClubsByIpReq, opts ...grpc.CallOption) (*GetClubsByIpResp, error)
 }
 
 type clubServerClient struct {
@@ -673,6 +675,15 @@ func (c *clubServerClient) UpdateRecommend(ctx context.Context, in *UpdateRecomm
 	return out, nil
 }
 
+func (c *clubServerClient) GetClubsByIp(ctx context.Context, in *GetClubsByIpReq, opts ...grpc.CallOption) (*GetClubsByIpResp, error) {
+	out := new(GetClubsByIpResp)
+	err := c.cc.Invoke(ctx, "/club.ClubServer/GetClubsByIp", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClubServerServer is the server API for ClubServer service.
 // All implementations must embed UnimplementedClubServerServer
 // for forward compatibility
@@ -796,6 +807,8 @@ type ClubServerServer interface {
 	ChannelBan(context.Context, *ChannelBanReq) (*CommonResp, error)
 	// 更新推荐部落
 	UpdateRecommend(context.Context, *UpdateRecommendReq) (*UpdateRecommendResp, error)
+	// 根据Ip获取部落Ids
+	GetClubsByIp(context.Context, *GetClubsByIpReq) (*GetClubsByIpResp, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -976,6 +989,9 @@ func (UnimplementedClubServerServer) ChannelBan(context.Context, *ChannelBanReq)
 }
 func (UnimplementedClubServerServer) UpdateRecommend(context.Context, *UpdateRecommendReq) (*UpdateRecommendResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateRecommend not implemented")
+}
+func (UnimplementedClubServerServer) GetClubsByIp(context.Context, *GetClubsByIpReq) (*GetClubsByIpResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetClubsByIp not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
 
@@ -2034,6 +2050,24 @@ func _ClubServer_UpdateRecommend_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClubServer_GetClubsByIp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetClubsByIpReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetClubsByIp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/club.ClubServer/GetClubsByIp",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetClubsByIp(ctx, req.(*GetClubsByIpReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClubServer_ServiceDesc is the grpc.ServiceDesc for ClubServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2272,6 +2306,10 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateRecommend",
 			Handler:    _ClubServer_UpdateRecommend_Handler,
+		},
+		{
+			MethodName: "GetClubsByIp",
+			Handler:    _ClubServer_GetClubsByIp_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
