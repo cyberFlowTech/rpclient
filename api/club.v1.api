@@ -505,6 +505,7 @@ type (
 		PStories   int64 `json:"p_stories"` // 发送动态权限 1 有 0 无
 		MMain      int64 `json:"m_main"` // 管理部落权限 1 有 0 无
 		MChannel   int64 `json:"m_channel"` // 管理房间权限 1 有 0 无
+		SGrade     int64 `json:"s_grade"` // 展示等级权限 1 有 0 无
 	}
 	GetRoleListReq {
 		CommonReq
@@ -543,6 +544,7 @@ type (
 		PStories   *int64  `form:"p_stories,optional"` // 发送动态权限 1 有 0 无
 		MMain      *int64  `form:"m_main,optional"` // 管理部落权限 1 有 0 无
 		MChannel   *int64  `form:"m_channel,optional"` // 管理房间权限 1 有 0 无
+		SGrade     *int64  `form:"s_grade,optional"` // 展示等级权限 1 有 0 无
 	}
 	SaveRoleInfoResp {
 		RoleId string `json:"role_id"` // 角色ID
