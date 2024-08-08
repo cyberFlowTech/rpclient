@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type UserClient interface {
 	// 只支持info查询
 	GetUsersInfo(ctx context.Context, in *GetUsersInfoReq, opts ...grpc.CallOption) (*GetUsersInfoResp, error)
-	// 支持info，conf, relation组合查询
+	// 支持info，conf, relation,device组合查询
 	GetUsers(ctx context.Context, in *GetUsersReq, opts ...grpc.CallOption) (*GetUsersResp, error)
 	// 用户信息或设置修改
 	UpdateUserInfo(ctx context.Context, in *SetUserInfoReq, opts ...grpc.CallOption) (*SetUserInfoResp, error)
@@ -387,7 +387,7 @@ func (c *userClient) GetLoginQrCode(ctx context.Context, in *GetLoginQrCodeReq, 
 type UserServer interface {
 	// 只支持info查询
 	GetUsersInfo(context.Context, *GetUsersInfoReq) (*GetUsersInfoResp, error)
-	// 支持info，conf, relation组合查询
+	// 支持info，conf, relation,device组合查询
 	GetUsers(context.Context, *GetUsersReq) (*GetUsersResp, error)
 	// 用户信息或设置修改
 	UpdateUserInfo(context.Context, *SetUserInfoReq) (*SetUserInfoResp, error)

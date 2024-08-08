@@ -18,6 +18,14 @@ message UserConf{
   int32 FriendVerify = 10; // 加我好友验证 0关，1开
 }
 
+message DeviceInfo {
+  int64 UserId=1; // 用户Id
+  string DeviceId  =2;  // 设备ID
+  string Version  =3; // zapry版本👌
+  string Api   =4; // api
+  string Ip   =5; // 最后登录的ip
+}
+
 message UserNotificationConf{
   string UserID = 1;
   optional int64 NewNotification  = 2;  //新消息通知：0关闭 1开启
@@ -43,11 +51,12 @@ message UserInfo{
   int64 UserLevel=13;//用户等级
 }
 
-//用户综合信息，包括info，conf，relation
+//用户综合信息，包括info，conf，relation, device
 message UserInfos{
   string UserID=1;
   UserInfo Info=2;
   UserConf Conf=3;
+  DeviceInfo Device=4;
 }
 
 message UserResult{
@@ -68,7 +77,7 @@ message GetUsersInfoResp {
 message GetUsersReq {
   string UserId=1;//查询用户
   repeated string Ouids =2; //目标用户
-  string Fields =3;    //info,conf, 两种可选,逗号分隔,如果查询用户关系，请在上层api层调用通讯录查询
+  string Fields =3;    //info,conf,device 三种可选,逗号分隔,如果查询用户关系，请在上层api层调用通讯录查询
 }
 
 message GetUsersResp {
@@ -134,13 +143,14 @@ message LoginReq {
   PlatformType Platform  = 6; // 登陆的设备平台 ios/Android/PC
   string Api  = 7; // Api参数
   string Ip  = 8; // Ip
+  string Lan  = 9; // 语言
 }
 
 message LoginResp {
   UserResult Result =1;
   string SessionId = 2;
   int64 UserId = 3;
-  string Uuid = 4; // uuid,pc登陆时返回
+  string Uuid = 4; // uuid,pc登陆时返回(目前没用了
 }
 
 // RegisterReq 注册
@@ -337,6 +347,7 @@ message GetLoginAutoInfoResp {
   int64 RegTime = 16; // 注册时间
   UserResult Result = 17;
   int64 hasSign = 18;
+  string Openudid = 19; // openudid
 }
 
 enum ActionType {
@@ -523,14 +534,15 @@ message GetLoginQrCodeReq {
 message GetLoginQrCodeResp {
   string Avatar = 1;  // 头像链接
   int64  Status = 2;  // 状态 0:未扫描 1:已扫描，等待用户确认 2:已扫描，用户同意授权 3:已扫描，用户取消授权 4:已过期
-  string  Sessid = 3;  // APP sessid
-  string  Uuid = 4;  // App uuid
+  string  Sessid = 3;  //  sessid
+  string  Uuid = 4;  //  uuid
+  int64  UserId = 5;  // 用户ID
 }
 
 service User {
   //只支持info查询
   rpc getUsersInfo(GetUsersInfoReq) returns(GetUsersInfoResp);
-  //支持info，conf, relation组合查询
+  //支持info，conf, relation,device组合查询
   rpc getUsers(GetUsersReq) returns(GetUsersResp);
   //用户信息或设置修改
   rpc updateUserInfo(SetUserInfoReq) returns(SetUserInfoResp);
