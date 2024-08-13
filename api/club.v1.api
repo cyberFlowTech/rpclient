@@ -752,7 +752,7 @@ type (
 	ChannelBanResp  {}
 	OnLineUsersReq {
 		CommonReq
-		TbMid string `form:"tb_mid"`
+		TbMid string `form:"tb_mid"` // 部落ID
 		Sort  int64  `form:"type,optional,range=[0:1]"` // 排序 0:时间倒序（默认） 1 时间升序
 		Page  int64  `form:"page,optional,default=1,range=[1:]"` // 页码，1（默认）
 		Size  int64  `form:"size,optional,range=[0:1000]"` // 页大小，0获取所有(默认)
