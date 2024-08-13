@@ -762,7 +762,7 @@ type (
 		Avatar string `json:"avatar"`
 	}
 	OnLineUsersResp {
-		users []UserInfo
+		users []UserInfo `json:"users"`
 	}
 )
 
