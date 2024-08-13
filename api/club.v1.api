@@ -762,7 +762,8 @@ type (
 		Avatar string `json:"avatar"`
 	}
 	OnLineUsersResp {
-		users []UserInfo `json:"users"`
+		Users []UserInfo `json:"users"` // 部落成员在线列表
+		Count int64 `json:"count"` // 在线总人数
 	}
 )
 
