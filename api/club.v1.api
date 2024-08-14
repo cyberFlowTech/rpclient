@@ -763,7 +763,8 @@ type (
 	}
 	OnLineUsersResp {
 		Users []UserInfo `json:"users"` // 部落成员在线列表
-		Count int64 `json:"count"` // 在线总人数
+		Count int64      `json:"count"` // 在线总人数
+		TbMid string     `json:"tb_mid"` // 部落ID
 	}
 )
 
