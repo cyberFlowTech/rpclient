@@ -68,6 +68,7 @@ const (
 	ImServer_GetS3Token_FullMethodName                  = "/im.ImServer/GetS3Token"
 	ImServer_GetConversations_FullMethodName            = "/im.ImServer/GetConversations"
 	ImServer_SetConversations_FullMethodName            = "/im.ImServer/SetConversations"
+	ImServer_CheckGroupMembers_FullMethodName           = "/im.ImServer/CheckGroupMembers"
 )
 
 // ImServerClient is the client API for ImServer service.
@@ -136,6 +137,8 @@ type ImServerClient interface {
 	GetConversations(ctx context.Context, in *GetConversationsReq, opts ...grpc.CallOption) (*GetConversationsRes, error)
 	// 设置会话
 	SetConversations(ctx context.Context, in *SetConversationsReq, opts ...grpc.CallOption) (*CommonRes, error)
+	// 检测群成员
+	CheckGroupMembers(ctx context.Context, in *CheckGroupMembersReq, opts ...grpc.CallOption) (*CommonRes, error)
 }
 
 type imServerClient struct {
@@ -587,6 +590,15 @@ func (c *imServerClient) SetConversations(ctx context.Context, in *SetConversati
 	return out, nil
 }
 
+func (c *imServerClient) CheckGroupMembers(ctx context.Context, in *CheckGroupMembersReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_CheckGroupMembers_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImServerServer is the server API for ImServer service.
 // All implementations must embed UnimplementedImServerServer
 // for forward compatibility
@@ -653,6 +665,8 @@ type ImServerServer interface {
 	GetConversations(context.Context, *GetConversationsReq) (*GetConversationsRes, error)
 	// 设置会话
 	SetConversations(context.Context, *SetConversationsReq) (*CommonRes, error)
+	// 检测群成员
+	CheckGroupMembers(context.Context, *CheckGroupMembersReq) (*CommonRes, error)
 	mustEmbedUnimplementedImServerServer()
 }
 
@@ -806,6 +820,9 @@ func (UnimplementedImServerServer) GetConversations(context.Context, *GetConvers
 }
 func (UnimplementedImServerServer) SetConversations(context.Context, *SetConversationsReq) (*CommonRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetConversations not implemented")
+}
+func (UnimplementedImServerServer) CheckGroupMembers(context.Context, *CheckGroupMembersReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckGroupMembers not implemented")
 }
 func (UnimplementedImServerServer) mustEmbedUnimplementedImServerServer() {}
 
@@ -1702,6 +1719,24 @@ func _ImServer_SetConversations_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImServer_CheckGroupMembers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckGroupMembersReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).CheckGroupMembers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_CheckGroupMembers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).CheckGroupMembers(ctx, req.(*CheckGroupMembersReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ImServer_ServiceDesc is the grpc.ServiceDesc for ImServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1904,6 +1939,10 @@ var ImServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetConversations",
 			Handler:    _ImServer_SetConversations_Handler,
+		},
+		{
+			MethodName: "CheckGroupMembers",
+			Handler:    _ImServer_CheckGroupMembers_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
