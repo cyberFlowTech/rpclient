@@ -63,6 +63,11 @@ const (
 	ImServer_RunTask_FullMethodName                     = "/im.ImServer/RunTask"
 	ImServer_SetChatMsgClean_FullMethodName             = "/im.ImServer/SetChatMsgClean"
 	ImServer_GetChatMsgClean_FullMethodName             = "/im.ImServer/GetChatMsgClean"
+	ImServer_ImCommonTask_FullMethodName                = "/im.ImServer/ImCommonTask"
+	ImServer_AddCompareGroupList_FullMethodName         = "/im.ImServer/AddCompareGroupList"
+	ImServer_GetS3Token_FullMethodName                  = "/im.ImServer/GetS3Token"
+	ImServer_GetConversations_FullMethodName            = "/im.ImServer/GetConversations"
+	ImServer_SetConversations_FullMethodName            = "/im.ImServer/SetConversations"
 )
 
 // ImServerClient is the client API for ImServer service.
@@ -122,6 +127,15 @@ type ImServerClient interface {
 	RunTask(ctx context.Context, in *RunTaskReq, opts ...grpc.CallOption) (*CommonRes, error)
 	SetChatMsgClean(ctx context.Context, in *SetChatMsgCleanReq, opts ...grpc.CallOption) (*CommonRes, error)
 	GetChatMsgClean(ctx context.Context, in *GetChatMsgCleanReq, opts ...grpc.CallOption) (*GetChatMsgCleanRes, error)
+	ImCommonTask(ctx context.Context, in *ImCommonTaskReq, opts ...grpc.CallOption) (*EmptyData, error)
+	// 添加待比较同步数据的群列表
+	AddCompareGroupList(ctx context.Context, in *AddCompareGroupListReq, opts ...grpc.CallOption) (*CommonRes, error)
+	// s3上传临时token
+	GetS3Token(ctx context.Context, in *GetS3TokenReq, opts ...grpc.CallOption) (*GetS3TokenRes, error)
+	// 获取会话列表
+	GetConversations(ctx context.Context, in *GetConversationsReq, opts ...grpc.CallOption) (*GetConversationsRes, error)
+	// 设置会话
+	SetConversations(ctx context.Context, in *SetConversationsReq, opts ...grpc.CallOption) (*CommonRes, error)
 }
 
 type imServerClient struct {
@@ -528,6 +542,51 @@ func (c *imServerClient) GetChatMsgClean(ctx context.Context, in *GetChatMsgClea
 	return out, nil
 }
 
+func (c *imServerClient) ImCommonTask(ctx context.Context, in *ImCommonTaskReq, opts ...grpc.CallOption) (*EmptyData, error) {
+	out := new(EmptyData)
+	err := c.cc.Invoke(ctx, ImServer_ImCommonTask_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) AddCompareGroupList(ctx context.Context, in *AddCompareGroupListReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_AddCompareGroupList_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) GetS3Token(ctx context.Context, in *GetS3TokenReq, opts ...grpc.CallOption) (*GetS3TokenRes, error) {
+	out := new(GetS3TokenRes)
+	err := c.cc.Invoke(ctx, ImServer_GetS3Token_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) GetConversations(ctx context.Context, in *GetConversationsReq, opts ...grpc.CallOption) (*GetConversationsRes, error) {
+	out := new(GetConversationsRes)
+	err := c.cc.Invoke(ctx, ImServer_GetConversations_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *imServerClient) SetConversations(ctx context.Context, in *SetConversationsReq, opts ...grpc.CallOption) (*CommonRes, error) {
+	out := new(CommonRes)
+	err := c.cc.Invoke(ctx, ImServer_SetConversations_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ImServerServer is the server API for ImServer service.
 // All implementations must embed UnimplementedImServerServer
 // for forward compatibility
@@ -585,6 +644,15 @@ type ImServerServer interface {
 	RunTask(context.Context, *RunTaskReq) (*CommonRes, error)
 	SetChatMsgClean(context.Context, *SetChatMsgCleanReq) (*CommonRes, error)
 	GetChatMsgClean(context.Context, *GetChatMsgCleanReq) (*GetChatMsgCleanRes, error)
+	ImCommonTask(context.Context, *ImCommonTaskReq) (*EmptyData, error)
+	// 添加待比较同步数据的群列表
+	AddCompareGroupList(context.Context, *AddCompareGroupListReq) (*CommonRes, error)
+	// s3上传临时token
+	GetS3Token(context.Context, *GetS3TokenReq) (*GetS3TokenRes, error)
+	// 获取会话列表
+	GetConversations(context.Context, *GetConversationsReq) (*GetConversationsRes, error)
+	// 设置会话
+	SetConversations(context.Context, *SetConversationsReq) (*CommonRes, error)
 	mustEmbedUnimplementedImServerServer()
 }
 
@@ -723,6 +791,21 @@ func (UnimplementedImServerServer) SetChatMsgClean(context.Context, *SetChatMsgC
 }
 func (UnimplementedImServerServer) GetChatMsgClean(context.Context, *GetChatMsgCleanReq) (*GetChatMsgCleanRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetChatMsgClean not implemented")
+}
+func (UnimplementedImServerServer) ImCommonTask(context.Context, *ImCommonTaskReq) (*EmptyData, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ImCommonTask not implemented")
+}
+func (UnimplementedImServerServer) AddCompareGroupList(context.Context, *AddCompareGroupListReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddCompareGroupList not implemented")
+}
+func (UnimplementedImServerServer) GetS3Token(context.Context, *GetS3TokenReq) (*GetS3TokenRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetS3Token not implemented")
+}
+func (UnimplementedImServerServer) GetConversations(context.Context, *GetConversationsReq) (*GetConversationsRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetConversations not implemented")
+}
+func (UnimplementedImServerServer) SetConversations(context.Context, *SetConversationsReq) (*CommonRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetConversations not implemented")
 }
 func (UnimplementedImServerServer) mustEmbedUnimplementedImServerServer() {}
 
@@ -1529,6 +1612,96 @@ func _ImServer_GetChatMsgClean_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ImServer_ImCommonTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ImCommonTaskReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).ImCommonTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_ImCommonTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).ImCommonTask(ctx, req.(*ImCommonTaskReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_AddCompareGroupList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddCompareGroupListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).AddCompareGroupList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_AddCompareGroupList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).AddCompareGroupList(ctx, req.(*AddCompareGroupListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_GetS3Token_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetS3TokenReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).GetS3Token(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_GetS3Token_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).GetS3Token(ctx, req.(*GetS3TokenReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_GetConversations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetConversationsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).GetConversations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_GetConversations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).GetConversations(ctx, req.(*GetConversationsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ImServer_SetConversations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetConversationsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ImServerServer).SetConversations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ImServer_SetConversations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ImServerServer).SetConversations(ctx, req.(*SetConversationsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ImServer_ServiceDesc is the grpc.ServiceDesc for ImServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1711,6 +1884,26 @@ var ImServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetChatMsgClean",
 			Handler:    _ImServer_GetChatMsgClean_Handler,
+		},
+		{
+			MethodName: "ImCommonTask",
+			Handler:    _ImServer_ImCommonTask_Handler,
+		},
+		{
+			MethodName: "AddCompareGroupList",
+			Handler:    _ImServer_AddCompareGroupList_Handler,
+		},
+		{
+			MethodName: "GetS3Token",
+			Handler:    _ImServer_GetS3Token_Handler,
+		},
+		{
+			MethodName: "GetConversations",
+			Handler:    _ImServer_GetConversations_Handler,
+		},
+		{
+			MethodName: "SetConversations",
+			Handler:    _ImServer_SetConversations_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

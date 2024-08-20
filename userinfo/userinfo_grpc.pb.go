@@ -83,6 +83,10 @@ type UserClient interface {
 	UpdateLoginQrCode(ctx context.Context, in *UpdateLoginQrCodeReq, opts ...grpc.CallOption) (*UpdateLoginQrCodeResp, error)
 	// 获取二维码信息
 	GetLoginQrCode(ctx context.Context, in *GetLoginQrCodeReq, opts ...grpc.CallOption) (*GetLoginQrCodeResp, error)
+	// 更新用户在线状态
+	SaveUserOnLineStatus(ctx context.Context, in *SaveUserOnLineStatusReq, opts ...grpc.CallOption) (*SaveUserOnLineStatusResp, error)
+	// 获取用户在线状态
+	GetUserOnLineStatus(ctx context.Context, in *GetUserOnLineStatusReq, opts ...grpc.CallOption) (*GetUserOnLineStatusResp, error)
 }
 
 type userClient struct {
@@ -381,6 +385,24 @@ func (c *userClient) GetLoginQrCode(ctx context.Context, in *GetLoginQrCodeReq, 
 	return out, nil
 }
 
+func (c *userClient) SaveUserOnLineStatus(ctx context.Context, in *SaveUserOnLineStatusReq, opts ...grpc.CallOption) (*SaveUserOnLineStatusResp, error) {
+	out := new(SaveUserOnLineStatusResp)
+	err := c.cc.Invoke(ctx, "/userinfo.User/SaveUserOnLineStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetUserOnLineStatus(ctx context.Context, in *GetUserOnLineStatusReq, opts ...grpc.CallOption) (*GetUserOnLineStatusResp, error) {
+	out := new(GetUserOnLineStatusResp)
+	err := c.cc.Invoke(ctx, "/userinfo.User/GetUserOnLineStatus", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -446,6 +468,10 @@ type UserServer interface {
 	UpdateLoginQrCode(context.Context, *UpdateLoginQrCodeReq) (*UpdateLoginQrCodeResp, error)
 	// 获取二维码信息
 	GetLoginQrCode(context.Context, *GetLoginQrCodeReq) (*GetLoginQrCodeResp, error)
+	// 更新用户在线状态
+	SaveUserOnLineStatus(context.Context, *SaveUserOnLineStatusReq) (*SaveUserOnLineStatusResp, error)
+	// 获取用户在线状态
+	GetUserOnLineStatus(context.Context, *GetUserOnLineStatusReq) (*GetUserOnLineStatusResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -548,6 +574,12 @@ func (UnimplementedUserServer) UpdateLoginQrCode(context.Context, *UpdateLoginQr
 }
 func (UnimplementedUserServer) GetLoginQrCode(context.Context, *GetLoginQrCodeReq) (*GetLoginQrCodeResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLoginQrCode not implemented")
+}
+func (UnimplementedUserServer) SaveUserOnLineStatus(context.Context, *SaveUserOnLineStatusReq) (*SaveUserOnLineStatusResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SaveUserOnLineStatus not implemented")
+}
+func (UnimplementedUserServer) GetUserOnLineStatus(context.Context, *GetUserOnLineStatusReq) (*GetUserOnLineStatusResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserOnLineStatus not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -1138,6 +1170,42 @@ func _User_GetLoginQrCode_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_SaveUserOnLineStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SaveUserOnLineStatusReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SaveUserOnLineStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/userinfo.User/SaveUserOnLineStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SaveUserOnLineStatus(ctx, req.(*SaveUserOnLineStatusReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetUserOnLineStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserOnLineStatusReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetUserOnLineStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/userinfo.User/GetUserOnLineStatus",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetUserOnLineStatus(ctx, req.(*GetUserOnLineStatusReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1272,6 +1340,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetLoginQrCode",
 			Handler:    _User_GetLoginQrCode_Handler,
+		},
+		{
+			MethodName: "SaveUserOnLineStatus",
+			Handler:    _User_SaveUserOnLineStatus_Handler,
+		},
+		{
+			MethodName: "GetUserOnLineStatus",
+			Handler:    _User_GetUserOnLineStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

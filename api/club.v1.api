@@ -750,6 +750,22 @@ type (
 		TbCid string `form:"tb_cid"`
 	}
 	ChannelBanResp  {}
+	OnLineUsersReq {
+		CommonReq
+		TbMid string `form:"tb_mid"` // 部落ID
+		Sort  int64  `form:"type,optional,range=[0:1]"` // 排序 0:时间倒序（默认） 1 时间升序
+		Page  int64  `form:"page,optional,default=1,range=[1:]"` // 页码，1（默认）
+		Size  int64  `form:"size,optional,range=[0:1000]"` // 页大小，0获取所有(默认)
+	}
+	UserInfo {
+		UserId int64  `json:"user_id"`
+		Avatar string `json:"avatar"`
+	}
+	OnLineUsersResp {
+		Users []UserInfo `json:"users"` // 部落成员在线列表
+		Count int64      `json:"count"` // 在线总人数
+		TbMid string     `json:"tb_mid"` // 部落ID
+	}
 )
 
 @server (
@@ -953,5 +969,9 @@ service club {
 	@doc "频道禁言"
 	@handler channelBan
 	post /channelBan (ChannelBanReq) returns (ChannelBanResp)
+
+	@doc "部落在线成员列表"
+	@handler getOnLineUsers
+	post /getOnLineUsers (OnLineUsersReq) returns (OnLineUsersResp)
 }
 
