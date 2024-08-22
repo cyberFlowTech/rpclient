@@ -83,8 +83,8 @@ type GetUsersRequest {
 	CommonParams
 	Ouids string `form:"ouids"` //55942,55941 逗号分隔
 	Field string `form:"fields,default='info'"` //指定要查的信息info,conf,dynamic,relation,club,group 逗号分隔, 默认只查info
-	TbMid string `form:"tb_mid,optional"` // 获取部落信息,field传递club时需传递该值
-	MapId string `form:"map_id,optional"` // 获取群聊信息,filed,传递group时需传递该值
+	TbMid string `form:"tb_mid,optional"` // 获取部落信息,fields传递club时需传递该值
+	MapId string `form:"map_id,optional"` // 获取群聊信息,fileds传递group时需传递该值
 }
 
 //暂无使用
