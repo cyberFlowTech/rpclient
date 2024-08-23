@@ -146,7 +146,7 @@ type ClubServerClient interface {
 	// 获取部落在线用户
 	GetOnlineUsers(ctx context.Context, in *GetOnlineUsersReq, opts ...grpc.CallOption) (*GetOnlineUsersResp, error)
 	// 设置用户在线
-	SetUsersOnline(ctx context.Context, in *GetOnlineUsersReq, opts ...grpc.CallOption) (*GetOnlineUsersResp, error)
+	SetUsersOnline(ctx context.Context, in *SetUsersOnlineReq, opts ...grpc.CallOption) (*SetUsersOnlineResp, error)
 }
 
 type clubServerClient struct {
@@ -697,8 +697,8 @@ func (c *clubServerClient) GetOnlineUsers(ctx context.Context, in *GetOnlineUser
 	return out, nil
 }
 
-func (c *clubServerClient) SetUsersOnline(ctx context.Context, in *GetOnlineUsersReq, opts ...grpc.CallOption) (*GetOnlineUsersResp, error) {
-	out := new(GetOnlineUsersResp)
+func (c *clubServerClient) SetUsersOnline(ctx context.Context, in *SetUsersOnlineReq, opts ...grpc.CallOption) (*SetUsersOnlineResp, error) {
+	out := new(SetUsersOnlineResp)
 	err := c.cc.Invoke(ctx, "/club.ClubServer/SetUsersOnline", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -834,7 +834,7 @@ type ClubServerServer interface {
 	// 获取部落在线用户
 	GetOnlineUsers(context.Context, *GetOnlineUsersReq) (*GetOnlineUsersResp, error)
 	// 设置用户在线
-	SetUsersOnline(context.Context, *GetOnlineUsersReq) (*GetOnlineUsersResp, error)
+	SetUsersOnline(context.Context, *SetUsersOnlineReq) (*SetUsersOnlineResp, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -1022,7 +1022,7 @@ func (UnimplementedClubServerServer) GetClubsByIp(context.Context, *GetClubsByIp
 func (UnimplementedClubServerServer) GetOnlineUsers(context.Context, *GetOnlineUsersReq) (*GetOnlineUsersResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOnlineUsers not implemented")
 }
-func (UnimplementedClubServerServer) SetUsersOnline(context.Context, *GetOnlineUsersReq) (*GetOnlineUsersResp, error) {
+func (UnimplementedClubServerServer) SetUsersOnline(context.Context, *SetUsersOnlineReq) (*SetUsersOnlineResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetUsersOnline not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
@@ -2119,7 +2119,7 @@ func _ClubServer_GetOnlineUsers_Handler(srv interface{}, ctx context.Context, de
 }
 
 func _ClubServer_SetUsersOnline_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetOnlineUsersReq)
+	in := new(SetUsersOnlineReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -2131,7 +2131,7 @@ func _ClubServer_SetUsersOnline_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: "/club.ClubServer/SetUsersOnline",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ClubServerServer).SetUsersOnline(ctx, req.(*GetOnlineUsersReq))
+		return srv.(ClubServerServer).SetUsersOnline(ctx, req.(*SetUsersOnlineReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
