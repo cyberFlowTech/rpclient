@@ -358,6 +358,7 @@ type GetUsersOnlineInfoReq {
 type OnlineInfo {
 	Status         string `json:"status"` // online/offline
 	OnLineLastTime string `json:"last_time"` // 最后在线时间戳 0表示未知
+	UserId         string `json:"user_id"` // 用户ID
 }
 
 type GetUsersOnlineInfoResp {
