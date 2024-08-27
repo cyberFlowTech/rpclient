@@ -429,6 +429,24 @@ type GetLoginQrCodeStatusResp {
 	LoginRegisterResponseStruct
 }
 
+type SpareUrlResp {
+	Code int32    `json:"iRet"`
+	Msg  string   `json:"sMsg"`
+	Data []string `json:"data"`
+}
+
+type ReportReqTimeReq {
+	CommonParams
+	Url     string `form:"url"` // 请求地址
+	ReqTime string `form:"req_time"` // 耗时 json字符串：[{"path":"usersinfo","time":"500"},{"url":"setUser","time":"100"}] time 单位ms
+}
+
+type ReportReqTimerResp {
+	Code int32    `json:"iRet"`
+	Msg  string   `json:"sMsg"`
+	Data []string `json:"data"`
+}
+
 @server (
 	middleware: UniUserAuth
 	group:      user
@@ -534,5 +552,13 @@ service mimoapi {
 	@doc "[扫码登录]移动端授权登录"
 	@handler AuthorizationLogin
 	post /AuthorizationLogin (AuthorizationLoginReq) returns (AuthorizationLoginResp)
+
+	@doc "备选域名列表"
+	@handler SpareUrl
+	post /spareUrl (CommonParams) returns (SpareUrlResp)
+
+	@doc "上报请求耗时"
+	@handler ReportReqTime
+	post /reportReqTime (ReportReqTimeReq) returns (ReportReqTimerResp)
 }
 
