@@ -41,6 +41,7 @@ type UserConfig {
 	IsSearch     int32  `json:"is_search"` //"is_search":"0",
 	RelationShow int32  `json:"relation_show"` //"relation_show":"1"
 	FriendVerify int32  `json:"friend_verify"`
+	OnlineShow   int32  `json:"online_show"` // 在线状态是否展示 0 不展示 1展示
 }
 
 type UserNotificationConfig {
@@ -97,7 +98,7 @@ type GetUsersResponse {
 type SetUserRequest {
 	CommonParams
 	CmdCode string `form:"cmd_code"` //1000001修改用户；1000003修改配置；1000004修改密码；1000006修改网络；1000008修改好友备注
-	SubCode string `form:"code,optional"` //用户配置操作子项1000003
+	SubCode string `form:"code,optional"` //用户配置操作子项1000003.10009 展示在线状态 0 不展示 1 展示
 	Value   string `form:"value,optional"` //子操作等值，单项修改
 	Nick    string `form:"nick,optional"`
 	Desc    string `form:"desc,optional"`
