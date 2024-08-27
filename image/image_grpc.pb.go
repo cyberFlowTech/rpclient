@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	MimoImage_UploadByUrl_FullMethodName  = "/image.MimoImage/UploadByUrl"
-	MimoImage_UploadByFile_FullMethodName = "/image.MimoImage/UploadByFile"
+	MimoImage_UploadByUrl_FullMethodName         = "/image.MimoImage/UploadByUrl"
+	MimoImage_UploadByFile_FullMethodName        = "/image.MimoImage/UploadByFile"
+	MimoImage_GenSolidColorAvatar_FullMethodName = "/image.MimoImage/GenSolidColorAvatar"
 )
 
 // MimoImageClient is the client API for MimoImage service.
@@ -29,6 +30,7 @@ const (
 type MimoImageClient interface {
 	UploadByUrl(ctx context.Context, in *UploadByUrlReq, opts ...grpc.CallOption) (*UploadRes, error)
 	UploadByFile(ctx context.Context, in *UploadByFileReq, opts ...grpc.CallOption) (*UploadRes, error)
+	GenSolidColorAvatar(ctx context.Context, in *SolidColorAvatarReq, opts ...grpc.CallOption) (*SolidColorAvatarRes, error)
 }
 
 type mimoImageClient struct {
@@ -57,12 +59,22 @@ func (c *mimoImageClient) UploadByFile(ctx context.Context, in *UploadByFileReq,
 	return out, nil
 }
 
+func (c *mimoImageClient) GenSolidColorAvatar(ctx context.Context, in *SolidColorAvatarReq, opts ...grpc.CallOption) (*SolidColorAvatarRes, error) {
+	out := new(SolidColorAvatarRes)
+	err := c.cc.Invoke(ctx, MimoImage_GenSolidColorAvatar_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MimoImageServer is the server API for MimoImage service.
 // All implementations must embed UnimplementedMimoImageServer
 // for forward compatibility
 type MimoImageServer interface {
 	UploadByUrl(context.Context, *UploadByUrlReq) (*UploadRes, error)
 	UploadByFile(context.Context, *UploadByFileReq) (*UploadRes, error)
+	GenSolidColorAvatar(context.Context, *SolidColorAvatarReq) (*SolidColorAvatarRes, error)
 	mustEmbedUnimplementedMimoImageServer()
 }
 
@@ -75,6 +87,9 @@ func (UnimplementedMimoImageServer) UploadByUrl(context.Context, *UploadByUrlReq
 }
 func (UnimplementedMimoImageServer) UploadByFile(context.Context, *UploadByFileReq) (*UploadRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UploadByFile not implemented")
+}
+func (UnimplementedMimoImageServer) GenSolidColorAvatar(context.Context, *SolidColorAvatarReq) (*SolidColorAvatarRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenSolidColorAvatar not implemented")
 }
 func (UnimplementedMimoImageServer) mustEmbedUnimplementedMimoImageServer() {}
 
@@ -125,6 +140,24 @@ func _MimoImage_UploadByFile_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MimoImage_GenSolidColorAvatar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SolidColorAvatarReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MimoImageServer).GenSolidColorAvatar(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MimoImage_GenSolidColorAvatar_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MimoImageServer).GenSolidColorAvatar(ctx, req.(*SolidColorAvatarReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MimoImage_ServiceDesc is the grpc.ServiceDesc for MimoImage service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +172,10 @@ var MimoImage_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UploadByFile",
 			Handler:    _MimoImage_UploadByFile_Handler,
+		},
+		{
+			MethodName: "GenSolidColorAvatar",
+			Handler:    _MimoImage_GenSolidColorAvatar_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

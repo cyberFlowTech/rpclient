@@ -143,6 +143,10 @@ type ClubServerClient interface {
 	UpdateRecommend(ctx context.Context, in *UpdateRecommendReq, opts ...grpc.CallOption) (*UpdateRecommendResp, error)
 	// 根据Ip获取部落Ids
 	GetClubsByIp(ctx context.Context, in *GetClubsByIpReq, opts ...grpc.CallOption) (*GetClubsByIpResp, error)
+	// 获取部落在线用户
+	GetOnlineUsers(ctx context.Context, in *GetOnlineUsersReq, opts ...grpc.CallOption) (*GetOnlineUsersResp, error)
+	// 设置用户在线
+	SetUsersOnline(ctx context.Context, in *SetUsersOnlineReq, opts ...grpc.CallOption) (*SetUsersOnlineResp, error)
 }
 
 type clubServerClient struct {
@@ -684,6 +688,24 @@ func (c *clubServerClient) GetClubsByIp(ctx context.Context, in *GetClubsByIpReq
 	return out, nil
 }
 
+func (c *clubServerClient) GetOnlineUsers(ctx context.Context, in *GetOnlineUsersReq, opts ...grpc.CallOption) (*GetOnlineUsersResp, error) {
+	out := new(GetOnlineUsersResp)
+	err := c.cc.Invoke(ctx, "/club.ClubServer/GetOnlineUsers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *clubServerClient) SetUsersOnline(ctx context.Context, in *SetUsersOnlineReq, opts ...grpc.CallOption) (*SetUsersOnlineResp, error) {
+	out := new(SetUsersOnlineResp)
+	err := c.cc.Invoke(ctx, "/club.ClubServer/SetUsersOnline", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ClubServerServer is the server API for ClubServer service.
 // All implementations must embed UnimplementedClubServerServer
 // for forward compatibility
@@ -809,6 +831,10 @@ type ClubServerServer interface {
 	UpdateRecommend(context.Context, *UpdateRecommendReq) (*UpdateRecommendResp, error)
 	// 根据Ip获取部落Ids
 	GetClubsByIp(context.Context, *GetClubsByIpReq) (*GetClubsByIpResp, error)
+	// 获取部落在线用户
+	GetOnlineUsers(context.Context, *GetOnlineUsersReq) (*GetOnlineUsersResp, error)
+	// 设置用户在线
+	SetUsersOnline(context.Context, *SetUsersOnlineReq) (*SetUsersOnlineResp, error)
 	mustEmbedUnimplementedClubServerServer()
 }
 
@@ -992,6 +1018,12 @@ func (UnimplementedClubServerServer) UpdateRecommend(context.Context, *UpdateRec
 }
 func (UnimplementedClubServerServer) GetClubsByIp(context.Context, *GetClubsByIpReq) (*GetClubsByIpResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClubsByIp not implemented")
+}
+func (UnimplementedClubServerServer) GetOnlineUsers(context.Context, *GetOnlineUsersReq) (*GetOnlineUsersResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOnlineUsers not implemented")
+}
+func (UnimplementedClubServerServer) SetUsersOnline(context.Context, *SetUsersOnlineReq) (*SetUsersOnlineResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetUsersOnline not implemented")
 }
 func (UnimplementedClubServerServer) mustEmbedUnimplementedClubServerServer() {}
 
@@ -2068,6 +2100,42 @@ func _ClubServer_GetClubsByIp_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ClubServer_GetOnlineUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOnlineUsersReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).GetOnlineUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/club.ClubServer/GetOnlineUsers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).GetOnlineUsers(ctx, req.(*GetOnlineUsersReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ClubServer_SetUsersOnline_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetUsersOnlineReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ClubServerServer).SetUsersOnline(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/club.ClubServer/SetUsersOnline",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ClubServerServer).SetUsersOnline(ctx, req.(*SetUsersOnlineReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ClubServer_ServiceDesc is the grpc.ServiceDesc for ClubServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2310,6 +2378,14 @@ var ClubServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetClubsByIp",
 			Handler:    _ClubServer_GetClubsByIp_Handler,
+		},
+		{
+			MethodName: "GetOnlineUsers",
+			Handler:    _ClubServer_GetOnlineUsers_Handler,
+		},
+		{
+			MethodName: "SetUsersOnline",
+			Handler:    _ClubServer_SetUsersOnline_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

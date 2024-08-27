@@ -41,6 +41,7 @@ type UserConfig {
 	IsSearch     int32  `json:"is_search"` //"is_search":"0",
 	RelationShow int32  `json:"relation_show"` //"relation_show":"1"
 	FriendVerify int32  `json:"friend_verify"`
+	OnlineShow   int32  `json:"online_show"` // 在线状态是否展示 0 不展示 1展示
 }
 
 type UserNotificationConfig {
@@ -60,6 +61,8 @@ type UserInfo {
 	Avatar       string     `json:"avatar"` //"avatar":"https://rd-center.mimelabs.xyz/RD-mime/Upload/nft/Meemo/1/100/1/Meemo1108824.png",
 	OriginAvatar string     `json:"origin_avatar"` // 原图
 	Nick         string     `json:"nick"` //"nick":"rrr",
+	GroupNick    string     `json:"group_nick"` // 群聊昵称
+	ClubNick     string     `json:"club_nick"` //  部落昵称
 	Address      string     `json:"address"` //"address":"0xb4c4504B429FE076dcf31C8361e1a5Dde19D2CF2",
 	UserType     string     `json:"user_type"` //"user_type":"10",
 	UserConf     UserConfig `json:"u_conf"` //u_conf
@@ -80,7 +83,9 @@ type UserInfo {
 type GetUsersRequest {
 	CommonParams
 	Ouids string `form:"ouids"` //55942,55941 逗号分隔
-	Field string `form:"fields,default='info'"` //指定要查的信息info,conf,dynamic,relation 逗号分隔, 默认只查info
+	Field string `form:"fields,default='info'"` //指定要查的信息info,conf,dynamic,relation,club,group 逗号分隔, 默认只查info
+	TbMid string `form:"tb_mid,optional"` // 获取部落信息,fields传递club时需传递该值
+	MapId string `form:"map_id,optional"` // 获取群聊信息,fileds传递group时需传递该值
 }
 
 //暂无使用
@@ -93,7 +98,7 @@ type GetUsersResponse {
 type SetUserRequest {
 	CommonParams
 	CmdCode string `form:"cmd_code"` //1000001修改用户；1000003修改配置；1000004修改密码；1000006修改网络；1000008修改好友备注
-	SubCode string `form:"code,optional"` //用户配置操作子项1000003
+	SubCode string `form:"code,optional"` //用户配置操作子项1000003.10009 展示在线状态 0 不展示 1 展示
 	Value   string `form:"value,optional"` //子操作等值，单项修改
 	Nick    string `form:"nick,optional"`
 	Desc    string `form:"desc,optional"`
@@ -346,6 +351,21 @@ type GetInfoByShareCodeResp {
 	ShareCodeUInfo
 }
 
+type GetUsersOnlineInfoReq {
+	CommonParams
+	OUserIds string `form:"ouser_ids"` // 要查询的用户ids。548218,548218,548218
+}
+
+type OnlineInfo {
+	Status         string `json:"status"` // online/offline
+	OnLineLastTime string `json:"last_time"` // 最后在线时间戳 0表示未知
+	UserId         string `json:"user_id"` // 用户ID
+}
+
+type GetUsersOnlineInfoResp {
+	OnlineInfos []OnlineInfo `json:"data"`
+}
+
 type GenerateWalletReq {
 	CommonParams
 	MneAddress string        `form:"mne_address"` // 钱包地址 0x6a75b116797cbadc47b8e5a918a87d5e7bebbfbb
@@ -409,6 +429,24 @@ type GetLoginQrCodeStatusResp {
 	LoginRegisterResponseStruct
 }
 
+type SpareUrlResp {
+	Code int32    `json:"iRet"`
+	Msg  string   `json:"sMsg"`
+	Data []string `json:"data"`
+}
+
+type ReportReqTimeReq {
+	CommonParams
+	Url     string `form:"url"` // 请求地址
+	ReqTime string `form:"req_time"` // 耗时 json字符串：[{"path":"usersinfo","time":"500"},{"url":"setUser","time":"100"}] time 单位ms
+}
+
+type ReportReqTimerResp {
+	Code int32    `json:"iRet"`
+	Msg  string   `json:"sMsg"`
+	Data []string `json:"data"`
+}
+
 @server (
 	middleware: UniUserAuth
 	group:      user
@@ -424,8 +462,12 @@ service mimoapi {
 	post /setUser (SetUserRequest) returns (CommonJsonResp)
 
 	@doc "根据分享码获取用户信息"
-	@handler GetInfoByShareCodeReq
+	@handler GetInfoByShareCode
 	post /getInfoByShareCode (GetInfoByShareCodeReq) returns (GetInfoByShareCodeResp)
+
+	@doc "获取用户在线状态信息"
+	@handler GetUsersOnlineInfo
+	post /getUsersOnlineInfo (GetUsersOnlineInfoReq) returns (GetUsersOnlineInfoResp)
 
 	@doc "获取消息通知配置"
 	@handler getUsersNotificationConf
@@ -510,339 +552,13 @@ service mimoapi {
 	@doc "[扫码登录]移动端授权登录"
 	@handler AuthorizationLogin
 	post /AuthorizationLogin (AuthorizationLoginReq) returns (AuthorizationLoginResp)
-}
 
-//--------通讯录--------
-//--------好友---------
-type FriendInfo {
-	OuID       string `json:"ouid"`
-	Nick       string `json:"nick"`
-	Avatar     string `json:"avatar"`
-	Wallet     string `json:"wallet"`
-	IsBlock    int32  `json:"is_block"` //是否拉黑
-	IsGeneral  int32  `json:"is_general"`
-	StrangeMsg int32  `json:"strange_msg"`
-	Remark     string `json:"remark"`
-}
+	@doc "备选域名列表"
+	@handler SpareUrl
+	post /spareUrl (CommonParams) returns (SpareUrlResp)
 
-type FormFriendInfo {
-	OuID     string `form:"ouid"`
-	Nick     string `form:"nick,optional"` //备注昵称
-	IsNotice int32  `form:"is_notice,default=0"` //是否屏蔽
-}
-
-type GetContactsRequest {
-	CommonParams
-}
-
-type GetContactsResponse {
-	List []FriendInfo `json:"y"`
-}
-
-type SetContactRequest {
-	CommonParams
-	FormFriendInfo
-	SetType int32 `form:"type"` //1 add 2del
-}
-
-type SetContactNoticeRequest {
-	CommonParams
-	OuID    string `form:"ouid"`
-	SetType int32  `form:"type"` //notice 0 正常 1屏蔽
-	Context string `form:"context,optional"` // 申请内容
-	Remark  string `form:"remark,optional"` // 备注
-}
-
-//---------我的群聊
-type MyGroup {
-	GID      string `json:"uniqid"`
-	Name     string `json:"name"`
-	Avatar   string `json:"avatar"`
-	MapID    string `json:"map_id"`
-	IsNotice string `json:"notice"`
-}
-
-type GetMyGroupsRequest {
-	CommonParams
-}
-
-type GetMyGroupsResponse {
-	List []MyGroup `json:"#"`
-}
-
-type SetMyGroupRequest {
-	CommonParams
-}
-
-//----------好友申请----
-type FRequestInfo {
-	OuID    string `json:"ouid"`
-	Avatar  string `json:"avatar"`
-	Nick    string `json:"nick"`
-	Mutual  string `json:"mutual"`
-	CTime   string `json:"ctime"`
-	Remarks string `json:"remarks"`
-	Status  string `json:"status"` // 0 待处理，1 已通过，2已拒绝，3超时
-	Context string `json:"context"`
-}
-
-type GetFRequestsRequest {
-	CommonParams
-	Pages int32 `form:"pages,default=1"`
-	Scene int32 `form:"scene,default=0"` //0 通讯录 1 交友申请
-}
-
-type GetFRequestsResponse {
-	FRList []FRequestInfo `json:"list"`
-	Pages  int32          `json:"pages"`
-	Count  int32          `json:"count"`
-	Mark   int32          `json:"mark"`
-}
-
-type DelFRequestRequest {
-	CommonParams
-	Ouid int64 `form:"ouid"`
-}
-
-type SetFRequestRequest {
-	CommonParams
-	Ouid int64 `form:"ouid"`
-	Type int64 `form:"type,range=[1:2]"` // 1同意，2拒绝
-}
-
-//--------黑名单-------------
-type BlackInfo {
-	UserId int64  `json:"user_id"` //用户唯一标识
-	Nick   string `json:"nick"` //昵称
-	Avatar string `json:"avatar"` //头像
-}
-
-type GetBlacksRequest {
-	CommonParams
-	Page int32 `form:"page,default=1"`
-}
-
-type GetBlacksResponse {
-	BList []BlackInfo `json:"list"`
-	Pages int32       `json:"pages"`
-}
-
-type SetBlackRequest {
-	CommonParams
-	Ouid string `form:"ouid"`
-	Opt  string `form:"opt"` //add del
-}
-
-type RUnTaskReq {
-	CommonParams
-	TaskName string `form:"task_name"`
-}
-
-@server (
-	middleware: UniUserAuth
-	group:      contacts
-	prefix:     contacts
-)
-service mimoapi {
-	@doc "好友列表"
-	@handler getContacts
-	post /getContacts (GetContactsRequest) returns (CommonJsonResp)
-
-	@handler setContact
-	post /setContact (SetContactRequest) returns (CommonJsonResp)
-
-	@doc "开启关闭免打扰"
-	@handler setContactNotice
-	post /setContactNotice (SetContactNoticeRequest) returns (CommonJsonResp)
-
-	@doc "添加/删除好友"
-	@handler setContactFan
-	post /setContactFan (SetContactNoticeRequest) returns (CommonJsonResp)
-
-	@doc "我的群列表"
-	@handler getMyGroups
-	post /getGroups (GetMyGroupsRequest) returns (CommonJsonResp)
-
-	@handler setGroup
-	post /setGroup (SetMyGroupRequest) returns (CommonJsonResp)
-
-	@doc "加我好友列表"
-	@handler getFRequests
-	post /getFRequests (GetFRequestsRequest) returns (CommonJsonResp)
-
-	@doc "好友申请删除"
-	@handler delFRequest
-	post /delFRequest (DelFRequestRequest) returns (CommonJsonResp)
-
-	@doc "黑名单列表"
-	@handler getBlacks
-	post /getBlacks (GetBlacksRequest) returns (CommonJsonResp)
-
-	@doc "加入黑名单"
-	@handler setBlack
-	post /setBlack (SetBlackRequest) returns (CommonJsonResp)
-
-	@doc "处理好友申请"
-	@handler setFRequest
-	post /setFRequest (SetFRequestRequest) returns (CommonJsonResp)
-
-	@doc "单次脚本"
-	@handler runTask
-	post /runTask (RUnTaskReq) returns (CommonJsonResp)
-}
-
-type GetBannerRequest {
-	CommonParams
-	Scene    int32  `form:"scene"` // banner 场景
-	Page     int32  `form:"page,default=1"`
-	PageSize int32  `form:"pageSize,default=20"`
-	Search   string `form:"search,optional,default="`
-}
-
-type BannerInfo {
-	ID           int64     `json:"id"` // 公告唯一标识
-	Title        string    `json:"title"` // 标题
-	Content      string    `json:"content"` // 内容
-	Btn          []Button  `json:"btn"` // 按钮列表
-	DailyDisplay int32     `json:"dailyDisplay"` // 展示次数 0 每次打开 > 0 每日展示次数
-	ExtInfo      []ExtInfo `json:"extInfo"` // 附加信息
-	Closable     int32     `json:"closable"` // 是否可以被用户关闭 0 不可关闭 1 可关闭
-	Template     int32     `json:"template"` // 公告模板 后续增加
-	StartTime    int64     `json:"startTime"` // 开启时间
-	EndTime      int64     `json:"endTime"` // 结束时间
-	BannerNo     string    `json:"bannerNo"` // banner唯一id
-	Lan          string    `json:"lan"`
-	Scene        int32     `json:"scene"` // 场景
-	Plat         string    `json:"plat"` // 平台
-	Version      string    `json:"version"`
-	Sort         int32     `json:"sort"` // 排序
-	Status       int32     `json:"status"` // 状态 1 上架 0 下架
-}
-
-type ExtInfo {
-	Key string `json:"key"` // 附加信息 键值对
-	Val string `json:"val"`
-}
-
-type Button {
-	Title  string `json:"title"` // btn 标题
-	Action string `json:"action"` // btn 动作
-	Type   string `json:"type"` // 按钮类型
-}
-
-type SaveBannerRequest {
-	CommonParams
-	ID      int64  `form:"id,optional"`
-	Content string `form:"content"`
-}
-
-type LanguageData {
-	Title   string    `json:"title"`
-	Content string    `json:"content"`
-	Button  []Button  `json:"buttons"`
-	ExtInfo []ExtInfo `json:"extInfos"`
-	Lan     string    `json:"lan"`
-}
-
-type BannerInfoRequest {
-	CommonParams
-	ID int64 `form:"id"`
-}
-
-type BannerDelRequest {
-	CommonParams
-	ID int64 `form:"id"`
-}
-
-type Content {
-	Buttons  []Button  `json:"buttons"`
-	ExtInfos []ExtInfo `json:"extInfos"`
-	Title    string    `json:"title"`
-	Content  string    `json:"content"`
-	Lan      string    `json:"lan"`
-}
-
-type BannerList {
-	ID           int64     `json:"id"` // 公告唯一标识
-	ContentOri   string    `json:"contentOri"` // 原始内容
-	DailyDisplay int32     `json:"dailyDisplay"` // 展示次数 0 每次打开 > 0 每日展示次数
-	Closable     int32     `json:"closable"` // 是否可以被用户关闭 0 不可关闭 1 可关闭
-	Template     int32     `json:"template"` // 公告模板 后续增加
-	StartTime    string    `json:"startTime"` // 开启时间
-	EndTime      string    `json:"endTime"` // 结束时间
-	Scene        int32     `json:"scene"` // 场景
-	Plat         string    `json:"plat"` // 平台
-	Version      string    `json:"version"`
-	Content      []Content `json:"content"` // 数据列表
-	DefaultLang  string    `json:"defaultLang"`
-	Sort         int32     `json:"sort"` // 排序
-	Status       int32     `json:"status"` // 状态 1 上架 0 下架
-	Ctime        int64     `json:"ctime"`
-	Search       string    `json:"search"` // 过滤字段
-}
-
-type GetDiscoverRequest {
-	CommonParams
-}
-
-type DappInfo {
-	ID                   int64  `json:"id"`
-	DappLogo             string `json:"dapp_logo"` // logo
-	DappName             string `json:"dapp_name"` // name
-	DappSite             string `json:"dapp_site"` // site
-	DappUrl              string `json:"dapp_url"` // 页面
-	DappBigPicture       string `json:"dapp_big_picture"` // 缩略图
-	DappRank             int64  `json:"dapp_rank"` // 排序
-	DappDesc             string `json:"dapp_desc"` // 描述
-	IsSearchRecommend    int64  `json:"is_search_recommend"` // 是否推荐
-	IsDiscoveryRecommend int64  `json:"is_discovery_recommend"` // 是否发现页推荐
-	Created              string `json:"created"` // 创建时间
-	UserID               int64  `json:"user_id"` // 创建者 官方的为0
-	DappId               string `json:"dapp_id"`
-}
-
-type ClubInfo {
-	Id        string   `json:"id"` // 部落ID
-	Name      string   `json:"name"` // 部落头像
-	Avatar    string   `json:"avatar"` // 部落头像
-	Bg        string   `json:"bg"` // 部落背景
-	Desc      string   `json:"desc"` // 频道简介、部落介绍
-	UserCount int64    `json:"user_count"` // 部落总人数
-	InClub    int64    `json:"if_join"` // 1 已加入部落 0 未加入部落
-	IsPub     int64    `json:"is_pub"` // 部落社区是否公开
-	IsMaster  int64    `json:"is_master"` //1 是部落主 0 不是部落主
-	Users     []string `json:"new_user"` //部落成员头像链接地址
-	TagId     string   `json:"tag_id"` //部落标签ID
-}
-
-@server (
-	middleware: UniUserAuth
-	group:      banner
-	prefix:     banner
-)
-service mimoapi {
-	@doc "获取banner列表"
-	@handler getBanner
-	post /list (GetBannerRequest) returns (CommonJsonResp)
-
-	@doc "保存banner"
-	@handler saveBanner
-	post /save (SaveBannerRequest) returns (CommonJsonResp)
-
-	@doc "banner 详情"
-	@handler bannerInfo
-	post /info (BannerInfoRequest) returns (CommonJsonResp)
-
-	@doc "删除banner"
-	@handler bannerDel
-	post /del (BannerDelRequest) returns (CommonJsonResp)
-
-	@doc "管理后台banner列表"
-	@handler getBannerAdmin
-	post /list/admin (GetBannerRequest) returns (CommonJsonResp)
-
-	@doc "广场"
-	@handler getDiscover
-	post /discover (GetDiscoverRequest) returns (CommonJsonResp)
+	@doc "上报请求耗时"
+	@handler ReportReqTime
+	post /reportReqTime (ReportReqTimeReq) returns (ReportReqTimerResp)
 }
 

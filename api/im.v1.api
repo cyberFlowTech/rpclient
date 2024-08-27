@@ -38,14 +38,20 @@ type (
 		CallId          string           `json:"callId"`
 		EventType       string           `json:"eventType,optional"`
 		Timestamp       uint64           `json:"timestamp"`
-		ChatType        string           `json:"chat_type"`
+		ChatType        string           `json:"chat_type,optional"`
 		GroupId         string           `json:"group_id,optional"`
-		From            string           `json:"from"`
-		To              string           `json:"to"`
-		MsgId           string           `json:"msg_id"`
-		Payload         *CallbackPayload `json:"payload"`
+		From            string           `json:"from,optional"`
+		To              string           `json:"to,optional"`
+		MsgId           string           `json:"msg_id,optional"`
+		Payload         *CallbackPayload `json:"payload,optional"`
 		SecurityVersion string           `json:"securityVersion,optional"`
 		Security        string           `json:"security"`
+		CallBackLoginEvent
+	}
+	CallBackLoginEvent { // 登录、退出事件回调
+		Reason string `json:"reason,optional"`
+		User   string `json:"user,optional"`
+		Status string `json:"status,optional"`
 	}
 	CallbackRes {
 		Valid   bool             `json:"valid"`
@@ -130,7 +136,15 @@ type (
 		Members     []*GroupInfoMembers `json:"members"` // 成员信息
 		Manages     []*GroupInfoManages `json:"managers"` // 管理员信息
 		GroupType   int64               `json:"group_type"`
-	//             Icon        string              `json:"icon"`         // 兼容频道头像
+		//             Icon        string              `json:"icon"`         // 兼容频道头像
+		NotFirends []*NotFirendUser `json:"not_friends"`
+		Gag        int64            `json:"gag"`
+	}
+	NotFirendUser {
+		UserId string `json:"user_id"`
+		Nick   string `json:"nick"`
+		Avatar string `json:"avatar"`
+		Remark string `json:"remark"`
 	}
 	GroupInfoDapp {
 		DappId     int64  `json:"dapp_id"`
@@ -179,7 +193,8 @@ type (
 		CommonReq
 		GroupUniqid string `form:"group_uniqid,optional"` // 群聊id
 		MapId       string `form:"map_id,optional"` // 会话id
-		Ouid        int64  `form:"ouid,optional,default=0"` // 加入者id
+		Ouid        int64  `form:"ouid,optional,default=0"` // 邀请者id
+		JoinIds     string `form:"join_ids,optional"` // 加入者id，多个英文,隔开
 	}
 	InGroupRes {
 		Status int           `json:"status"` // 0 加入成功 1 用户已存在
@@ -497,7 +512,7 @@ type (
 	}
 	GetS3TokenReq {
 		CommonReq
-		Type string `form:"type"`
+		Type string `form:"type,optional,default=s3"`
 	}
 	GetS3TokenRes {
 		CommonRes
@@ -512,6 +527,48 @@ type (
 		Bucket          string `json:"bucket"`
 		Suffix          string `json:"suffix"`
 		Cdn             string `json:"cdn"`
+	}
+	GetConversationsReq {
+		CommonReq
+		ConversationIDs string `form:"conversation_ids,optional"` // 会话id,多个使用英文,分隔。默认为空，表示查询所有会话
+	}
+	GetConversationsRes {
+		CommonRes
+		Data []*Conversation `json:"data"`
+	}
+	Conversation {
+		OwnerUserID           string `json:"ownerUserID"` // 用户id
+		ConversationID        string `json:"conversationID"` // 会话id
+		RecvMsgOpt            int32  `json:"recvMsgOpt"` // 会话免打扰状态
+		ConversationType      int32  `json:"conversationType"` // 会话类型
+		UserID                string `json:"userID"` // 用户id
+		GroupID               string `json:"groupID"` // 群聊id
+		IsPinned              bool   `json:"isPinned"` // 会话是否置顶
+		AttachedInfo          string `json:"attachedInfo"` // 附加信息
+		IsPrivateChat         bool   `json:"isPrivateChat"` // 是否私人聊天
+		GroupAtType           int32  `json:"groupAtType"` // 群聊@类型
+		Ex                    string `json:"ex"` // 拓展信息
+		BurnDuration          int32  `json:"burnDuration"` // 会话阅后即焚时间，单位秒
+		MinSeq                int64  `json:"minSeq"` // 消息最小seq
+		MaxSeq                int64  `json:"maxSeq"` // 消息最大seq
+		MsgDestructTime       int64  `json:"msgDestructTime"` // 消息过期时间
+		LatestMsgDestructTime int64  `json:"latestMsgDestructTime"` // 最后一条消息过期时间
+		IsMsgDestruct         bool   `json:"isMsgDestruct"` // 消息是否过期
+	}
+	SetConversationsReq {
+		CommonReq
+		ConversationID   string  `form:"conversation_id"` // 会话id
+		ConversationType int64   `form:"conversation_type"` // 会话类型，单聊为1，群聊为3
+		Ouid             *string `form:"ouid,optional"` // 会话类型为单聊必传
+		GroupId          *string `form:"group_id,optional"` // 会话类型为群聊必传
+		RecvMsgOpt       *int64  `form:"recv_msg_opt,optional"` // 会话免打扰状态
+		IsPinned         *bool   `form:"is_pinned,optional"` // 会话是否置顶
+		IsPrivateChat    *bool   `form:"is_private_chat,optional"` // 是否开启阅后即焚
+		BurnDuration     *int64  `form:"burn_duration,optional"` // 阅后即焚时间，单位秒
+	}
+	SetConversationsRes {
+		CommonRes
+		Data interface{} `json:"data"`
 	}
 )
 
@@ -732,5 +789,13 @@ service imservice {
 	@doc "获取s3临时凭证"
 	@handler GetS3TempToken
 	post /GetS3TempToken (GetS3TokenReq) returns (GetS3TokenRes)
+
+	@doc "获取会话列表"
+	@handler GetConversations
+	post /GetConversations (GetConversationsReq) returns (GetConversationsRes)
+
+	@doc "设置会话"
+	@handler SetConversation
+	post /SetConversations (SetConversationsReq) returns (SetConversationsRes)
 }
 
