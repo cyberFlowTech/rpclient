@@ -350,6 +350,20 @@ type GetInfoByShareCodeResp {
 	ShareCodeUInfo
 }
 
+type GetUsersOnlineInfoReq {
+	CommonParams
+	OUserIds string `form:"ouser_ids"` // 要查询的用户ids。548218,548218,548218
+}
+
+type OnlineInfo {
+	Status         string `json:"status"` // online/offline
+	OnLineLastTime string `json:"last_time"` // 最后在线时间戳 0表示未知
+}
+
+type GetUsersOnlineInfoResp {
+	OnlineInfos []OnlineInfo
+}
+
 type GenerateWalletReq {
 	CommonParams
 	MneAddress string        `form:"mne_address"` // 钱包地址 0x6a75b116797cbadc47b8e5a918a87d5e7bebbfbb
@@ -428,8 +442,12 @@ service mimoapi {
 	post /setUser (SetUserRequest) returns (CommonJsonResp)
 
 	@doc "根据分享码获取用户信息"
-	@handler GetInfoByShareCodeReq
+	@handler GetInfoByShareCode
 	post /getInfoByShareCode (GetInfoByShareCodeReq) returns (GetInfoByShareCodeResp)
+
+	@doc "获取用户在线状态信息"
+	@handler GetUsersOnlineInfo
+	post /getUsersOnlineInfo (GetUsersOnlineInfoReq) returns (GetUsersOnlineInfoResp)
 
 	@doc "获取消息通知配置"
 	@handler getUsersNotificationConf
