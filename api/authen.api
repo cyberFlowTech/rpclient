@@ -350,7 +350,7 @@ service api {
 
 	@doc "token获取"
 	@handler token
-	get /token (TokenParam) returns (CommonJsonResp)
+	post /token (TokenParam) returns (CommonJsonResp)
 }
 
 @server (
