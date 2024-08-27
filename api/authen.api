@@ -1,0 +1,365 @@
+syntax = "v1"
+
+info (
+	title:   "zapry auth http api services"
+	desc:    "认证&鉴权服务"
+	author:  "x@cyberflow.cc"
+	email:   "x@cyberflow.cc"
+	version: "v1.0"
+)
+
+//统一请求鉴权信息
+type CommonParams {
+	UserId      int64  `form:"user_id"` //用户唯一标识
+	SessId      string `form:"sessid"` //用户登录标识
+	Api         string `form:"api"` //App公钥
+	Version     string `form:"version"` //版本号
+	VersionCode string `form:"version_code"` //构建号
+	Uuid        string `form:"uuid"` //设备唯一标识
+	Lan         string `form:"lan"` //语言，如zh_TW
+	Sign        string `form:"sign"` //签名
+	SignTime    int64  `form:"sign_time"` //当前时间
+}
+
+//统一返回格式
+type CommonJsonResp {
+	Code int32       `json:"iRet"`
+	Msg  string      `json:"sMsg"`
+	Data interface{} `json:"data"`
+}
+
+// 登录、注册、忘记密码
+type LoginRegisterForm {
+	Openudid   string `form:"openudid"` // 账号（邮箱或自定义账号，或者是第三方登录的code，或钱包地址）
+	UserType   int64  `form:"user_type"` // 账号类型10=>邮箱，20=>钱包(没有在用)，30=>google，40=>facebook（(没有在用)），50=>apple，60=>手机号（(没有在用)），70=>自定义账号，80=>一键注册
+	OnlyCheck  int64  `form:"only_check,optional"` // 检测账号占用 0否 1是（邮箱，自定义账号登录时需要）
+	InviteCode string `form:"invite_code,optional"` // 邀请码
+	Pwd        string `form:"pwd,optional"` // 密码（登录，注册时必要）
+	OPwd       string `form:"opwd,optional"` // 确认密码（注册时必要）
+	EmailCode  string `form:"email_code,optional"` // 邮箱验证码
+	Uuid       string `form:"uuid,optional"` // 设备ID
+	Api        string `form:"api,optional"` // api
+	Version    string `form:"version,optional"` // APP版本
+	Lan        string `form:"lan"` //  语言
+}
+
+type LoginRegisterResponseTimeStruct {
+	Unix int64  `json:"unix"`
+	Zone string `json:"zone"`
+}
+
+type LoginRegisterResponseStruct {
+	UserId       string                          `json:"user_id"` // 用户ID
+	Nick         string                          `json:"nick"` // 用户昵称
+	Status       string                          `json:"status"` // 状态
+	Age          string                          `json:"age"` // （弃用）年龄
+	Avatar       string                          `json:"avatar"` // 头像
+	ActiveTime   int64                           `json:"active_time"` // 最后活跃时间
+	Sex          string                          `json:"sex"` // （弃用）性别
+	Level        string                          `json:"level"` // （弃用）等级
+	Desc         string                          `json:"desc"` // 个签
+	Sessid       string                          `json:"sessid"` // sessid
+	IsRegister   int64                           `json:"isRegister"` // 是否是注册0否 1是
+	IsTodayFirst string                          `json:"isTodayFirst"` // 是否当天首次登录0否1是
+	UserType     string                          `json:"user_type"` // 用户账号类型
+	HasWallet    string                          `json:"hasWallet"` // 是否有钱包地址 0否1是
+	HasSign      string                          `json:"hasSign"` //
+	Time         LoginRegisterResponseTimeStruct `json:"time"` // 服务端时间
+	RegTime      string                          `json:"reg_time"` //注册时间
+	OpenFun      bool                            `json:"open_fun"` // （弃用）
+	OpenApplet   bool                            `json:"open_applet"` // （弃用）
+	Openudid     string                          `json:"openudid"` // 第三方账号
+	Uuid         string                          `json:"uuid"` // uuid
+}
+
+type LoginIndexRequest {
+	LoginRegisterForm
+}
+
+type LoginIndexResp {
+	Code int32       `json:"iRet"`
+	Msg  string      `json:"sMsg"`
+	Data interface{} `json:"data"`
+}
+
+type LoginRequest {
+	LoginRegisterForm
+}
+
+type LoginResp {
+	Code int32                       `json:"iRet"`
+	Msg  string                      `json:"sMsg"`
+	Data LoginRegisterResponseStruct `json:"data"`
+}
+
+type LoginAutoRequest {
+	CommonParams
+	ResetSession int64 `form:"reset_sess,optional"` // 是否刷新session 0否 1是
+}
+
+type LoginAutoResp {
+	Code int32                       `json:"iRet"`
+	Msg  string                      `json:"sMsg"`
+	Data LoginRegisterResponseStruct `json:"data"`
+}
+
+type LogoutRequest {
+	CommonParams
+}
+
+type LogoutResp {
+	Code int32    `json:"iRet"`
+	Msg  string   `json:"sMsg"`
+	Data []string `json:"data"`
+}
+
+type RegisterRequest {
+	LoginRegisterForm
+	AuthEmail string `form:"auth_email,optional"` // 第三方登录邮箱
+}
+
+type RegisterResp {
+	Code int32                       `json:"iRet"`
+	Msg  string                      `json:"sMsg"`
+	Data LoginRegisterResponseStruct `json:"data"`
+}
+
+type ForgetRequest {
+	LoginRegisterForm
+}
+
+type ForgetResp {
+	Code int32    `json:"iRet"`
+	Msg  string   `json:"sMsg"`
+	Data []string `json:"data"`
+}
+
+type SendVerificationCodeRequest {
+	Openudid string `form:"openudid"` //  邮箱
+	Scene    int64  `form:"scene"` //  场景：1注册；2绑定；3忘記密碼，4pin
+	Lan      string `form:"lan"` //  语言
+	Uuid     string `form:"uuid"` //  设备id
+}
+
+type SendVerificationCodeResp {
+	Code int32    `json:"iRet"`
+	Msg  string   `json:"sMsg"`
+	Data []string `json:"data"`
+}
+
+type CancellationRequest {
+	CommonParams
+}
+
+type CancellationResp {
+	Code int32    `json:"iRet"`
+	Msg  string   `json:"sMsg"`
+	Data []string `json:"data"`
+}
+
+type BindRequest {
+	CommonParams
+	Openudid  string `form:"openudid"` // 第三方账号
+	EmailCode string `form:"email_code,optional"` // 邮箱验证码
+	UserType  int64  `form:"user_type"` // 账号类型 10 邮箱 30 google 50 apple
+	Pwd       string `form:"pwd,optional"` // 密码
+	OPwd      string `form:"opwd,optional"` // 确认密码
+}
+
+type BindResp {
+	Code int32    `json:"iRet"`
+	Msg  string   `json:"sMsg"`
+	Data []string `json:"data"`
+}
+
+type UnbindReq {
+	CommonParams
+	UserType int64 `form:"user_type"`
+}
+
+type BindStatus {
+	Account int64 `json:"account"`
+	Google  int64 `json:"google"`
+	Apple   int64 `json:"apple"`
+	Diy     int64 `json:"diy"`
+	Quick   int64 `json:"quick"`
+}
+
+type BindListRes {
+	Bind    BindStatus `json:"bind"`
+	Account string     `json:"account"`
+	Pwd     int64      `json:"pwd"`
+	PhoneNo string     `json:"phoneNo"`
+	DiyNo   string     `json:"diyNo"`
+	GEmail  string     `json:"gEmail"`
+	AEmail  string     `json:"aEmail"`
+}
+
+type VerifyPwdReq {
+	CommonParams
+	Pwd string `form:"pwd"`
+}
+
+type VerifyPwdRes {
+	IsPass bool `json:"is_pass"`
+}
+
+type CreateLoginQrCodeReq {
+	WUuid string `form:"w_uuid"` // web终端的uuid
+}
+
+type CreateLoginQrCodeResp {
+	QrcodeId string `json:"qrcode_id"` // 二维码Id
+}
+
+type GetQrLoginInfoReq {
+	CommonParams
+	QrcodeId string `form:"qrcode_id"` // 二维码Id
+}
+
+type GetQrLoginInfoResp {
+	Token        string `json:"token"` // 临时token
+	HasLogin     int64  `json:"hasLogin"` // 是否已经登录其它PC设备 1已登陆 0 未登陆
+	QrcodeStatus int64  `json:"qrcode_status"` // 0 未扫描 1 已扫描 2已登陆 3已拒绝 4已过期
+}
+
+type AuthorizationLoginReq {
+	CommonParams
+	Token    string `form:"token"` // 授权token
+	QrcodeId string `form:"qrcode_id"` // 二维码ID
+	Status   int64  `form:"status,range=[2:3]"` // 2:同意授权 3:拒绝授权
+}
+
+type AuthorizationLoginResp {}
+
+type GetLoginQrCodeStatusReq {
+	Id string `form:"qrcode_id"` // 二维码ID
+}
+
+type GetLoginQrCodeStatusResp {
+	QrcodeStatus int64 `json:"qrcode_status"` // 二维码状态 0:未扫描 1:已扫描，等待用户确认 2:已扫描，用户同意授权 3:已扫描，用户取消授权 4:已过期
+	LoginRegisterResponseStruct
+}
+
+type AuthParam {
+	ClientID            string `header:"client_id"` //所属应用id
+	Scope               string `form:"scope,optional"` //表示申请的权限范围
+	RedirectUri         string `form:"redirect_uri,optional"` //重定向URI,web端使用
+	ResponseType        string `form:"response_type,optional"` //常量code或token，这里为code
+	State               string `form:"state,optional"` //请求唯一标识 用于关联请求和响应
+	CodeChallenge       string `form:"code_challenge"`
+	CodeChallengeMethod string `form:"code_challenge_method"`
+}
+
+type AuthResp {
+	Code  string `json:"code"` //临时code
+	State string `json:"state"` //请求唯一标识 用于关联请求和响应 原样返回
+}
+
+type KeysParams {}
+
+type TokenParam {
+	ClientID     string `header:"client_id"` //所属应用id
+	ClientKey    string `header:"client_secret"` //app标识key
+	Code         string `form:"code"` //dauth或第三方的code
+	GrantType    int    `form:"grant_type,optional"` //固定值， authorization_code
+	RedirectUri  string `form:"redirect_uri,optional"` //重定向 URI
+	CodeVerifier string `form:"code_verifier"` //代码校验器
+}
+
+@server (
+	middleware: AuthenMiddleWare
+	group:      authen
+	prefix:     auth
+)
+service api {
+	@doc "检查用户是否存在&注册&登录（兼容老系统接口）"
+	@handler LoginIndex
+	post /loginIndex (LoginIndexRequest) returns (LoginIndexResp)
+
+	@doc "登录"
+	@handler Login
+	post /login (LoginRequest) returns (LoginResp)
+
+	@doc "自动登录"
+	@handler LoginAuto
+	post /loginAuto (LoginAutoRequest) returns (LoginAutoResp)
+
+	@doc "退出登录"
+	@handler Logout
+	post /logout (LogoutRequest) returns (LogoutResp)
+
+	@doc "注册"
+	@handler Register
+	post /register (RegisterRequest) returns (RegisterResp)
+
+	@doc "忘记密码"
+	@handler Forget
+	post /forget (ForgetRequest) returns (ForgetResp)
+
+	@doc "发送验证码"
+	@handler SendVerificationCode
+	post /sendVerificationCode (SendVerificationCodeRequest) returns (SendVerificationCodeResp)
+
+	@doc "用户申请注销"
+	@handler Cancellation
+	post /cancellation (CancellationRequest) returns (CancellationResp)
+
+	@doc "绑定账号"
+	@handler Bind
+	post /bind (BindRequest) returns (BindResp)
+
+	@doc "解除绑定账号"
+	@handler Unbind
+	post /unbind (UnbindReq) returns (CommonJsonResp)
+
+	@doc "绑定列表"
+	@handler BindList
+	post /bindList (CommonParams) returns (CommonJsonResp)
+
+	@doc "验证账号密码"
+	@handler VerifyPwd
+	post /verifyPwd (VerifyPwdReq) returns (VerifyPwdRes)
+
+	@doc "[扫码登录]PC创建二维码"
+	@handler CreateLoginQrCode
+	post /createLoginQrCode (CreateLoginQrCodeReq) returns (CreateLoginQrCodeResp)
+
+	@doc "[扫码登录]PC获取二维码状态"
+	@handler GetLoginQrCode
+	post /getLoginQrcodeStatus (GetLoginQrCodeStatusReq) returns (GetLoginQrCodeStatusResp)
+
+	@doc "[扫码登录]移动端扫码获取二维码信息"
+	@handler GetQrLoginInfo
+	post /getQrLoginInfo (GetQrLoginInfoReq) returns (GetQrLoginInfoResp)
+
+	@doc "[扫码登录]移动端授权登录"
+	@handler AuthorizationLogin
+	post /authorizationLogin (AuthorizationLoginReq) returns (AuthorizationLoginResp)
+}
+
+@server (
+	middleware: Oauth2Middleware
+	group:      oauth2
+	prefix:     oauth2
+)
+service api {
+	@doc "oauth2鉴权"
+	@handler auth
+	get /auth (AuthParam) returns (CommonJsonResp)
+
+	@doc "token获取"
+	@handler token
+	get /token (TokenParam) returns (CommonJsonResp)
+}
+
+@server (
+	group:  auth
+	prefix: auth
+)
+service api {
+	@doc "authkey"
+	@handler authkeys
+	get /keys (KeysParams) returns (CommonJsonResp)
+}
+
