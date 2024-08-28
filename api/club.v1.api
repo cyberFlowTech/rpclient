@@ -188,7 +188,7 @@ type (
 	//"dapp_id": "2",
 	CreateReq {
 		CommonReq
-		Avatar string `form:"avatar"` // 部落头像
+		Avatar string `form:"avatar,optional"` // 部落头像
 		Name   string `form:"name"` // 部落名
 		Desc   string `form:"desc,optional"` // 描述
 		Dapp   string `form:"dapp,optional"` // 兼容uniapp dapp详情
@@ -667,14 +667,14 @@ type (
 		DappId string `form:"dapp_id"` // 多个Dapp用,分隔
 		Size   int64  `form:"size"` // 获取最近访问的多少个用户
 	}
-	ChannelVIsitedUInfo {
+	ChannelVisitedUInfo {
 		Avatar   string `json:"avatar"` // 用户头像
 		NickName string `json:"nickname"` // 用户昵称
 		UserId   string `json:"user_id"` // 用户ID
-		Time     int64  `json:"time"` // 最近进入时间
+		Time     int64  `json:"time"` // 最后进入时间
 	}
 	ChannelVisitedRespInfo {
-		UInfo  []ChannelVIsitedUInfo `json:"uinfo"` // 用户信息
+		UInfo  []ChannelVisitedUInfo `json:"uinfo"` // 用户信息
 		Count  int64                 `json:"count"` // 总人数
 		DappId string                `json:"dapp_id"` // dappID
 	}
@@ -750,7 +750,7 @@ type (
 		TbCid string `form:"tb_cid"`
 	}
 	ChannelBanResp  {}
-	OnLineUsersReq {
+	OnlineUsersReq {
 		CommonReq
 		TbMid string `form:"tb_mid"` // 部落ID
 		Sort  int64  `form:"type,optional,range=[0:1]"` // 排序 0:时间倒序（默认） 1 时间升序
@@ -761,11 +761,40 @@ type (
 		UserId int64  `json:"user_id"`
 		Avatar string `json:"avatar"`
 	}
-	OnLineUsersResp {
+	OnlineUsersResp {
 		Users []UserInfo `json:"users"` // 部落成员在线列表
 		Count int64      `json:"count"` // 在线总人数
 		TbMid string     `json:"tb_mid"` // 部落ID
 	}
+
+
+	GetChannelOnlineUsersReq {
+		CommonReq
+		TbMid  string `form:"tb_mid"` // 部落ID
+		ImId string `form:"im_id"` // 多个im_id,分隔
+		Size   int64  `form:"size,default=20"` // 页大小，默认20，0获取所有用户
+		Page	int64  `form:"page,default=1"` // 页码,默认1
+	}
+	ChannelUInfo {
+		UInfo  []ChannelVisitedUInfo `json:"uinfo"` // 用户信息
+		Count  int64                 `json:"count"` // 总人数
+		ImId string                `json:"im_id"` // im_id
+	}
+
+	GetChannelOnlineUsersResp {
+		List []ChannelUInfo `json:"list"`
+	}
+
+	SetChannelOnlineUsersReq {
+		CommonReq
+		TbMid  string `form:"tb_mid"` // 部落ID
+		ImId string `form:"im_id"` // im_id,多个用,号分隔
+		Userid string `form:"user_id"` // userId
+		Status string `form:"status"` // offline/online
+	}
+
+	SetChannelOnlineUsersResp {}
+
 )
 
 @server (
@@ -972,6 +1001,14 @@ service club {
 
 	@doc "部落在线成员列表"
 	@handler getOnLineUsers
-	post /getOnLineUsers (OnLineUsersReq) returns (OnLineUsersResp)
+	post /getOnLineUsers (OnlineUsersReq) returns (OnlineUsersResp)
+
+	@doc "获取频道在线成员"
+	@handler getChannelOnlineUsers
+	post /getChannelOnLineUsers (GetChannelOnlineUsersReq) returns (GetChannelOnlineUsersResp)
+
+	@doc "设置频道在线成员"
+	@handler setChannelOnlineUsers
+	post /setChannelOnlineUsers (SetChannelOnlineUsersReq) returns (SetChannelOnlineUsersResp)
 }
 
