@@ -363,7 +363,7 @@ type OnlineInfo {
 }
 
 type GetUsersOnlineInfoResp {
-	OnlineInfos []OnlineInfo `json:"data"`
+	OnlineInfos []OnlineInfo `json:"list"`
 }
 
 type GenerateWalletReq {
