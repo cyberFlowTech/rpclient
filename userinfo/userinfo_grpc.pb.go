@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type UserClient interface {
 	// 只支持info查询
 	GetUsersInfo(ctx context.Context, in *GetUsersInfoReq, opts ...grpc.CallOption) (*GetUsersInfoResp, error)
-	// 支持info，conf, relation组合查询
+	// 支持info，conf, relation,device组合查询
 	GetUsers(ctx context.Context, in *GetUsersReq, opts ...grpc.CallOption) (*GetUsersResp, error)
 	// 用户信息或设置修改
 	UpdateUserInfo(ctx context.Context, in *SetUserInfoReq, opts ...grpc.CallOption) (*SetUserInfoResp, error)
@@ -87,6 +87,8 @@ type UserClient interface {
 	SaveUserOnLineStatus(ctx context.Context, in *SaveUserOnLineStatusReq, opts ...grpc.CallOption) (*SaveUserOnLineStatusResp, error)
 	// 获取用户在线状态
 	GetUserOnLineStatus(ctx context.Context, in *GetUserOnLineStatusReq, opts ...grpc.CallOption) (*GetUserOnLineStatusResp, error)
+	// 用户登录事件处理
+	LoginEvent(ctx context.Context, in *GetUserOnLineStatusReq, opts ...grpc.CallOption) (*GetUserOnLineStatusResp, error)
 }
 
 type userClient struct {
@@ -403,13 +405,22 @@ func (c *userClient) GetUserOnLineStatus(ctx context.Context, in *GetUserOnLineS
 	return out, nil
 }
 
+func (c *userClient) LoginEvent(ctx context.Context, in *GetUserOnLineStatusReq, opts ...grpc.CallOption) (*GetUserOnLineStatusResp, error) {
+	out := new(GetUserOnLineStatusResp)
+	err := c.cc.Invoke(ctx, "/userinfo.User/LoginEvent", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
 	// 只支持info查询
 	GetUsersInfo(context.Context, *GetUsersInfoReq) (*GetUsersInfoResp, error)
-	// 支持info，conf, relation组合查询
+	// 支持info，conf, relation,device组合查询
 	GetUsers(context.Context, *GetUsersReq) (*GetUsersResp, error)
 	// 用户信息或设置修改
 	UpdateUserInfo(context.Context, *SetUserInfoReq) (*SetUserInfoResp, error)
@@ -472,6 +483,8 @@ type UserServer interface {
 	SaveUserOnLineStatus(context.Context, *SaveUserOnLineStatusReq) (*SaveUserOnLineStatusResp, error)
 	// 获取用户在线状态
 	GetUserOnLineStatus(context.Context, *GetUserOnLineStatusReq) (*GetUserOnLineStatusResp, error)
+	// 用户登录事件处理
+	LoginEvent(context.Context, *GetUserOnLineStatusReq) (*GetUserOnLineStatusResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -580,6 +593,9 @@ func (UnimplementedUserServer) SaveUserOnLineStatus(context.Context, *SaveUserOn
 }
 func (UnimplementedUserServer) GetUserOnLineStatus(context.Context, *GetUserOnLineStatusReq) (*GetUserOnLineStatusResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserOnLineStatus not implemented")
+}
+func (UnimplementedUserServer) LoginEvent(context.Context, *GetUserOnLineStatusReq) (*GetUserOnLineStatusResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LoginEvent not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -1206,6 +1222,24 @@ func _User_GetUserOnLineStatus_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_LoginEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserOnLineStatusReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).LoginEvent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/userinfo.User/LoginEvent",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).LoginEvent(ctx, req.(*GetUserOnLineStatusReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1348,6 +1382,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserOnLineStatus",
 			Handler:    _User_GetUserOnLineStatus_Handler,
+		},
+		{
+			MethodName: "LoginEvent",
+			Handler:    _User_LoginEvent_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
