@@ -88,7 +88,7 @@ type UserClient interface {
 	// 获取用户在线状态
 	GetUserOnLineStatus(ctx context.Context, in *GetUserOnLineStatusReq, opts ...grpc.CallOption) (*GetUserOnLineStatusResp, error)
 	// 用户登录事件处理
-	LoginEvent(ctx context.Context, in *GetUserOnLineStatusReq, opts ...grpc.CallOption) (*GetUserOnLineStatusResp, error)
+	LoginEvent(ctx context.Context, in *LoginEventReq, opts ...grpc.CallOption) (*LoginEventResp, error)
 }
 
 type userClient struct {
@@ -405,8 +405,8 @@ func (c *userClient) GetUserOnLineStatus(ctx context.Context, in *GetUserOnLineS
 	return out, nil
 }
 
-func (c *userClient) LoginEvent(ctx context.Context, in *GetUserOnLineStatusReq, opts ...grpc.CallOption) (*GetUserOnLineStatusResp, error) {
-	out := new(GetUserOnLineStatusResp)
+func (c *userClient) LoginEvent(ctx context.Context, in *LoginEventReq, opts ...grpc.CallOption) (*LoginEventResp, error) {
+	out := new(LoginEventResp)
 	err := c.cc.Invoke(ctx, "/userinfo.User/LoginEvent", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -484,7 +484,7 @@ type UserServer interface {
 	// 获取用户在线状态
 	GetUserOnLineStatus(context.Context, *GetUserOnLineStatusReq) (*GetUserOnLineStatusResp, error)
 	// 用户登录事件处理
-	LoginEvent(context.Context, *GetUserOnLineStatusReq) (*GetUserOnLineStatusResp, error)
+	LoginEvent(context.Context, *LoginEventReq) (*LoginEventResp, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -594,7 +594,7 @@ func (UnimplementedUserServer) SaveUserOnLineStatus(context.Context, *SaveUserOn
 func (UnimplementedUserServer) GetUserOnLineStatus(context.Context, *GetUserOnLineStatusReq) (*GetUserOnLineStatusResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserOnLineStatus not implemented")
 }
-func (UnimplementedUserServer) LoginEvent(context.Context, *GetUserOnLineStatusReq) (*GetUserOnLineStatusResp, error) {
+func (UnimplementedUserServer) LoginEvent(context.Context, *LoginEventReq) (*LoginEventResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoginEvent not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
@@ -1223,7 +1223,7 @@ func _User_GetUserOnLineStatus_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _User_LoginEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserOnLineStatusReq)
+	in := new(LoginEventReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1235,7 +1235,7 @@ func _User_LoginEvent_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/userinfo.User/LoginEvent",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).LoginEvent(ctx, req.(*GetUserOnLineStatusReq))
+		return srv.(UserServer).LoginEvent(ctx, req.(*LoginEventReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
