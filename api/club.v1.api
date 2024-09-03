@@ -105,7 +105,7 @@ type (
 		Frozen    int64       `json:"frozen"` // 用户状态 0正常，1锁定，2冻结
 		Icon      string      `json:"icon"` // 图片
 		ID        string      `json:"id"` // 频道加密id
-		ImID      string      `json:"im_id"` // im_id
+		ImID      string      `json:"im_id"` // 频道的im_id
 		IsBan     int64       `json:"is_ban"` // 是否全员禁言：0否1是
 		IsBlock   int64       `json:"is_block"` // 管理员封禁：0否1是
 		IsClean   int64       `json:"is_clean"` // 是否自动清理消息：0否1是
@@ -308,17 +308,17 @@ type (
 	}
 	ChannelCreateResp {
 		Id            string      `json:"id"`
-		TbMid         string      `json:"tb_mid"`
-		TbZid         string      `json:"tb_zid"`
-		Name          string      `json:"name"`
-		Desc          string      `json:"desc"`
-		IsBan         string      `json:"is_ban"`
-		ImID          string      `json:"im_id"`
-		Sort          int64       `json:"sort"`
-		Ctime         int64       `json:"ctime"`
-		Type          int32       `json:"type"`
+		TbMid         string      `json:"tb_mid"` // 部落ID
+		TbZid         string      `json:"tb_zid"` // 分组ID
+		Name          string      `json:"name"` // 频道名称
+		Desc          string      `json:"desc"` // 描述
+		IsBan         string      `json:"is_ban"` // 是否禁言
+		ImID          string      `json:"im_id"` // 频道的ImId
+		Sort          int64       `json:"sort"` // 排序
+		Ctime         int64       `json:"ctime"` // 创建时间
+		Type          int32       `json:"type"` // 0 普通频道 2dapp频道
 		Icon          string      `json:"icon"`
-		MapId         string      `json:"map_id"`
+		MapId         string      `json:"map_id"` // 第三方imId
 		Property      int32       `json:"property"`
 		Chain         int64       `json:"chain"`
 		IsDel         int32       `json:"is_del"`
@@ -766,35 +766,28 @@ type (
 		Count int64      `json:"count"` // 在线总人数
 		TbMid string     `json:"tb_mid"` // 部落ID
 	}
-
-
 	GetChannelOnlineUsersReq {
 		CommonReq
-		TbMid  string `form:"tb_mid"` // 部落ID
-		ImId string `form:"im_id"` // 多个im_id,分隔
-		Size   int64  `form:"size,default=20"` // 页大小，默认20，0获取所有用户
-		Page	int64  `form:"page,default=1"` // 页码,默认1
+		TbMid string `form:"tb_mid"` // 部落ID
+		ImId  string `form:"im_id"` // 频道的im_id,多个im_id,分隔
+		Size  int64  `form:"size,default=20"` // 页大小，默认20，0获取所有用户
+		Page  int64  `form:"page,default=1"` // 页码,默认1
 	}
 	ChannelUInfo {
-		UInfo  []ChannelVisitedUInfo `json:"uinfo"` // 用户信息
-		Count  int64                 `json:"count"` // 总人数
-		ImId string                `json:"im_id"` // im_id
+		UInfo []ChannelVisitedUInfo `json:"uinfo"` // 用户信息
+		Count int64                 `json:"count"` // 总人数
+		ImId  string                `json:"im_id"` // 频道的im_id
 	}
-
 	GetChannelOnlineUsersResp {
 		List []ChannelUInfo `json:"list"`
 	}
-
 	SetChannelOnlineUsersReq {
 		CommonReq
 		TbMid  string `form:"tb_mid"` // 部落ID
-		ImId string `form:"im_id"` // im_id,多个用,号分隔
-		Userid string `form:"user_id"` // userId
-		Status string `form:"status"` // offline/online
+		ImId   string `form:"im_id"` //  频道的im_id
+		Status string `form:"status"` //  offline/online
 	}
-
-	SetChannelOnlineUsersResp {}
-
+	SetChannelOnlineUsersResp  {}
 )
 
 @server (
