@@ -357,13 +357,13 @@ type GetUsersOnlineInfoReq {
 }
 
 type OnlineInfo {
-	Status         string `json:"status"` // online/offline
-	OnLineLastTime string `json:"last_time"` // 最后在线时间戳 0表示未知
+	Status         string `json:"status"` // online/offline/unshow
+	OnLineLastTime string `json:"last_time"` // 最后在线秒级时间戳 0表示未知
 	UserId         string `json:"user_id"` // 用户ID
 }
 
 type GetUsersOnlineInfoResp {
-	OnlineInfos []OnlineInfo `json:"data"`
+	OnlineInfos []OnlineInfo `json:"list"`
 }
 
 type GenerateWalletReq {
@@ -427,24 +427,6 @@ type GetLoginQrCodeStatusReq {
 type GetLoginQrCodeStatusResp {
 	QrcodeStatus int64 `json:"qrcode_status"` // 二维码状态 0:未扫描 1:已扫描，等待用户确认 2:已扫描，用户同意授权 3:已扫描，用户取消授权 4:已过期
 	LoginRegisterResponseStruct
-}
-
-type SpareUrlResp {
-	Code int32    `json:"iRet"`
-	Msg  string   `json:"sMsg"`
-	Data []string `json:"data"`
-}
-
-type ReportReqTimeReq {
-	CommonParams
-	Url     string `form:"url"` // 请求地址
-	ReqTime string `form:"req_time"` // 耗时 json字符串：[{"path":"usersinfo","time":"500"},{"url":"setUser","time":"100"}] time 单位ms
-}
-
-type ReportReqTimerResp {
-	Code int32    `json:"iRet"`
-	Msg  string   `json:"sMsg"`
-	Data []string `json:"data"`
 }
 
 @server (
@@ -552,13 +534,5 @@ service mimoapi {
 	@doc "[扫码登录]移动端授权登录"
 	@handler AuthorizationLogin
 	post /AuthorizationLogin (AuthorizationLoginReq) returns (AuthorizationLoginResp)
-
-	@doc "备选域名列表"
-	@handler SpareUrl
-	post /spareUrl (CommonParams) returns (SpareUrlResp)
-
-	@doc "上报请求耗时"
-	@handler ReportReqTime
-	post /reportReqTime (ReportReqTimeReq) returns (ReportReqTimerResp)
 }
 
