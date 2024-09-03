@@ -261,10 +261,16 @@ type KeysParams {}
 type TokenParam {
 	ClientID     string `header:"client_id"` //所属应用id
 	ClientKey    string `header:"client_secret"` //app标识key
-	Code         string `form:"code"` //dauth或第三方的code
+	Code         string `form:"code"` //第三方的code
 	GrantType    int    `form:"grant_type,optional"` //固定值， authorization_code
 	RedirectUri  string `form:"redirect_uri,optional"` //重定向 URI
 	CodeVerifier string `form:"code_verifier"` //代码校验器
+}
+
+type MinoProgramTokenParam {
+	CommonParams
+	ClientID string `form:"client_id"` //所属应用id
+	Scope    string `form:"scope,optional"` //表示申请的权限范围
 }
 
 @server (
@@ -351,6 +357,10 @@ service api {
 	@doc "token获取"
 	@handler token
 	post /token (TokenParam) returns (CommonJsonResp)
+
+	@doc "小程序token获取"
+	@handler miniProgramToken
+	post /miniProgram/token (MinoProgramTokenParam) returns (CommonJsonResp)
 }
 
 @server (
