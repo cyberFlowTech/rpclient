@@ -36,7 +36,7 @@ for file in *.json; do
         new_data=$(echo "$json_data" | sed 's/"requestBody": {},/ /')
         echo "{
           \"importFormat\":\"openapi\",
-          \"apiOverwriteMode\":\"merge\",
+          \"apiOverwriteMode\":\"methodAndPath\",
           \"schemaOverwriteMode\":\"name\",
           \"data\":$new_data
         }" > temp_data.json
