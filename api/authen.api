@@ -358,7 +358,7 @@ service api {
 	@handler token
 	post /token (TokenParam) returns (CommonJsonResp)
 
-	@doc "小程序token获取"
+	@doc "小程序token"
 	@handler miniProgramToken
 	post /miniProgram/token (MinoProgramTokenParam) returns (CommonJsonResp)
 }
