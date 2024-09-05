@@ -1,107 +1,107 @@
 syntax = "v1"
 
-info(
-	title: "动态api服务"
-	desc: "动态对外接口,包含发动态、查询动态、"
-	author: "Sean"
-	date: "2023 年 11 月 14 日"
+info (
+	title:   "动态api服务"
+	desc:    "动态对外接口"
+	author:  "Sean"
+	date:    "2023 年 11 月 14 日"
 	version: "v1"
 )
+
 // 参数校验，文档参考 https://go-zero.dev/docs/tutorials/api/parameter
 // 完整API定义，文档参考 https://go-zero.dev/docs/reference
-
 // 公共请求参数 所有接口都有的
 type CommonReq {
-	UserId      int64  `form:"user_id,range=(0:]"` // 用户唯一标识
-	SessId      string `form:"sessid"`             // 用户登录标识
-	Api         string `form:"api"`                // App公钥
-	Version     string `form:"version"`            // 版本号
-	VersionCode string `form:"version_code"`       // 构建号
-	Uuid        string `form:"uuid"`               // 设备唯一标识
-	Lan         string `form:"lan"`                // 语言，如zh_TW
-	Sign        string `form:"sign"`               // 签名
-	SignTime    int64  `form:"sign_time"`          // 签名时间
+	UserId      int64  `form:"user_id,range=(0:]"` // 用户唯一标识,554899
+	SessId      string `form:"sessid"` // 用户登录标识,f3dc330827253560a91ad729aca47577
+	Api         string `form:"api"` // App公钥,i_1681907958
+	Version     string `form:"version"` // 版本号,2.15.0
+	VersionCode string `form:"version_code"` // 构建号,336
+	Uuid        string `form:"uuid"` // 设备唯一标识,A347FFF8-BEF8-4FCD-994B-F276F85412A9
+	Lan         string `form:"lan"` // 语言,zh_TW
+	Sign        string `form:"sign"` // 签名,74176567b7a683f1f16b3ac08c44d050
+	SignTime    int64  `form:"sign_time"` // 签名时间,1725523474
 }
 
 //部落信息
 type Supclub {
-	Id        string   `json:"id"`         // 部落ID
-	Name      string   `json:"name"`       // 部落名称
-	Avatar    string   `json:"avatar"`     // 部落头像
-	Desc      string   `json:"desc"`       // 部落描述
-	UserCount int64    `json:"user_count"` // 用户总数
-	Users     []string `json:"users"`      // 用户头像列表
+	Id        string   `json:"id"` // 部落ID,YqyXZGtk
+	Name      string   `json:"name"` // 部落名称,CIQI体验社群
+	Avatar    string   `json:"avatar"` // 部落头像,https://assets.mimo.immo//68771581-F9AF-43C4-8670-8C34318AE833.png?size=small\u0026type=avatar
+	Desc      string   `json:"desc"` // 部落描述,测试用
+	UserCount int64    `json:"user_count"` // 用户总数,1
+	Users     []string `json:"users"` // 用户头像列表,["https://assets.mimo.immo/sys_icon/avatar/1.png?size=small\u0026type=avatar", "https://assets.mimo.immo/sys_icon/avatar/1.png?size=small\u0026type=avatar", "https://assets.mimo.immo/sys_icon/avatar/4.png?size=small\u0026type=avatar", "https://assets.mimo.immo/sys_icon/avatar/5.png?size=small\u0026type=avatar", "https://assets.mimo.immo//F23BC072-9A2D-4EF9-B81D-2CCC43B16149.png?size=small\u0026type=avatar"]
 }
 
 //用户信息
 type UserInfo {
-	Id     int64  `json:"user_id"` // 用户ID
-	Nick   string `json:"nick"`    // 用户名称
-	Avatar string `json:"avatar"`  // 头像
+	Id     int64  `json:"user_id"` // 用户ID,554899
+	Nick   string `json:"nick"` // 用户名称,测试
+	Avatar string `json:"avatar"` // 头像,https://assets.mimo.immo//68771581-F9AF-43C4-8670-8C34318AE833.png?size=small\u0026type=avatar
 }
 
 type Media {
-	Url         string      `json:"url"`         // URL
-	MediaType   string      `json:"type"`        // 媒体类型 img or video
-	AspectRatio interface{} `json:"aspectRatio"` //
-	Thumb       string      `json:"thumb"`       // 缩略图
+	Url         string      `json:"url"` // URL,https://assets.mimo.immo//68771581-F9AF-43C4-8670-8C34318AE833.png
+	MediaType   string      `json:"type"` // 媒体类型,img or video
+	AspectRatio interface{} `json:"aspectRatio"` // 缩放比例,1.0
+	Thumb       string      `json:"thumb"` // 缩略图,https://assets.mimo.immo//68771581-F9AF-43C4-8670-8C34318AE833.png?size=small\u0026type=avatar
 }
 
 //动态详细信息
 type DynamicInfo {
-	Id            int64         `json:"id"`    //  动态id
-	Dynamictype   int64         `json:"type"`  // 动态类型 动态类型（0：普通用户动态，2长文）
-	Title         string        `json:"title"` // 动态标题
-	Imgs          string        `json:"imgs"`  // 封面图片
-	MImage        string        `json:"m_image"`
-	Desc          string        `json:"desc"`            // 描述信息
-	Ctime         int64         `json:"ctime"`           // 发布时间
-	Etime         int64         `json:"etime"`           // 编辑时间
-	Status        int64         `json:"status"`          // 状态
-	Text          string        `json:"text"`            // 动态内容
-	Ext           string        `json:"ext"`             // 已废弃
-	ToH5Num       int64         `json:"to_h5_num"`       // 打开h5分享链接
-	ToAppNum      int64         `json:"to_app_num"`      // 链接跳转app次数
-	ToDownloadNum int64         `json:"to_download_num"` // 链接跳转下载次数
-	Media         []Media       `json:"media"`           // 图片列表
-	Comments      []CommentInfo `json:"comments"`        // 评论列表
-	TbMids        []string      `json:"tb_mids"`         // 部落动态列表
-	Nick          string        `json:"nick"`            // 昵称
-	Avatar        string        `json:"avatar"`          // 头像
-	Did           int64         `json:"did"`             // 动态id
-	Duid          int64         `json:"duid"`            // 动态发布者UID
-	HasCollect    int64         `json:"has_collect"`     // 是否收藏
-	HasPraised    int64         `json:"has_praised"`     // 是否点赞
-	PraiseCount   int64         `json:"praise_count"`    // 点赞总数
-	CommentCount  int64         `json:"comment_count"`   // 评论总数
-	CollectCount  int64         `json:"collect_count"`   // 收藏总数
-	ShareCount    int64         `json:"share_count"`     // 分享总数
-	CanShare      int64         `json:"can_share"`       // 是否能分享  1 能分享
-	Supclub       Supclub       `json:"supclub"`         // 部落信息
-	ImgType       int64         `json:"imgType"`         // 0 多图 1 横图 2竖图
+	Id          int64  `json:"id"` //  动态id,153
+	Dynamictype int64  `json:"type"` //    动态类型,0:普通用户动态
+	Title       string `json:"title"` //   动态标题,标题
+	Imgs        string `json:"imgs"` //    （弃用）封面图片
+	MImage      string `json:"m_image"` // （弃用）
+	Desc        string `json:"desc"` // 描述信息,描述
+	Ctime       int64  `json:"ctime"` // 发布时间,1725523082
+	Etime       int64  `json:"etime"` // 编辑时间,1725523082
+	Status      int64  `json:"status"` // 状态,1:已发布
+	Text        string `json:"text"` // 动态内容
+	Ext         string `json:"ext"` // 弃用
+	//           ToH5Num       int64         `json:"to_h5_num"`       // 打开h5分享链接
+	//           ToAppNum      int64         `json:"to_app_num"`      // 链接跳转app次数
+	//           ToDownloadNum int64         `json:"to_download_num"` // 链接跳转下载次数
+	Media        []Media       `json:"media"` // 图片列表
+	Comments     []CommentInfo `json:"comments"` // 评论列表
+	TbMids       []string      `json:"tb_mids"` // 部落动态列表,["YqyXZm9n","YqyXZm9m"]
+	Nick         string        `json:"nick"` // 昵称,Algen Dao
+	Avatar       string        `json:"avatar"` // 头像,https://assets.mimo.immo//0A5F8340-72BD-41B5-987E-0CD9D2FECE67.png?size=small\u0026type=avatar
+	Did          int64         `json:"did"` // 动态id,153
+	Duid         int64         `json:"duid"` // 动态发布者ID,554899
+	HasCollect   int64         `json:"has_collect"` // 是否已收藏,0:否,1:是
+	HasPraised   int64         `json:"has_praised"` // 是否已点赞,0:否,1:是
+	PraiseCount  int64         `json:"praise_count"` // 点赞总数,100
+	CommentCount int64         `json:"comment_count"` // 评论总数,100
+	CollectCount int64         `json:"collect_count"` // 收藏总数,100
+	ShareCount   int64         `json:"share_count"` // 分享总数,100
+	CanShare     int64         `json:"can_share"` // 是否能分享,0:否,1:是
+	Supclub      Supclub       `json:"supclub"` // 部落信息
+	ImgType      int64         `json:"imgType"` // 客户端布局处理,0:多图,1:横图,2:竖图
 }
 
 //动态列表页请求表单
 type DynamicListReq {
 	CommonReq
-	Page       int64 `form:"page,range=(0:100]"`                   // 页码 1- 100
-	Type       int64 `form:"type,range=[0:10],optional,default=0"` // 0：获取自然推荐的内容 1:获取运营设置推荐的内容 2:获取关注的内容
-	HotComment int64 `form:"hotcomment,optional,default=0"`              // 1: 只获取热评
+	Page       int64 `form:"page,range=(0:100]"` // 页码,1-100
+	Type       int64 `form:"type,range=[0:10],optional,default=0"` // 动态内容类型,0:自然推荐的内容 1:运营推荐的内容 2:关注的内容
+	HotComment int64 `form:"hotcomment,optional,default=0"` // 热评类型,0:所有评论,1:只获取热评
 }
 
 //动态列表页响应结果
 type DiscoverListResp {
-	IsContinue int64         `json:"is_continue"` //是否可以继续 1 是
-	List       []DynamicInfo `json:"list"`        // 动态列表
+	IsContinue int64         `json:"is_continue"` // 是否可以继续 1 是
+	List       []DynamicInfo `json:"list"` // 动态列表
 }
 
 //部落动态列表
 type ClubDynamicListReq {
 	CommonReq
-	Page        int64  `form:"page,range=(0:100]"`                 //页码
-	TbMid       string `form:"tb_mid"`                             // 部落加密后的ID
+	Page        int64  `form:"page,range=(0:100]"` // 页码,1
+	TbMid       string `form:"tb_mid"` // 部落ID,YqyXZm9n
 	IsRecommend int64  `form:"is_recommend,optional,range=[-1:1]"` // 弃用
-	SortType    int64  `form:"type,optional,range=[0:1]"`          // 弃用
+	SortType    int64  `form:"type,optional,range=[0:1]"` // 弃用
 }
 
 type ClubDynamicListResp {
@@ -112,49 +112,49 @@ type ClubDynamicListResp {
 //用户动态列表
 type UserDynamicListReq {
 	CommonReq
-	Page int64 `form:"page,range=(0:100]"` // 页码
-	Ouid int64 `form:"ouid,range=(0:]"`    // Object UserId,目标用户UID
+	Page int64 `form:"page,range=(0:100]"` // 页码,1
+	Ouid int64 `form:"ouid,range=(0:]"` // 目标用户ID,554899
 }
 
 type UserDynamicListResp {
-	List    []DynamicInfo `json:"list"`    // 动态列表
-	Pages   int64         `json:"pages"`   // 页码
-	Current int64         `json:"current"` // 当前页码
+	List    []DynamicInfo `json:"list"` // 动态列表
+	Pages   int64         `json:"pages"` // 页码,1
+	Current int64         `json:"current"` // 当前页码,1
 }
 
 //发布动态
 type PublishDynamicReq {
 	CommonReq
-	Did         int64  `form:"did,optional,range=[0:]"`          // 动态ID，0 为发布 其它值为更新
-	DynamicType int64  `form:"type,options=[0,2]"`               // 0 普通动态 2长文
-	Text        string `form:"text,optional"`                    // 文本
-	Imgs        string `form:"imgs,optional"`                    // 图片，多张用逗号分割（已弃用）
-	ImgType     int64  `form:"imgType,optional,options=[0,1,2]"` // 0 多图 1横图 2竖图
-	Link        string `form:"link,optional"`                    // 链接
-	TbMids      string `form:"tb_mids,optional"`                 // 同步到到部落id，多个部落用,分割
-	Title       string `form:"title,optional"`                   // 动态标题
-	Duid        int64  `form:"duid,optional,range=[0:]"`         // 管理员发帖指定用户
-	Media       string `form:"media,optional"`                   // 媒体资源，图片、视频
+	Did         int64  `form:"did,optional,range=[0:]"` // 动态ID,0:发布动态,1-♾️:更新动态
+	DynamicType int64  `form:"type,options=[0,2]"` // 动态类型,0:普通动态
+	Text        string `form:"text,optional"` // 动态内容
+	Imgs        string `form:"imgs,optional"` // （弃用）图片，多张用逗号分割
+	ImgType     int64  `form:"imgType,optional,options=[0,1,2]"` // 客户端布局处理,0:多图,1:横图,2:竖图
+	Link        string `form:"link,optional"` // (弃用)链接
+	TbMids      string `form:"tb_mids,optional"` // 同步的部落id,YqyYa2tq,YqyYaWxr,YqyWaWtn
+	Title       string `form:"title,optional"` // 动态标题,ttt
+	Duid        int64  `form:"duid,optional,range=[0:]"` // (弃用)
+	Media       string `form:"media,optional"` // 媒体资源,[{"url":"https:\/\/mimo-buket.S3.ap-southeast-1.amazonaws.com\/\/1725526042407_DA7AA4BF-BF72-4B64-962F-143BC830EEEB.jpg","type":"img","aspectRatio":"1.3333333333333333"}
 }
 
 type PublishDynamicResp {
 	Info DynamicInfo `json:"info"` //动态信息
-	Id   int64       `json:"id"`   //动态ID
+	Id   int64       `json:"id"` //动态ID,153
 }
 
 //删除动态
 type DeleteDynamicReq {
 	CommonReq
-	Did  int64 `form:"did,range=(0:]"`  // 动态ID
-	Duid int64 `form:"duid,range=(0:]"` // 动态发布者ID
+	Did  int64 `form:"did,range=(0:]"` // 动态ID,153
+	Duid int64 `form:"duid,range=(0:]"` // 动态发布者ID,554899
 }
 
 //查看动态详情
 type DynamicInfoReq {
 	CommonReq
-	Did   int64  `form:"did,range=(0:]"`  // 动态ID
-	Duid  int64  `form:"duid,range=(0:]"` // 动态发布者ID
-	Tbmid string `form:"tb_mid,optional"` // 部落ID，从部落进入详情页时传递
+	Did   int64  `form:"did,range=(0:]"` // 动态ID,153
+	Duid  int64  `form:"duid,range=(0:]"` // 动态发布者ID,554899
+	Tbmid string `form:"tb_mid,optional"` // 部落ID,YqyYa2tq。部落页进入时传递
 }
 
 type DynamicInfoResp {
@@ -164,159 +164,155 @@ type DynamicInfoResp {
 //关注
 type FocusReq {
 	CommonReq
-	Ouid  int64 `form:"ouid,optional,range=(0:]"` // 关注者ID
-	IsDel int64 `form:"is_del,range=[0:1]"`       //0 关注 1 取消关注
+	Ouid  int64 `form:"ouid,optional,range=(0:]"` // 被关注者ID,554899
+	IsDel int64 `form:"is_del,range=[0:1]"` // 0:关注 1:取消关注
 }
 
 //粉丝列表
 type FansListReq {
 	CommonReq
-	Page int64 `form:"page,range=(0:100]"`       // 页码 1-100
-	Ouid int64 `form:"ouid,optional,range=(0:]"` // 目标用户 1-♾️
+	Page int64 `form:"page,range=(0:100]"` // 页码,1-100
+	Ouid int64 `form:"ouid,optional,range=(0:]"` // 目标用户,1-♾️
 }
 
 type FansInfo {
-	Ouid   int64  `json:"ouid"`   // 粉丝用户ID
-	Nick   string `json:"nick"`   // 粉丝昵称
-	Avatar string `json:"avatar"` // 粉丝头像
-	Status int64  `json:"status"` //  1 正常关注 2 相互关注
+	Ouid   int64  `json:"ouid"` // 粉丝用户ID,554899
+	Nick   string `json:"nick"` // 粉丝昵称,ttt
+	Avatar string `json:"avatar"` // 粉丝头像,https://assets.mimo.immo//0A5F8340-72BD-41B5-987E-0CD9D2FECE67.png?size=small\u0026type=avatar
+	Status int64  `json:"status"` // 关注状态,1:单向关注,2:相互关注
 }
 
 type FansListResp {
-	List  []FansInfo `json:"list"`  //粉丝列表
-	Pages int64      `json:"pages"` // 总页数
-	Count int64      `json:"count"` // 粉丝总数
+	List  []FansInfo `json:"list"` // 粉丝列表
+	Pages int64      `json:"pages"` // 总页数,1
+	Count int64      `json:"count"` // 粉丝总数,100
 }
 
 //关注列表
 type FocusListReq {
 	CommonReq
-	Page int64 `form:"page,range=(0:100]"`       // 页码
-	Ouid int64 `form:"ouid,optional,range=(0:]"` // 用户ID
+	Page int64 `form:"page,range=(0:100]"` // 页码,1
+	Ouid int64 `form:"ouid,optional,range=(0:]"` // 用户ID,554899
 }
 
 type FocusInfo {
-	Ouid   int64  `json:"ouid"`   // 被关注者用户ID
-	Nick   string `json:"nick"`   // 用户昵称
-	Avatar string `json:"avatar"` // 用户头像
-	Status int64  `json:"status"` // 1 正常关注 2相互关注
+	Ouid   int64  `json:"ouid"` // 被关注者用户ID,554899
+	Nick   string `json:"nick"` // 用户昵称,ttt
+	Avatar string `json:"avatar"` // 用户头像,https://assets.mimo.immo//0A5F8340-72BD-41B5-987E-0CD9D2FECE67.png?size=small\u0026type=avatar
+	Status int64  `json:"status"` // 关注状态,1:单向关注,2:相互关注
 }
 
 type FocusListResp {
-	List  []FocusInfo `json:"list"`  // 关注列表
-	Pages int64       `json:"pages"` // 总页数
-	Count int64       `json:"count"` // 关注总数
+	List  []FocusInfo `json:"list"` // 关注列表
+	Pages int64       `json:"pages"` // 总页数,1
+	Count int64       `json:"count"` // 关注总数,100
 }
 
 //收藏
 type CollectReq {
 	CommonReq
-	Did   int64 `form:"did,range=(0:]"`       // 动态ID
-	Duid  int64 `form:"duid,range=(0:]"`      // 发布动态者UID
-	IsDel int64 `form:"is_del,options=[0,1]"` // 0 收藏 1 取消
+	Did   int64 `form:"did,range=(0:]"` // 动态ID,153
+	Duid  int64 `form:"duid,range=(0:]"` // 发布动态者ID,554899
+	IsDel int64 `form:"is_del,options=[0,1]"` // 操作类型,0:收藏,1:取消收藏
 }
 
 //用户收藏
 type CollectListReq {
 	CommonReq
-	Page int64 `form:"page,range=(0:100]"` // 页码 1-100
+	Page int64 `form:"page,range=(0:100]"` // 页码,1-100
 }
 
 type CollectListResp {
 	List  []DynamicInfo `json:"list"` // 动态列表
-	Pages int64         `json:"pages"`
+	Pages int64         `json:"pages"` // 总页数,100
 }
 
 //点赞
 type PraiseReq {
 	CommonReq
-	Did   int64  `form:"did,range=(0:]"`          // 动态ID 1-♾️
-	Duid  int64  `form:"duid,range=(0:]"`         // 动态发布者ID 1-♾️
-	Cid   int64  `form:"cid,optional,range=[0:]"` // 评论ID，如果是动态，那么它是0
-	IsDel int64  `form:"is_del,options=[0,1]"`    // 0 点赞 1取消点赞
-	Tbmid string `form:"tb_mid,optional"`         // 加密后的部落id，用于判断在哪个部落点赞，可为空
+	Did   int64  `form:"did,range=(0:]"` // 动态ID,153
+	Duid  int64  `form:"duid,range=(0:]"` // 动态发布者ID,55489 ️
+	Cid   int64  `form:"cid,optional,range=[0:]"` // 评论ID或者0,0:点赞动态,其它点赞评论
+	IsDel int64  `form:"is_del,options=[0,1]"` // 操作类型:0:点赞,1:取消点赞
+	Tbmid string `form:"tb_mid,optional"` // 部落id,YqyYa2tq。部落操作时传递
 }
 
 //点赞列表
 type PraiseListReq {
 	CommonReq
-	Did  int64 `form:"did,range=(0:]"`          // 动态ID 1-♾️
-	Duid int64 `form:"duid,range=(0:]"`         // 动态发布者ID 1-♾️
-	Cid  int64 `form:"cid,optional,range=[0:]"` // 评论ID 0-♾️
+	Did  int64 `form:"did,range=(0:]"` // 动态ID,153
+	Duid int64 `form:"duid,range=(0:]"` // 动态发布者ID,️554899
+	Cid  int64 `form:"cid,optional,range=[0:]"` // 评论ID
 }
 
 //点赞列表
 type PraiseListResp {
-	Users       []UserInfo `json:"praise"`      // 用户信息
-	Count       int64      `json:"count"`       // 点赞总数
-	HasPraised  int64      `json:"haspraised"`  // 是否已经点赞 0 未点赞 1 已点赞
-	Pages       int64      `json:"pages"`       // 所有页，没有实现，uniapp下线后可考虑去除
-	CurrentPage int64      `json:"currentpage"` // 当前页，没有实现，uniapp下线后可考虑去除
+	Users       []UserInfo `json:"praise"` // 用户信息
+	Count       int64      `json:"count"` // 点赞总数,100
+	HasPraised  int64      `json:"haspraised"` // 是否已经点赞,0:未点赞,1:已点赞
+	Pages       int64      `json:"pages"` // 未实现
+	CurrentPage int64      `json:"currentpage"` // 未实现
 }
 
 //评论、删除评论
 type CommentReq {
 	CommonReq
-	Id    int64  `form:"id,range=[0:]"`                 // 评论的ID，如果是对动态评论那么会是0
-	Did   int64  `form:"did,range=(0:]"`                // 动态ID
-	Duid  int64  `form:"duid,range=(0:]"`               // 动态发布者UID
-	IsDel int64  `form:"is_del,optional,options=[0,1]"` // 1 删除评论
-	Text  string `form:"text,optional"`                 // 评论内容,当删除时可为空
-	Tbmid string `form:"tb_mid,optional"`               // 加密后的部落id，用于判断在哪个部落点赞，可为空
+	Id    int64  `form:"id,range=[0:]"` // 评论的ID或0,0:评论动态,其它:回复评论
+	Did   int64  `form:"did,range=(0:]"` // 动态ID,153
+	Duid  int64  `form:"duid,range=(0:]"` // 动态发布者ID,554899
+	IsDel int64  `form:"is_del,optional,options=[0,1]"` // 操作类型,0:评论,1:删除评论
+	Text  string `form:"text,optional"` // 评论内容
+	Tbmid string `form:"tb_mid,optional"` // 部落id,YqyYa2tq。部落操作时传递
 }
 
 //  评论列表、子评论列表
 type CommentListReq {
 	CommonReq
-	Did        int64 `form:"did,range=(0:]"`           // 动态ID
-	Duid       int64 `form:"duid,range=(0:]"`          // 动态发布者UID
-	Page       int64 `form:"page,range=(0:100]"`       // 页码
-	Gcid       int64 `form:"gcid,optional,range=[0:]"` // 一级评论ID(获取子评论列表时传递
-	HotComment int64 `form:"hotcomment,optional,default=0"`  // 1: 只获取热评
+	Did        int64 `form:"did,range=(0:]"` // 动态ID,153
+	Duid       int64 `form:"duid,range=(0:]"` // 动态发布者ID,554899
+	Page       int64 `form:"page,range=(0:100]"` // 页码,1
+	Gcid       int64 `form:"gcid,optional,range=[0:]"` // 一级评论ID,111。获取子评论列表时传递
+	HotComment int64 `form:"hotcomment,optional,default=0"` // 评论获取:0:所有评论,1:只获取热评
 }
 
 type CommentInfo {
-	Id            int64         `json:"id"`             // 评论ID
-	Did           int64         `json:"did"`            // 动态ID
-	Duid          int64         `json:"duid"`           // 动态作者ID
-	Pid           int64         `json:"pid"`            // 评论父级ID
-	UserId        int64         `json:"user_id"`        // 用户Uid
-	Text          string        `json:"text"`           // 评论文本
-	Img           string        `json:"imgs"`           // 已废弃
-	Time          int64         `json:"time"`           // 评论时间
-	Ouid          int64         `json:"ouid"`           // 被回复的目标用户
-	CommentType   int64         `json:"type"`           // 评论类型 1 评论 2 回复
-	Nick          string        `json:"nick"`           // 昵称
-	Avatar        string        `json:"avatar"`         // 头像
-	Level         string        `json:"level"`          // (已废弃)0普通等级，100名人
-	Onick         string        `json:"onick"`          // 被回复的用户昵称
-	Praises       int64         `json:"praises"`        // 点赞数
-	HasPraised    int64         `json:"has_praised"`    // 是否已经点赞 0 未点赞 1 已点赞
+	Id            int64         `json:"id"` // 评论ID,111
+	Did           int64         `json:"did"` // 动态ID,153
+	Duid          int64         `json:"duid"` // 动态作者ID,554899
+	Pid           int64         `json:"pid"` // 评论父级ID,110
+	UserId        int64         `json:"user_id"` // 用户Uid,554899
+	Text          string        `json:"text"` // 评论文本
+	Img           string        `json:"imgs"` // 废弃
+	Time          int64         `json:"time"` // 评论时间,1725526807
+	Ouid          int64         `json:"ouid"` // 被回复的目标用户,0:评论动态
+	CommentType   int64         `json:"type"` // 评论类型,1:评论,2:回复
+	Nick          string        `json:"nick"` // 昵称,tttt
+	Avatar        string        `json:"avatar"` // 头像,https://assets.mimo.immo//0A5F8340-72BD-41B5-987E-0CD9D2FECE67.png?size=small\u0026type=avatar
+	Level         string        `json:"level"` // (废弃)
+	Onick         string        `json:"onick"` // 被回复的用户昵称,ttt
+	Praises       int64         `json:"praises"` // 点赞数,100
+	HasPraised    int64         `json:"has_praised"` // 是否已经点赞,0:未点赞,1:已点赞
+	IsHotComment  int64         `json:"is_hot_comment"` // 是否是热评,0:否,1:是
 	ChildComments ChildComments `json:"child_comments"` // 子评论列表
 }
 
 type ChildComments {
 	List  []CommentInfo `json:"list"`
-	Count int64         `json:"count"`
+	Count int64         `json:"count"` // 评论数量,10
 }
 
 type CommentListResp {
-	Comments    []CommentInfo `json:"comments"`     // 评论列表
-	Pages       int64         `json:"pages"`        // 总页数
-	CurrentPage int64         `json:"current_page"` // 当前页
-	Count       int64         `json:"count"`        // 评论总数
-	ServerTime  int64         `json:"server_time"`  // 服务器时间
+	Comments        []CommentInfo `json:"comments"` // 评论列表
+	Pages           int64         `json:"pages"` // 总页数,1
+	CurrentPage     int64         `json:"current_page"` // 当前页,2
+	Count           int64         `json:"count"` // 评论总数,100
+	HotCommentCount int64         `json:"hot_comment_count"` // 热评数量,10
+	ServerTime      int64         `json:"server_time"` // 服务器时间,1725526813
 }
 
 type MsgListReq {
-	Page int64 `form:"page,range=(0:100]"` // 页码 1 - 100
+	Page int64 `form:"page,range=(0:100]"` // 页码,1
 }
-
-//type ShareCodeReq {
-//	CommonReq
-//	Did  int64 `form:"did,range=(0:]"`  // 动态ID 1 - ♾️
-//	Duid int64 `form:"duid,range=(0:]"` // 动态发布者UID 1 - ♾️
-//}
 
 type DataResp {
 	Discover []string `json:"discover"`
@@ -324,129 +320,150 @@ type DataResp {
 
 type SaveCfgReq {
 	CommonReq
-	TbMid string `form:"tb_mid"`               // 部落id
-	Name  string `form:"name,optional"`        // 社区名称
-	BgImg string `form:"bg_img,optional"`      // 社区背景图
-	IsPub int64  `form:"is_pub,options=[0,1]"` // 社区动态是否公开 1公开 0不公开
+	TbMid string `form:"tb_mid"` // 部落id,YqyYa2tq
+	Name  string `form:"name,optional"` // 社区名称,ttt
+	BgImg string `form:"bg_img,optional"` // 社区背景图,https://assets.mimo.immo//0A5F8340-72BD-41B5-987E-0CD9D2FECE67.png
+	IsPub int64  `form:"is_pub,options=[0,1]"` // (弃用)社区动态是否公开,0:不公开,1公开
 }
 
 type ClubActReq {
 	CommonReq
-	TbMid string `form:"tb_mid"`          // 部落id
-	Did   int64  `form:"did,range=(0:]"`  // 动态id
-	Duid  int64  `form:"duid,range=(0:]"` // 发布者Uid
-	Opt   int64  `form:"opt,options=[0]"` // 0 删除
+	TbMid string `form:"tb_mid"` // 部落id,YqyYa2tq
+	Did   int64  `form:"did,range=(0:]"` // 动态id,153
+	Duid  int64  `form:"duid,range=(0:]"` // 发布者id,554899
+	Opt   int64  `form:"opt,options=[0]"` // 操作类型,0:删除
 }
 
 type StatisticsReq {
 	CommonReq
-	TbMid string `form:"tb_mid"` // 部落id
+	TbMid string `form:"tb_mid"` // 部落id,,YqyYa2tq
 }
 
 type StatisticsResp {
-	Total       int64  `json:"total"`       //动态数
-	Participate int64  `json:"participate"` //参与数
-	Name        string `json:"name"`        //名称
-	BgImg       string `json:"bg_img"`      //背景
-	IsPub       int64  `json:"is_pub"`      //动态公开 1公开 0不公开
+	Total       int64  `json:"total"` // 动态数,100
+	Participate int64  `json:"participate"` // 参与数,100
+	Name        string `json:"name"` // 名称,ttt
+	BgImg       string `json:"bg_img"` // 背景,https://assets.mimo.immo//0A5F8340-72BD-41B5-987E-0CD9D2FECE67.png
+	IsPub       int64  `json:"is_pub"` // (弃用)社区动态是否公开,0:不公开,1公开
 }
 
-@server(
-	//	jwt:        Auth // 对当前 Dynamic 语法块下的所有路由，开启 jwt 认证，不需要则请删除此行
-	prefix:     /dynamic // 对当前 Dynamic 语法块下的所有路由，新增 /dynamic/v1 路由前缀，不需要则请删除此行
-	group:      dynamic // 对当前 Dynamic 语法块下的所有路由，路由归并到 v1 目录下，不需要则请删除此行
+@server (
+	//      jwt:        Auth // 对当前 Dynamic 语法块下的所有路由，开启 jwt 认证，不需要则请删除此行
+	prefix: /dynamic // 对当前 Dynamic 语法块下的所有路由，新增 /dynamic/v1 路由前缀，不需要则请删除此行
+	group:  dynamic // 对当前 Dynamic 语法块下的所有路由，路由归并到 v1 目录下，不需要则请删除此行
 	//    timeout:    3s // 对当前 Dynamic 语法块下的所有路由进行超时配置，不需要则请删除此行
 	middleware: BeforeMiddleware // 对当前 Dynamic 语法块下的所有路由添加中间件，不需要则请删除此行
-	//	maxBytes:   1048576 // 对当前 Dynamic 语法块下的所有路由添加请求体大小控制，单位为 byte,goctl 版本 >= 1.5.0 才支持
+// maxBytes:   1048576 // 对当前 Dynamic 语法块下的所有路由添加请求体大小控制，单位为 byte,goctl 版本 >= 1.5.0 才支持
 )
-
 //生成代码命令，项目根目录下执行: goctl api go -api ./define/dynamic.api -dir ./v1/api
 //API完整定义参考 https://go-zero.dev/docs/reference
 service Dynamic {
-	@doc(summary: "发现页动态列表")
+	@doc (
+		summary: "发现页动态列表"
+	)
 	@handler getDynamicList
 	post /dynamicList (DynamicListReq) returns (DiscoverListResp)
 
-	@doc(summary: "部落动态列表")
+	@doc (
+		summary: "部落动态列表"
+	)
 	@handler getClubDynamicList
 	post /clubDynamicList (ClubDynamicListReq) returns (ClubDynamicListResp)
 
-	@doc(summary: "用户动态列表")
+	@doc (
+		summary: "用户动态列表"
+	)
 	@handler getUserDynamicList
 	post /userDynamicList (UserDynamicListReq) returns (UserDynamicListResp)
 
-	@doc(summary: "发布动态/更新动态")
+	@doc (
+		summary: "发布动态/更新动态"
+	)
 	@handler publishDynamic
 	post /publish (PublishDynamicReq) returns (PublishDynamicResp)
 
-	@doc(summary: "删除动态")
+	@doc (
+		summary: "删除动态"
+	)
 	@handler deleteDynamic
 	post /del (DeleteDynamicReq)
 
-	@doc(summary: "动态详情")
+	@doc (
+		summary: "动态详情"
+	)
 	@handler getDynamicInfo
 	post /info (DynamicInfoReq) returns (DynamicInfoResp)
 
-	@doc(summary: "关注")
+	@doc (
+		summary: "关注"
+	)
 	@handler focus
 	post /focus (FocusReq)
 
-	@doc(summary: "关注列表")
+	@doc (
+		summary: "关注列表"
+	)
 	@handler getFocusList
 	post /focusList (FocusListReq) returns (FocusListResp)
 
-	@doc(summary: "粉丝列表")
+	@doc (
+		summary: "粉丝列表"
+	)
 	@handler getFansList
 	post /fansList (FansListReq) returns (FansListResp)
 
-	@doc(summary: "用户收藏动态列表")
+	@doc (
+		summary: "用户收藏动态列表"
+	)
 	@handler getCollectList
 	post /collectList (CollectListReq) returns (CollectListResp)
 
-	@doc(summary: "点赞")
+	@doc (
+		summary: "点赞"
+	)
 	@handler praise
 	post /praise (PraiseReq)
 
-	@doc(summary: "点赞列表")
+	@doc (
+		summary: "点赞列表"
+	)
 	@handler getPraiseList
 	post /praiseList (PraiseListReq) returns (PraiseListResp)
 
-	@doc(summary: "收藏")
+	@doc (
+		summary: "收藏"
+	)
 	@handler collect
 	post /collect (CollectReq)
 
-	@doc(summary: "评论/删除评论")
+	@doc (
+		summary: "评论/删除评论"
+	)
 	@handler comment
 	post /comment (CommentReq)
 
-	@doc(summary: "评论/子评论列表")
+	@doc (
+		summary: "评论/子评论列表"
+	)
 	@handler getCommentList
 	post /commentList (CommentListReq) returns (CommentListResp)
 
-	// 补下列接口
-	//未开发，ingress配置走老接口
-	//	@doc(summary: "动态消息列表(不兼容uniapp,原生调用环信,只会返回空)")
-	//	@handler msgList
-	//	post /msgList (MsgListReq)
-
-	//未开发，ingress配置走老接口
-	//	@doc(summary: "分享code")
-	//	@handler shareCode
-	//	post /shareCode (ShareCodeReq)
-
-	//	@doc(summary: "发现开关(兼容uniapp，估计没有在用)")
-	//	@handler Data
-	//	post /data
-
-	@doc(summary: "部落社区管理")
+	@doc (
+		summary: "部落社区管理"
+	)
 	@handler SaveCfg
 	post /saveCfg (SaveCfgReq)
 
-	@doc(summary: "部落社区删除动态(兼容路径)")
+	@doc (
+		summary: "部落社区删除动态(兼容路径)"
+	)
 	@handler clubAct
 	post /clubAct (ClubActReq)
 
-	@doc(summary: "部落社区统计(兼容路径)")
+	@doc (
+		summary: "部落社区统计(兼容路径)"
+	)
 	@handler getStatistics
 	post /statistics (StatisticsReq) returns (StatisticsResp)
 }
+
