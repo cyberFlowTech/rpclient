@@ -70,6 +70,7 @@ type LoginRegisterResponseStruct {
 	OpenApplet   bool                            `json:"open_applet"` // （弃用）
 	Openudid     string                          `json:"openudid"` // 第三方账号
 	Uuid         string                          `json:"uuid"` // uuid
+	ShowGuide    int64                           `json:"uuid"` // 是否展示老用户回归引导,0不展示,1展示
 }
 
 type LoginIndexRequest {
@@ -358,7 +359,7 @@ service api {
 	@handler token
 	post /token (TokenParam) returns (CommonJsonResp)
 
-	@doc "小程序token"
+	@doc "小程序token获取"
 	@handler miniProgramToken
 	post /miniProgram/token (MinoProgramTokenParam) returns (CommonJsonResp)
 }
