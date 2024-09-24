@@ -762,7 +762,7 @@ type (
 	SetGuideStatusReq {
 		CommonReq
 		TbMid string `form:"tb_mid"` // 部落ID,YqyWaWtn
-		Value int64  `form:"code"` // 设置项,1:跳过步骤 2:邀请好友 3:查看部落管理 4:查看部落数据 5:发布一条动态 6:设置欢迎页
+		Value int64  `form:"code"` // 设置项,1:跳过步骤,2:邀请好友,3:查看部落管理,4:查看部落数据,5:发布一条动态,6:设置欢迎页
 	}
 	SetGuideStatusResp  {}
 	GetGuideStatusReq {
@@ -775,7 +775,7 @@ type (
 		ViewClubManagement int64 `json:"view_club_management"` // 是否已经查看部落管理页,0:否,1是
 		ViewClubData       int64 `json:"view_club_data"` // 是否已经查看部落数据,0:否,1是
 		PostDynamic        int64 `json:"post_dynamic"` // 是否已经发布动态,0:否,1是
-		SetWelcomePage     int64 `json:"set_welcomePage"` // 是否已经设置欢迎页,0:否,1是
+		SetWelcomePage     int64 `json:"set_welcome_page"` // 是否已经设置欢迎页,0:否,1是
 	}
 )
 
