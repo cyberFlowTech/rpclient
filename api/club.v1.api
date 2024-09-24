@@ -762,7 +762,7 @@ type (
 	SetGuideStatusReq {
 		CommonReq
 		TbMid string `form:"tb_mid"` // 部落ID,YqyWaWtn
-		Value int64  `form:"code"` // 设置项,1:跳过步骤,2:邀请好友,3:查看部落管理,4:查看部落数据,5:发布一条动态,6:设置欢迎页
+		Value int64  `form:"code"` // 设置项,1:跳过步骤,2:邀请好友,3:查看部落管理,4:查看部落数据,5:发布一条动态,6:设置欢迎页,7:恢复引导
 	}
 	SetGuideStatusResp  {}
 	GetGuideStatusReq {
