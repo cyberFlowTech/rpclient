@@ -35,31 +35,36 @@ for file in *.json; do
         # 对字符串进行替换(apifox bug)
         new_data=$(echo "$json_data" | sed 's/"requestBody": {},/ /')
         echo "{
-          \"endpointOverwriteBehavior\":\"OVERWRITE_EXISTING\",
-          \"schemaOverwriteBehavior\":\"OVERWRITE_EXISTING\",
-          \"input\":$new_data
+          \"importFormat\":\"openapi\",
+          \"apiOverwriteMode\":\"methodAndPath\",
+          \"schemaOverwriteMode\":\"name\",
+          \"data\":$new_data
         }" > temp_data.json
 
         # 请求apifox开放接口 https://apifox-openapi.apifox.cn/api-48643958
-        curl --location -g --request POST "https://api.apifox.com/v1/projects/$ProjectId/import-openapi?locale=zh-CN" \
-        --header 'X-Apifox-Version: 2024-03-28' \
+        curl --location -g --request POST "https://api.apifox.com/api/v1/projects/$ProjectId/import-data?locale=zh-CN" \
+        --header 'X-Apifox-Version: 2024-01-20' \
         --header "Authorization: Bearer $Token" \
         --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
         --header 'Content-Type: application/json' \
         --data @temp_data.json > res.log
-        if grep -q '"success":false' res.log; then
+        if grep -q '"success":true' res.log; then
+          Success=$((Success + 1))
+          echo "$file 导入成功"
+        else
           Fail=$((Fail + 1))
           FailFiles+=",${file}"
           echo "$file 导入失败"
           echo $(cat res.log)
-        else
-          Success=$((Success + 1))
-          echo "$file 导入成功"
         fi
         rm res.log
         rm temp_data.json
         rm $file
     fi
 done
-
-echo "一共${Total}个API文件，导入成功${Success}个，导入失败${Fail}。失败的文件:${FailFiles}"
+#if [ "$Fail" -gt "0" ]
+#then
+    echo "一共${Total}个API文件，导入成功${Success}个，导入失败${Fail}。失败的文件:${FailFiles}"
+#else
+#    echo "一共${Total}个API文件，导入成功${Success}个"
+#fi

@@ -49,27 +49,28 @@ type LoginRegisterResponseTimeStruct {
 }
 
 type LoginRegisterResponseStruct {
-	UserId       string                          `json:"user_id"` // 用户ID
-	Nick         string                          `json:"nick"` // 用户昵称
-	Status       string                          `json:"status"` // 状态
-	Age          string                          `json:"age"` // （弃用）年龄
-	Avatar       string                          `json:"avatar"` // 头像
-	ActiveTime   int64                           `json:"active_time"` // 最后活跃时间
-	Sex          string                          `json:"sex"` // （弃用）性别
-	Level        string                          `json:"level"` // （弃用）等级
-	Desc         string                          `json:"desc"` // 个签
-	Sessid       string                          `json:"sessid"` // sessid
-	IsRegister   int64                           `json:"isRegister"` // 是否是注册0否 1是
-	IsTodayFirst string                          `json:"isTodayFirst"` // 是否当天首次登录0否1是
-	UserType     string                          `json:"user_type"` // 用户账号类型
-	HasWallet    string                          `json:"hasWallet"` // 是否有钱包地址 0否1是
-	HasSign      string                          `json:"hasSign"` //
-	Time         LoginRegisterResponseTimeStruct `json:"time"` // 服务端时间
-	RegTime      string                          `json:"reg_time"` //注册时间
-	OpenFun      bool                            `json:"open_fun"` // （弃用）
-	OpenApplet   bool                            `json:"open_applet"` // （弃用）
-	Openudid     string                          `json:"openudid"` // 第三方账号
-	Uuid         string                          `json:"uuid"` // uuid
+	UserId           string                          `json:"user_id"` // 用户ID
+	Nick             string                          `json:"nick"` // 用户昵称
+	Status           string                          `json:"status"` // 状态
+	Age              string                          `json:"age"` // （弃用）年龄
+	Avatar           string                          `json:"avatar"` // 头像
+	ActiveTime       int64                           `json:"active_time"` // 最后活跃时间
+	Sex              string                          `json:"sex"` // （弃用）性别
+	Level            string                          `json:"level"` // （弃用）等级
+	Desc             string                          `json:"desc"` // 个签
+	Sessid           string                          `json:"sessid"` // sessid
+	IsRegister       int64                           `json:"isRegister"` // 是否是注册0否 1是
+	IsTodayFirst     string                          `json:"isTodayFirst"` // 是否当天首次登录0否1是
+	UserType         string                          `json:"user_type"` // 用户账号类型
+	HasWallet        string                          `json:"hasWallet"` // 是否有钱包地址 0否1是
+	HasSign          string                          `json:"hasSign"` //
+	Time             LoginRegisterResponseTimeStruct `json:"time"` // 服务端时间
+	RegTime          string                          `json:"reg_time"` //注册时间
+	OpenFun          bool                            `json:"open_fun"` // （弃用）
+	OpenApplet       bool                            `json:"open_applet"` // （弃用）
+	Openudid         string                          `json:"openudid"` // 第三方账号
+	Uuid             string                          `json:"uuid"` // uuid
+	ShowWelcomeGuide int64                           `json:"show_welcome_guide"` // 是否展示老用户回归引导,0不展示,1展示
 }
 
 type LoginIndexRequest {
@@ -358,7 +359,7 @@ service api {
 	@handler token
 	post /token (TokenParam) returns (CommonJsonResp)
 
-	@doc "小程序token"
+	@doc "小程序token获取"
 	@handler miniProgramToken
 	post /miniProgram/token (MinoProgramTokenParam) returns (CommonJsonResp)
 }
