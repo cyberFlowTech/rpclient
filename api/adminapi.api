@@ -361,7 +361,7 @@ type InfoReq {
 }
 
 type TradeInfo {
-	MinToAmount        string
+	MinToAmount        string `json:"minToAmount"`
 	Rate               float64 `json:"rate"` // 汇率
 	Fee                float64 `json:"fee"`
 	FromAmount         string  `json:"fromAmount"`
@@ -404,6 +404,6 @@ service adminApi {
 
 	@doc "兑换信息"
 	@handler swapInfo
-	post /swap/info (InfoReq) returns (InfoResp )
+	post /swap/info (InfoReq) returns (InfoResp)
 }
 
