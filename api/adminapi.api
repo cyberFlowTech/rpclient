@@ -404,6 +404,6 @@ service adminApi {
 
 	@doc "兑换信息"
 	@handler swapInfo
-	post /swap/info (InfoReq) returns (InfoResp)
+	post /swap/info (InfoReq) returns (InfoResp )
 }
 
