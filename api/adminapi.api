@@ -327,7 +327,7 @@ type TradePair {
 
 type SourceReq {
 	ChainType uint64 `form:"chainType,optional"` // 链的类型，1:btc,2:evm,3:tron
-	ChainID   uint64 `form:"form,optional"` //"chainId"
+	ChainID   uint64 `form:"chainId,optional"`
 	Token     string `form:"token,optional"`
 }
 
@@ -339,7 +339,7 @@ type SourceResp {
 
 type TargetReq {
 	ChainType uint64 `form:"chainType,optional"` // 链的类型，1:btc,2:evm,3:tron
-	ChainID   uint64 `form:"form,optional"` //"chainId"
+	ChainID   uint64 `form:"chainId,optional"`
 	Token     string `form:"token,optional"`
 }
 
@@ -361,7 +361,7 @@ type InfoReq {
 }
 
 type TradeInfo {
-	MinToAmount        string `json:"minToAmount"`
+	MinToAmount        string  `json:"minToAmount"`
 	Rate               float64 `json:"rate"` // 汇率
 	Fee                float64 `json:"fee"`
 	FromAmount         string  `json:"fromAmount"`
