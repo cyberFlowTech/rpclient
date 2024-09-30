@@ -1,0 +1,409 @@
+syntax = "v1"
+
+//统一请求鉴权信息
+type CommonParamsWeb3 {
+	SessId      string `form:"sessid"` //用户登录标识
+	Api         string `form:"api"` //App公钥
+	Version     string `form:"version"` //版本号
+	VersionCode string `form:"version_code"` //构建号
+	Lan         string `form:"lan"` //语言，如zh_TW
+	Sign        string `form:"sign"` //签名
+	SignTime    int64  `form:"sign_time"` //当前时间
+}
+
+//统一返回格式
+type CommonJsonResp {
+	Code int32       `json:"iRet"`
+	Msg  string      `json:"sMsg"`
+	Data interface{} `json:"data"`
+}
+
+type (
+	ChainInfo {
+		ChainType uint64      `json:"chainType"` // 链的类型，1:btc,2:evm,3:tron
+		ChainID   uint64      `json:"chainId"` //"chainId",
+		ChainName string      `json:"chainName"` //"name": "Ethereum",
+		Type      uint64      `json:"type"` //类型 1-基准链，2-标价链，3-既是基准也是标价
+		Tokens    []TokenInfo `json:"tokens"` //要支持的token
+	}
+	TokenInfo {
+		TokenAddress string `json:"tokenAddress"` //"tokenAddress": "",为空表示主币
+		Name         string `json:"name"` //"name": "TRX",
+		Symbol       string `json:"symbol"` //symbol
+		ScaleShow    int64  `json:"scaleShow"` //"小数点后面精度",
+		Decimals     int64  `json:"decimals"` //精度
+	}
+	getChainReq {
+		CommonParamsWeb3
+	}
+	getChainRes {
+		Code int32       `json:"iRet"`
+		Msg  string      `json:"sMsg"`
+		Data []ChainInfo `json:"data"`
+	}
+	getAllLiquidityListReq {
+		CommonParamsWeb3
+		LiquidityId             int64  `form:"liquidityId,optional"` // 流动性 id
+		OriginChainType         uint64 `form:"quoteChainType,optional"` // 链的类型，1:btc,2:evm,3:tron
+		OriginChainId           uint64 `form:"quoteChainId,optional"` // 标价链 id
+		OriginTokenAddress      string `form:"quoteTokenAddress,optional"` //标价链的代币地址，为空表示主币
+		DestinationChainType    uint64 `form:"baseChainType,optional"` // 链的类型，1:btc,2:evm,3:tron
+		DestinationChainId      uint64 `form:"baseChainId,optional"` // 基准链 id
+		DestinationTokenAddress string `form:"baseTokenAddress,optional"` // 基准链的代币地址，为空表示主币
+		Page                    uint32 `form:"page"`
+		Count                   uint32 `form:"count"`
+	}
+	getLiquidityListReq {
+		CommonParamsWeb3
+		Page  uint32 `form:"page"`
+		Count uint32 `form:"count"`
+	}
+	LiquidityRes {
+		LiquidityId             int64   `json:"liquidityId"` // 流动性 id
+		OriginChainType         uint64  `json:"quoteChainType"` // 链的类型，1:btc,2:evm,3:tron
+		OriginChainId           uint64  `json:"quoteChainId"` // 标价链 id
+		OriginChainName         string  `json:"quoteChainName"` // 标价链名称
+		OriginTokenName         string  `json:"quoteTokenName"` // 标价币名称
+		OriginTokenSymbol       string  `json:"quoteTokenSymbol"` // 标价币标识
+		OriginTokenAddress      string  `json:"quoteTokenAddress"` //标价链的代币地址，为空表示主币
+		DestinationChainType    uint64  `json:"baseChainType"` // 链的类型，1:btc,2:evm,3:tron
+		DestinationChainId      uint64  `json:"baseChainId"` // 基准链 id
+		DestinationChainName    string  `json:"baseChainName"` // 基准链名称
+		DestinationTokenName    string  `json:"baseTokenName"` // 基准币名称
+		DestinationTokenSymbol  string  `json:"baseTokenSymbol"` // 基准币标识
+		DestinationTokenAddress string  `json:"baseTokenAddress"` // 基准链的代币地址，为空表示主币
+		LiquidityBalance        string  `json:"liquidityBalance"` // 资金池余额
+		LiquidityAllBalance     string  `json:"liquidityAllBalance"` // 总投入
+		FundManagementContract  string  `json:"fundManagementContract"` // 资金管理合约，用于注入和赎回流动性
+		Rate                    float64 `json:"rate"` // 汇率
+		MinAmount               string  `json:"minAmount"` // 最小兑换量
+		ProjectAddress          string  `json:"projectAddress"` // 接受资产地址
+		Status                  uint64  `json:"status"` // 流动性状态：1 开启，2 关闭
+	}
+	GetLiquidityListPage {
+		List      []LiquidityRes `json:"list"`
+		TotalPage uint32         `json:"totalPage"`
+		Page      uint32         `json:"page"`
+	}
+	getLiquidityListRes {
+		Code int32                 `json:"iRet"`
+		Msg  string                `json:"sMsg"`
+		Data *GetLiquidityListPage `json:"data"`
+	}
+	getLiquidityReq {
+		CommonParamsWeb3
+		LiquidityId int64 `form:"liquidityId"` // 流动性 id
+	}
+	getLiquidityRes {
+		Code int32         `json:"iRet"`
+		Msg  string        `json:"sMsg"`
+		Data *LiquidityRes `json:"data"`
+	}
+	updateLiquidityReq {
+		CommonParamsWeb3
+		LiquidityId    int64   `form:"liquidityId"` // 流动性 id
+		Status         uint64  `form:"status,optional"` // 流动性状态：1 开启，2 关闭
+		Rate           float64 `form:"rate,optional"` // 汇率
+		MinAmount      string  `form:"minAmount,optional"` // 最小兑换量
+		ProjectAddress string  `form:"projectAddress,optional"` // 接受资产地址
+	}
+	addLiquidityReq {
+		CommonParamsWeb3
+		OriginChainType         uint64  `form:"quoteChainType"` // 链的类型，1:btc,2:evm,3:tron
+		OriginChainId           uint64  `form:"quoteChainId"` //标价链的 chainId
+		OriginTokenAddress      string  `form:"quoteTokenAddress,optional"` //标价链的代币地址，为空表示主币
+		DestinationChainType    uint64  `form:"baseChainType"` // 链的类型，1:btc,2:evm,3:tron
+		DestinationChainId      uint64  `form:"baseChainId"` // 基准链的 chainId
+		DestinationTokenAddress string  `form:"baseTokenAddress,optional"` // 基准链的代币地址，为空表示主币
+		Rate                    float64 `form:"rate"` // 汇率
+		MinAmount               string  `form:"minAmount"` // 最小兑换量
+		ProjectAddress          string  `form:"projectAddress"` // 接受资产地址
+	}
+	getOrderListReq {
+		CommonParamsWeb3
+		DestinationChainType    uint64 `form:"baseChainType,optional"` // 链的类型，1:btc,2:evm,3:tron
+		DestinationChainId      uint64 `form:"baseChainId,optional"` // 基准链的 chainId
+		DestinationTokenAddress string `form:"baseTokenAddress,optional"` // 基准链的代币地址，为空表示主币
+		Hash                    string `form:"hash,optional"` // 查询的交易 hash，无关基准还是标记
+		Page                    uint32 `form:"page"`
+		Count                   uint32 `form:"count"`
+	}
+	OrderRes {
+		OrderId                 int64  `json:"orderId"` // 订单编号
+		OriginChainType         uint64 `json:"quoteChainType"` // 链的类型，1:btc,2:evm,3:tron
+		OriginChainId           uint64 `json:"quoteChainId"` // 标价链 id
+		OriginChainName         string `json:"quoteChainName"` // 标价链名称
+		OriginTokenName         string `json:"quoteTokenName"` // 标价币名称
+		OriginTokenSymbol       string `json:"quoteTokenSymbol"` // 标价币标识
+		OriginTokenAddress      string `json:"quoteTokenAddress"` //标价链的代币地址，为空表示主币
+		DestinationChainType    uint64 `json:"baseChainType"` // 链的类型，1:btc,2:evm,3:tron
+		DestinationChainId      uint64 `json:"baseChainId"` // 基准链 id
+		DestinationChainName    string `json:"baseChainName"` // 基准链名称
+		DestinationTokenName    string `json:"baseTokenName"` // 基准币名称
+		DestinationTokenSymbol  string `json:"baseTokenSymbol"` // 基准币标识
+		DestinationTokenAddress string `json:"baseTokenAddress"` // 基准链的代币地址，为空表示主币
+		OriginAmount            string `json:"quoteAmount"` // 标价币种的数量
+		OriginHash              string `json:"quoteHash"` // 标价链的交易hash
+		DestinationAmount       string `json:"baseAmount"` // 基准币种的数量
+		DestinationHash         string `json:"baseHash"` // 基准链的hash
+		CompleteTime            int64  `json:"completeTime"` // 订单时间
+		status                  uint64 `json:"status"` // 订单状态，1 成功，2 失败，3 原始链进行中，4 目标链上链中
+	}
+	GetOrderListPage {
+		List      []OrderRes `json:"list"`
+		TotalPage uint32     `json:"totalPage"`
+		Page      uint32     `json:"page"`
+	}
+	getOrderListRes {
+		Code int32             `json:"iRet"`
+		Msg  string            `json:"sMsg"`
+		Data *GetOrderListPage `json:"data"`
+	}
+	getInjectionLiquidityAddressReq {
+		CommonParamsWeb3
+		LiquidityId int64 `form:"liquidityId"` // 流动性 id
+	}
+	getInjectionLiquidityAddressRes {
+		Code int32  `json:"iRet"`
+		Msg  string `json:"sMsg"`
+		Data string `json:"data"` // 意图的热钱包地址
+	}
+	injectionLiquidityReq {
+		CommonParamsWeb3
+		LiquidityId int64  `form:"liquidityId"` // 流动性 id
+		Hash        string `form:"hash"` // 交易 hash
+	}
+	injectionLiquidityRes {
+		Code int32            `json:"iRet"`
+		Msg  string           `json:"sMsg"`
+		Data GetOrderListPage `json:"data"`
+	}
+	redeemLiquidityReq {
+		CommonParamsWeb3
+		LiquidityId int64  `form:"liquidityId"` // 流动性 id
+		Amount      string `form:"amount"` // 赎回的数量
+		Address     string `form:"address"` // 赎回的返回的地址
+	}
+)
+
+@server (
+	middleware: ProjectBeforeHandle
+	group:      projectApi
+	prefix:     admin/project/v1
+)
+service adminApi {
+	@doc "获取链信息"
+	@handler getChain
+	post /getChain (getChainReq) returns (getChainRes)
+
+	@doc "获取所有流动性列表"
+	@handler getAllLiquidityList
+	post /getAllLiquidityList (getAllLiquidityListReq) returns (getLiquidityListRes)
+
+	@doc "获取流动性列表"
+	@handler getLiquidityList
+	post /getLiquidityList (getLiquidityListReq) returns (getLiquidityListRes)
+
+	@doc "获取流动性"
+	@handler getLiquidity
+	post /getLiquidity (getLiquidityReq) returns (getLiquidityRes)
+
+	@doc "获取订单记录"
+	@handler getOrderList
+	post /getOrderList (getOrderListReq) returns (getOrderListRes)
+
+	@doc "编辑流动性"
+	@handler updateLiquidity
+	post /updateLiquidity (updateLiquidityReq) returns (CommonJsonResp)
+
+	@doc "新增流动性"
+	@handler addLiquidity
+	post /addLiquidity (addLiquidityReq) returns (CommonJsonResp)
+
+	@doc "获取注入流动性的热钱包地址"
+	@handler getInjectionLiquidityAddress
+	post /getInjectionLiquidityAddress (getInjectionLiquidityAddressReq) returns (getInjectionLiquidityAddressRes)
+}
+
+type addAdminReq {
+	CommonParamsWeb3
+	Address string `form:"address"`
+	Role    uint64 `form:"role"` // 角色 1:项目方，2:管理员'
+}
+
+type getAdminListReq {
+	CommonParamsWeb3
+	Address string `form:"address,optional"`
+	Page    uint32 `form:"page"`
+	Count   uint32 `form:"count"`
+}
+
+type AdminListRes {
+	Id       uint64 `json:"id"`
+	Address  string `json:"address"`
+	UserRole uint64 `json:"userRole"`
+}
+
+type GetAdminListPage {
+	List      []AdminListRes `json:"list"`
+	TotalPage uint32         `json:"totalPage"`
+	Page      uint32         `json:"page"`
+}
+
+type getAdminListRes {
+	Code int32            `json:"iRet"`
+	Msg  string           `json:"sMsg"`
+	Data GetAdminListPage `json:"data"`
+}
+
+type delAdminReq {
+	CommonParamsWeb3
+	Id uint64 `form:"id"`
+}
+
+@server (
+	middleware: OwnerBeforeHandle
+	group:      ownerApi
+	prefix:     admin/owner/v1
+)
+service adminApi {
+	@doc "添加白名单"
+	@handler addAdmin
+	post /addAdmin (addAdminReq) returns (CommonJsonResp)
+
+	@doc "获取白名单列表"
+	@handler getAdminList
+	post /getAdminList (getAdminListReq) returns (getAdminListRes)
+
+	@doc "删除白名单"
+	@handler delAdmin
+	post /delAdmin (delAdminReq) returns (CommonJsonResp)
+}
+
+type getRoleReq {
+	CommonParamsWeb3
+}
+
+type getRoleRes {
+	Code int32    `json:"iRet"`
+	Msg  string   `json:"sMsg"`
+	Data []uint64 `json:"data"` // 可能有多种角色 1:项目方，2:管理员
+}
+
+type getMessageReq {
+	ChainType uint64 `form:"chainType"` // 链的类型，1:btc,2:evm,3:tron
+	Address   string `form:"address"` // 签名的地址
+}
+
+type MessageRes {
+	Id      uint64 `json:"id"` // 登录的主键
+	Message string `json:"message"` // 签名的信息
+}
+
+type getMessageRes {
+	Code int32       `json:"iRet"`
+	Msg  string      `json:"sMsg"`
+	Data *MessageRes `json:"data"`
+}
+
+type loginReq {
+	Id        uint64 `form:"id"` // 登录的主键
+	Signature string `form:"signature"` // 签名的结果，十六进制
+}
+
+type loginRes {
+	Code int32  `json:"iRet"`
+	Msg  string `json:"sMsg"`
+	Data string `json:"data"` // session id
+}
+
+type TradePair {
+	Token          string `json:"token"`
+	ChainType      uint64 `json:"chainType"`
+	ChainId        uint64 `json:"chainId"`
+	OwnerAddress   string `json:"ownerAddress"`
+	Projectaddress string `json:"projectAddress"`
+}
+
+type SourceReq {
+	ChainType uint64 `form:"chainType,optional"` // 链的类型，1:btc,2:evm,3:tron
+	ChainID   uint64 `form:"form,optional"` //"chainId"
+	Token     string `form:"token,optional"`
+}
+
+type SourceResp {
+	Code int32       `json:"iRet"`
+	Msg  string      `json:"sMsg"`
+	Data []TradePair `json:"data"`
+}
+
+type TargetReq {
+	ChainType uint64 `form:"chainType,optional"` // 链的类型，1:btc,2:evm,3:tron
+	ChainID   uint64 `form:"form,optional"` //"chainId"
+	Token     string `form:"token,optional"`
+}
+
+type TargetResp {
+	Code int32       `json:"iRet"`
+	Msg  string      `json:"sMsg"`
+	Data []TradePair `json:"data"`
+}
+
+type InfoReq {
+	FromChainType uint64 `form:"fromChainType"`
+	FromChainID   uint64 `form:"fromChainId"`
+	FromToken     string `form:"fromToken"`
+	ToChainType   uint64 `form:"toChainType"`
+	ToChainID     uint64 `form:"toChainId"`
+	ToToken       string `form:"toToken"`
+	FromAmount    string `form:"fromAmount"`
+	ToAmount      string `form:"toAmount"`
+}
+
+type TradeInfo {
+	MinToAmount        string
+	Rate               float64 `json:"rate"` // 汇率
+	Fee                float64 `json:"fee"`
+	FromAmount         string  `json:"fromAmount"`
+	ToAmount           string  `json:"toAmount"`
+	AmountFee          string  `json:"amountFee"`
+	AmountFeeSlipepage string  `json:"amountFeeSlipepage"`
+}
+
+type InfoResp {
+	Code int32      `json:"iRet"`
+	Msg  string     `json:"sMsg"`
+	Data *TradeInfo `json:"data"`
+}
+
+@server (
+	middleware: UserBeforeHandle
+	group:      userApi
+	prefix:     admin/user/v1
+)
+service adminApi {
+	@doc "获取用户角色"
+	@handler getRole
+	post /getRole (getRoleReq) returns (getRoleRes)
+
+	@doc "获取登录签名的信息"
+	@handler getMessage
+	post /getMessage (getMessageReq) returns (getMessageRes)
+
+	@doc "登录"
+	@handler login
+	post /login (loginReq) returns (loginRes)
+
+	@doc "原始链信息"
+	@handler swapSource
+	post /swap/source (SourceReq) returns (SourceResp)
+
+	@doc "目标链信息"
+	@handler swapTarget
+	post /swap/target (TargetReq) returns (TargetResp)
+
+	@doc "兑换信息"
+	@handler swapInfo
+	post /swap/info (InfoReq) returns (InfoResp)
+}
+
