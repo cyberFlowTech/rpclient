@@ -9,6 +9,8 @@ type CommonParamsWeb3 {
 	Lan         string `form:"lan"` //语言，如zh_TW
 	Sign        string `form:"sign"` //签名
 	SignTime    int64  `form:"sign_time"` //当前时间
+	UserId      int64  `form:"user_id,optional"` //用户唯一标识
+	Uuid        string `form:"uuid,optional"` //设备唯一标识
 }
 
 //统一返回格式
@@ -318,11 +320,16 @@ type loginRes {
 }
 
 type TradePair {
-	Token          string `json:"token"`
-	ChainType      uint64 `json:"chainType"`
-	ChainId        uint64 `json:"chainId"`
-	OwnerAddress   string `json:"ownerAddress"`
-	Projectaddress string `json:"projectAddress"`
+	Token          string `json:"token"` // token
+	ChainType      uint64 `json:"chainType"` // 链类型
+	ChainId        uint64 `json:"chainId"` // 链id
+	OwnerAddress   string `json:"ownerAddress"` // 创建者钱包
+	Projectaddress string `json:"projectAddress"` // 项目钱包
+	ChainName      string `json:"chainName"` // 链名
+	Name           string `json:"name"` // 币种名
+	Symbol         string `json:"symbol"` // 币种符号
+	Icon           string `json:"icon"` // 图标
+	ChainIcon      string `json:"chainIcon"` // 链图标
 }
 
 type SourceReq {
