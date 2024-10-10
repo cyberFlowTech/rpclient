@@ -21,16 +21,16 @@ type CommonJsonResp {
 }
 
 type (
-	ChainInfo {
+	ChainInfos {
 		ChainType uint64      `json:"chainType"` // 链的类型，1:btc,2:evm,3:tron
 		ChainID   uint64      `json:"chainId"` //"chainId",
 		ChainName string      `json:"chainName"` //"name": "Ethereum",
 		Type      uint64      `json:"type"` //类型 1-基准链，2-标价链，3-既是基准也是标价
-		Tokens    []TokenInfo `json:"tokens"` //要支持的token
+		Tokens    []TokenInfos `json:"tokens"` //要支持的token
 		Icon      string      `json:"icon"` // 链图标
 		Hosts     []string    `json:"hosts"` // rpc
 	}
-	TokenInfo {
+	TokenInfos {
 		TokenAddress string `json:"tokenAddress"` //"tokenAddress": "",为空表示主币
 		Name         string `json:"name"` //"name": "TRX",
 		Symbol       string `json:"symbol"` //symbol
@@ -45,7 +45,7 @@ type (
 	getChainRes {
 		Code int32       `json:"iRet"`
 		Msg  string      `json:"sMsg"`
-		Data []ChainInfo `json:"data"`
+		Data []ChainInfos `json:"data"`
 	}
 	getAllLiquidityListReq {
 		CommonParamsWeb3
