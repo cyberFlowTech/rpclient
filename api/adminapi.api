@@ -333,6 +333,7 @@ type TradePair {
 }
 
 type SourceReq {
+	CommonParamsWeb3
 	ChainType uint64 `form:"chainType,optional"` // 链的类型，1:btc,2:evm,3:tron
 	ChainID   uint64 `form:"chainId,optional"`
 	Token     string `form:"token,optional"`
@@ -345,6 +346,7 @@ type SourceResp {
 }
 
 type TargetReq {
+	CommonParamsWeb3
 	ChainType uint64 `form:"chainType,optional"` // 链的类型，1:btc,2:evm,3:tron
 	ChainID   uint64 `form:"chainId,optional"`
 	Token     string `form:"token,optional"`
@@ -357,6 +359,7 @@ type TargetResp {
 }
 
 type InfoReq {
+	CommonParamsWeb3
 	FromChainType uint64 `form:"fromChainType"`
 	FromChainID   uint64 `form:"fromChainId"`
 	FromToken     string `form:"fromToken"`
@@ -368,6 +371,7 @@ type InfoReq {
 }
 
 type TradeInfo {
+	Id                 int64   `json:"id"` // 单号
 	MinToAmount        string  `json:"minToAmount"`
 	Rate               float64 `json:"rate"` // 汇率
 	Fee                float64 `json:"fee"`
@@ -381,6 +385,98 @@ type InfoResp {
 	Code int32      `json:"iRet"`
 	Msg  string     `json:"sMsg"`
 	Data *TradeInfo `json:"data"`
+}
+
+type PathReq {
+	CommonParamsWeb3
+	Id           uint64 `form:"id"` // 路径 id
+	Swapper      string `form:"swapper"` // 用户的地址
+	Recipient    string `form:"recipient"` //接收方地址
+	OutputAmount string `form:"outputAmount"` // 目标链的数量（未转精度）
+	InputAmount  string `form:"inputAmount"` // 原始链的数量（未转精度）
+}
+
+type PathResp {
+	Code int32     `json:"iRet"`
+	Msg  string    `json:"sMsg"`
+	Data *SwapPath `json:"data"`
+}
+
+type SwapPath {
+	Id              int64           `json:"id"` // 路径 id
+	Chain           string          `json:"chain"` // 所属链，chaincode
+	Swapper         string          `json:"swapper"` // 兑换的地址
+	Recipient       string          `json:"recipient"` // 接收目标币的地址
+	Contract        string          `json:"contract"` // 合约地址
+	Balance         string          `json:"balance"` // 余额，未转精度
+	OrderAmount     string          `json:"orderAmount"` // 跨链耗费的数量 未转精度
+	MinAmount       string          `json:"minAmount"` // 跨链目标链允许的最小数量 未转精度
+	TransactionFee  string          `json:"transactionFee"` // 消耗的手续费，未转精度
+	Rate            float64         `json:"rate"` // 汇率
+	OutputAmount    string          `json:"outputAmount"` // 目标链的数量（未转精度）
+	IsApprove       bool            `json:"isApprove"` // 是否授权
+	ApproveContract string          `json:"approveContract"` // approve 授权合约
+	SignMsg         *Permit2Request `json:"signMsg"` // 签名的信息
+	Err             string          `json:"err,omitempty"` // 错误信息
+	ErrType         int64           `json:"errType,omitempty"` // 错误类型
+}
+
+type Permit2Request { // 额外的订单信息
+	Domain  Domain  `json:"domain"` // ERC712 签名的 domain
+	Message Message `json:"message"` // ERC712 签名的 message
+	OrderId int     `json:"orderId"` // 订单的主键 id
+}
+
+type Domain {
+	Name              string `json:"name"`
+	ChainId           int    `json:"chainId"`
+	VerifyingContract string `json:"verifyingContract"`
+}
+
+type Message {
+	Permitted Permitted `json:"permitted"`
+	Spender   string    `json:"spender"`
+	Nonce     string    `json:"nonce"`
+	Deadline  int       `json:"deadline"`
+	Witness   Witness   `json:"witness"`
+}
+
+type Permitted {
+	Token  string `json:"token"`
+	Amount string `json:"amount"`
+}
+
+type Witness {
+	SettlementContract string    `json:"settlementContract"`
+	Swapper            string    `json:"swapper"`
+	Nonce              string    `json:"nonce"`
+	OriginChainId      int       `json:"originChainId"`
+	InitiateDeadline   int       `json:"initiateDeadline"`
+	FillDeadline       int       `json:"fillDeadline"`
+	OrderData          OrderData `json:"orderData"`
+}
+
+type OrderData {
+	InputToken          string `json:"inputToken"`
+	InputAmount         string `json:"inputAmount"`
+	OutputToken         string `json:"outputToken"`
+	OutputAmount        string `json:"outputAmount"`
+	DestinationChainId  int    `json:"destinationChainId"`
+	Recipient           string `json:"recipient"`
+	ExclusiveRelayer    string `json:"exclusiveRelayer"`
+	ExclusivityDeadline int    `json:"exclusivityDeadline"`
+	Message             string `json:"message"`
+}
+
+type DepositorReq {
+	CommonParamsWeb3
+	OrderId   int64  `form:"orderId"` // 订单 id
+	Signature string `form:"signature"` // 签名信息，十六进制，0x开头
+}
+
+type DepositorResp {
+	OrderId     uint   `json:"orderId"` // 新的订单 id
+	DepositHash string `json:"depositHash"` // 原始链上链的交易 hash
 }
 
 @server (
@@ -412,5 +508,13 @@ service adminApi {
 	@doc "兑换信息"
 	@handler swapInfo
 	post /swap/info (InfoReq) returns (InfoResp)
+
+	@doc "兑换路径"
+	@handler swapPath
+	post /swap/path (PathReq) returns (PathResp)
+
+	@doc "兑换路径"
+	@handler swapDepositor
+	post /swap/depositor (DepositorReq) returns (DepositorResp)
 }
 
