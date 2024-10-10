@@ -27,6 +27,8 @@ type (
 		ChainName string      `json:"chainName"` //"name": "Ethereum",
 		Type      uint64      `json:"type"` //类型 1-基准链，2-标价链，3-既是基准也是标价
 		Tokens    []TokenInfo `json:"tokens"` //要支持的token
+		Icon      string      `json:"icon"` // 链图标
+		Hosts     []string    `json:"hosts"` // rpc
 	}
 	TokenInfo {
 		TokenAddress string `json:"tokenAddress"` //"tokenAddress": "",为空表示主币
@@ -34,6 +36,8 @@ type (
 		Symbol       string `json:"symbol"` //symbol
 		ScaleShow    int64  `json:"scaleShow"` //"小数点后面精度",
 		Decimals     int64  `json:"decimals"` //精度
+		Icon         string `json:"icon"` // 图标
+		ExApi        string `json:"exApi"`
 	}
 	getChainReq {
 		CommonParamsWeb3
@@ -513,7 +517,7 @@ service adminApi {
 	@handler swapPath
 	post /swap/path (PathReq) returns (PathResp)
 
-	@doc "兑换路径"
+	@doc "兑换订单"
 	@handler swapDepositor
 	post /swap/depositor (DepositorReq) returns (DepositorResp)
 }
