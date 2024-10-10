@@ -22,13 +22,13 @@ type CommonJsonResp {
 
 type (
 	ChainInfos {
-		ChainType uint64      `json:"chainType"` // 链的类型，1:btc,2:evm,3:tron
-		ChainID   uint64      `json:"chainId"` //"chainId",
-		ChainName string      `json:"chainName"` //"name": "Ethereum",
-		Type      uint64      `json:"type"` //类型 1-基准链，2-标价链，3-既是基准也是标价
+		ChainType uint64       `json:"chainType"` // 链的类型，1:btc,2:evm,3:tron
+		ChainID   uint64       `json:"chainId"` //"chainId",
+		ChainName string       `json:"chainName"` //"name": "Ethereum",
+		Type      uint64       `json:"type"` //类型 1-基准链，2-标价链，3-既是基准也是标价
 		Tokens    []TokenInfos `json:"tokens"` //要支持的token
-		Icon      string      `json:"icon"` // 链图标
-		Hosts     []string    `json:"hosts"` // rpc
+		Icon      string       `json:"icon"` // 链图标
+		Hosts     []string     `json:"hosts"` // rpc
 	}
 	TokenInfos {
 		TokenAddress string `json:"tokenAddress"` //"tokenAddress": "",为空表示主币
@@ -43,8 +43,8 @@ type (
 		CommonParamsWeb3
 	}
 	getChainRes {
-		Code int32       `json:"iRet"`
-		Msg  string      `json:"sMsg"`
+		Code int32        `json:"iRet"`
+		Msg  string       `json:"sMsg"`
 		Data []ChainInfos `json:"data"`
 	}
 	getAllLiquidityListReq {
@@ -477,8 +477,12 @@ type DepositorReq {
 	OrderId   int64  `form:"orderId"` // 订单 id
 	Signature string `form:"signature"` // 签名信息，十六进制，0x开头
 }
-
-type DepositorResp {
+type DepositorResp{
+	Code int32     `json:"iRet"`
+	Msg  string    `json:"sMsg"`
+	Data *DepositorData `json:"data"`
+}
+type DepositorData {
 	OrderId     uint   `json:"orderId"` // 新的订单 id
 	DepositHash string `json:"depositHash"` // 原始链上链的交易 hash
 }
