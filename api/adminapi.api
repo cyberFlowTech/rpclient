@@ -370,8 +370,8 @@ type InfoReq {
 	ToChainType   uint64 `form:"toChainType"`
 	ToChainID     uint64 `form:"toChainId"`
 	ToToken       string `form:"toToken"`
-	FromAmount    string `form:"fromAmount"`
-	ToAmount      string `form:"toAmount"`
+	FromAmount    string `form:"fromAmount,optional"`
+	ToAmount      string `form:"toAmount,optional"`
 }
 
 type TradeInfo {
@@ -477,11 +477,13 @@ type DepositorReq {
 	OrderId   int64  `form:"orderId"` // 订单 id
 	Signature string `form:"signature"` // 签名信息，十六进制，0x开头
 }
-type DepositorResp{
-	Code int32     `json:"iRet"`
-	Msg  string    `json:"sMsg"`
+
+type DepositorResp {
+	Code int32          `json:"iRet"`
+	Msg  string         `json:"sMsg"`
 	Data *DepositorData `json:"data"`
 }
+
 type DepositorData {
 	OrderId     uint   `json:"orderId"` // 新的订单 id
 	DepositHash string `json:"depositHash"` // 原始链上链的交易 hash
