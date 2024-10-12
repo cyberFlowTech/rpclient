@@ -1,0 +1,240 @@
+syntax = "v1"
+
+//统一请求鉴权信息
+type CommonParams {
+	UserId      int64  `form:"user_id"` //用户唯一标识
+	SessId      string `form:"sessid"` //用户登录标识
+	Api         string `form:"api"` //App公钥
+	Version     string `form:"version"` //版本号
+	VersionCode string `form:"version_code"` //构建号
+	Uuid        string `form:"uuid"` //设备唯一标识
+	Lan         string `form:"lan"` //语言，如zh_TW
+	Sign        string `form:"sign"` //签名
+	SignTime    int64  `form:"sign_time"` //当前时间
+}
+
+type OrderDepositorReq {
+	CommonParams
+	OrderId   int64  `form:"orderId"` // 订单 id
+	Signature string `form:"signature"` // 签名信息，十六进制，0x开头
+}
+
+type OrderDepositData {
+	OrderId     uint   `json:"orderId"` // 新的订单 id
+	DepositHash string `json:"depositHash"` // 原始链上链的交易 hash
+}
+
+type OrderDepositorRes {
+	Code int32             `json:"iRet"`
+	Msg  string            `json:"sMsg"`
+	Data *OrderDepositData `json:"data"`
+}
+
+type GetOrderInfoReq {
+	CommonParams
+	OrderId string `form:"orderId"` // 订单 id
+}
+
+type OrderInfo {
+	OrderId                 int64   `json:"orderId"` // 订单编号
+	OriginChain             string  `json:"originChain"` // 原始链 chaincode
+	OriginTokenAddress      string  `json:"originTokenAddress"` //原始链的代币地址，为空表示主币
+	OriginChainFee          string  `json:"originChainFee"` //原始链的上链费
+	DestinationChain        string  `json:"destinationChain"` // 目标链 chaincode
+	DestinationTokenAddress string  `json:"destinationTokenAddress"` // 目标链的代币地址，为空表示主币
+	DestinationChainFee     string  `json:"destinationChainFee"` // 目标链的上链费
+	OriginAmount            string  `json:"originAmount"` // 原始链币种的数量
+	OriginHash              string  `json:"originHash"` // 原始链的交易hash
+	DestinationAmount       string  `json:"destinationAmount"` // 目标链币种的数量
+	DestinationHash         string  `json:"destinationHash"` // 目标链的hash
+	CrossChainFee           string  `json:"crossChainFee"` // 跨链费
+	Rate                    float64 `json:"rate"` // 汇率
+	CreateTime              int64   `json:"createTime"` // 订单创建时间
+	CompleteTime            int64   `json:"completeTime"` // 订单完成时间
+	Status                  uint64  `json:"status"` // 订单状态，1 成功，2 失败，3 原始链进行中，4 目标链上链中
+}
+
+type GetOrderInfoRes {
+	Code int32      `json:"iRet"`
+	Msg  string     `json:"sMsg"`
+	Data *OrderInfo `json:"data"`
+}
+
+type GetOrderListReq {
+	CommonParams
+	Swapper  string `form:"swapper"` // 用户地址
+	Status   uint64 `form:"status,optional"` // 订单状态，1 成功，2 失败，3 进行中（包括原始链进行中和目标链上链中）
+	Chain    string `form:"chain,optional"` // chaincode
+	Page     int    `form:"page,optional"`
+	PageSize int    `form:"pageSize,optional"`
+}
+
+type GetOrderListPage {
+	List      []OrderInfo `json:"list"`
+	TotalPage uint32      `json:"totalPage"`
+	Page      uint32      `json:"page"`
+}
+
+type GetOrderListRes {
+	Code int32             `json:"iRet"`
+	Msg  string            `json:"sMsg"`
+	Data *GetOrderListPage `json:"data"`
+}
+
+type getSwapPathsReq {
+	CommonParams
+	Swapper          string `form:"swapper,optional"` // 用户的地址
+	OutputToken      string `form:"outputToken,optional"` // 目标链的代币地址，为空是主币
+	OutputAmount     string `form:"outputAmount"` // 目标链的数量（未转精度）
+	DestinationChain string `form:"destinationChain"` // 目标链的 chaincode
+}
+
+type getOneSwapPathReq {
+	CommonParams
+	Id           uint64 `form:"id"` // 路径 id
+	Swapper      string `form:"swapper,optional"` // 用户的地址
+	OutputAmount string `form:"outputAmount"` // 目标链的数量（未转精度）
+}
+
+type SwapPath {
+	Id              int64           `json:"id"` // 路径 id
+	Chain           string          `json:"chain"` // 所属链，chaincode
+	Swapper         string          `json:"swapper"` // 兑换的地址
+	Recipient       string          `json:"recipient"` // 接收目标币的地址
+	Contract        string          `json:"contract"` // 合约地址
+	Balance         string          `json:"balance"` // 余额，未转精度
+	OrderAmount     string          `json:"orderAmount"` // 跨链耗费的数量 未转精度
+	MinAmount       string          `json:"minAmount"` // 跨链目标链允许的最小数量 未转精度
+	TransactionFee  string          `json:"transactionFee"` // 消耗的手续费，未转精度
+	Rate            float64         `json:"rate"` // 汇率
+	OutputAmount    string          `json:"outputAmount"` // 目标链的数量（未转精度）
+	IsApprove       bool            `json:"isApprove"` // 是否授权
+	ApproveContract string          `json:"approveContract"` // approve 授权合约
+	SignMsg         *Permit2Request `json:"signMsg"` // 签名的信息
+	Err             string          `json:"err,omitempty"` // 错误信息
+	ErrType         int64           `json:"errType,omitempty"` // 错误类型
+}
+
+type getSwapPathsRes {
+	Code int32      `json:"iRet"`
+	Msg  string     `json:"sMsg"`
+	Data []SwapPath `json:"data"`
+}
+
+type getOneSwapPathRes {
+	Code int32    `json:"iRet"`
+	Msg  string   `json:"sMsg"`
+	Data SwapPath `json:"data"`
+}
+
+type (
+	Permit2Request { // 额外的订单信息
+		Domain   *Domain   `json:"domain,omitempty"` // ERC712 签名的 domain
+		Message  *Message  `json:"message,omitempty"` // ERC712 签名的 message
+		OrderId  int       `json:"orderId"` // 订单的主键 id
+		MainCoin *MainCoin `json:"mainCoin,omitempty"` // 主币兑换信息
+	}
+	MainCoin {
+		MainCoinOrder      MainCoinOrder `json:"mainCoinOrder"`
+		MainCoinFillerData string        `json:"mainCoinFillerData"`
+	}
+	MainCoinOrder {
+		SettlementContract string `json:"settlementContract"`
+		Swapper            string `json:"swapper"`
+		Nonce              string `json:"nonce"`
+		OriginChainId      int    `json:"originChainId"`
+		InitiateDeadline   int    `json:"initiateDeadline"`
+		FillDeadline       int    `json:"fillDeadline"`
+		OrderData          string `json:"orderData"`
+	}
+	Domain {
+		Name              string `json:"name"`
+		ChainId           int    `json:"chainId"`
+		VerifyingContract string `json:"verifyingContract"`
+	}
+	Message {
+		Permitted Permitted `json:"permitted"`
+		Spender   string    `json:"spender"`
+		Nonce     string    `json:"nonce"`
+		Deadline  int       `json:"deadline"`
+		Witness   Witness   `json:"witness"`
+	}
+	Permitted {
+		Token  string `json:"token"`
+		Amount string `json:"amount"`
+	}
+	Witness {
+		SettlementContract string    `json:"settlementContract"`
+		Swapper            string    `json:"swapper"`
+		Nonce              string    `json:"nonce"`
+		OriginChainId      int       `json:"originChainId"`
+		InitiateDeadline   int       `json:"initiateDeadline"`
+		FillDeadline       int       `json:"fillDeadline"`
+		OrderData          OrderData `json:"orderData"`
+	}
+	OrderData {
+		InputToken          string `json:"inputToken"`
+		InputAmount         string `json:"inputAmount"`
+		OutputToken         string `json:"outputToken"`
+		OutputAmount        string `json:"outputAmount"`
+		DestinationChainId  int    `json:"destinationChainId"`
+		Recipient           string `json:"recipient"`
+		ExclusiveRelayer    string `json:"exclusiveRelayer"`
+		ExclusivityDeadline int    `json:"exclusivityDeadline"`
+		Message             string `json:"message"`
+	}
+)
+
+type getChainReq {
+	CommonParams
+	Type uint64 `form:"type,optional"` //类型 1-目标链，2-原始链
+}
+
+type ChainInfoIntents {
+	Chain  uint64             `json:"chain"` // chaincode
+	Type   uint64             `json:"type"` //类型 1-目标链，2-原始链，3-既是目标链也是原始链
+	Tokens []TokenInfoIntents `json:"tokens"` //要支持的token
+}
+
+type TokenInfoIntents {
+	TokenAddress string `json:"tokenAddress"` //"tokenAddress": "",为空表示主币
+	Name         string `json:"name"` //"name": "TRX",
+	Symbol       string `json:"symbol"` //symbol
+}
+
+type getChainRes {
+	Code int32              `json:"iRet"`
+	Msg  string             `json:"sMsg"`
+	Data []ChainInfoIntents `json:"data"`
+}
+
+@server (
+	middleware: FillerBeforeHandle
+	prefix:     filler/v1
+)
+service fillerApi {
+	@doc "意图充值"
+	@handler orderDepositor
+	post /orderDepositor (OrderDepositorReq) returns (OrderDepositData)
+
+	@doc "获取兑换路径"
+	@handler getSwapPaths
+	post /getSwapPaths (getSwapPathsReq) returns (getSwapPathsRes)
+
+	@doc "获取指定兑换路径"
+	@handler getOneSwapPath
+	post /getOneSwapPaths (getOneSwapPathReq) returns (getOneSwapPathRes)
+
+	@doc "意图订单信息"
+	@handler getOrderInfo
+	post /getOrderInfo (GetOrderInfoReq) returns (GetOrderInfoRes)
+
+	@doc "意图地址订单历史"
+	@handler getOrderList
+	post /getOrderList (GetOrderListReq) returns (GetOrderListRes)
+
+	@doc "意图获取支持的币对"
+	@handler getChain
+	post /getChain (getChainReq) returns (getChainRes)
+}
+
