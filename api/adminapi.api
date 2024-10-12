@@ -364,14 +364,14 @@ type TargetResp {
 
 type InfoReq {
 	CommonParamsWeb3
-	FromChainType uint64 `form:"fromChainType"`
-	FromChainID   uint64 `form:"fromChainId"`
-	FromToken     string `form:"fromToken"`
-	ToChainType   uint64 `form:"toChainType"`
-	ToChainID     uint64 `form:"toChainId"`
-	ToToken       string `form:"toToken"`
-	FromAmount    string `form:"fromAmount,optional"`
-	ToAmount      string `form:"toAmount,optional"`
+	FromChainType uint64 `form:"fromChainType"` // 链的类型，1:btc,2:evm,3:tron
+	FromChainID   uint64 `form:"fromChainId"` // 链id
+	FromToken     string `form:"fromToken"`// token
+	ToChainType   uint64 `form:"toChainType"` // 链的类型，1:btc,2:evm,3:tron
+	ToChainID     uint64 `form:"toChainId"`// 链id
+	ToToken       string `form:"toToken"`// token
+	FromAmount    string `form:"fromAmount"` // fromAmount和toAmount换算，需要被计算的一方填写0
+	ToAmount      string `form:"toAmount"`
 }
 
 type TradeInfo {
