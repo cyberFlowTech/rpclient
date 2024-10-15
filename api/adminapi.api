@@ -423,7 +423,7 @@ type SwapPath {
 	SignMsg         *Permit2Request `json:"signMsg"` // 签名的信息
 	Err             string          `json:"err,omitempty"` // 错误信息
 	ErrType         int64           `json:"errType,omitempty"` // 错误类型
-	OrderId         int             `json:"orderId"` // 订单的主键 id
+	OrderId         int             `json:"orderId"` //  订单的主键 id
 }
 
 type Permit2Request { // 额外的订单信息
