@@ -401,12 +401,12 @@ type PathReq {
 }
 
 type PathResp {
-	Code int32     `json:"iRet"`
-	Msg  string    `json:"sMsg"`
-	Data *SwapPath `json:"data"`
+	Code int32          `json:"iRet"`
+	Msg  string         `json:"sMsg"`
+	Data *SwapPathAdmin `json:"data"`
 }
 
-type SwapPath {
+type SwapPathAdmin {
 	Id                 int64           `json:"id"` // 路径 id
 	Chain              string          `json:"chain"` // 所属链，chaincode
 	Swapper            string          `json:"swapper"` // 兑换的地址
