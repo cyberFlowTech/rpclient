@@ -407,29 +407,46 @@ type PathResp {
 }
 
 type SwapPath {
-	Id              int64           `json:"id"` // 路径 id
-	Chain           string          `json:"chain"` // 所属链，chaincode
-	Swapper         string          `json:"swapper"` // 兑换的地址
-	Recipient       string          `json:"recipient"` // 接收目标币的地址
-	Contract        string          `json:"contract"` // 合约地址
-	Balance         string          `json:"balance"` // 余额，未转精度
-	OrderAmount     string          `json:"orderAmount"` // 跨链耗费的数量 未转精度
-	MinAmount       string          `json:"minAmount"` // 跨链目标链允许的最小数量 未转精度
-	TransactionFee  string          `json:"transactionFee"` // 消耗的手续费，未转精度
-	Rate            float64         `json:"rate"` // 汇率
-	OutputAmount    string          `json:"outputAmount"` // 目标链的数量（未转精度）
-	IsApprove       bool            `json:"isApprove"` // 是否授权
-	ApproveContract string          `json:"approveContract"` // approve 授权合约
-	SignMsg         *Permit2Request `json:"signMsg"` // 签名的信息
-	Err             string          `json:"err,omitempty"` // 错误信息
-	ErrType         int64           `json:"errType,omitempty"` // 错误类型
-	OrderId         int             `json:"orderId"` //  订单的主键 id
+	Id                 int64           `json:"id"` // 路径 id
+	Chain              string          `json:"chain"` // 所属链，chaincode
+	Swapper            string          `json:"swapper"` // 兑换的地址
+	Recipient          string          `json:"recipient"` // 接收目标币的地址
+	Contract           string          `json:"contract"` // 合约地址
+	SettlementContract string          `json:"settlementContract"` // 充值/结算的合约
+	Balance            string          `json:"balance"` // 余额，未转精度
+	OrderAmount        string          `json:"orderAmount"` // 跨链耗费的数量 未转精度
+	MinAmount          string          `json:"minAmount"` // 跨链目标链允许的最小数量 未转精度
+	TransactionFee     string          `json:"transactionFee"` // 消耗的手续费，未转精度
+	Rate               float64         `json:"rate"` // 汇率
+	OutputAmount       string          `json:"outputAmount"` // 目标链的数量（未转精度）
+	IsApprove          bool            `json:"isApprove"` // 是否授权
+	ApproveContract    string          `json:"approveContract"` // approve 授权合约
+	SignMsg            *Permit2Request `json:"signMsg"` // 签名的信息
+	Err                string          `json:"err,omitempty"` // 错误信息
+	ErrType            int64           `json:"errType,omitempty"` // 错误类型
+	OrderId            int             `json:"orderId"` // 订单的主键 id
 }
 
 type Permit2Request { // 额外的订单信息
-	Domain  Domain  `json:"domain"` // ERC712 签名的 domain
-	Message Message `json:"message"` // ERC712 签名的 message
-	OrderId int     `json:"orderId"` // 订单的主键 id
+	Domain   *Domain   `json:"domain,omitempty"` // ERC712 签名的 domain
+	Message  *Message  `json:"message,omitempty"` // ERC712 签名的 message
+	OrderId  int       `json:"orderId"` // 订单的主键 id
+	MainCoin *MainCoin `json:"mainCoin,omitempty"` // 主币兑换信息
+}
+
+type MainCoin {
+	MainCoinOrder      MainCoinOrder `json:"mainCoinOrder"`
+	MainCoinFillerData string        `json:"mainCoinFillerData"`
+}
+
+type MainCoinOrder {
+	SettlementContract string `json:"settlementContract"`
+	Swapper            string `json:"swapper"`
+	Nonce              string `json:"nonce"`
+	OriginChainId      int    `json:"originChainId"`
+	InitiateDeadline   int    `json:"initiateDeadline"`
+	FillDeadline       int    `json:"fillDeadline"`
+	OrderData          string `json:"orderData"`
 }
 
 type Domain {
