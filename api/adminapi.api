@@ -25,6 +25,7 @@ type (
 		ChainType uint64       `json:"chainType"` // 链的类型，1:btc,2:evm,3:tron
 		ChainID   uint64       `json:"chainId"` //"chainId",
 		ChainName string       `json:"chainName"` //"name": "Ethereum",
+		ChainScan string       `json:"chainScan"` // 区块浏览器
 		Type      uint64       `json:"type"` //类型 1-基准链，2-标价链，3-既是基准也是标价
 		Tokens    []TokenInfos `json:"tokens"` //要支持的token
 		Icon      string       `json:"icon"` // 链图标
