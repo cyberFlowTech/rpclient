@@ -61,43 +61,46 @@ type (
 	// 部落详情
 	ClubInfoReq {
 		CommonReq
-		TbMid string `form:"tb_mid"` // 部落id,YqyWaWtn
+		TbMid  string `form:"tb_mid"` // 部落id,YqyWaWtn
+		Fields string `form:"fields"` // 可选项数据;last_join_user:最后进入部落的用户信息,master:部落主信息
 	}
 	ClubInfoRes {
-		Id         string                `json:"id"` // 部落id,YqyWaWtn
-		Name       string                `json:"name"` // 部落名称
-		Avatar     string                `json:"avatar"` // 部落头像
-		Desc       string                `json:"desc"` // 部落简介
-		Bg         string                `json:"bg"` // 部落背景
-		IsDel      int64                 `json:"is_del"` // 部落是否删除,0:否,1:是
-		InClub     int64                 `json:"in_club"` // 用户是否在部落,0:否,1:是
-		UserCount  int64                 `json:"user_count"` // 部落总人数
-		Nickname   string                `json:"nickname"` // 用户在部落的昵称
-		Dname      string                `json:"dname"` // 社区配置名称
-		IsVerify   int64                 `json:"is_verify"` // 加入部落是否要审核,0:否,1:是
-		IsSearch   int64                 `json:"is_search"` // 部落是否可搜索,0:否,1:是
-		IsQuery    int64                 `json:"is_query"` // 成员直接互相访问,0:否,1:是
-		ShowStat   int64                 `json:"show_stat"` // 是否显示统计,0:否,1:是
-		ShowOnline int64                 `json:"show_online"` // 是否显示在线成员,0:否,1:是
-		Type       int64                 `json:"type"` // 部落类型
-		Notify     int64                 `json:"notify"` // 通知状态
-		Zones      []ClubInfoResZones    `json:"zones"` // 部落分组
-		AccessList ClubInfoResAccessList `json:"accessList"` // 权限信息
-		Dynamic    []ClubInfoResDynamic  `json:"dynamic"` // 部落动态
-		Dapp       ClubInfoResDapp       `json:"dapp"` // 部落应用
+		Id         string            `json:"id"` // 部落id,YqyWaWtn
+		Name       string            `json:"name"` // 部落名称
+		Avatar     string            `json:"avatar"` // 部落头像
+		Desc       string            `json:"desc"` // 部落简介
+		Bg         string            `json:"bg"` // 部落背景
+		IsDel      int64             `json:"is_del"` // 部落是否删除,0:否,1:是
+		InClub     int64             `json:"in_club"` // 用户是否在部落,0:否,1:是
+		UserCount  int64             `json:"user_count"` // 部落总人数
+		Nickname   string            `json:"nickname"` // 用户在部落的昵称
+		Dname      string            `json:"dname"` // 社区配置名称
+		IsVerify   int64             `json:"is_verify"` // 加入部落是否要审核,0:否,1:是
+		IsSearch   int64             `json:"is_search"` // 部落是否可搜索,0:否,1:是
+		IsQuery    int64             `json:"is_query"` // 成员直接互相访问,0:否,1:是
+		ShowStat   int64             `json:"show_stat"` // 是否显示统计,0:否,1:是
+		ShowOnline int64             `json:"show_online"` // 是否显示在线成员,0:否,1:是
+		Type       int64             `json:"type"` // 部落类型
+		Notify     int64             `json:"notify"` // 通知状态
+		Zones      []Zone            `json:"zones"` // 部落分组
+		AccessList ClubInfoAccess    `json:"accessList"` // 权限信息
+		Dynamic    []ClubInfoDynamic `json:"dynamic"` // 部落动态
+		Dapp       ClubInfoDapp      `json:"dapp"` // 部落应用
+		Master     UInfo             `json:master_info` // 部落主信息
+		LastNUser  []UInfo           `json:last_join_user` // 最后几位加入部落的用户
 	}
-	ClubInfoResZones {
-		Id       string                     `json:"id"` // 分组id,YqyVa2g=
-		TbMid    string                     `json:"tb_mid"` // 部落id,YqyWaWtn
-		Name     string                     `json:"name"` // 分组名称
-		IsDel    int64                      `json:"is_del"` // 是否删除,0:否,1:是
-		Sort     int64                      `json:"sort"` // 排序
-		Ctime    int64                      `json:"ctime"` // 创建时间
-		IsShow   int64                      `json:"is_show"` // 是否展示,0:否,1:是
-		Status   string                     `json:"status"` // 状态
-		Channels []ClubInfoResZonesChannels `json:"channels"` // 频道列表
+	Zone {
+		Id       string    `json:"id"` // 分组id,YqyVa2g=
+		TbMid    string    `json:"tb_mid"` // 部落id,YqyWaWtn
+		Name     string    `json:"name"` // 分组名称
+		IsDel    int64     `json:"is_del"` // 是否删除,0:否,1:是
+		Sort     int64     `json:"sort"` // 排序
+		Ctime    int64     `json:"ctime"` // 创建时间
+		IsShow   int64     `json:"is_show"` // 是否展示,0:否,1:是
+		Status   string    `json:"status"` // 状态
+		Channels []Channel `json:"channels"` // 频道列表
 	}
-	ClubInfoResZonesChannels {
+	Channel {
 		Chain     int64       `json:"chain"` // 所属链（1000000:ETH,1000001:Polygon,2000000:BTC,3000000:TRON）
 		CleanTime string      `json:"clean_time"` // 自动清理时间，单位分钟
 		Coins     float64     `json:"coins"` // 小于0表示不限制，大于等于0为最低额度限制
@@ -120,13 +123,13 @@ type (
 		Type      int64       `json:"type"` // 频道类型,0:文字房间,1:语音房间
 		Dapp      ChannelDapp `json:"dapp"` // dapp信息
 	}
-	ClubInfoResAccessList {
-		IsMaster int64                       `json:"is_master"` // 是否群主
-		IsRole   int64                       `json:"is_role"` // （已弃用）是否管理员
-		MinSort  int64                       `json:"min_sort"` // （已弃用最大权重值
-		Access   ClubInfoResAccessListAccess `json:"access"` // 权限列表
+	ClubInfoAccess {
+		IsMaster int64      `json:"is_master"` // 是否群主
+		IsRole   int64      `json:"is_role"` // （已弃用）是否管理员
+		MinSort  int64      `json:"min_sort"` // （已弃用）最大权重值
+		Access   RoleAccess `json:"access"` // 权限列表
 	}
-	ClubInfoResAccessListAccess {
+	RoleAccess {
 		MCommunity int64 `json:"m_community"` // 管理社区权限,0:无权限,1:有权限
 		MMain      int64 `json:"m_main"` // 管理部落权限,0:无权限,1:有权限
 		MMembers   int64 `json:"m_members"` // 管理成员权限,0:无权限,1:有权限
@@ -138,11 +141,8 @@ type (
 		MChannel   int64 `json:"m_channel"` // 管理房间权限,0:无权限,1:有权限
 		SGrade     int64 `json:"s_grade"` // （未被使用）展示等级,1:展示,0:不展示
 	}
-	ClubInfoResDynamic  {}
-	//    ClubInfoResDynamicExt {
-	//        Link string `json:"link"` // 文章类型的链接
-	//    }
-	ClubInfoResDapp {
+	ClubInfoDynamic  {}
+	ClubInfoDapp {
 		Ctime      int64  `json:"ctime"` // 创建时间
 		DappDesc   string `json:"dapp_desc"` // 应该简介
 		DappLogo   string `json:"dapp_logo"` // logo
@@ -759,24 +759,14 @@ type (
 		Status string `form:"status"` // offline/online
 	}
 	SetChannelOnlineUsersResp  {}
-	SetGuideStatusReq {
+	SetClubRecommendInfoReq {
 		CommonReq
-		TbMid string `form:"tb_mid"` // 部落ID,YqyWaWtn
-		Value int64  `form:"code"` // 设置项,1:跳过步骤,2:邀请好友,3:查看部落管理,4:查看部落数据,5:发布一条动态,6:设置欢迎页,7:恢复引导
+		TbMid   string `form:"tb_mid"` // 部落ID,YqyWaWtn
+		Desc    string `form:"desc"` // 部落的描述,我的部落
+		TbCid   string `form:"tb_cid"` // 频道ID,多个用逗号分隔,YqycaWg=,YqycaWw
+		DidDuid string `form:"did_duid"` // 动态ID动态作者ID,多个用|分隔,131,548218|132,548218
 	}
-	SetGuideStatusResp  {}
-	GetGuideStatusReq {
-		CommonReq
-		TbMid string `form:"tb_mid"` // 部落ID,YqyWaWtn
-	}
-	GetGuideStatusResp {
-		Skip               int64 `json:"skip"` // 跳过步骤,0:否,1是
-		InviteFriend       int64 `json:"invite_friend"` // 是否已经邀请好友,0:否,1是
-		ViewClubManagement int64 `json:"view_club_management"` // 是否已经查看部落管理页,0:否,1是
-		ViewClubData       int64 `json:"view_club_data"` // 是否已经查看部落数据,0:否,1是
-		PostDynamic        int64 `json:"post_dynamic"` // 是否已经发布动态,0:否,1是
-		SetWelcomePage     int64 `json:"set_welcome_page"` // 是否已经设置欢迎页,0:否,1是
-	}
+	SetClubRecommendInfoResp  {}
 )
 
 @server (
@@ -993,12 +983,8 @@ service club {
 	@handler setChannelOnlineUsers
 	post /setChannelOnlineUsers (SetChannelOnlineUsersReq) returns (SetChannelOnlineUsersResp)
 
-	@doc "设置引导项状态"
-	@handler setGuideStatus
-	post /setGuideStatus (SetGuideStatusReq) returns (SetGuideStatusResp)
-
-	@doc "获取引导项状态"
-	@handler getGuideStatus
-	post /getGuideStatus (GetGuideStatusReq) returns (GetGuideStatusResp)
+	@doc "设置部落推荐信息(部落描述、推荐频道、推荐的动态)"
+	@handler setClubRecommendInfo
+	post /setClubRecommendInfo (SetClubRecommendInfoReq) returns (SetClubRecommendInfoResp)
 }
 

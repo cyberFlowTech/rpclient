@@ -102,6 +102,7 @@ type ClubDynamicListReq {
 	TbMid       string `form:"tb_mid"` // 部落ID,YqyXZm9n
 	IsRecommend int64  `form:"is_recommend,optional,range=[-1:1]"` // 弃用
 	SortType    int64  `form:"type,optional,range=[0:1]"` // 弃用
+	IsShow      int64  `form:"is_show,optional,range=[0:1]"` // 是否只获取展示在部落详情的动态;0:不获取,1:获取
 }
 
 type ClubDynamicListResp {
@@ -348,10 +349,10 @@ type StatisticsResp {
 }
 
 @server (
-	//      jwt:        Auth // 对当前 Dynamic 语法块下的所有路由，开启 jwt 认证，不需要则请删除此行
+	//jwt: Auth  // 对当前 Dynamic 语法块下的所有路由，开启 jwt 认证，不需要则请删除此行
 	prefix: /dynamic // 对当前 Dynamic 语法块下的所有路由，新增 /dynamic/v1 路由前缀，不需要则请删除此行
 	group:  dynamic // 对当前 Dynamic 语法块下的所有路由，路由归并到 v1 目录下，不需要则请删除此行
-	//    timeout:    3s // 对当前 Dynamic 语法块下的所有路由进行超时配置，不需要则请删除此行
+	//timeout:    3s // 对当前 Dynamic 语法块下的所有路由进行超时配置，不需要则请删除此行
 	middleware: BeforeMiddleware // 对当前 Dynamic 语法块下的所有路由添加中间件，不需要则请删除此行
 // maxBytes:   1048576 // 对当前 Dynamic 语法块下的所有路由添加请求体大小控制，单位为 byte,goctl 版本 >= 1.5.0 才支持
 )
