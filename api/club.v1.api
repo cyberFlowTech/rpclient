@@ -101,27 +101,28 @@ type (
 		Channels []Channel `json:"channels"` // 频道列表
 	}
 	Channel {
-		Chain     int64       `json:"chain"` // 所属链（1000000:ETH,1000001:Polygon,2000000:BTC,3000000:TRON）
-		CleanTime string      `json:"clean_time"` // 自动清理时间，单位分钟
-		Coins     float64     `json:"coins"` // 小于0表示不限制，大于等于0为最低额度限制
-		Ctime     int64       `json:"ctime"` // 创建时间
-		Desc      string      `json:"desc"` // 简介
-		Frozen    int64       `json:"frozen"` // 用户状态,0:正常,1:锁定,2:冻结
-		Icon      string      `json:"icon"` // 图片
-		ID        string      `json:"id"` // 频道id,YqycaWg=
-		ImID      string      `json:"im_id"` // 频道的im_id,202402-9d76eb12-79b0-436c-8432-7a80e974e5ef
-		IsBan     int64       `json:"is_ban"` // 是否全员禁言,0:否,1:是
-		IsBlock   int64       `json:"is_block"` // 管理员封禁,0:否,1:是
-		IsClean   int64       `json:"is_clean"` // 是否自动清理消息,0:否,1:是
-		IsDel     int64       `json:"is_del"` // 是否删除,0:否,1:是
-		MapID     string      `json:"map_id"` // 环信的会话id
-		Name      string      `json:"name"` // 频道名
-		Property  int64       `json:"property"` // 0:持有数字货币，1:持有数字藏品,2:无限制
-		Sort      int64       `json:"sort"` // 排序
-		TbMid     string      `json:"tb_mid"` // 部落id,YqyWaWtn
-		TbZid     string      `json:"tb_zid"` // 分组id,YqyVa2g=
-		Type      int64       `json:"type"` // 频道类型,0:文字房间,1:语音房间
-		Dapp      ChannelDapp `json:"dapp"` // dapp信息
+		Chain       int64       `json:"chain"` // 所属链（1000000:ETH,1000001:Polygon,2000000:BTC,3000000:TRON）
+		CleanTime   string      `json:"clean_time"` // 自动清理时间，单位分钟
+		Coins       float64     `json:"coins"` // 小于0表示不限制，大于等于0为最低额度限制
+		Ctime       int64       `json:"ctime"` // 创建时间
+		Desc        string      `json:"desc"` // 简介
+		Frozen      int64       `json:"frozen"` // 用户状态,0:正常,1:锁定,2:冻结
+		Icon        string      `json:"icon"` // 图片
+		ID          string      `json:"id"` // 频道id,YqycaWg=
+		ImID        string      `json:"im_id"` // 频道的im_id,202402-9d76eb12-79b0-436c-8432-7a80e974e5ef
+		IsBan       int64       `json:"is_ban"` // 是否全员禁言,0:否,1:是
+		IsBlock     int64       `json:"is_block"` // 管理员封禁,0:否,1:是
+		IsClean     int64       `json:"is_clean"` // 是否自动清理消息,0:否,1:是
+		IsDel       int64       `json:"is_del"` // 是否删除,0:否,1:是
+		MapID       string      `json:"map_id"` // 环信的会话id
+		Name        string      `json:"name"` // 频道名
+		Property    int64       `json:"property"` // 0:持有数字货币，1:持有数字藏品,2:无限制
+		Sort        int64       `json:"sort"` // 排序
+		TbMid       string      `json:"tb_mid"` // 部落id,YqyWaWtn
+		TbZid       string      `json:"tb_zid"` // 分组id,YqyVa2g=
+		Type        int64       `json:"type"` // 频道类型,0:文字房间,1:语音房间
+		Dapp        ChannelDapp `json:"dapp"` // dapp信息
+		IsRecommend int64       `json:"is_recommend"` // 是否推荐展现在部落详情页,0:否,1:是
 	}
 	ClubInfoAccess {
 		IsMaster int64      `json:"is_master"` // 是否群主
