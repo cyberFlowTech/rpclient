@@ -86,8 +86,8 @@ type (
 		AccessList ClubInfoAccess    `json:"accessList"` // 权限信息
 		Dynamic    []ClubInfoDynamic `json:"dynamic"` // 部落动态
 		Dapp       ClubInfoDapp      `json:"dapp"` // 部落应用
-		Master     UInfo             `json:master_info` // 部落主信息
-		LastNUser  []UInfo           `json:last_join_user` // 最后几位加入部落的用户
+		Master     UInfo             `json:"master_info"` // 部落主信息
+		LastNUser  []UInfo           `json:"last_join_user"` // 最后几位加入部落的用户
 	}
 	Zone {
 		Id       string    `json:"id"` // 分组id,YqyVa2g=
