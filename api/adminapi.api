@@ -386,6 +386,7 @@ type TradeInfo {
 	ToAmount           string  `json:"toAmount"`
 	AmountFee          string  `json:"amountFee"`
 	AmountFeeSlipepage string  `json:"amountFeeSlipepage"`
+	ErrMsg             string  `json:"errMsg"` // 错误信息
 }
 
 type InfoResp {
