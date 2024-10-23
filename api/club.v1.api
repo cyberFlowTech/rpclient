@@ -62,7 +62,7 @@ type (
 	ClubInfoReq {
 		CommonReq
 		TbMid  string `form:"tb_mid"` // 部落id,YqyWaWtn
-		Fields string `form:"fields"` // 可选项数据;last_join_user:最后进入部落的用户信息,master:部落主信息
+		Fields string `form:"fields,optional"` // 可选项数据;last_join_user:最后进入部落的用户信息,master:部落主信息
 	}
 	ClubInfoRes {
 		Id         string            `json:"id"` // 部落id,YqyWaWtn
@@ -389,6 +389,7 @@ type (
 		ColorId  string   `json:"color_id"` // 颜色
 		JoinRole int64    `json:"join_role"` // 1:已加入,0:没加入
 		RoleName string   `json:"role_name"` // 角色名称
+		Desc     string   `json:"desc"` // 用户描述
 	}
 	UserListResp {
 		List  []UInfo `json:"list"`
@@ -762,10 +763,10 @@ type (
 	SetChannelOnlineUsersResp  {}
 	SetClubRecommendInfoReq {
 		CommonReq
-		TbMid   string `form:"tb_mid"` // 部落ID,YqyWaWtn
-		Desc    string `form:"desc"` // 部落的描述,我的部落
-		TbCid   string `form:"tb_cid"` // 频道ID,多个用逗号分隔,YqycaWg=,YqycaWw
-		DidDuid string `form:"did_duid"` // 动态ID动态作者ID,多个用|分隔,131,548218|132,548218
+		TbMid      string `form:"tb_mid"` // 部落ID,YqyWaWtn
+		Desc       string `form:"desc"` // 部落的描述,我的部落
+		Channel    string `form:"channel_info"` // 频道ID及描述,[{"tb_cid":"YqycaWg=","desc":"cccc","im_id":"xxxxxx"},{"tb_cid":"YqycaWh=","desc":"ddd","im_id":"xxxxx"}]
+		DynamicIds string `form:"dynamic_ids"` // 动态ID动态作者ID,多个用|分隔,131,548218|132,548218
 	}
 	SetClubRecommendInfoResp  {}
 )
