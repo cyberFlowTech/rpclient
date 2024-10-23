@@ -28,18 +28,20 @@ type (
 	SearchReq {
 		CommonReq
 		Keyword string `form:"keyword"` // 关键字
-		Type    int    `form:"type,range=[0:5]"` // 0:全部 1:行情 2:NFT 3:部落 4:应用 5:动态
+		Type    int    `form:"type,range=[0:6]"` // 0:全部 1:行情 2:NFT 3:部落 4:应用 5:动态 6:部落动态
+		Ext1    string `form:"ext1,optional"` // 可选项数据，type是6时，传递部落ID(tb_mid)
 	}
 	SearchResp {
 		CommonRes
 		Data *SearchItme `json:"data"`
 	}
 	SearchItme {
-		Market  []*MarketItem  `json:"market"` // 行情
-		Nft     []*NftItem     `json:"nft"` // nft
-		Club    []*ClubItem    `json:"club"` // 部落
-		Dapp    []*DappItem    `json:"dapp"` // dapp
-		Dynamic []*DynamicItem `json:"dynamic"` // 动态
+		Market      []*MarketItem  `json:"market"` // 行情
+		Nft         []*NftItem     `json:"nft"` // nft
+		Club        []*ClubItem    `json:"club"` // 部落
+		Dapp        []*DappItem    `json:"dapp"` // dapp
+		Dynamic     []*DynamicItem `json:"dynamic"` // 动态
+		ClubDynamic []*DynamicItem `json:"club_dynamic"` // 动态
 	}
 	MarketItem {
 		Logo             string   `json:"logo"` // logo
@@ -110,14 +112,14 @@ type (
 		CommonReq
 		TaskName string `form:"task_name"` // 任务名称
 	}
-	RunTaskResp {
+	EmptyDataResp {
 		CommonRes
-		Data interface{} `json:"data"` // 任务执行结果
+		Data interface{} `json:"data"`
 	}
 )
 
 @server (
-	middleware: BeforeHandle //路由中间件声明
+	middleware: BeforeHandle,MyLogMiddleware //路由中间件声明
 	group:      search //接口所属组
 	prefix:     search/v1 //路由公共前缀
 )
@@ -132,6 +134,50 @@ service search {
 
 	@doc "脚本执行"
 	@handler RunTask
-	post /RunTask (RunTaskReq) returns (RunTaskResp)
+	post /RunTask (RunTaskReq) returns (EmptyDataResp)
+}
+
+type (
+	AdmGetListReq {
+		Status    int64  `form:"status,range=[-1:1]"`
+		SortField string `form:"sort_field,optional"`
+		SortType  int64  `form:"sort_type,optional,range=[0:1]"`
+	}
+	AdmGetListResp {
+		CommonRes
+		Data []*AdmGetListItem `json:"data"`
+	}
+	AdmGetListItem {
+		Id      int64  `json:"id"`
+		Keyword string `json:"keyword"`
+		Label   int64  `json:"label"`
+		Num     int64  `json:"num"`
+		Sort    int64  `json:"sort"`
+		Status  int64  `json:"status"`
+		Ctime   string `json:"ctime"`
+	}
+	AdmSaveHotSearchReq {
+		Id      int64  `form:"id,optional"`
+		Keyword string `form:"keyword"`
+		Label   int64  `form:"label,optional"`
+		Num     int64  `form:"num,optional"`
+		Sort    int64  `form:"sort"`
+		Status  int64  `form:"status,optional"`
+	}
+)
+
+@server (
+	middleware: AdmBeforeHandle //路由中间件声明
+	group:      admsearch //接口所属组
+	prefix:     admsearch //路由公共前缀
+)
+service search {
+	@doc "后台热搜列表"
+	@handler getList
+	post /getList (AdmGetListReq) returns (AdmGetListResp)
+
+	@doc "后台保存热搜"
+	@handler saveHotSearch
+	post /saveHotSearch (AdmSaveHotSearchReq) returns (EmptyDataResp)
 }
 
