@@ -1,541 +1,294 @@
 syntax = "v1"
 
-info(
-    title: "mimo http api services"
-    desc: "统一api服务"
-    author: "x@cyberflow.cc"
-    email: "x@cyberflow.cc"
-    version: "v1.0"
+info (
+	title:   "mimo http api services"
+	desc:    "统一api服务"
+	author:  "x@cyberflow.cc"
+	email:   "x@cyberflow.cc"
+	version: "v1.0"
 )
 
 //统一请求鉴权信息
 type CommonParams {
-    UserId int64 `form:"user_id"`            //用户唯一标识
-    SessId string `form:"sessid"`            //用户登录标识
-    Api string `form:"api"`                  //App公钥
-    Version string `form:"version"`          //版本号
-    VersionCode string `form:"version_code"` //构建号
-    Uuid string `form:"uuid"`                //设备唯一标识
-    Lan string `form:"lan"`                  //语言，如zh_TW
-    Sign string `form:"sign"`                //签名
-    SignTime int64 `form:"sign_time"`        //当前时间
+	UserId      int64  `form:"user_id"` //用户唯一标识
+	SessId      string `form:"sessid"` //用户登录标识
+	Api         string `form:"api"` //App公钥
+	Version     string `form:"version"` //版本号
+	VersionCode string `form:"version_code"` //构建号
+	Uuid        string `form:"uuid"` //设备唯一标识
+	Lan         string `form:"lan"` //语言，如zh_TW
+	Sign        string `form:"sign"` //签名
+	SignTime    int64  `form:"sign_time"` //当前时间
 }
 
 //统一返回格式
 type CommonJsonResp {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data interface{} `json:"data"`
+	Code int32       `json:"iRet"`
+	Msg  string      `json:"sMsg"`
+	Data interface{} `json:"data"`
 }
 
 //--------用户信息和登录---------
 type UserConfig {
-    Asset int32 `json:"asset"`                //"asset":1,
-    NftSet int32 `json:"nft_set"`             //"nft_set":1,
-    NoticeType int32 `json:"notice_type"`     //"notice_type":0,
-    DynamicShow int32 `json:"dynamic_show"`   //"dynamic_show":1,
-    StrangeMsg int32 `json:"strange_msg"`     //"strange_msg":0,
-    Cover string `json:"cover"`               //"cover":0,
-    NetWork string `json:"network"`           //"network":"",
-    Lan string `json:"lan"`                   //"lan":"",
-    IsSearch int32 `json:"is_search"`         //"is_search":"0",
-    RelationShow int32 `json:"relation_show"` //"relation_show":"1"
-    FriendVerify int32 `json:"friend_verify"`
-    OnlineShow int32 `json:"online_show"`     // 在线状态是否展示 0 不展示 1展示
+	Asset        int32  `json:"asset"` //"asset":1,
+	NftSet       int32  `json:"nft_set"` //"nft_set":1,
+	NoticeType   int32  `json:"notice_type"` //"notice_type":0,
+	DynamicShow  int32  `json:"dynamic_show"` //"dynamic_show":1,
+	StrangeMsg   int32  `json:"strange_msg"` //"strange_msg":0,
+	Cover        string `json:"cover"` //"cover":0,
+	NetWork      string `json:"network"` //"network":"",
+	Lan          string `json:"lan"` //"lan":"",
+	IsSearch     int32  `json:"is_search"` //"is_search":"0",
+	RelationShow int32  `json:"relation_show"` //"relation_show":"1"
+	FriendVerify int32  `json:"friend_verify"`
+	OnlineShow   int32  `json:"online_show"` // 在线状态是否展示 0 不展示 1展示
 }
 
 type UserNotificationConfig {
-    UserId string `json:"user_id"`
-    NewNotification int64 `json:"new_notification"`      // 新消息通知：0 关闭 1开启（默认）
-    ShowSenderContent int64 `json:"show_sender_content"` // 通知显示发送人及消息内容： 0 关闭 1开启（默认）
-    Sounds int64 `json:"sounds"`                         // 声音：0 关闭 1开启（默认）
-    Vibrate int64 `json:"vibrate"`                       // 振动：0 关闭 1开启（默认）
-    Badges int64 `json:"badges"`                         // 消息通知横幅：0 关闭 1开启（默认）
+	UserId            string `json:"user_id"`
+	NewNotification   int64  `json:"new_notification"` // 新消息通知：0 关闭 1开启（默认）
+	ShowSenderContent int64  `json:"show_sender_content"` // 通知显示发送人及消息内容： 0 关闭 1开启（默认）
+	Sounds            int64  `json:"sounds"` // 声音：0 关闭 1开启（默认）
+	Vibrate           int64  `json:"vibrate"` // 振动：0 关闭 1开启（默认）
+	Badges            int64  `json:"badges"` // 消息通知横幅：0 关闭 1开启（默认）
 }
 
 type UserInfo {
-    UserID int64 `json:"user_id"`              //"user_id":548226,
-    MidUnique string `json:"mid_unique"`       //"mid_unique":"mid_vqudi3gia7",
-    Sex string `json:"sex"`                    //"sex":"0",
-    Desc string `json:"desc"`                  //"desc":"",
-    Avatar string `json:"avatar"`              //"avatar":"https://rd-center.mimelabs.xyz/RD-mime/Upload/nft/Meemo/1/100/1/Meemo1108824.png",
-    OriginAvatar string `json:"origin_avatar"` // 原图
-    Nick string `json:"nick"`                  //"nick":"rrr",
-    GroupNick string `json:"group_nick"`       // 群聊昵称
-    ClubNick string `json:"club_nick"`         //  部落昵称
-    Address string `json:"address"`            //"address":"0xb4c4504B429FE076dcf31C8361e1a5Dde19D2CF2",
-    UserType string `json:"user_type"`         //"user_type":"10",
-    UserConf UserConfig `json:"u_conf"`        //u_conf
-    Phrase string `json:"phrase"`              //"phrase":"",
-    NetWork string `json:"network"`            //"network":"1000000",
-    Remark string `json:"remarks"`             //"remarks":"",
-    Fans int32 `json:"fans"`                   //"fans":0,
-    Focus int32 `json:"focus"`                 //"focus":0,
-    IsFocus int32 `json:"is_focus"`            //"is_focus":0,
-    RegTime string `json:"reg_time"`           //"reg_time":"2023-03-10 17:28:44",
-    IsBlock int32 `json:"is_block"`            //"is_block":0,
-    IsPwd int32 `json:"is_pwd,optional"`
-    IsGeneral int32 `json:"is_general"`        //"is_general":0,
-    IsFriend int32 `json:"is_friend"`          //"is_friend":0
-    InBook int32 `json:"in_book"`
+	UserID       int64      `json:"user_id"` //"user_id":548226,
+	MidUnique    string     `json:"mid_unique"` //"mid_unique":"mid_vqudi3gia7",
+	Sex          string     `json:"sex"` //"sex":"0",
+	Desc         string     `json:"desc"` //"desc":"",
+	Avatar       string     `json:"avatar"` //"avatar":"https://rd-center.mimelabs.xyz/RD-mime/Upload/nft/Meemo/1/100/1/Meemo1108824.png",
+	OriginAvatar string     `json:"origin_avatar"` // 原图
+	Nick         string     `json:"nick"` //"nick":"rrr",
+	GroupNick    string     `json:"group_nick"` // 群聊昵称
+	ClubNick     string     `json:"club_nick"` //  部落昵称
+	Address      string     `json:"address"` //"address":"0xb4c4504B429FE076dcf31C8361e1a5Dde19D2CF2",
+	UserType     string     `json:"user_type"` //"user_type":"10",
+	UserConf     UserConfig `json:"u_conf"` //u_conf
+	Phrase       string     `json:"phrase"` //"phrase":"",
+	NetWork      string     `json:"network"` //"network":"1000000",
+	Remark       string     `json:"remarks"` //"remarks":"",
+	Fans         int32      `json:"fans"` //"fans":0,
+	Focus        int32      `json:"focus"` //"focus":0,
+	IsFocus      int32      `json:"is_focus"` //"is_focus":0,
+	RegTime      string     `json:"reg_time"` //"reg_time":"2023-03-10 17:28:44",
+	IsBlock      int32      `json:"is_block"` //"is_block":0,
+	IsPwd        int32      `json:"is_pwd,optional"`
+	IsGeneral    int32      `json:"is_general"` //"is_general":0,
+	IsFriend     int32      `json:"is_friend"` //"is_friend":0
+	InBook       int32      `json:"in_book"`
 }
 
 type GetUsersRequest {
-    CommonParams
-    Ouids string `form:"ouids"`                 //55942,55941 逗号分隔
-    Field string `form:"fields,default='info'"` //指定要查的信息info,conf,dynamic,relation,club,group 逗号分隔, 默认只查info
-    TbMid string `form:"tb_mid,optional"`       // 获取部落信息,fields传递club时需传递该值
-    MapId string `form:"map_id,optional"`       // 获取群聊信息,fileds传递group时需传递该值
+	CommonParams
+	Ouids string `form:"ouids"` //55942,55941 逗号分隔
+	Field string `form:"fields,default='info'"` //指定要查的信息info,conf,dynamic,relation,club,group 逗号分隔, 默认只查info
+	TbMid string `form:"tb_mid,optional"` // 获取部落信息,fields传递club时需传递该值
+	MapId string `form:"map_id,optional"` // 获取群聊信息,fileds传递group时需传递该值
 }
 
 //暂无使用
 type GetUsersResponse {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data []UserInfo `json:"data"`
+	Code int32      `json:"iRet"`
+	Msg  string     `json:"sMsg"`
+	Data []UserInfo `json:"data"`
 }
 
 type SetUserRequest {
-    CommonParams
-    CmdCode string `form:"cmd_code"`         //1000001修改用户；1000003修改配置；1000004修改密码；1000006修改网络；1000008修改好友备注
-    SubCode string `form:"code,optional"`    //用户配置操作子项1000003.10009 展示在线状态 0 不展示 1 展示
-    Value string `form:"value,optional"`     //子操作等值，单项修改
-    Nick string `form:"nick,optional"`
-    Desc string `form:"desc,optional"`
-    Age string `form:"age,optional"`
-    Custom string `form:"custom,optional"`   //是否自定义头像
-    Url string `form:"url,optional"`         //自定义头像url
-    Pwd string `form:"pwd,optional"`         //加密存储的密码
-    Opwd string `form:"opwd,optional"`       //确认新密码
-    Npwd string `form:"npwd,optional"`       //新密码
-    NSort string `form:"sort,optional"`      //排序
-    Ouid string `form:"ouid,optional"`
-    Remarks string `form:"remarks,optional"` //好友备注
+	CommonParams
+	CmdCode string `form:"cmd_code"` //1000001修改用户；1000003修改配置；1000004修改密码；1000006修改网络；1000008修改好友备注
+	SubCode string `form:"code,optional"` //用户配置操作子项1000003.10009 展示在线状态 0 不展示 1 展示
+	Value   string `form:"value,optional"` //子操作等值，单项修改
+	Nick    string `form:"nick,optional"`
+	Desc    string `form:"desc,optional"`
+	Age     string `form:"age,optional"`
+	Custom  string `form:"custom,optional"` //是否自定义头像
+	Url     string `form:"url,optional"` //自定义头像url
+	Pwd     string `form:"pwd,optional"` //加密存储的密码
+	Opwd    string `form:"opwd,optional"` //确认新密码
+	Npwd    string `form:"npwd,optional"` //新密码
+	NSort   string `form:"sort,optional"` //排序
+	Ouid    string `form:"ouid,optional"`
+	Remarks string `form:"remarks,optional"` //好友备注
 }
 
 type GetUsersNotificationConfRequest {
-    CommonParams
-    UserIds string `form:"userIds"` //多个用户用，号分割
+	CommonParams
+	UserIds string `form:"userIds"` //多个用户用，号分割
 }
 
 type GetUsersNotificationConfResponse {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data []UserNotificationConfig `json:"data"`
+	Code int32                    `json:"iRet"`
+	Msg  string                   `json:"sMsg"`
+	Data []UserNotificationConfig `json:"data"`
 }
 
 type SetUsersNotificationConfRequest {
-    CommonParams
-    NewNotification *int64 `form:"new_notification,optional"`      // 新消息通知：0 关闭 1开启
-    ShowSenderContent *int64 `form:"show_sender_content,optional"` // 通知显示发送人消息：0 关闭 1开启
-    Sounds *int64 `form:"sounds,optional"`                         // 声音：0 关闭 1开启
-    Vibrate *int64 `form:"vibrate,optional"`                       // 振动：0 关闭 1开启
-    Badges *int64 `form:"badges,optional"`                         // 消息通知横幅：0 关闭 1开启
-}
-
-// 登录、注册、忘记密码
-type LoginRegisterForm {
-    Openudid string `form:"openudid"`               // 账号（邮箱或自定义账号，或者是第三方登录的code，或钱包地址）
-    UserType int64 `form:"user_type"`               // 账号类型10=>邮箱，20=>钱包(没有在用)，30=>google，40=>facebook（(没有在用)），50=>apple，60=>手机号（(没有在用)），70=>自定义账号，80=>一键注册
-    OnlyCheck int64 `form:"only_check,optional"`    // 检测账号占用 0否 1是（邮箱，自定义账号登录时需要）
-    InviteCode string `form:"invite_code,optional"` // 邀请码
-    Pwd string `form:"pwd,optional"`                // 密码（登录，注册时必要）
-    OPwd string `form:"opwd,optional"`              // 确认密码（注册时必要）
-    EmailCode string `form:"email_code,optional"`   // 邮箱验证码
-    Uuid string `form:"uuid,optional"`              // 设备ID
-    Api string `form:"api,optional"`                // api
-    Version string `form:"version,optional"`        // APP版本
-    Lan string `form:"lan"`                         //  语言
-}
-
-type LoginRegisterResponseTimeStruct {
-    Unix int64 `json:"unix"`
-    Zone string `json:"zone"`
-}
-
-type LoginRegisterResponseStruct {
-    UserId string `json:"user_id"`                     // 用户ID
-    Nick string `json:"nick"`                          // 用户昵称
-    Status string `json:"status"`                      // 状态
-    Age string `json:"age"`                            // （弃用）年龄
-    Avatar string `json:"avatar"`                      // 头像
-    ActiveTime int64 `json:"active_time"`              // 最后活跃时间
-    Sex string `json:"sex"`                            // （弃用）性别
-    Level string `json:"level"`                        // （弃用）等级
-    Desc string `json:"desc"`                          // 个签
-    Sessid string `json:"sessid"`                      // sessid
-    IsRegister int64 `json:"isRegister"`               // 是否是注册0否 1是
-    IsTodayFirst string `json:"isTodayFirst"`          // 是否当天首次登录0否1是
-    UserType string `json:"user_type"`                 // 用户账号类型
-    HasWallet string `json:"hasWallet"`                // 是否有钱包地址 0否1是
-    HasSign string `json:"hasSign"`                    //
-    Time LoginRegisterResponseTimeStruct `json:"time"` // 服务端时间
-    RegTime string `json:"reg_time"`                   //注册时间
-    OpenFun bool `json:"open_fun"`                     // （弃用）
-    OpenApplet bool `json:"open_applet"`               // （弃用）
-    Openudid string `json:"openudid"`                  // 第三方账号
-    Uuid string `json:"uuid"`                          // uuid
-}
-
-type LoginIndexRequest {
-    LoginRegisterForm
-}
-
-type LoginIndexResp {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data interface{} `json:"data"`
-}
-
-type LoginRequest {
-    LoginRegisterForm
-}
-
-type LoginResp {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data LoginRegisterResponseStruct `json:"data"`
-}
-
-type LoginAutoRequest {
-    CommonParams
-    ResetSession int64 `form:"reset_sess,optional"` // 是否刷新session 0否 1是
-}
-
-type LoginAutoResp {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data LoginRegisterResponseStruct `json:"data"`
-}
-
-type LogoutRequest {
-    CommonParams
-}
-
-type LogoutResp {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data []string `json:"data"`
-}
-
-type RegisterRequest {
-    LoginRegisterForm
-    AuthEmail string `form:"auth_email,optional"` // 第三方登录邮箱
-}
-
-type RegisterResp {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data LoginRegisterResponseStruct `json:"data"`
-}
-
-type ForgetRequest {
-    LoginRegisterForm
-}
-
-type ForgetResp {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data []string `json:"data"`
-}
-
-type SendVerificationCodeRequest {
-    Openudid string `form:"openudid"` //  邮箱
-    Scene int64 `form:"scene"`        //  场景：1注册；2绑定；3忘記密碼，4pin
-    Lan string `form:"lan"`           //  语言
-    Uuid string `form:"uuid"`         //  设备id
-}
-
-type SendVerificationCodeResp {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data []string `json:"data"`
-}
-
-type CancellationRequest {
-    CommonParams
-}
-
-type CancellationResp {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data []string `json:"data"`
-}
-
-type BindRequest {
-    CommonParams
-    Openudid string `form:"openudid"`             // 第三方账号
-    EmailCode string `form:"email_code,optional"` // 邮箱验证码
-    UserType int64 `form:"user_type"`             // 账号类型 10 邮箱 30 google 50 apple
-    Pwd string `form:"pwd,optional"`              // 密码
-    OPwd string `form:"opwd,optional"`            // 确认密码
-}
-
-type BindResp {
-    Code int32 `json:"iRet"`
-    Msg string `json:"sMsg"`
-    Data []string `json:"data"`
-}
-
-type UnbindReq {
-    CommonParams
-    UserType int64 `form:"user_type"`
+	CommonParams
+	NewNotification   *int64 `form:"new_notification,optional"` // 新消息通知：0 关闭 1开启
+	ShowSenderContent *int64 `form:"show_sender_content,optional"` // 通知显示发送人消息：0 关闭 1开启
+	Sounds            *int64 `form:"sounds,optional"` // 声音：0 关闭 1开启
+	Vibrate           *int64 `form:"vibrate,optional"` // 振动：0 关闭 1开启
+	Badges            *int64 `form:"badges,optional"` // 消息通知横幅：0 关闭 1开启
 }
 
 type BindStatus {
-    Account int64 `json:"account"`
-    Google int64 `json:"google"`
-    Apple int64 `json:"apple"`
-    Diy int64 `json:"diy"`
-    Quick int64 `json:"quick"`
+	Account int64 `json:"account"`
+	Google  int64 `json:"google"`
+	Apple   int64 `json:"apple"`
+	Diy     int64 `json:"diy"`
+	Quick   int64 `json:"quick"`
 }
 
 type BindListRes {
-    Bind BindStatus `json:"bind"`
-    Account string `json:"account"`
-    Pwd int64 `json:"pwd"`
-    PhoneNo string `json:"phoneNo"`
-    DiyNo string `json:"diyNo"`
-    GEmail string `json:"gEmail"`
-    AEmail string `json:"aEmail"`
-}
-
-type VerifyPwdReq {
-    CommonParams
-    Pwd string `form:"pwd"`
-}
-
-type VerifyPwdRes {
-    IsPass bool `json:"is_pass"`
+	Bind    BindStatus `json:"bind"`
+	Account string     `json:"account"`
+	Pwd     int64      `json:"pwd"`
+	PhoneNo string     `json:"phoneNo"`
+	DiyNo   string     `json:"diyNo"`
+	GEmail  string     `json:"gEmail"`
+	AEmail  string     `json:"aEmail"`
 }
 
 type SearchReq {
-    CommonParams
-    Keywords string `form:"keywords,optional"`
+	CommonParams
+	Keywords string `form:"keywords,optional"`
 }
 
 type SearchInfo {
-    Id string `json:"id"`                  // 弃用
-    UserId string `json:"user_id"`         // 用户ID
-    Nick string `json:"nick"`              // 昵称
-    Status string `json:"status"`          // (弃用)状态
-    Age string `json:"age"`                // （弃用）年龄
-    Avatar string `json:"avatar"`          // 小头像
-    ActiveTime string `json:"active_time"` // 最后登录时间
-    Sex string `json:"sex"`                // （弃用）性别
-    Level string `json:"level"`            // 弃用
-    Desc string `json:"desc"`              // 简介
-    MidUnique string `json:"mid_unique"`   // 弃用
-    BigAvatar string `json:"big_avatar"`   // 大头像
-    Address string `json:"address"`        // 钱包地址
+	Id         string `json:"id"` // 弃用
+	UserId     string `json:"user_id"` // 用户ID
+	Nick       string `json:"nick"` // 昵称
+	Status     string `json:"status"` // (弃用)状态
+	Age        string `json:"age"` // （弃用）年龄
+	Avatar     string `json:"avatar"` // 小头像
+	ActiveTime string `json:"active_time"` // 最后登录时间
+	Sex        string `json:"sex"` // （弃用）性别
+	Level      string `json:"level"` // 弃用
+	Desc       string `json:"desc"` // 简介
+	MidUnique  string `json:"mid_unique"` // 弃用
+	BigAvatar  string `json:"big_avatar"` // 大头像
+	Address    string `json:"address"` // 钱包地址
 }
 
 type SearchResp {
-    Users []SearchInfo `json:"user"`
+	Users []SearchInfo `json:"user"`
 }
 
 type GetInfoByShareCodeReq {
-    Code string `form:"code"`
+	Code string `form:"code"`
 }
 
 type ShareCodeUInfo {
-    Id string `json:"id"`          // 用户ID
-    UserId string `json:"user_id"` // 用户ID
-    Nick string `json:"nick"`      // 用户昵称
-    Avatar string `json:"avatar"`  // 用户头像
-    Num string `json:"num"`        // 弃用
-    Desc string `json:"desc"`      // 用户简介
+	Id     string `json:"id"` // 用户ID
+	UserId string `json:"user_id"` // 用户ID
+	Nick   string `json:"nick"` // 用户昵称
+	Avatar string `json:"avatar"` // 用户头像
+	Num    string `json:"num"` // 弃用
+	Desc   string `json:"desc"` // 用户简介
 }
 
 type GetInfoByShareCodeResp {
-    ShareCodeUInfo
+	ShareCodeUInfo
 }
 
 type GetUsersOnlineInfoReq {
-    CommonParams
-    OUserIds string `form:"ouser_ids"` // 要查询的用户ids。548218,548218,548218
+	CommonParams
+	OUserIds string `form:"ouser_ids"` // 要查询的用户ids。548218,548218,548218
 }
 
 type OnlineInfo {
-    Status string `json:"status"`            // online/offline/unshow
-    OnLineLastTime string `json:"last_time"` // 最后在线秒级时间戳 0表示未知
-    UserId string `json:"user_id"`           // 用户ID
+	Status         string `json:"status"` // online/offline/unshow
+	OnLineLastTime string `json:"last_time"` // 最后在线秒级时间戳 0表示未知
+	UserId         string `json:"user_id"` // 用户ID
 }
 
 type GetUsersOnlineInfoResp {
-    OnlineInfos []OnlineInfo `json:"list"`
+	OnlineInfos []OnlineInfo `json:"list"`
 }
 
 type GenerateWalletReq {
-    CommonParams
-    MneAddress string `form:"mne_address"`        // 钱包地址 0x6a75b116797cbadc47b8e5a918a87d5e7bebbfbb
-    MneSign string `form:"mne_sign,optional"`     // （弃用）明文签名信息 548235|0x6a75b116797cbadc47b8e5a918a87d5e7bebbfbb|1679469260997
-    MneMsg string `form:"mne_msg,optional"`       // （弃用）消息明文（钱包地址|时间戳） 0xca1f68142af0d417a8cdfa17b662c25fdbd5cffd1a7028184fd09d06b8e89dd36abdfe7d475872587ac922ebd07a4fca54887c12e19f2ef5258ecd32917644bb1c
-    Anew string `form:"anew,optional"`            // （弃用）重新创建钱包 0否 1是
-    Pri string `form:"pri,optional"`              // （弃用）加密后的私钥
-    Pin string `form:"pin,optional"`              // （弃用）加密后的pin
-    OldPin string `form:"old_pin,optional"`       // （弃用）原始pin md5
-    Code string `form:"code,optional"`            // （弃用）验证码
-    Extend []interface{} `form:"extend,optional"` // 多链钱包信息 json字符串 [{"chain":2000000,"wallet":"xxxxxx"},{"chain":3000000,"wallet":"aaaaa"}]
+	CommonParams
+	MneAddress string        `form:"mne_address"` // 钱包地址 0x6a75b116797cbadc47b8e5a918a87d5e7bebbfbb
+	MneSign    string        `form:"mne_sign,optional"` // （弃用）明文签名信息 548235|0x6a75b116797cbadc47b8e5a918a87d5e7bebbfbb|1679469260997
+	MneMsg     string        `form:"mne_msg,optional"` // （弃用）消息明文（钱包地址|时间戳） 0xca1f68142af0d417a8cdfa17b662c25fdbd5cffd1a7028184fd09d06b8e89dd36abdfe7d475872587ac922ebd07a4fca54887c12e19f2ef5258ecd32917644bb1c
+	Anew       string        `form:"anew,optional"` // （弃用）重新创建钱包 0否 1是
+	Pri        string        `form:"pri,optional"` // （弃用）加密后的私钥
+	Pin        string        `form:"pin,optional"` // （弃用）加密后的pin
+	OldPin     string        `form:"old_pin,optional"` // （弃用）原始pin md5
+	Code       string        `form:"code,optional"` // （弃用）验证码
+	Extend     []interface{} `form:"extend,optional"` // 多链钱包信息 json字符串 [{"chain":2000000,"wallet":"xxxxxx"},{"chain":3000000,"wallet":"aaaaa"}]
 }
 
 type ExtendInfo {
-    Wallet string `json:"wallet"` // 钱包
-    Chain string `json:"chain"`   // 链
+	Wallet string `json:"wallet"` // 钱包
+	Chain  string `json:"chain"` // 链
 }
 
-type GenerateWalletResp{
-}
+type GenerateWalletResp {}
 
 type UnbindWalletReq {
-    CommonParams
+	CommonParams
 }
 
-type UnbindWalletResp{
+type UnbindWalletResp {}
+
+type FeedbackReq {
+	CommonParams
+	Module string `json:"module"` // 举报与反馈, user:用户 club:部落 dapp:应用 dynamic:动态 im:聊天imid feedback:反馈（我的-投诉反馈）
+	Desc string `json:"desc,optional"` // 反馈描述
+	RelationId string `json:"relation_id"` // 与module相关ID,user:用户ID、club:部落ID、dapp:应用ID、dynamic:动态ID（did,duid）、im:群聊Imid，feedback:0
+	FeedBackType string `json:"feedback_type"` // 类型,1:注册与登录 2:消息聊天 3:钱包账户 4:部落与房间 5:红包与转账 6:社区动态 7:助记词备份 8:其他
+	Email string `json:"email,optional"` // 联系邮箱
+	images string `json:"images,optional"` // 图片,多个图片用逗号隔开
+
 }
 
-type CreateLoginQrCodeReq {
-    WUuid string `form:"w_uuid"` // web终端的uuid
-}
-
-type CreateLoginQrCodeResp {
-    QrcodeId string `json:"qrcode_id"` // 二维码Id
-}
-
-type GetQrLoginInfoReq {
-    CommonParams
-    QrcodeId string `form:"qrcode_id"` // 二维码Id
-}
-
-type GetQrLoginInfoResp {
-    Token string `json:"token"`               // 临时token
-    HasLogin int64 `json:"hasLogin"`          // 是否已经登录其它PC设备 1已登陆 0 未登陆
-    QrcodeStatus int64 `json:"qrcode_status"` // 0 未扫描 1 已扫描 2已登陆 3已拒绝 4已过期
-}
-
-type AuthorizationLoginReq {
-    CommonParams
-    Token string `form:"token"`              // 授权token
-    QrcodeId string `form:"qrcode_id"`       // 二维码ID
-    Status int64 `form:"status,range=[2:3]"` // 2:同意授权 3:拒绝授权
-}
-
-type AuthorizationLoginResp{
-}
-
-type GetLoginQrCodeStatusReq {
-    Id string `form:"qrcode_id"` // 二维码ID
-}
-
-type GetLoginQrCodeStatusResp {
-    QrcodeStatus int64 `json:"qrcode_status"` // 二维码状态 0:未扫描 1:已扫描，等待用户确认 2:已扫描，用户同意授权 3:已扫描，用户取消授权 4:已过期
-    LoginRegisterResponseStruct
-}
-
-@server(
-    middleware: UniUserAuth
-    group: user
-    prefix: user
+@server (
+	middleware: UniUserAuth
+	group:      user
+	prefix:     user
 )
 service mimoapi {
-    @doc "获取用户信息、配置"
-    @handler getUsers
-    post /usersinfo (GetUsersRequest) returns (CommonJsonResp)
+	@doc "获取用户信息、配置"
+	@handler getUsers
+	post /usersinfo (GetUsersRequest) returns (CommonJsonResp)
 
-    @doc "设置用户信息、配置"
-    @handler setUser
-    post /setUser (SetUserRequest) returns (CommonJsonResp)
+	@doc "设置用户信息、配置"
+	@handler setUser
+	post /setUser (SetUserRequest) returns (CommonJsonResp)
 
-    @doc "根据分享码获取用户信息"
-    @handler GetInfoByShareCode
-    post /getInfoByShareCode (GetInfoByShareCodeReq) returns (GetInfoByShareCodeResp)
+	@doc "根据分享码获取用户信息"
+	@handler GetInfoByShareCode
+	post /getInfoByShareCode (GetInfoByShareCodeReq) returns (GetInfoByShareCodeResp)
 
-    @doc "获取用户在线状态信息"
-    @handler GetUsersOnlineInfo
-    post /getUsersOnlineInfo (GetUsersOnlineInfoReq) returns (GetUsersOnlineInfoResp)
+	@doc "获取用户在线状态信息"
+	@handler GetUsersOnlineInfo
+	post /getUsersOnlineInfo (GetUsersOnlineInfoReq) returns (GetUsersOnlineInfoResp)
 
-    @doc "获取消息通知配置"
-    @handler getUsersNotificationConf
-    post /usersNotification (GetUsersNotificationConfRequest) returns (CommonJsonResp)
+	@doc "获取消息通知配置"
+	@handler getUsersNotificationConf
+	post /usersNotification (GetUsersNotificationConfRequest) returns (CommonJsonResp)
 
-    @doc "设置消息通知配置"
-    @handler setUsersNotificationConf
-    post /setUsersNotification (SetUsersNotificationConfRequest) returns (CommonJsonResp)
+	@doc "设置消息通知配置"
+	@handler setUsersNotificationConf
+	post /setUsersNotification (SetUsersNotificationConfRequest) returns (CommonJsonResp)
 
-    @doc "[已迁移至authen服务]检查用户是否存在&注册&登录（兼容老系统接口）"
-    @handler LoginIndex
-    post /loginIndex (LoginIndexRequest) returns (LoginIndexResp)
+	@doc "用户搜索"
+	@handler Search
+	post /search (SearchReq) returns (SearchResp)
 
-    @doc "[已迁移至authen服务]登录"
-    @handler Login
-    post /login (LoginRequest) returns (LoginResp)
+	@doc "创建钱包"
+	@handler GenerateWallet
+	post /generateWallet (GenerateWalletReq) returns (GenerateWalletResp)
 
-    @doc "[已迁移至authen服务]自动登录"
-    @handler LoginAuto
-    post /loginAuto (LoginAutoRequest) returns (LoginAutoResp)
+	@doc "解绑钱包"
+	@handler UnbindWallet
+	post /unbindWallet (UnbindWalletReq) returns (UnbindWalletResp)
 
-    @doc "[已迁移至authen服务]退出登录"
-    @handler Logout
-    post /logout (LogoutRequest) returns (LogoutResp)
-
-    @doc "[已迁移至authen服务]注册"
-    @handler Register
-    post /register (RegisterRequest) returns (RegisterResp)
-
-    @doc "[已迁移至authen服务]忘记密码"
-    @handler Forget
-    post /forget (ForgetRequest) returns (ForgetResp)
-
-    @doc "[已迁移至authen服务]发送验证码"
-    @handler SendVerificationCode
-    post /sendVerificationCode (SendVerificationCodeRequest) returns (SendVerificationCodeResp)
-
-    @doc "[已迁移至authen服务]用户申请注销"
-    @handler Cancellation
-    post /cancellation (CancellationRequest) returns (CancellationResp)
-
-    @doc "[已迁移至authen服务]绑定账号"
-    @handler Bind
-    post /bind (BindRequest) returns (BindResp)
-
-    @doc "[已迁移至authen服务]解除绑定账号"
-    @handler Unbind
-    post /Unbind (UnbindReq) returns (CommonJsonResp)
-
-    @doc "[已迁移至authen服务]绑定列表"
-    @handler BindList
-    post /BindList (CommonParams) returns (CommonJsonResp)
-
-    @doc "[已迁移至authen服务]验证账号密码"
-    @handler VerifyPwd
-    post /VerifyPwd (VerifyPwdReq) returns (VerifyPwdRes)
-
-    @doc "用户搜索"
-    @handler Search
-    post /search (SearchReq) returns (SearchResp)
-
-    @doc "创建钱包"
-    @handler GenerateWallet
-    post /generateWallet (GenerateWalletReq) returns (GenerateWalletResp)
-
-    @doc "解绑钱包"
-    @handler UnbindWallet
-    post /unbindWallet (UnbindWalletReq) returns (UnbindWalletResp)
-
-    @doc "[已迁移至authen服务][扫码登录]PC创建二维码"
-    @handler CreateLoginQrCode
-    post /createLoginQrCode (CreateLoginQrCodeReq) returns (CreateLoginQrCodeResp)
-
-    @doc "[已迁移至authen服务][扫码登录]PC获取二维码状态"
-    @handler GetLoginQrCode
-    post /getLoginQrcodeStatus (GetLoginQrCodeStatusReq) returns (GetLoginQrCodeStatusResp)
-
-    @doc "[已迁移至authen服务][扫码登录]移动端扫码获取二维码信息"
-    @handler GetQrLoginInfo
-    post /GetQrLoginInfo (GetQrLoginInfoReq) returns (GetQrLoginInfoResp)
-
-    @doc "[已迁移至authen服务][扫码登录]移动端授权登录"
-    @handler AuthorizationLogin
-    post /AuthorizationLogin (AuthorizationLoginReq) returns (AuthorizationLoginResp)
+	@doc "用户反馈"
+	@handler Feedback
+	post /feedback (FeedbackReq) returns (CommonJsonResp)
 }
 
