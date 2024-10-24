@@ -49,28 +49,27 @@ type LoginRegisterResponseTimeStruct {
 }
 
 type LoginRegisterResponseStruct {
-	UserId           string                          `json:"user_id"` // 用户ID
-	Nick             string                          `json:"nick"` // 用户昵称
-	Status           string                          `json:"status"` // 状态
-	Age              string                          `json:"age"` // （弃用）年龄
-	Avatar           string                          `json:"avatar"` // 头像
-	ActiveTime       int64                           `json:"active_time"` // 最后活跃时间
-	Sex              string                          `json:"sex"` // （弃用）性别
-	Level            string                          `json:"level"` // （弃用）等级
-	Desc             string                          `json:"desc"` // 个签
-	Sessid           string                          `json:"sessid"` // sessid
-	IsRegister       int64                           `json:"isRegister"` // 是否是注册0否 1是
-	IsTodayFirst     string                          `json:"isTodayFirst"` // 是否当天首次登录0否1是
-	UserType         string                          `json:"user_type"` // 用户账号类型
-	HasWallet        string                          `json:"hasWallet"` // 是否有钱包地址 0否1是
-	HasSign          string                          `json:"hasSign"` //
-	Time             LoginRegisterResponseTimeStruct `json:"time"` // 服务端时间
-	RegTime          string                          `json:"reg_time"` //注册时间
-	OpenFun          bool                            `json:"open_fun"` // （弃用）
-	OpenApplet       bool                            `json:"open_applet"` // （弃用）
-	Openudid         string                          `json:"openudid"` // 第三方账号
-	Uuid             string                          `json:"uuid"` // uuid
-	ShowWelcomeGuide int64                           `json:"show_welcome_guide"` // 是否展示老用户回归引导,0不展示,1展示
+	UserId       string                          `json:"user_id"` // 用户ID
+	Nick         string                          `json:"nick"` // 用户昵称
+	Status       string                          `json:"status"` // 状态
+	Age          string                          `json:"age"` // （弃用）年龄
+	Avatar       string                          `json:"avatar"` // 头像
+	ActiveTime   int64                           `json:"active_time"` // 最后活跃时间
+	Sex          string                          `json:"sex"` // （弃用）性别
+	Level        string                          `json:"level"` // （弃用）等级
+	Desc         string                          `json:"desc"` // 个签
+	Sessid       string                          `json:"sessid"` // sessid
+	IsRegister   int64                           `json:"isRegister"` // 是否是注册0否 1是
+	IsTodayFirst string                          `json:"isTodayFirst"` // 是否当天首次登录0否1是
+	UserType     string                          `json:"user_type"` // 用户账号类型
+	HasWallet    string                          `json:"hasWallet"` // 是否有钱包地址 0否1是
+	HasSign      string                          `json:"hasSign"` //
+	Time         LoginRegisterResponseTimeStruct `json:"time"` // 服务端时间
+	RegTime      string                          `json:"reg_time"` //注册时间
+	OpenFun      bool                            `json:"open_fun"` // （弃用）
+	OpenApplet   bool                            `json:"open_applet"` // （弃用）
+	Openudid     string                          `json:"openudid"` // 第三方账号
+	Uuid         string                          `json:"uuid"` // uuid
 }
 
 type LoginIndexRequest {
@@ -274,6 +273,49 @@ type MinoProgramTokenParam {
 	Scope    string `form:"scope,optional"` //表示申请的权限范围
 }
 
+// JwkResp 定义了 API 返回的响应
+type JwkResp {
+	Keys []JWKKey `json:"keys"`
+}
+
+// JWKKey 是返回的 JWK 的单个 Key 结构
+type JWKKey {
+	Alg string `json:"alg"`
+	E   string `json:"e"`
+	Kid string `json:"kid"`
+	Kty string `json:"kty"`
+	N   string `json:"n"`
+}
+
+type CountryPhoneCodeReq {
+	UserId      int64  `form:"user_id,optional"` //用户唯一标识
+	SessId      string `form:"sessid,optional"` //用户登录标识
+	Api         string `form:"api"` //App公钥
+	Version     string `form:"version"` //版本号
+	VersionCode string `form:"version_code"` //构建号
+	Uuid        string `form:"uuid"` //设备唯一标识
+	Lan         string `form:"lan"` //语言，如zh_TW
+	Sign        string `form:"sign"` //签名
+	SignTime    int64  `form:"sign_time"` //当前时间
+}
+
+type CountryPhoneCodeResp {
+	Code int32                `json:"iRet"`
+	Msg  string               `json:"sMsg"`
+	Data CountryPhoneCodeItem `json:"data"`
+}
+
+type CountryPhoneCodeItem {
+	Default PCodeImte              `json:"default"`
+	List    map[string][]PCodeImte `json:"list"`
+}
+
+type PCodeImte {
+	Name string `json:"name"`
+	Code string `json:"code"`
+	Flag string `json:"flag"`
+}
+
 @server (
 	middleware: AuthenMiddleWare
 	group:      authen
@@ -343,6 +385,10 @@ service api {
 	@doc "[扫码登录]移动端授权登录"
 	@handler AuthorizationLogin
 	post /authorizationLogin (AuthorizationLoginReq) returns (AuthorizationLoginResp)
+
+	@doc "国际手机区号列表"
+	@handler CountryPhoneCode
+	post /CountryPhoneCode (CountryPhoneCodeReq) returns (CountryPhoneCodeResp)
 }
 
 @server (
@@ -371,6 +417,6 @@ service api {
 service api {
 	@doc "authkey"
 	@handler authkeys
-	get /keys (KeysParams) returns (CommonJsonResp)
+	get /keys (KeysParams) returns (JwkResp)
 }
 
