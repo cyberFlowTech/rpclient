@@ -236,13 +236,12 @@ type UnbindWalletResp {}
 
 type FeedbackReq {
 	CommonParams
-	Module string `json:"module"` // 举报与反馈, user:用户 club:部落 dapp:应用 dynamic:动态 im:聊天imid feedback:反馈（我的-投诉反馈）
-	Desc string `json:"desc,optional"` // 反馈描述
-	RelationId string `json:"relation_id"` // 与module相关ID,user:用户ID、club:部落ID、dapp:应用ID、dynamic:动态ID（did,duid）、im:群聊Imid，feedback:0
-	FeedBackType string `json:"feedback_type"` // 类型,1:注册与登录 2:消息聊天 3:钱包账户 4:部落与房间 5:红包与转账 6:社区动态 7:助记词备份 8:其他
-	Email string `json:"email,optional"` // 联系邮箱
-	images string `json:"images,optional"` // 图片,多个图片用逗号隔开
-
+	Module       string `form:"module":"module,options=user|club|dapp|dynamic|im|feedback"` // 举报与反馈, user:用户 club:部落 dapp:应用 dynamic:动态 im:聊天imid feedback:反馈（我的-投诉反馈）
+	Desc         string `form:"desc,optional"` // 反馈描述
+	RelationId   string `form:"relation_id"` // 与module相关ID,user:用户ID、club:部落ID、dapp:应用ID、dynamic:动态ID（did,duid）、im:聊天的Imid，feedback:0
+	FeedBackType int64  `form:"feedback_type"` // 类型,1:注册与登录 2:消息聊天 3:钱包账户 4:部落与房间 5:红包与转账 6:社区动态 7:助记词备份 8:其他
+	Email        string `form:"email,optional"` // 联系邮箱
+	images       string `form:"images,optional"` // 图片,多个图片用逗号隔开
 }
 
 @server (
@@ -290,5 +289,82 @@ service mimoapi {
 	@doc "用户反馈"
 	@handler Feedback
 	post /feedback (FeedbackReq) returns (CommonJsonResp)
+}
+
+type GetFeedbackListReq {
+	CommonParams
+	Page int64 `form:"page,default=1"`
+	Size int64 `form:"size,default=50"`
+}
+
+type Feedback {
+	Id                 string   `json:"id"` // 反馈id
+	User               UserInfo `json:"user_info"` // 反馈者uid
+	OUser              UserInfo `json:"ouser_info"` // 被反馈者信息
+	Type               string   `json:"type"` // 反馈类型
+	Desc               string   `json:"desc"` // 用户描述
+	Images             string   `json:"images"` // 用户上传的图片，多张逗号分隔
+	Ctime              string   `json:"ctime"` // 举报时间
+	Status             string   `json:"status"` // 0未处理 1冻结中 2已解冻
+	OUserFeedbackTotal string   `json:"ouser_feedback_total"` // 用户总被反馈次数
+	OUserFeedbackToday string   `json:"ouser_feedback_today"` // 用户当天反馈次数
+}
+
+type GetFeedbackListResp {
+	List []Feedback `json:"list"`
+}
+
+type GetViolationListReq {
+	CommonParams
+	Page int64 `form:"page":"page,default=1"`
+	Size int64 `form:"size,default=50"`
+	Type int64 `form:"type,default=4"` // 1:部落 2:房间 3:群组 4:用户 5:动态
+}
+
+type Violation {
+	Id           string   `json:"id"` // 违规id
+	User         UserInfo `json:"user_info"` // 违规者uid
+	Reason       string   `json:"reason"` // 违规原因
+	BanStartTime string   `json:"ban_start_time"` // 冻结开始时间
+	BanEndTime   string   `json:"ban_end_time"` // 冻结结束时间
+	Status       string   `json:"status"` // 0正常 1冻结中
+	OptUser      UserInfo `json:"opt_user"` // 操作的管理员
+	OptAt        string   `json:"opt_at"` // 管理员操作的时间
+}
+
+type GetViolationListResp {
+	List []Violation `json:"list"`
+}
+
+type BanReq {
+	CommonParams
+	RelationId string `form:"relation_id"` // type对应的id
+	Reason     string `form:"reason,optional"` // 封禁原因
+	OptType    int64  `form:"opt_type"` // 操作类型,1:冻结 2:解冻
+	BanType    int64  `form:"ban_type,default=4"` // // 1:部落tb_mid 2:房间imid 3:群组imid 4:用户user_id 5:动态 did,duid
+	OptUid     int64  `form:"opt_uid"` //  管理后台操作员
+	BanEndTime string `form:"ban_end_time"` // 冻结结束时间
+}
+
+type BanUserResp {}
+
+// 管理后台
+@server (
+	middleware: AdminAuth
+	group:      admin
+	prefix:     /adminuser
+)
+service mimoapi {
+	@doc "获取反馈列表"
+	@handler getFeedbackList
+	post /getFeedbackList (GetFeedbackListReq) returns (GetFeedbackListResp)
+
+	@doc "获取违规用户列表"
+	@handler getViolationList
+	post /getViolationList (GetViolationListReq) returns (GetViolationListResp)
+
+	@doc "冻结用户"
+	@handler banUser
+	post /banUser (BanReq) returns (BanUserResp)
 }
 
